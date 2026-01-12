@@ -1,0 +1,1971 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Running CTSM at University of Florida">
+      
+      
+      
+        <link rel="canonical" href="https://cdevaneprugh.github.io/hpg-esm-docs/running-ctsm/troubleshooting/">
+      
+      
+        <link rel="prev" href="../spinup/">
+      
+      
+        <link rel="next" href="../../research/overview/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Troubleshooting - CTSM on HiPerGator</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#troubleshooting" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CTSM on HiPerGator" class="md-header__button md-logo" aria-label="CTSM on HiPerGator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CTSM on HiPerGator
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Troubleshooting
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CTSM on HiPerGator" class="md-nav__button md-logo" aria-label="CTSM on HiPerGator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CTSM on HiPerGator
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../onboarding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Onboarding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Installation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/fork-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fork Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/mksurfdata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building mksurfdata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running CTSM
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Running CTSM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Case Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../single-point/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Single-Point Runs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../history-output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    History Output
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spinup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spinup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#first-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slurm-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLURM Failures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SLURM Failures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#node_fail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NODE_FAIL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TIMEOUT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#out_of_memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUT_OF_MEMORY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failed-exit-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FAILED (Exit Code)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#log-file-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log File Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Log File Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding-log-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding Log Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-log-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Log Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#searching-for-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Searching for Errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#did-it-fail-or-time-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Did It Fail or Time Out?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-model-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Model Errors
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Model Errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#missing-input-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Missing Input Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#namelist-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Namelist Errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numerical-instability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numerical Instability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debugging Mode
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Debugging Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runtime-diagnostics-no-rebuild" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Diagnostics (No Rebuild)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-debug-mode-requires-rebuild" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Debug Mode (Requires Rebuild)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build Failures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Build Failures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compilation-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compilation Errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rebuild-after-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rebuild After Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timing-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timing Analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restart-file-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restart File Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Restart File Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#corrupted-restarts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Corrupted Restarts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting Help
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/hillslope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hillslope Hydrology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/neon-sites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NEON Sites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/modifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fork Modifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#first-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slurm-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLURM Failures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SLURM Failures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#node_fail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NODE_FAIL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TIMEOUT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#out_of_memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUT_OF_MEMORY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failed-exit-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FAILED (Exit Code)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#log-file-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log File Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Log File Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding-log-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding Log Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-log-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Log Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#searching-for-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Searching for Errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#did-it-fail-or-time-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Did It Fail or Time Out?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-model-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Model Errors
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Model Errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#missing-input-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Missing Input Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#namelist-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Namelist Errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numerical-instability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numerical Instability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debugging Mode
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Debugging Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runtime-diagnostics-no-rebuild" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Diagnostics (No Rebuild)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-debug-mode-requires-rebuild" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Debug Mode (Requires Rebuild)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build Failures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Build Failures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compilation-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compilation Errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rebuild-after-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rebuild After Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timing-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timing Analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restart-file-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restart File Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Restart File Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#corrupted-restarts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Corrupted Restarts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting Help
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h1>
+<p>Guide to diagnosing and fixing common CTSM failures on HiPerGator.</p>
+<h2 id="first-steps">First Steps<a class="headerlink" href="#first-steps" title="Permanent link">&para;</a></h2>
+<p>When a case fails:</p>
+<ol>
+<li>
+<p><strong>Check CaseStatus</strong> - The <code>CaseStatus</code> file in your case directory logs all workflow steps with timestamps. Look for error messages and paths to log files.</p>
+</li>
+<li>
+<p><strong>Follow the path</strong> - CaseStatus points to the specific log containing the error. Read that file.</p>
+</li>
+<li>
+<p><strong>Check SLURM output</strong> - Look for <code>slurm-*.out</code> files in the case directory.</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$CASES</span>/my_case
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cat<span class="w"> </span>CaseStatus<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+</code></pre></div>
+<h2 id="slurm-failures">SLURM Failures<a class="headerlink" href="#slurm-failures" title="Permanent link">&para;</a></h2>
+<h3 id="node_fail">NODE_FAIL<a class="headerlink" href="#node_fail" title="Permanent link">&para;</a></h3>
+<p><strong>Message:</strong> <code>Job &lt;job_id&gt; failed, node failure</code></p>
+<p><strong>Cause:</strong> Hardware/system failure on compute node.</p>
+<p><strong>Solution:</strong> Resubmit the job. If persistent, contact HiPerGator support.</p>
+<h3 id="timeout">TIMEOUT<a class="headerlink" href="#timeout" title="Permanent link">&para;</a></h3>
+<p><strong>Message:</strong> <code>Job &lt;job_id&gt; cancelled at &lt;timestamp&gt; because it expired</code></p>
+<p><strong>Cause:</strong> Job exceeded wall time limit.</p>
+<p><strong>Solution:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>./xmlchange<span class="w"> </span><span class="nv">JOB_WALLCLOCK_TIME</span><span class="o">=</span><span class="m">08</span>:00:00
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>./case.submit
+</code></pre></div></p>
+<p>Or reduce run length with <code>STOP_N</code>.</p>
+<h3 id="out_of_memory">OUT_OF_MEMORY<a class="headerlink" href="#out_of_memory" title="Permanent link">&para;</a></h3>
+<p><strong>Message:</strong> <code>Job &lt;job_id&gt; killed due to out-of-memory</code></p>
+<p><strong>Cause:</strong> Exceeded memory allocation.</p>
+<p><strong>Solution:</strong> Request more memory or reduce domain size.</p>
+<h3 id="failed-exit-code">FAILED (Exit Code)<a class="headerlink" href="#failed-exit-code" title="Permanent link">&para;</a></h3>
+<p><strong>Message:</strong> <code>Job &lt;job_id&gt; failed with exit code &lt;X&gt;</code></p>
+<p><strong>Cause:</strong> Model crash - segfault, missing file, numerical error.</p>
+<p><strong>Solution:</strong> Check the component log files (see below).</p>
+<h2 id="log-file-analysis">Log File Analysis<a class="headerlink" href="#log-file-analysis" title="Permanent link">&para;</a></h2>
+<h3 id="finding-log-files">Finding Log Files<a class="headerlink" href="#finding-log-files" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Query run directory</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>./xmlquery<span class="w"> </span>RUNDIR
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># List logs by modification time (most recent first)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>ls<span class="w"> </span>-t<span class="w"> </span><span class="nv">$RUNDIR</span>/*.log.*
+</code></pre></div>
+<h3 id="key-log-files">Key Log Files<a class="headerlink" href="#key-log-files" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Log</th>
+<th>Contains</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cesm.log.*</code></td>
+<td>Top-level model output</td>
+</tr>
+<tr>
+<td><code>lnd.log.*</code></td>
+<td>Land (CLM) component messages</td>
+</tr>
+<tr>
+<td><code>cpl.log.*</code></td>
+<td>Coupler output, timing info</td>
+</tr>
+<tr>
+<td><code>atm.log.*</code></td>
+<td>Atmosphere (DATM) messages</td>
+</tr>
+</tbody>
+</table>
+<h3 id="searching-for-errors">Searching for Errors<a class="headerlink" href="#searching-for-errors" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Search all logs for errors</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$RUNDIR</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>grep<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;error\|abort\|fail&quot;</span><span class="w"> </span>*.log.*<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-50
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># Check end of land log</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>tail<span class="w"> </span>-100<span class="w"> </span>lnd.log.*
+</code></pre></div>
+<h2 id="did-it-fail-or-time-out">Did It Fail or Time Out?<a class="headerlink" href="#did-it-fail-or-time-out" title="Permanent link">&para;</a></h2>
+<p>Check if all log files were modified at the same time:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$RUNDIR</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>stat<span class="w"> </span>*.log.*<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Modify
+</code></pre></div>
+<p>If times are within seconds of each other, it likely timed out (the job was killed while running). If times vary, the model crashed.</p>
+<h2 id="common-model-errors">Common Model Errors<a class="headerlink" href="#common-model-errors" title="Permanent link">&para;</a></h2>
+<h3 id="missing-input-files">Missing Input Files<a class="headerlink" href="#missing-input-files" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> Error about file not found in <code>lnd.log</code></p>
+<p><strong>Solution:</strong> Check paths in namelists, verify input data exists:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ls<span class="w"> </span><span class="nv">$INPUT_DATA</span>/path/to/file
+</code></pre></div></p>
+<h3 id="namelist-errors">Namelist Errors<a class="headerlink" href="#namelist-errors" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> Error parsing namelist in <code>lnd.log</code></p>
+<p><strong>Solution:</strong> Check <code>user_nl_clm</code> for syntax errors. Run:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>./preview_namelists
+</code></pre></div></p>
+<h3 id="numerical-instability">Numerical Instability<a class="headerlink" href="#numerical-instability" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> NaN or Inf values, model crashes mid-run</p>
+<p><strong>Solution:</strong>
+- Check forcing data for extreme values
+- Try reducing timestep
+- Enable debug mode for more info</p>
+<h3 id="memory-issues">Memory Issues<a class="headerlink" href="#memory-issues" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> Segfault, out-of-memory errors</p>
+<p><strong>Solution:</strong>
+- Reduce domain size
+- Increase memory allocation
+- Check for array bounds issues (enable DEBUG=TRUE)</p>
+<h2 id="debugging-mode">Debugging Mode<a class="headerlink" href="#debugging-mode" title="Permanent link">&para;</a></h2>
+<h3 id="runtime-diagnostics-no-rebuild">Runtime Diagnostics (No Rebuild)<a class="headerlink" href="#runtime-diagnostics-no-rebuild" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>./xmlchange<span class="w"> </span><span class="nv">INFO_DBUG</span><span class="o">=</span><span class="m">2</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>./case.submit
+</code></pre></div>
+<p>Adds diagnostic output to <code>cpl.log</code>.</p>
+<h3 id="full-debug-mode-requires-rebuild">Full Debug Mode (Requires Rebuild)<a class="headerlink" href="#full-debug-mode-requires-rebuild" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>./xmlchange<span class="w"> </span><span class="nv">DEBUG</span><span class="o">=</span>TRUE
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>./case.build<span class="w"> </span>--clean-all
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>./case.build
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>./case.submit
+</code></pre></div>
+<p>Enables bounds checking, floating-point exception trapping. <strong>Runs much slower.</strong></p>
+<h2 id="build-failures">Build Failures<a class="headerlink" href="#build-failures" title="Permanent link">&para;</a></h2>
+<h3 id="compilation-errors">Compilation Errors<a class="headerlink" href="#compilation-errors" title="Permanent link">&para;</a></h3>
+<p>Check the build log:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>./xmlquery<span class="w"> </span>EXEROOT
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>cat<span class="w"> </span><span class="nv">$EXEROOT</span>/lnd.bldlog.*
+</code></pre></div></p>
+<p>Common causes:
+- Missing modules (run <code>module restore ctsm-modules</code>)
+- Syntax errors in SourceMods</p>
+<h3 id="rebuild-after-changes">Rebuild After Changes<a class="headerlink" href="#rebuild-after-changes" title="Permanent link">&para;</a></h3>
+<p>If you modify source code or build settings:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>./case.build<span class="w"> </span>--clean-all
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>./case.build
+</code></pre></div></p>
+<h2 id="timing-analysis">Timing Analysis<a class="headerlink" href="#timing-analysis" title="Permanent link">&para;</a></h2>
+<p>Check simulation performance in <code>cpl.log</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>grep<span class="w"> </span>tStamp<span class="w"> </span>cpl.log.*<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+</code></pre></div>
+<p>Output shows time per model day:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>tStamp_write: model date = 10120 0 wall clock = 2024-01-15 09:10:46 avg dt = 58.58 dt = 58.18
+</code></pre></div></p>
+<ul>
+<li><code>avg dt</code> = average seconds per model day</li>
+<li><code>dt</code> = seconds for this specific day</li>
+</ul>
+<p>Large variations in <code>dt</code> suggest system performance issues.</p>
+<h2 id="restart-file-issues">Restart File Issues<a class="headerlink" href="#restart-file-issues" title="Permanent link">&para;</a></h2>
+<h3 id="corrupted-restarts">Corrupted Restarts<a class="headerlink" href="#corrupted-restarts" title="Permanent link">&para;</a></h3>
+<p>If a job timed out while writing restarts, files may be corrupted.</p>
+<p><strong>Solution:</strong>
+1. Check restart file sizes (should be consistent)
+2. Remove corrupted files
+3. Copy previous restart set
+4. Continue from earlier point</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># List restart files by size</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>ls<span class="w"> </span>-la<span class="w"> </span><span class="nv">$RUNDIR</span>/*.r.*.nc
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># Remove potentially corrupted latest set</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>rm<span class="w"> </span><span class="nv">$RUNDIR</span>/*.r.0050-01-01*.nc
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c1"># Update rpointer files to point to earlier restart</span>
+</code></pre></div>
+<h2 id="getting-help">Getting Help<a class="headerlink" href="#getting-help" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p><strong>Check official docs:</strong> <a href="https://esmci.github.io/cime/versions/master/html/users_guide/troubleshooting.html">CIME Troubleshooting</a></p>
+</li>
+<li>
+<p><strong>Search forums:</strong> <a href="https://bb.cgd.ucar.edu/cesm/">DiscussCESM</a></p>
+</li>
+<li>
+<p><strong>Include in bug reports:</strong></p>
+</li>
+<li>CaseStatus file</li>
+<li>Relevant log excerpts</li>
+<li>Machine and version info</li>
+<li>Steps to reproduce</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

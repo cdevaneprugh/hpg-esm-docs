@@ -1,0 +1,1384 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Running CTSM at University of Florida">
+      
+      
+      
+        <link rel="canonical" href="https://cdevaneprugh.github.io/hpg-esm-docs/archive/linux-overview/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Linux overview - CTSM on HiPerGator</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#contents" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CTSM on HiPerGator" class="md-header__button md-logo" aria-label="CTSM on HiPerGator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CTSM on HiPerGator
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Linux overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CTSM on HiPerGator" class="md-nav__button md-logo" aria-label="CTSM on HiPerGator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CTSM on HiPerGator
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../onboarding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Onboarding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Installation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/fork-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fork Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/mksurfdata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building mksurfdata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running CTSM
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Running CTSM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../running-ctsm/case-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Case Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../running-ctsm/single-point/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Single-Point Runs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../running-ctsm/history-output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    History Output
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../running-ctsm/spinup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spinup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../running-ctsm/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/hillslope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hillslope Hydrology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/neon-sites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NEON Sites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/modifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fork Modifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-general-linux-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. General Linux Information
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. General Linux Information">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-basic-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Basic Commands:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-text-editors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Text Editors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-external-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 External Resources
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-hipergator-specific-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. HiPerGator Specific Information
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. HiPerGator Specific Information">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-lmod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 lmod
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-slurm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 SLURM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-useful-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Useful Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-bashrc-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 .bashrc File
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4 .bashrc File">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding Environment Variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reloading-bashrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reloading .bashrc
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<p>If you are new to HiPerGator or Linux I suggest you read through this document and utilize at least one of the resources linked below. While HiPerGator offers access to the system with a GUI or the ability to code via Jupyter notebooks, the Earth models will require you to use the command line exclusively, so it's important you are comfortable doing so.</p>
+<h1 id="contents">Contents<a class="headerlink" href="#contents" title="Permanent link">&para;</a></h1>
+<ol>
+<li><a href="#general_info">General Linux Information</a></li>
+<li><a href="#commands">Basic Commands</a></li>
+<li><a href="#text_editors">Text Editors</a></li>
+<li><a href="#resources">External Resources</a></li>
+<li><a href="#hpg_info">HiPerGator Specific Information</a></li>
+<li><a href="#lmod">lmod</a></li>
+<li><a href="#slurm">SLURM</a></li>
+<li><a href="#useful_commands">Useful Commands</a></li>
+<li><a href="#bashrc">.bashrc File</a></li>
+</ol>
+<h2 id="1-general-linux-information">1. General Linux Information <a name="general_info"></a><a class="headerlink" href="#1-general-linux-information" title="Permanent link">&para;</a></h2>
+<p>The Linux command line, also referred to as the terminal or shell, is a text-based interface for interacting with the Linux operating system. It allows users to execute commands and perform various tasks efficiently, without relying on a graphical user interface.</p>
+<p><strong>Command Line Advantages:</strong></p>
+<ul>
+<li><strong>Efficiency:</strong> The command line provides quick access to powerful tools and utilities, enabling you to perform tasks more efficiently compared to a GUI.</li>
+<li><strong>Automation:</strong> Command line scripting allows for the automation of repetitive tasks, saving time and effort.</li>
+<li><strong>Flexibility:</strong> Advanced users can customize and tailor their workflow to suit their specific needs, leveraging the extensive capabilities of the command line.</li>
+</ul>
+<p><strong>Bash:</strong>
+Bash (Bourne Again Shell) is one of the most commonly used command line interpreters in Linux. It is the default shell for most Linux distributions (including HiPerGator) and provides a powerful scripting environment for automation and system administration tasks.</p>
+<h3 id="11-basic-commands">1.1 Basic Commands: <a name="commands"></a><a class="headerlink" href="#11-basic-commands" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>pwd (Print Working Directory):</strong></li>
+<li>Displays the current directory path.</li>
+<li>Example: If you are in the "home" directory of the user "cooper," <code>pwd</code> would output <code>/home/cooper</code> in your terminal.</li>
+<li><strong>ls (List):</strong></li>
+<li>Lists files and directories in the specified directory (or current directory if one isn't given).</li>
+<li>Example: <code>ls my_files</code> would list the contents of the directory "my_files."</li>
+<li><strong>cd (Change Directory):</strong></li>
+<li>Changes the current directory to the specified one.</li>
+<li>Example: <code>cd dir1</code> will change your current working directory to <code>dir1</code> so long as that directory is in your current working path.</li>
+<li>If no directory is specified, <code>cd</code> will move you to your <code>home</code> directory.</li>
+<li><strong>touch:</strong></li>
+<li>Creates an empty file.</li>
+<li>Example: <code>touch filename.txt</code> creates an empty text file.</li>
+<li><strong>mkdir (Make Directory):</strong></li>
+<li>Similar to <code>touch</code>, but creates an empty directory instead. </li>
+<li>As with all these commands, you can use relative or absolute paths. For example <code>mkdir dir1</code> creates an empty directory named "dir1" in the current directory. <code>mkdir /home/cooper/dir1</code> creates "dir1" in Cooper's home directory.</li>
+<li><strong>rm (Remove):</strong></li>
+<li>Delete files or directories.</li>
+<li>Example: <code>rm filename.txt</code> (for files), <code>rm -r directory</code> (for directories where the <code>-r</code> flag specifies to remove things recursively).</li>
+<li><strong>cp (Copy):</strong></li>
+<li>Copies files or directories.</li>
+<li>Example: <code>cp file1 file2</code> (to copy file1 to file2), <code>cp -r dir1 dir2</code> (to copy dir1 to dir2 recursively).</li>
+<li><strong>mv (Move):</strong></li>
+<li>Moves or renames files or directories.</li>
+<li>Example: <code>mv file1 file2</code> (to rename file1 to file2), <code>mv file1 /path/to/directory</code> (to move file1 to another directory).</li>
+<li><strong>grep (Global Regular Expression Print):</strong></li>
+<li>Searches for text patterns.</li>
+<li>Example: <code>grep foo notes.txt</code> searches for the term "foo" in the file notes.txt.</li>
+<li><strong>chmod</strong></li>
+<li>Access and change permissions.</li>
+<li>Example: <code>chmod +x MY_SCRIPT.sh</code> would add the ability for a script you have written to be executed.</li>
+<li><strong>man (Manual):</strong><ul>
+<li>Displays manual pages for commands, providing detailed information about their usage and options.</li>
+<li>Example: <code>man ls</code> displays the manual page for the <code>ls</code> command.</li>
+</ul>
+</li>
+<li><strong>Piping (|):</strong><ul>
+<li>Allows the output of one command to be used as input to another command.</li>
+<li>Example: <code>command1 | command2</code> (output of <code>command1</code> is used as input for <code>command2</code>).</li>
+<li>Example: <code>ls Documents | grep my_file</code> Will search the "Documents" directory for files titled "my_file." You could also add the <code>-r</code> flag to the <code>grep</code> command to search within each file for the search term.</li>
+</ul>
+</li>
+</ol>
+<h3 id="12-text-editors">1.2 Text Editors<a name="text_editors"></a><a class="headerlink" href="#12-text-editors" title="Permanent link">&para;</a></h3>
+<p>The three main text editors used on Linux are <a href="https://en.wikipedia.org/wiki/Vim_(text_editor)">Vim</a>, <a href="https://en.wikipedia.org/wiki/GNU_Emacs">Emacs</a>, and <a href="https://en.wikipedia.org/wiki/GNU_nano">Nano</a>. <code>nano</code> is the most basic, and easiest to use. <code>vim</code> and <code>emacs</code> are extremely customizable, but have a substantially steeper learning curve. Between <code>vim</code> and <code>emacs</code>, <code>vim</code> is arguably the most difficult to get comfortable with, but is powerful once you do. If you decide you are brave enough to try it, sites like <a href="https://www.openvim.com/">openvim</a> or running the command <code>vimtutor</code> (which starts an interactive tutorial) on any Linux machine are good places to start. Additionally <a href="https://vim.rtorr.com/">here</a> is a cheat sheet of <code>vim</code> commands that serve as a nice reference.</p>
+<p><strong>WARNING</strong> The default text editor on Linux is usually <code>vim</code>. There may be a time when you accidentally open a file in <code>vim</code> and can't figure out how to exit the program. This may sound silly, but I promise you, the jokes about <code>vim</code> being confusing are endless in the Linux community. If you do find yourself trapped in <code>vim</code> hit the <code>esc</code> key, then type <code>:q!</code> and hit <code>enter</code>. This will exit whatever file you got yourself into without saving any changes. If you <em>would</em> like to make a quick change to the file you got into, hit <code>esc</code>, followed by the <code>i</code> key to enter "insert" mode. At this point you can type whatever you need (use the arrow keys for navigation). To save, use <code>esc</code> to exit insert mode, then type <code>:wq</code> and hit <code>enter</code>. This will write the file (<code>w</code>) then quit out of the editor (<code>q</code>). </p>
+<h3 id="13-external-resources">1.3 External Resources<a name="resources"></a><a class="headerlink" href="#13-external-resources" title="Permanent link">&para;</a></h3>
+<p>Here are some resources to get started using the Linux command line, and learn a bit more about what is going on "under the hood." You don't need to memorize everything in these links, but they can serve as a good starting point.</p>
+<ol>
+<li>https://linuxjourney.com/</li>
+</ol>
+<p>The "Grasshopper" and "Journeyman" sections will give you a good chunk of background knowledge. I should note that because HiPerGator is not a traditional computer, some of the information (like package management) will not directly translate. However, it will help build a foundation of Linux knowledge and is certainly worth being exposed to. </p>
+<ol>
+<li>HiPerGator's <a href="https://github.com/UFResearchComputing/Linux_training/blob/main/non_HiPerGator.md">Introduction to the Linux Command Line</a></li>
+</ol>
+<p>A good demonstration of basic Linux commands you will be using on a daily basis, along with some practice exercises. I highly recommend going through this entire lesson and watching the accompanying <a href="https://help.rc.ufl.edu/doc/Training_Videos">training video</a>.</p>
+<ol>
+<li>jlevy's <a href="https://github.com/jlevy/the-art-of-command-line">art of the command line</a></li>
+</ol>
+<p>This write up covers a wide range of commands and could serve as a good reference sheet. </p>
+<ol>
+<li>
+<p>YouTube has plenty of tutorials. <a href="https://www.youtube.com/watch?v=s3ii48qYBxA">Here's a good one</a> that serves as an introduction to the command line.</p>
+</li>
+<li>
+<p><a href="https://chat.openai.com/">ChatGPT</a> is actually pretty good at <code>bash</code> scripting or serving as an interactive assistant.</p>
+</li>
+</ol>
+<h2 id="2-hipergator-specific-information">2. HiPerGator Specific Information<a name="hpg_info"></a><a class="headerlink" href="#2-hipergator-specific-information" title="Permanent link">&para;</a></h2>
+<p>HiPerGator is not set up like a traditional personal computer. While Google and sites like <a href="https://stackoverflow.com/">stack overflow</a> are great resources to use when you run into problems, remember to check HiPerGator's <a href="https://help.rc.ufl.edu/doc/UFRC_Help_and_Documentation">documentation</a> first, as it will have information specific to our system.</p>
+<p>Additionally, when using Linux, you should build the habit of using the commands <code>man</code> and the flag <code>--help</code> to get yourself out of trouble. <code>man</code> will access the built in documentation for Linux commands and programs that are on the system. For example, say you want to learn about the <code>ls</code> command, and all the options it has. You can type <code>man ls</code> to pull up the documentation page. You can also type <code>ls --help</code> for a list available arguments and options. </p>
+<p>If you are new to HiPerGator I would highly recommend reading through their <a href="https://www.rc.ufl.edu/documentation/frequently-asked-questions/">FAQ</a>,  <a href="https://help.rc.ufl.edu/doc/Getting_Started">Getting Started</a> page, and watching all of the available training videos provided in the <a href="https://help.rc.ufl.edu/doc/Training_Videos">documentation</a>.</p>
+<h3 id="21-lmod">2.1 lmod<a name="lmod"></a><a class="headerlink" href="#21-lmod" title="Permanent link">&para;</a></h3>
+<p>HiPerGator uses a program called <code>lmod</code> to be able to have multiple versions of the same software installed for different use cases. <a href="https://www.admin-magazine.com/HPC/Articles/Lmod-Alternative-Environment-Modules?utm_source=ADMIN+Newsletter&amp;utm_campaign=HPC_Update_31_Lmod_Alternative_to_Environment_Modules_2013-01-30">Here is a good article</a> that gives an overview of module systems and how they work. While the HiPerGator <a href="https://help.rc.ufl.edu/doc/Modules">documentation</a> has great info that I suggest you read, the full documentation for <code>lmod</code> can be found <a href="https://lmod.readthedocs.io/en/latest/">here</a>.</p>
+<h3 id="22-slurm">2.2 SLURM<a name="slurm"></a><a class="headerlink" href="#22-slurm" title="Permanent link">&para;</a></h3>
+<p>Unlike a personal computer, HiPerGator is a collection of connected computers (called nodes) that share resources. The node that you login to (unsurprisingly called a login node) has a limited amount of resources, and is generally used for tasks like writing code, file management, and very light jobs. As such, you will submit more computationally "expensive" jobs to the <code>SLURM</code> scheduler to run on the dedicated compute nodes.</p>
+<p>Please read the page on our scheduler <a href="https://help.rc.ufl.edu/doc/HPG_Scheduling">here</a>. The full documentation for the <code>SLURM</code> scheduler can be found <a href="https://slurm.schedmd.com/documentation.html">here</a>.</p>
+<h3 id="23-useful-commands">2.3 Useful Commands<a name="useful_commands"></a><a class="headerlink" href="#23-useful-commands" title="Permanent link">&para;</a></h3>
+<p>Here are some miscellaneous useful commands for navigating and managing your environment in HiPerGator:</p>
+<ol>
+<li>
+<p><code>env | grep HPC | sort</code></p>
+</li>
+<li>
+<p>Lists all environment variables related to HiPerGator and sorts them alphabetically.</p>
+</li>
+<li>
+<p>Useful for checking loaded modules, system paths, and predefined environment settings.</p>
+</li>
+<li>
+<p><code>tree | less</code></p>
+</li>
+<li>
+<p>The <code>tree</code> command displays a directory structure in a hierarchical format, which is helpful for visualizing project layouts.</p>
+</li>
+<li>
+<p>The <code>less</code> command allows you to scroll through large outputs without flooding your terminal.</p>
+</li>
+<li>
+<p>SLURM Resource Monitoring and Job Management</p>
+</li>
+<li>
+<p><code>squeue -u $USER</code>: This lists all jobs associated with your username, showing job IDs, status, and resources requested. Can also use <code>$GROUP</code> to see all current jobs associated with the group.</p>
+</li>
+<li>
+<p><code>scontrol show job JOB_ID</code>: Replace <code>JOB_ID</code> with the actual job ID from <code>squeue</code> to see job details.</p>
+</li>
+<li><code>scancel JOB_ID</code>: This will stop a running job. Replace JOB_ID with <code>$USER</code> to stop all user jobs.</li>
+</ol>
+<h3 id="24-bashrc-file">2.4 .bashrc File<a name="bashrc"></a><a class="headerlink" href="#24-bashrc-file" title="Permanent link">&para;</a></h3>
+<p>The <code>.bashrc</code> file is a configuration script that runs automatically whenever you open a new shell session. It is located in your home directory (<code>~/.bashrc</code>) and is used to set environment variables, define aliases, and customize your shell environment. Here are a few things that are helpful to add to your <code>.bashrc</code> file, but not required.</p>
+<h4 id="adding-environment-variables"><strong>Adding Environment Variables</strong><a class="headerlink" href="#adding-environment-variables" title="Permanent link">&para;</a></h4>
+<p>Environment variables store system-wide or user-specific configurations. You can add variables to <code>.bashrc</code> like this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">MY_ENV_VAR</span><span class="o">=</span><span class="s2">&quot;my_value&quot;</span>
+</code></pre></div>
+<p>To define your Earth System Models (ESM) directory, group name, and case output directories add the following to the end of your <code>.bashrc</code> file:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ESM_DIR</span><span class="o">=</span><span class="s2">&quot;/blue/gerber/earth_models&quot;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">GROUP</span><span class="o">=</span><span class="s2">&quot;gerber&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CASE_OUTPUT_DIR</span><span class="o">=</span><span class="s2">&quot;/blue/</span><span class="nv">$GROUP</span><span class="s2">/</span><span class="nv">$USER</span><span class="s2">/cases&quot;</span>
+</code></pre></div>
+<h4 id="reloading-bashrc"><strong>Reloading <code>.bashrc</code></strong><a class="headerlink" href="#reloading-bashrc" title="Permanent link">&para;</a></h4>
+<p>Whenever you modify your <code>.bashrc</code> file, you need to reload it for the changes to take effect.
+To apply the changes without logging out:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">source</span><span class="w"> </span>~/.bashrc
+</code></pre></div>
+<p>Alternatively, you can log out and log back in to ensure the new environment variables are loaded.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

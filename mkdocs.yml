@@ -1,0 +1,51 @@
+site_name: CTSM on HiPerGator
+site_description: Running CTSM at University of Florida
+site_url: https://cdevaneprugh.github.io/hpg-esm-docs/
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.expand
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: blue
+      accent: blue
+
+markdown_extensions:
+  - tables
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Onboarding: onboarding.md
+    - Glossary: glossary.md
+  - Installation:
+    - Prerequisites: installation/prerequisites.md
+    - Fork Setup: installation/fork-setup.md
+    - Building mksurfdata: installation/mksurfdata.md
+  - Running CTSM:
+    - Case Workflow: running-ctsm/case-workflow.md
+    - Single-Point Runs: running-ctsm/single-point.md
+    - History Output: running-ctsm/history-output.md
+    - Spinup: running-ctsm/spinup.md
+    - Troubleshooting: running-ctsm/troubleshooting.md
+  - Research:
+    - Overview: research/overview.md
+    - Hillslope Hydrology: research/hillslope.md
+    - NEON Sites: research/neon-sites.md
+  - Reference:
+    - Fork Modifications: reference/modifications.md
+    - External Resources: reference/resources.md
+  - Archive: archive/README.md

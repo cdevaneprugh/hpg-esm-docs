@@ -11,9 +11,9 @@ theme:
     - search.highlight
     - content.code.copy
   palette:
-    - scheme: default
-      primary: blue
-      accent: blue
+    scheme: slate
+    primary: blue
+    accent: blue
 
 markdown_extensions:
   - tables

@@ -1495,6 +1495,12 @@
 <li>Testing model changes quickly</li>
 <li>Site-specific research</li>
 </ul>
+<div class="admonition info">
+<p class="admonition-title">Single-Point Runs Still Use MPI</p>
+<p>Even though single-point runs use only one grid cell, they still require OpenMPI (<code>MPILIB=openmpi</code>) with <code>NTASKS=1</code>. This is because modern CTSM (5.3+) uses ESMF for data model coupling, and ESMF requires a real MPI implementation.</p>
+<p>The <code>mpi-serial</code> stub library doesn't work with HiPerGator's ESMF build. See <a href="../../reference/modifications/#mpi-serial-incompatibility">mpi-serial Incompatibility</a> for technical details.</p>
+<p><strong>In practice:</strong> You still need to submit single-point jobs through SLURM, but they run efficiently on a single core.</p>
+</div>
 <h2 id="subset-data-workflow">Subset Data Workflow<a class="headerlink" href="#subset-data-workflow" title="Permanent link">&para;</a></h2>
 <p>CTSM provides the <code>subset_data</code> tool to extract site-level data from global datasets.</p>
 <h3 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h3>

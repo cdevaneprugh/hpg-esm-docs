@@ -641,6 +641,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#pio-shared-library-pio-shared-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PIO Shared Library {#pio-shared-library}
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1440,6 +1451,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#pio-shared-library-pio-shared-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PIO Shared Library {#pio-shared-library}
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1660,24 +1682,65 @@
 <p class="admonition-title">PIO Path</p>
 <p>The PIO paths point to the shared ParallelIO build. Update these to your group's build location.</p>
 </div>
+<h4 id="pio-shared-library-pio-shared-library">PIO Shared Library {#pio-shared-library}<a class="headerlink" href="#pio-shared-library-pio-shared-library" title="Permanent link">&para;</a></h4>
+<p>Our fork includes configuration to use a pre-built PIO library instead of rebuilding it for every case. This is controlled by three environment variables:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">&lt;environment_variables&gt;</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="cm">&lt;!-- Basic PIO paths --&gt;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;PIO&quot;</span><span class="nt">&gt;</span>/blue/<span class="nt">&lt;group&gt;</span>/earth_models/shared/parallelio/bld<span class="nt">&lt;/env&gt;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;PIO_LIBDIR&quot;</span><span class="nt">&gt;</span>/blue/<span class="nt">&lt;group&gt;</span>/earth_models/shared/parallelio/bld/lib<span class="nt">&lt;/env&gt;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;PIO_INCDIR&quot;</span><span class="nt">&gt;</span>/blue/<span class="nt">&lt;group&gt;</span>/earth_models/shared/parallelio/bld/include<span class="nt">&lt;/env&gt;</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span><span class="cm">&lt;!-- These tell case.build to use external PIO --&gt;</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">  </span><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;PIO_VERSION_MAJOR&quot;</span><span class="nt">&gt;</span>2<span class="nt">&lt;/env&gt;</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">  </span><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;PIO_TYPENAME_VALID_VALUES&quot;</span><span class="nt">&gt;</span>netcdf<span class="nt">&lt;/env&gt;</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">  </span><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;LD_LIBRARY_PATH&quot;</span><span class="nt">&gt;</span>/blue/<span class="nt">&lt;group&gt;</span>/earth_models/shared/parallelio/bld/lib:$ENV{LD_LIBRARY_PATH}<span class="nt">&lt;/env&gt;</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="nt">&lt;/environment_variables&gt;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PIO_VERSION_MAJOR</code></td>
+<td>Tells CIME to use external PIO (must match your PIO version)</td>
+</tr>
+<tr>
+<td><code>PIO_TYPENAME_VALID_VALUES</code></td>
+<td>Specifies supported I/O backends (<code>netcdf</code> for our build)</td>
+</tr>
+<tr>
+<td><code>LD_LIBRARY_PATH</code></td>
+<td>Required for runtime dynamic linking to <code>.so</code> files</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How it works:</strong> During <code>case.build</code>, CIME checks if <code>PIO_VERSION_MAJOR</code> is set. If it matches the expected version, CIME uses your external PIO library instead of building one. You'll see "Using installed PIO library" in the build log.</p>
+<div class="admonition tip">
+<p class="admonition-title">Build Time Savings</p>
+<p>Without these settings, every <code>case.build</code> compiles PIO from source, adding several minutes to each build. With external PIO, builds are noticeably faster.</p>
+</div>
 <h3 id="config_batchxml">config_batch.xml<a class="headerlink" href="#config_batchxml" title="Permanent link">&para;</a></h3>
 <p>SLURM job submission settings:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">&lt;batch_system</span><span class="w"> </span><span class="na">MACH=</span><span class="s">&quot;hipergator&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;slurm&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">&lt;batch_submit&gt;</span>sbatch<span class="nt">&lt;/batch_submit&gt;</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">&lt;submit_args&gt;</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">flag=</span><span class="s">&quot;--time&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;$JOB_WALLCLOCK_TIME&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">flag=</span><span class="s">&quot;-q&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;$JOB_QUEUE&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">flag=</span><span class="s">&quot;--mem&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;16GB&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span><span class="nt">&lt;/submit_args&gt;</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">  </span><span class="nt">&lt;directives&gt;</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="nt">&lt;directive&gt;</span>--partition=hpg-default<span class="nt">&lt;/directive&gt;</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="nt">&lt;directive&gt;</span>--mail-type=NONE<span class="nt">&lt;/directive&gt;</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">  </span><span class="nt">&lt;/directives&gt;</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">  </span><span class="nt">&lt;queues&gt;</span>
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="nt">&lt;queue</span><span class="w"> </span><span class="na">jobmin=</span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="na">jobmax=</span><span class="s">&quot;20&quot;</span><span class="w"> </span><span class="na">default=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>gerber<span class="nt">&lt;/queue&gt;</span>
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">    </span><span class="nt">&lt;queue</span><span class="w"> </span><span class="na">jobmin=</span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="na">jobmax=</span><span class="s">&quot;128&quot;</span><span class="nt">&gt;</span>gerber-b<span class="nt">&lt;/queue&gt;</span>
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">  </span><span class="nt">&lt;/queues&gt;</span>
-<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="nt">&lt;/batch_system&gt;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">&lt;batch_system</span><span class="w"> </span><span class="na">MACH=</span><span class="s">&quot;hipergator&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;slurm&quot;</span><span class="nt">&gt;</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&lt;batch_submit&gt;</span>sbatch<span class="nt">&lt;/batch_submit&gt;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">&lt;submit_args&gt;</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">flag=</span><span class="s">&quot;--time&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;$JOB_WALLCLOCK_TIME&quot;</span><span class="nt">/&gt;</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">flag=</span><span class="s">&quot;-q&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;$JOB_QUEUE&quot;</span><span class="nt">/&gt;</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">flag=</span><span class="s">&quot;--mem&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;16GB&quot;</span><span class="nt">/&gt;</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="nt">&lt;/submit_args&gt;</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">  </span><span class="nt">&lt;directives&gt;</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="nt">&lt;directive&gt;</span>--partition=hpg-default<span class="nt">&lt;/directive&gt;</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="nt">&lt;directive&gt;</span>--mail-type=NONE<span class="nt">&lt;/directive&gt;</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">  </span><span class="nt">&lt;/directives&gt;</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">  </span><span class="nt">&lt;queues&gt;</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">    </span><span class="nt">&lt;queue</span><span class="w"> </span><span class="na">jobmin=</span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="na">jobmax=</span><span class="s">&quot;20&quot;</span><span class="w"> </span><span class="na">default=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>gerber<span class="nt">&lt;/queue&gt;</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">    </span><span class="nt">&lt;queue</span><span class="w"> </span><span class="na">jobmin=</span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="na">jobmax=</span><span class="s">&quot;128&quot;</span><span class="nt">&gt;</span>gerber-b<span class="nt">&lt;/queue&gt;</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">  </span><span class="nt">&lt;/queues&gt;</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="nt">&lt;/batch_system&gt;</span>
 </code></pre></div>
 <h4 id="key-settings">Key Settings<a class="headerlink" href="#key-settings" title="Permanent link">&para;</a></h4>
 <p><strong>No <code>--exclusive</code> flag</strong>: Unlike many HPC centers, HiPerGator shares nodes by default. We don't include <code>--exclusive</code> because:
@@ -1691,20 +1754,20 @@
 <p>The queue names (<code>gerber</code>, <code>gerber-b</code>) are QoS names specific to the Gerber group. Replace these with your group's QoS names.</p>
 </div>
 <p>Check your group's QoS:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>showQos<span class="w"> </span>-A<span class="w"> </span>&lt;your_group&gt;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>showQos<span class="w"> </span>-A<span class="w"> </span>&lt;your_group&gt;
 </code></pre></div></p>
 <p>The <code>jobmin</code> and <code>jobmax</code> values limit task counts for each queue.</p>
 <h3 id="gnu_hipergatorcmake">gnu_hipergator.cmake<a class="headerlink" href="#gnu_hipergatorcmake" title="Permanent link">&para;</a></h3>
 <p>Compiler flags and library linking:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c"># NetCDF legacy macro support</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">string</span><span class="p">(</span><span class="s">APPEND</span><span class="w"> </span><span class="s">CPPDEFS</span><span class="w"> </span><span class="s2">&quot; -DNETCDF_ENABLE_LEGACY_MACROS&quot;</span><span class="p">)</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c"># Link netcdf and lapack</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nb">string</span><span class="p">(</span><span class="s">APPEND</span><span class="w"> </span><span class="s">SLIBS</span><span class="w"> </span><span class="s2">&quot; ${SHELL_CMD_OUTPUT_BUILD_INTERNAL_IGNORE0}&quot;</span><span class="p">)</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="nb">string</span><span class="p">(</span><span class="s">APPEND</span><span class="w"> </span><span class="s">SLIBS</span><span class="w"> </span><span class="s2">&quot; -L$(LAPACK_LIBDIR) -llapack -lblas&quot;</span><span class="p">)</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="c"># Lustre filesystem optimization</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="nb">set</span><span class="p">(</span><span class="s">PIO_FILESYSTEM_HINTS</span><span class="w"> </span><span class="s2">&quot;lustre&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c"># NetCDF legacy macro support</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nb">string</span><span class="p">(</span><span class="s">APPEND</span><span class="w"> </span><span class="s">CPPDEFS</span><span class="w"> </span><span class="s2">&quot; -DNETCDF_ENABLE_LEGACY_MACROS&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c"># Link netcdf and lapack</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="nb">string</span><span class="p">(</span><span class="s">APPEND</span><span class="w"> </span><span class="s">SLIBS</span><span class="w"> </span><span class="s2">&quot; ${SHELL_CMD_OUTPUT_BUILD_INTERNAL_IGNORE0}&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="nb">string</span><span class="p">(</span><span class="s">APPEND</span><span class="w"> </span><span class="s">SLIBS</span><span class="w"> </span><span class="s2">&quot; -L$(LAPACK_LIBDIR) -llapack -lblas&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="c"># Lustre filesystem optimization</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="nb">set</span><span class="p">(</span><span class="s">PIO_FILESYSTEM_HINTS</span><span class="w"> </span><span class="s2">&quot;lustre&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>You probably won't need to modify this file.</p>
 <h2 id="customizing-for-your-group">Customizing for Your Group<a class="headerlink" href="#customizing-for-your-group" title="Permanent link">&para;</a></h2>
@@ -1729,10 +1792,10 @@
 </ul>
 <h2 id="making-changes">Making Changes<a class="headerlink" href="#making-changes" title="Permanent link">&para;</a></h2>
 <p>After modifying config files:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># If you already have cases built, they may need rebuilding</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nb">cd</span><span class="w"> </span>/path/to/your/case
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>./case.build<span class="w"> </span>--clean-all
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>./case.build
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># If you already have cases built, they may need rebuilding</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nb">cd</span><span class="w"> </span>/path/to/your/case
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>./case.build<span class="w"> </span>--clean-all
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>./case.build
 </code></pre></div>
 <p>New cases will automatically use the updated configs.</p>
 <h2 id="the-cime-alternative">The ~/.cime Alternative<a class="headerlink" href="#the-cime-alternative" title="Permanent link">&para;</a></h2>

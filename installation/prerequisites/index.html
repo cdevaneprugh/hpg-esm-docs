@@ -574,6 +574,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#why-modules-not-conda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Modules (Not Conda)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why Modules (Not Conda)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hpc-build-dependencies-need-system-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HPC Build Dependencies Need System Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esmf-requires-real-mpi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ESMF Requires Real MPI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-conda-is-appropriate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When Conda Is Appropriate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#shared-libraries" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1340,6 +1390,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#why-modules-not-conda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Modules (Not Conda)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why Modules (Not Conda)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hpc-build-dependencies-need-system-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HPC Build Dependencies Need System Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esmf-requires-real-mpi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ESMF Requires Real MPI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-conda-is-appropriate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When Conda Is Appropriate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#shared-libraries" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1499,12 +1599,90 @@
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Verify</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>module<span class="w"> </span>list
 </code></pre></div>
+<h2 id="why-modules-not-conda">Why Modules (Not Conda)<a class="headerlink" href="#why-modules-not-conda" title="Permanent link">&para;</a></h2>
+<p>If you're familiar with conda, you might wonder if you can manage CTSM dependencies that way instead of using lmod. Here's why we use system modules for CTSM builds.</p>
+<h3 id="hpc-build-dependencies-need-system-tools">HPC Build Dependencies Need System Tools<a class="headerlink" href="#hpc-build-dependencies-need-system-tools" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Conda</th>
+<th>lmod (System Modules)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MPI/SLURM integration</td>
+<td>Problematic (PMIx often missing)</td>
+<td>Native support, cluster-tuned</td>
+</tr>
+<tr>
+<td>Compiler optimization</td>
+<td>Generic builds</td>
+<td>Tuned for node hardware</td>
+</tr>
+<tr>
+<td>Library compatibility</td>
+<td>May conflict with system libs</td>
+<td>Configured by HPC admins</td>
+</tr>
+<tr>
+<td>ESMF availability</td>
+<td>Exists but may not match MPI</td>
+<td>Built for cluster's MPI</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>Python packages, dev tools</td>
+<td>Compiled HPC dependencies</td>
+</tr>
+</tbody>
+</table>
+<h3 id="esmf-requires-real-mpi">ESMF Requires Real MPI<a class="headerlink" href="#esmf-requires-real-mpi" title="Permanent link">&para;</a></h3>
+<p>Modern CTSM (5.3+) uses CDEPS/CMEPS for atmospheric data coupling. This component <strong>requires ESMF</strong> (Earth System Modeling Framework), which in turn requires a real MPI implementation.</p>
+<p>On HiPerGator, ESMF is built with OpenMPI and configured for SLURM. Conda's MPI packages often lack:</p>
+<ul>
+<li><strong>PMIx support</strong> - Required for SLURM job launch</li>
+<li><strong>Cluster fabric optimization</strong> - InfiniBand tuning, NUMA awareness</li>
+<li><strong>Consistent ABI</strong> - May conflict with system libraries</li>
+</ul>
+<p><strong>Result:</strong> Even single-point runs that use only 1 MPI task still require OpenMPI because of ESMF.</p>
+<div class="admonition note">
+<p class="admonition-title">Why not mpi-serial?</p>
+<p>CIME supports <code>mpi-serial</code> for truly serial execution, but it doesn't work with modern CTSM. The ESMF library links against OpenMPI symbols that mpi-serial can't provide. See <a href="../../reference/modifications/#mpi-serial-incompatibility">Fork Modifications</a> for details.</p>
+</div>
+<h3 id="when-conda-is-appropriate">When Conda Is Appropriate<a class="headerlink" href="#when-conda-is-appropriate" title="Permanent link">&para;</a></h3>
+<p>Conda works well for:</p>
+<ul>
+<li><strong>Python analysis packages</strong> - xarray, matplotlib, pandas for post-processing</li>
+<li><strong>Development tools</strong> - Editors, linters, formatters</li>
+<li><strong>CTSM Python tools</strong> - The <code>ctsm_pylib</code> environment for subset_data and other scripts</li>
+</ul>
+<p>We use a hybrid approach:</p>
+<ul>
+<li><strong>lmod modules</strong> for compiled dependencies (compilers, MPI, NetCDF, ESMF)</li>
+<li><strong>conda environments</strong> for Python-only tools and analysis</li>
+</ul>
+<p>This gives you the reliability of system-optimized builds with the flexibility of conda for scripting.</p>
 <h2 id="shared-libraries">Shared Libraries<a class="headerlink" href="#shared-libraries" title="Permanent link">&para;</a></h2>
 <p>These libraries need to be built once per group and can be shared among group members.</p>
 <h3 id="cprnc-netcdf-comparison-tool">cprnc (NetCDF Comparison Tool)<a class="headerlink" href="#cprnc-netcdf-comparison-tool" title="Permanent link">&para;</a></h3>
 <p>Used to compare NetCDF output files. Useful for validating model output.</p>
 <h3 id="parallelio-pio">ParallelIO (PIO)<a class="headerlink" href="#parallelio-pio" title="Permanent link">&para;</a></h3>
-<p>Required for building the mksurfdata tool. Set the <code>PIO</code> environment variable to point to your build:</p>
+<p>PIO (Parallel I/O) is a library that provides a high-level interface to NetCDF and other I/O formats. CTSM uses PIO for:</p>
+<ul>
+<li><strong>mksurfdata_esmf</strong> - The tool that generates surface datasets</li>
+<li><strong>CTSM runtime</strong> - Reading input data and writing history output</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Why Build PIO Separately?</p>
+<p>CTSM can build PIO automatically during <code>case.build</code>, but this rebuilds it for every new case. Building PIO once as a shared library saves significant time. With proper configuration (see <a href="../cime-config/#pio-shared-library">CIME Configuration</a>), CTSM uses your pre-built PIO instead of rebuilding.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Shared Libraries Required</p>
+<p>PIO must be built with <code>BUILD_SHARED_LIBS=ON</code> for mksurfdata to work correctly. The upstream CMakeLists.txt has a bug that declares libraries as STATIC but expects shared <code>.so</code> files. See <a href="../../reference/modifications/#1-cmakeliststxt---static-vs-shared">Fork Modifications</a> for details.</p>
+</div>
+<p>Set the <code>PIO</code> environment variable to point to your build:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PIO</span><span class="o">=</span><span class="s2">&quot;/blue/&lt;group&gt;/earth_models/shared/parallelio/bld&quot;</span>
 </code></pre></div>
 <h2 id="building-shared-libraries">Building Shared Libraries<a class="headerlink" href="#building-shared-libraries" title="Permanent link">&para;</a></h2>
@@ -1538,19 +1716,46 @@
 <a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>make
 <a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>make<span class="w"> </span>install
 </code></pre></div>
+<p><strong>Key CMake flags:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BUILD_SHARED_LIBS=ON</code></td>
+<td><strong>Required</strong> - Creates <code>.so</code> files instead of <code>.a</code></td>
+</tr>
+<tr>
+<td><code>WITH_PNETCDF=OFF</code></td>
+<td>Skip parallel-netcdf (not needed for CTSM)</td>
+</tr>
+<tr>
+<td><code>CMAKE_INSTALL_RPATH</code></td>
+<td>Ensures runtime library paths are embedded</td>
+</tr>
+</tbody>
+</table>
+<p>After building, verify you have the shared libraries:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ls<span class="w"> </span>bld/lib/*.so
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># Should show: libgptl.so libpioc.so libpiof.so</span>
+</code></pre></div>
 <h2 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h2>
 <p>See <a href="../../onboarding/#recommended-shortcuts">Onboarding</a> for recommended environment variables. Key variables for prerequisites:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Shared libraries (customize path)</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PIO</span><span class="o">=</span><span class="s2">&quot;/blue/&lt;group&gt;/earth_models/shared/parallelio/bld&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Shared libraries (customize path)</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PIO</span><span class="o">=</span><span class="s2">&quot;/blue/&lt;group&gt;/earth_models/shared/parallelio/bld&quot;</span>
 </code></pre></div>
 <h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
 <p>After building the shared libraries, verify your setup:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Check modules</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>module<span class="w"> </span>restore<span class="w"> </span>ctsm-modules
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>module<span class="w"> </span>list
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># Check PIO was built correctly</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>ls<span class="w"> </span><span class="nv">$PIO</span>/lib/libpiof.so
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Check modules</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>module<span class="w"> </span>restore<span class="w"> </span>ctsm-modules
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>module<span class="w"> </span>list
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="c1"># Check PIO was built correctly</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>ls<span class="w"> </span><span class="nv">$PIO</span>/lib/libpiof.so
 </code></pre></div>
 
 

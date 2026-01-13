@@ -1110,6 +1110,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#mpi-serial-incompatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mpi-serial Incompatibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#5-default_data_cfg-input-paths" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1142,6 +1153,17 @@
     <span class="md-ellipsis">
       
         Machine Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-pio-library-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared PIO Library Support
       
     </span>
   </a>
@@ -1351,6 +1373,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#mpi-serial-incompatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mpi-serial Incompatibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#5-default_data_cfg-input-paths" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1383,6 +1416,17 @@
     <span class="md-ellipsis">
       
         Machine Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-pio-library-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared PIO Library Support
       
     </span>
   </a>
@@ -1512,17 +1556,41 @@
 <p><strong>Change:</strong> <code>MPILIB=mpi-serial</code> → <code>MPILIB=openmpi</code></p>
 <p><strong>Reason:</strong> HiPerGator uses OpenMPI, not mpi-serial.</p>
 <p><strong>Contribution candidate:</strong> No - HiPerGator-specific.</p>
+<h3 id="mpi-serial-incompatibility">mpi-serial Incompatibility<a class="headerlink" href="#mpi-serial-incompatibility" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Why We Can't Use mpi-serial</p>
+<p>This section explains why single-point runs still require OpenMPI, even though CIME supports <code>mpi-serial</code> for truly serial execution.</p>
+</div>
+<p><strong>What is mpi-serial?</strong></p>
+<p><code>mpi-serial</code> is a stub MPI library that provides MPI function signatures without actual parallelization. It's designed for running MPI-dependent code on a single processor without a real MPI installation.</p>
+<p><strong>Why we investigated it:</strong></p>
+<ul>
+<li>Single-point CTSM runs use only 1 MPI task</li>
+<li>Interactive execution without SLURM would be convenient for testing</li>
+<li>Simpler build environment (no MPI dependencies)</li>
+</ul>
+<p><strong>Why it doesn't work with modern CTSM:</strong></p>
+<p>CTSM 5.3+ uses CDEPS/CMEPS (Community Data Models for Earth Prediction Systems) for atmospheric data coupling, replacing the older data model. CDEPS requires <strong>ESMF</strong> (Earth System Modeling Framework).</p>
+<p>On HiPerGator, ESMF is built with OpenMPI. When you try to build CTSM with <code>MPILIB=mpi-serial</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a># Build fails at link stage:
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>/apps/.../libesmf.a: undefined reference to symbol &#39;ompi_mpi_unsigned_short&#39;
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>/apps/.../libmpi.so.40: error adding symbols: DSO missing from command line
+</code></pre></div>
+<p>The ESMF library contains calls to OpenMPI-specific symbols that mpi-serial doesn't provide.</p>
+<p><strong>The workaround:</strong></p>
+<p>Single-point runs work fine with OpenMPI using <code>NTASKS=1</code>. You still need to submit jobs via SLURM, but the job runs on a single core. This is how our fork is configured.</p>
+<p><strong>Bottom line:</strong> If you're coming from an older CTSM version or another machine where mpi-serial worked, be aware it's not an option with modern CTSM on HiPerGator.</p>
 <h3 id="5-default_data_cfg-input-paths">5. default_data_*.cfg - Input Paths<a class="headerlink" href="#5-default_data_cfg-input-paths" title="Permanent link">&para;</a></h3>
 <p><strong>Files:</strong> <code>tools/site_and_regional/default_data_2000.cfg</code>, <code>default_data_1850.cfg</code></p>
 <p><strong>Change:</strong> NCAR paths → HiPerGator paths</p>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Before (NCAR)</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">[main]</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="na">clmforcingindir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/glade/campaign/...</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># After (HiPerGator)</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">[main]</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="na">clmforcingindir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/blue/&lt;group&gt;/earth_models/inputdata</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Before (NCAR)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">[main]</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="na">clmforcingindir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/glade/campaign/...</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># After (HiPerGator)</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="k">[main]</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="na">clmforcingindir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/blue/&lt;group&gt;/earth_models/inputdata</span>
 </code></pre></div></p>
 <p><strong>Contribution candidate:</strong> No - site-specific.</p>
 <h2 id="ccs_config-modifications">ccs_config Modifications<a class="headerlink" href="#ccs_config-modifications" title="Permanent link">&para;</a></h2>
@@ -1531,11 +1599,51 @@
 - <code>config_machines.xml</code> - Machine definition
 - <code>config_batch.xml</code> - SLURM settings
 - <code>gnu_hipergator.cmake</code> - Compiler flags</p>
-<p><strong>Key changes:</strong>
-- GCC 14.2.0, OpenMPI 5.0.7, ESMF 8.8.1
-- Shared PIO path
-- No <code>--exclusive</code> flag (HiPerGator uses shared nodes)
-- Group-specific QoS queues (customize for your group)</p>
+<p><strong>Key changes:</strong></p>
+<ul>
+<li>GCC 14.2.0, OpenMPI 5.0.7, ESMF 8.8.1</li>
+<li>Shared PIO library configuration (see below)</li>
+<li>No <code>--exclusive</code> flag (HiPerGator uses shared nodes)</li>
+<li>Group-specific QoS queues (customize for your group)</li>
+</ul>
+<h3 id="shared-pio-library-support">Shared PIO Library Support<a class="headerlink" href="#shared-pio-library-support" title="Permanent link">&para;</a></h3>
+<p>The fork configures CTSM to use a pre-built PIO library instead of rebuilding it for every case. This is controlled by environment variables in <code>config_machines.xml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;PIO_VERSION_MAJOR&quot;</span><span class="nt">&gt;</span>2<span class="nt">&lt;/env&gt;</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;PIO_TYPENAME_VALID_VALUES&quot;</span><span class="nt">&gt;</span>netcdf<span class="nt">&lt;/env&gt;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;LD_LIBRARY_PATH&quot;</span><span class="nt">&gt;</span>/blue/<span class="nt">&lt;group&gt;</span>/earth_models/shared/parallelio/bld/lib:$ENV{LD_LIBRARY_PATH}<span class="nt">&lt;/env&gt;</span>
+</code></pre></div>
+<p><strong>How CIME decides whether to use external PIO:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>if PIO_VERSION_MAJOR is set AND matches case PIO_VERSION:
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    → use external PIO from PIO_LIBDIR
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    → build log shows &quot;Using installed PIO library&quot;
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>else:
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    → build PIO from source into EXEROOT/shared/pio2
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    → adds several minutes to each case.build
+</code></pre></div>
+<p><strong>Variable purposes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PIO_VERSION_MAJOR</code></td>
+<td>Triggers external PIO usage (value must match your PIO version)</td>
+</tr>
+<tr>
+<td><code>PIO_TYPENAME_VALID_VALUES</code></td>
+<td>Specifies I/O backends (our build supports <code>netcdf</code> only)</td>
+</tr>
+<tr>
+<td><code>LD_LIBRARY_PATH</code></td>
+<td>Required for runtime linking to shared <code>.so</code> files</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="../../installation/cime-config/#pio-shared-library">CIME Configuration</a> for more details.</p>
 <h3 id="why-fork-ccs_config">Why Fork ccs_config?<a class="headerlink" href="#why-fork-ccs_config" title="Permanent link">&para;</a></h3>
 <p>The <code>~/.cime/</code> user override approach has CIME v3 bugs:
 - Batch config loading inconsistent

@@ -401,10 +401,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#environment-variables" class="md-nav__link">
+  <a href="#recommended-shortcuts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Environment Variables
+        Recommended Shortcuts
       
     </span>
   </a>
@@ -605,6 +605,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../installation/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../installation/prerequisites/" class="md-nav__link">
         
   
@@ -633,6 +661,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../installation/cime-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CIME Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../installation/fork-setup/" class="md-nav__link">
         
   
@@ -640,7 +696,7 @@
   <span class="md-ellipsis">
     
   
-    Fork Setup
+    Fork Reference
   
 
     
@@ -1256,10 +1312,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#environment-variables" class="md-nav__link">
+  <a href="#recommended-shortcuts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Environment Variables
+        Recommended Shortcuts
       
     </span>
   </a>
@@ -1419,17 +1475,18 @@
 <td>40GB quota, backed up</td>
 </tr>
 <tr>
-<td><code>/blue/gerber/$USER/</code></td>
+<td><code>/blue/&lt;group&gt;/$USER/</code></td>
 <td>Active projects, code, data</td>
-<td>Group allocation, fast</td>
+<td>Group allocation, fast NVME</td>
 </tr>
 <tr>
-<td><code>/orange/gerber/</code></td>
+<td><code>/orange/&lt;group&gt;/</code></td>
 <td>Archival storage</td>
 <td>Slow - don't use for active work</td>
 </tr>
 </tbody>
 </table>
+<p>Replace <code>&lt;group&gt;</code> with your research group's allocation (e.g., <code>gerber</code>, <code>biology</code>, etc.).</p>
 <h2 id="module-environment">Module Environment<a class="headerlink" href="#module-environment" title="Permanent link">&para;</a></h2>
 <p>CTSM requires specific modules. We use a saved module collection:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Load the CTSM module collection</span>
@@ -1439,29 +1496,31 @@
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>module<span class="w"> </span>list
 </code></pre></div>
 <p>The collection includes: GCC 14.2.0, OpenMPI 5.0.7, NetCDF, HDF5, ESMF 8.8.1, CMake, Python 3.12</p>
-<h2 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h2>
-<p>Add these to your <code>~/.bashrc</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Core paths</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">BLUE</span><span class="o">=</span><span class="s2">&quot;/blue/gerber/</span><span class="nv">$USER</span><span class="s2">&quot;</span>
+<h2 id="recommended-shortcuts">Recommended Shortcuts<a class="headerlink" href="#recommended-shortcuts" title="Permanent link">&para;</a></h2>
+<p>These environment variables can save typing. Add them to your <code>~/.bashrc</code> and customize for your setup:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Your workspace (customize &lt;group&gt;)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">BLUE</span><span class="o">=</span><span class="s2">&quot;/blue/&lt;group&gt;/</span><span class="nv">$USER</span><span class="s2">&quot;</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CASES</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$BLUE</span><span class="s2">/cases&quot;</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ESM_OUTPUT</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$BLUE</span><span class="s2">/earth_model_output/cime_output_root&quot;</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># CTSM paths</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CTSMROOT</span><span class="o">=</span><span class="s2">&quot;/blue/gerber/cdevaneprugh/ctsm5.3&quot;</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CIME_SCRIPTS</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CTSMROOT</span><span class="s2">/cime/scripts&quot;</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># Input data</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="nb">export</span><span class="w"> </span><span class="nv">INPUT_DATA</span><span class="o">=</span><span class="s2">&quot;/blue/gerber/earth_models/inputdata&quot;</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="nb">export</span><span class="w"> </span><span class="nv">SUBSET_DATA</span><span class="o">=</span><span class="s2">&quot;/blue/gerber/earth_models/shared.subset.data&quot;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># Your CTSM installation (after cloning)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CTSMROOT</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$BLUE</span><span class="s2">/ctsm5.3&quot;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CIME_SCRIPTS</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CTSMROOT</span><span class="s2">/cime/scripts&quot;</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># Your group&#39;s input data location</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="nb">export</span><span class="w"> </span><span class="nv">INPUT_DATA</span><span class="o">=</span><span class="s2">&quot;/blue/&lt;group&gt;/earth_models/inputdata&quot;</span>
 </code></pre></div>
 <p>After editing, reload: <code>source ~/.bashrc</code></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The exact paths depend on where you install CTSM and where your group stores input data. These are suggestions, not requirements.</p>
+</div>
 <h2 id="slurm-basics">SLURM Basics<a class="headerlink" href="#slurm-basics" title="Permanent link">&para;</a></h2>
 <p>Submit jobs to compute nodes - never run heavy computation on login nodes.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Check your running jobs</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>squeue<span class="w"> </span>-u<span class="w"> </span><span class="nv">$USER</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Check group jobs</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>squeue<span class="w"> </span>-A<span class="w"> </span>gerber
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Check group jobs (replace &lt;group&gt;)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>squeue<span class="w"> </span>-A<span class="w"> </span>&lt;group&gt;
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Cancel a job</span>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>scancel<span class="w"> </span>&lt;job_id&gt;
@@ -1470,33 +1529,19 @@
 <a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>scontrol<span class="w"> </span>show<span class="w"> </span>job<span class="w"> </span>&lt;job_id&gt;
 </code></pre></div>
 <h3 id="group-qos-limits">Group QOS Limits<a class="headerlink" href="#group-qos-limits" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Resource</th>
-<th>Limit</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>CPU cores</td>
-<td>10</td>
-</tr>
-<tr>
-<td>Memory</td>
-<td>80000M</td>
-</tr>
-</tbody>
-</table>
+<p>Each group has its own resource limits. Check your group's QoS:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>showQos<span class="w"> </span>-A<span class="w"> </span>&lt;group&gt;
+</code></pre></div>
+<p>This shows your group's CPU, memory, and GPU limits. CTSM cases will fail if they request more resources than your QoS allows.</p>
 <h2 id="useful-commands">Useful Commands<a class="headerlink" href="#useful-commands" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Show HiPerGator environment variables</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>env<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>HPC<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># View directory structure</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>tree<span class="w"> </span><span class="p">|</span><span class="w"> </span>less
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Check disk usage</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>du<span class="w"> </span>-sh<span class="w"> </span>/blue/gerber/<span class="nv">$USER</span>/
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Show HiPerGator environment variables</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>env<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>HPC<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># View directory structure</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>tree<span class="w"> </span><span class="p">|</span><span class="w"> </span>less
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># Check disk usage (customize path)</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>du<span class="w"> </span>-sh<span class="w"> </span>/blue/&lt;group&gt;/<span class="nv">$USER</span>/
 </code></pre></div>
 <h2 id="learning-resources">Learning Resources<a class="headerlink" href="#learning-resources" title="Permanent link">&para;</a></h2>
 <h3 id="hipergator-documentation">HiPerGator Documentation<a class="headerlink" href="#hipergator-documentation" title="Permanent link">&para;</a></h3>

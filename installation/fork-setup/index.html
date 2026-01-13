@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://cdevaneprugh.github.io/hpg-esm-docs/installation/fork-setup/">
       
       
-        <link rel="prev" href="../prerequisites/">
+        <link rel="prev" href="../cime-config/">
       
       
         <link rel="next" href="../mksurfdata/">
@@ -27,7 +27,7 @@
     
     
       
-        <title>Fork Setup - CTSM on HiPerGator</title>
+        <title>Fork Reference - CTSM on HiPerGator</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#fork-setup" class="md-skip">
+        <a href="#fork-reference" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Fork Setup
+              Fork Reference
             
           </span>
         </div>
@@ -408,6 +408,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../prerequisites/" class="md-nav__link">
         
   
@@ -416,6 +444,34 @@
     
   
     Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cime-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CIME Configuration
   
 
     
@@ -452,7 +508,7 @@
   <span class="md-ellipsis">
     
   
-    Fork Setup
+    Fork Reference
   
 
     
@@ -470,7 +526,7 @@
   <span class="md-ellipsis">
     
   
-    Fork Setup
+    Fork Reference
   
 
     
@@ -504,6 +560,56 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Why We Fork">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-machine-configuration-ccs_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Machine Configuration (ccs_config)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-user-config-cime-doesnt-work-reliably" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. User Config (~/.cime) Doesn't Work Reliably
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-build-tool-bugs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Build Tool Bugs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-hipergator-specific-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. HiPerGator-Specific Paths
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -518,65 +624,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#using-the-fork" class="md-nav__link">
+  <a href="#modifications-detail" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Using the Fork
+        Modifications Detail
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Using the Fork">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#clone-the-repository" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Clone the Repository
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#initialize-submodules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Initialize Submodules
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#verify-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verify Setup
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modifications-in-the-fork" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modifications in the Fork
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Modifications in the Fork">
+    <nav class="md-nav" aria-label="Modifications Detail">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -607,13 +663,52 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-not-cime" class="md-nav__link">
+  <a href="#using-this-fork" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why Not ~/.cime?
+        Using This Fork
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Using This Fork">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-1-clone-directly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 1: Clone Directly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-2-fork-from-us" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 2: Fork from Us
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-3-start-from-upstream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 3: Start from Upstream
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -622,28 +717,6 @@
     <span class="md-ellipsis">
       
         Updating the Fork
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#shared-installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Shared Installation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#creating-your-own-fork" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Creating Your Own Fork
       
     </span>
   </a>
@@ -1219,6 +1292,56 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Why We Fork">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-machine-configuration-ccs_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Machine Configuration (ccs_config)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-user-config-cime-doesnt-work-reliably" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. User Config (~/.cime) Doesn't Work Reliably
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-build-tool-bugs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Build Tool Bugs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-hipergator-specific-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. HiPerGator-Specific Paths
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1233,65 +1356,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#using-the-fork" class="md-nav__link">
+  <a href="#modifications-detail" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Using the Fork
+        Modifications Detail
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Using the Fork">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#clone-the-repository" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Clone the Repository
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#initialize-submodules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Initialize Submodules
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#verify-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verify Setup
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modifications-in-the-fork" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modifications in the Fork
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Modifications in the Fork">
+    <nav class="md-nav" aria-label="Modifications Detail">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1322,13 +1395,52 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-not-cime" class="md-nav__link">
+  <a href="#using-this-fork" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why Not ~/.cime?
+        Using This Fork
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Using This Fork">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-1-clone-directly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 1: Clone Directly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-2-fork-from-us" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 2: Fork from Us
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-3-start-from-upstream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 3: Start from Upstream
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1337,28 +1449,6 @@
     <span class="md-ellipsis">
       
         Updating the Fork
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#shared-installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Shared Installation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#creating-your-own-fork" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Creating Your Own Fork
       
     </span>
   </a>
@@ -1382,16 +1472,65 @@
 
 
 
-<h1 id="fork-setup">Fork Setup<a class="headerlink" href="#fork-setup" title="Permanent link">&para;</a></h1>
-<p>We maintain forks of CTSM with HiPerGator-specific modifications. This page explains the fork strategy and how to use it.</p>
+<h1 id="fork-reference">Fork Reference<a class="headerlink" href="#fork-reference" title="Permanent link">&para;</a></h1>
+<p>This page explains why and how we forked CTSM for HiPerGator. Use this as a reference for understanding our modifications or for creating your own fork.</p>
 <h2 id="why-we-fork">Why We Fork<a class="headerlink" href="#why-we-fork" title="Permanent link">&para;</a></h2>
-<p>CTSM requires modifications to work on HiPerGator:</p>
+<p>CTSM isn't plug-and-play on HiPerGator. Several issues require source-level modifications.</p>
+<h3 id="1-machine-configuration-ccs_config">1. Machine Configuration (ccs_config)<a class="headerlink" href="#1-machine-configuration-ccs_config" title="Permanent link">&para;</a></h3>
+<p>CTSM uses CIME (Common Infrastructure for Modeling the Earth) for builds and job submission. CIME needs machine-specific configuration files that define:</p>
+<ul>
+<li>Compiler paths and flags</li>
+<li>MPI library settings</li>
+<li>SLURM batch directives</li>
+<li>Input data locations</li>
+</ul>
+<p>HiPerGator isn't in the upstream machine list, so we need custom configs.</p>
+<p><strong>The complication:</strong> Machine configs live in a separate repository (<code>ccs_config_cesm</code>) that CTSM pulls in as a git submodule. To add HiPerGator support, we had to:</p>
 <ol>
-<li><strong>Machine configuration</strong> - HiPerGator isn't a supported machine, so we need custom configs</li>
-<li><strong>Build tool fixes</strong> - Some tools have bugs that affect GCC/shared library builds</li>
-<li><strong>Path customization</strong> - Default paths point to NCAR systems</li>
+<li>Fork <code>ccs_config_cesm</code></li>
+<li>Add HiPerGator configs to our fork</li>
+<li>Fork CTSM to point its <code>.gitmodules</code> at our ccs_config fork</li>
 </ol>
-<p>Rather than manually applying patches, we maintain forks that track these changes in git.</p>
+<p>This submodule-of-a-submodule situation makes the fork necessary.</p>
+<h3 id="2-user-config-cime-doesnt-work-reliably">2. User Config (~/.cime) Doesn't Work Reliably<a class="headerlink" href="#2-user-config-cime-doesnt-work-reliably" title="Permanent link">&para;</a></h3>
+<p>CIME v3 theoretically supports user config overrides in <code>~/.cime/</code>. We tried this approach and encountered bugs:</p>
+<ul>
+<li>Batch configuration loading was inconsistent</li>
+<li><code>NODENAME_REGEX</code> machine detection failed intermittently</li>
+<li>Each user had to maintain their own config files</li>
+</ul>
+<p>Forking ccs_config gives us a single source of truth that works reliably for everyone.</p>
+<h3 id="3-build-tool-bugs">3. Build Tool Bugs<a class="headerlink" href="#3-build-tool-bugs" title="Permanent link">&para;</a></h3>
+<p>Several CTSM build tools have issues with newer GCC versions:</p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PIO linking</td>
+<td>mksurfdata fails to link</td>
+<td>Change <code>STATIC</code> to <code>SHARED</code> in CMakeLists.txt</td>
+</tr>
+<tr>
+<td>Format specifiers</td>
+<td>GCC 10+ compilation errors</td>
+<td>Add explicit width to Fortran format specs (<code>I</code> → <code>I12</code>)</td>
+</tr>
+<tr>
+<td>GCC 14 flags</td>
+<td>Compilation warnings as errors</td>
+<td>Add <code>-fallow-argument-mismatch</code> flag</td>
+</tr>
+</tbody>
+</table>
+<p>These are bugs that should be fixed upstream, but until they are, our fork includes the fixes.</p>
+<h3 id="4-hipergator-specific-paths">4. HiPerGator-Specific Paths<a class="headerlink" href="#4-hipergator-specific-paths" title="Permanent link">&para;</a></h3>
+<p>Default paths in some tools point to NCAR systems. Our fork updates paths to work with HiPerGator's storage layout.</p>
 <h2 id="repository-structure">Repository Structure<a class="headerlink" href="#repository-structure" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1415,31 +1554,11 @@
 </tbody>
 </table>
 <p>The ccs_config fork is included as a submodule of the CTSM fork.</p>
-<h2 id="using-the-fork">Using the Fork<a class="headerlink" href="#using-the-fork" title="Permanent link">&para;</a></h2>
-<h3 id="clone-the-repository">Clone the Repository<a class="headerlink" href="#clone-the-repository" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>/blue/gerber/<span class="nv">$USER</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Clone from our fork</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/cdevaneprugh/CTSM.git<span class="w"> </span>ctsm5.3
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nb">cd</span><span class="w"> </span>ctsm5.3
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Checkout the HiPerGator branch</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>git<span class="w"> </span>checkout<span class="w"> </span>uf-ctsm5.3.085
-</code></pre></div>
-<h3 id="initialize-submodules">Initialize Submodules<a class="headerlink" href="#initialize-submodules" title="Permanent link">&para;</a></h3>
-<p>CTSM uses <code>git-fleximod</code> (not the older <code>manage_externals</code>):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>./bin/git-fleximod<span class="w"> </span>update
-</code></pre></div>
-<p>This pulls in all required submodules including our ccs_config fork with HiPerGator configs.</p>
-<h3 id="verify-setup">Verify Setup<a class="headerlink" href="#verify-setup" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Check submodule status</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>./bin/git-fleximod<span class="w"> </span>status
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Verify machine config exists</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>ls<span class="w"> </span>ccs_config/machines/hipergator/
-</code></pre></div>
-<p>You should see: <code>config_machines.xml</code>, <code>config_batch.xml</code>, <code>gnu_hipergator.cmake</code></p>
-<h2 id="modifications-in-the-fork">Modifications in the Fork<a class="headerlink" href="#modifications-in-the-fork" title="Permanent link">&para;</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Version Notice</p>
+<p>These forks are based on CTSM 5.3.085. Other versions may have different issues or may have fixed some of these bugs upstream.</p>
+</div>
+<h2 id="modifications-detail">Modifications Detail<a class="headerlink" href="#modifications-detail" title="Permanent link">&para;</a></h2>
 <h3 id="ctsm-modifications">CTSM Modifications<a class="headerlink" href="#ctsm-modifications" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -1484,56 +1603,53 @@
 <li><strong>config_batch.xml</strong> - SLURM batch settings (no <code>--exclusive</code> flag for shared nodes)</li>
 <li><strong>gnu_hipergator.cmake</strong> - Compiler flags and library paths</li>
 </ul>
-<h2 id="why-not-cime">Why Not ~/.cime?<a class="headerlink" href="#why-not-cime" title="Permanent link">&para;</a></h2>
-<p>CIME v3 supports user config overrides in <code>~/.cime/</code>, but this approach has bugs:</p>
-<ul>
-<li>Batch config loading is inconsistent</li>
-<li>NODENAME_REGEX detection issues</li>
-<li>Each user must maintain their own config</li>
-</ul>
-<p>Forking ccs_config gives us a single source of truth that works reliably.</p>
-<h2 id="updating-the-fork">Updating the Fork<a class="headerlink" href="#updating-the-fork" title="Permanent link">&para;</a></h2>
-<p>When upstream releases a new version:</p>
-<ol>
-<li>Fetch upstream changes</li>
-<li>Create a new branch from the upstream tag</li>
-<li>Cherry-pick or rebase our modifications</li>
-<li>Test with a simple case</li>
-<li>Push to the fork</li>
-</ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Add upstream remote (one time)</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>upstream<span class="w"> </span>https://github.com/ESCOMP/CTSM.git
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Fetch new tags</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>git<span class="w"> </span>fetch<span class="w"> </span>upstream<span class="w"> </span>--tags
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Create new branch from new tag</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>uf-ctsm5.3.090<span class="w"> </span>ctsm5.3.090
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1"># Cherry-pick modifications from old branch</span>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>git<span class="w"> </span>cherry-pick<span class="w"> </span>&lt;commit-hash&gt;...
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="c1"># Update submodules</span>
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>./bin/git-fleximod<span class="w"> </span>update
-<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
-<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="c1"># Test and push</span>
-<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>uf-ctsm5.3.090
-</code></pre></div>
-<h2 id="shared-installation">Shared Installation<a class="headerlink" href="#shared-installation" title="Permanent link">&para;</a></h2>
-<p>For the Gerber group, a shared installation exists at:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/blue/gerber/cdevaneprugh/ctsm5.3
-</code></pre></div>
-<p>You can use this directly without cloning your own copy. Just ensure you have the environment variables set (see <a href="../prerequisites/">Prerequisites</a>).</p>
-<h2 id="creating-your-own-fork">Creating Your Own Fork<a class="headerlink" href="#creating-your-own-fork" title="Permanent link">&para;</a></h2>
-<p>If you need to make additional modifications:</p>
+<p>See <a href="../cime-config/">CIME Configuration</a> for detailed explanation of these files.</p>
+<h2 id="using-this-fork">Using This Fork<a class="headerlink" href="#using-this-fork" title="Permanent link">&para;</a></h2>
+<h3 id="option-1-clone-directly">Option 1: Clone Directly<a class="headerlink" href="#option-1-clone-directly" title="Permanent link">&para;</a></h3>
+<p>The simplest approach - clone our fork and use it as-is. See <a href="../quickstart/">Quick Start</a> for installation steps.</p>
+<p>You'll need to customize the QoS settings in the config files for your group (see <a href="../cime-config/">CIME Configuration</a>).</p>
+<h3 id="option-2-fork-from-us">Option 2: Fork from Us<a class="headerlink" href="#option-2-fork-from-us" title="Permanent link">&para;</a></h3>
+<p>If you need additional modifications:</p>
 <ol>
 <li>Fork <code>cdevaneprugh/CTSM</code> on GitHub</li>
 <li>Clone your fork</li>
-<li>Create a feature branch</li>
-<li>Make modifications</li>
-<li>Push to your fork</li>
+<li>Make your modifications</li>
+<li>Update the ccs_config submodule if needed</li>
 </ol>
-<p>For modifications that benefit everyone, consider submitting them back to the group fork.</p>
+<p>This gives you a customizable base with our fixes already applied.</p>
+<h3 id="option-3-start-from-upstream">Option 3: Start from Upstream<a class="headerlink" href="#option-3-start-from-upstream" title="Permanent link">&para;</a></h3>
+<p>If you need a different CTSM version or want full control:</p>
+<ol>
+<li>Fork <code>ESCOMP/CTSM</code> on GitHub</li>
+<li>Fork <code>ESMCI/ccs_config_cesm</code></li>
+<li>Apply the modifications listed above</li>
+<li>Update <code>.gitmodules</code> to point to your ccs_config fork</li>
+</ol>
+<p>This is more work but gives you a clean slate.</p>
+<h2 id="updating-the-fork">Updating the Fork<a class="headerlink" href="#updating-the-fork" title="Permanent link">&para;</a></h2>
+<p>When upstream releases a new CTSM version:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Add upstream remote (one time)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>upstream<span class="w"> </span>https://github.com/ESCOMP/CTSM.git
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Fetch new tags</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>git<span class="w"> </span>fetch<span class="w"> </span>upstream<span class="w"> </span>--tags
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Create new branch from new tag</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>uf-ctsm5.3.090<span class="w"> </span>ctsm5.3.090
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Cherry-pick modifications from old branch</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>git<span class="w"> </span>cherry-pick<span class="w"> </span>&lt;commit-hash&gt;...
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># Update submodules</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>./bin/git-fleximod<span class="w"> </span>update
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="c1"># Test and push</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>uf-ctsm5.3.090
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Check if fixes are still needed</p>
+<p>Before cherry-picking, check if upstream has fixed the issues. You may not need all the modifications for newer versions.</p>
+</div>
 
 
 

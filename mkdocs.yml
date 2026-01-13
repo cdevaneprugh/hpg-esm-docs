@@ -7,13 +7,26 @@ theme:
   features:
     - navigation.sections
     - navigation.expand
+    - navigation.top
+    - navigation.footer
     - search.suggest
     - search.highlight
     - content.code.copy
   palette:
-    scheme: slate
-    primary: blue
-    accent: blue
+    # Dark mode (default)
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    # Light mode
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
 
 markdown_extensions:
   - tables

@@ -15,19 +15,19 @@ Ongoing improvements to CTSM on HiPerGator documentation.
 
 ## In Progress
 
-- [ ] Review all pages for remaining Gerber-specific references
-- [ ] Test all internal links work correctly
+- [x] Review all pages for remaining Gerber-specific references
+- [x] Test all internal links work correctly
 
 ## Planned
 
 ### Content Expansion
 
-- [ ] **Glossary**: Add terms (FATES, Compset, PFT, restart vs history, AD spinup)
+- [x] **Glossary**: Add terms (FATES, Compset, PFT, restart vs history, AD spinup)
 - [ ] **Single-Point Runs**: Document multiple approaches
   - Direct NEON scripts
   - run_tower method
   - Manual subset workflow
-- [ ] **Case Workflow**: Add branch case guide
+- [x] **Case Workflow**: Add branch case guide (run types section)
 - [ ] **History variables**: Comprehensive list as separate page
 
 ### Research Section

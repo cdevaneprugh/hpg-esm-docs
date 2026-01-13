@@ -7,7 +7,7 @@ The `mksurfdata` tool generates surface datasets (fsurdat files) for CTSM. This 
 Before building mksurfdata, ensure you have:
 
 1. Module collection loaded: `module restore ctsm-modules`
-2. PIO library available: `export PIO="/blue/gerber/earth_models/shared/parallelio/bld"`
+2. PIO library built and path set (see [Prerequisites](prerequisites.md))
 3. CTSM fork cloned (fixes are already applied)
 
 ## Building the Executable
@@ -16,8 +16,8 @@ Before building mksurfdata, ensure you have:
 # Load modules
 module restore ctsm-modules
 
-# Set PIO path
-export PIO="/blue/gerber/earth_models/shared/parallelio/bld"
+# Set PIO path (customize for your group)
+export PIO="/blue/<group>/earth_models/shared/parallelio/bld"
 
 # Navigate to mksurfdata directory
 cd $CTSMROOT/tools/mksurfdata_esmf
@@ -40,10 +40,10 @@ cd tool_bld
 ldd mksurfdata | grep libpio
 ```
 
-Expected output:
+Expected output (paths will match your PIO location):
 ```
-libpiof.so => /blue/gerber/earth_models/shared/parallelio/bld/lib/libpiof.so
-libpioc.so => /blue/gerber/earth_models/shared/parallelio/bld/lib/libpioc.so
+libpiof.so => /blue/<group>/earth_models/shared/parallelio/bld/lib/libpiof.so
+libpioc.so => /blue/<group>/earth_models/shared/parallelio/bld/lib/libpioc.so
 ```
 
 If you see "not found", the libraries weren't linked correctly.

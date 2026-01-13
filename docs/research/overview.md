@@ -1,6 +1,6 @@
 # Research Overview
 
-*This section documents the Gerber group's research focus and scientific goals.*
+*This section documents research applications of CTSM on HiPerGator.*
 
 ---
 
@@ -9,9 +9,9 @@
 ## Research Areas
 
 <!-- TODO: Add research context -->
-<!-- - What processes are being studied (carbon cycling, hydrology, hillslope dynamics) -->
-<!-- - Key scientific questions -->
-<!-- - Target sites (OSBS, NEON towers, etc.) -->
+<!-- - Common research applications (carbon cycling, hydrology, hillslope dynamics) -->
+<!-- - Example scientific workflows -->
+<!-- - Site-specific simulation approaches -->
 
 ## Active Projects
 

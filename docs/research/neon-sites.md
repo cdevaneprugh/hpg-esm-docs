@@ -31,10 +31,10 @@
 
 ## Subset Data
 
-Pre-generated subset data for NEON sites:
+Pre-generated subset data for NEON sites (example structure):
 
 ```
-/blue/gerber/earth_models/shared.subset.data/
+/blue/<group>/earth_models/shared.subset.data/
 ├── OSBS/
 │   ├── surfdata_*.nc
 │   ├── datmdata/

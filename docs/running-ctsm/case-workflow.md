@@ -154,25 +154,76 @@ cat CaseStatus
 
 Look for timestamps and success/failure messages. When a case fails, CaseStatus points to the relevant log file.
 
-## Restarting a Case
+## Run Types
 
-Cases can be continued from restart files:
+CTSM supports three run types:
+
+| Type | Use Case | Configuration Changes? | Bit-for-bit? |
+|------|----------|----------------------|--------------|
+| **startup** | Fresh simulation | N/A | N/A |
+| **branch** | Exact continuation | No | Yes |
+| **hybrid** | New start from restart | Yes | No |
+
+### Continuing a Run (CONTINUE_RUN)
+
+To continue a run from where it stopped:
 
 ```bash
-# Continue from where it stopped
 ./xmlchange CONTINUE_RUN=TRUE
 ./case.submit
 ```
 
-Or start a new case from another case's restart:
+This is the simplest continuation - the run picks up exactly where it left off.
+
+### Branch Runs
+
+Branch runs continue from another case's restart, maintaining bit-for-bit reproducibility:
 
 ```bash
-# Hybrid run from restart file
+cd $CIME_SCRIPTS
+
+# Create new case
+./create_newcase \
+    --case $CASES/my_branch_case \
+    --compset I1850Clm60BgcCrop \
+    --res f09_g17 \
+    --machine hipergator \
+    --run-unsupported
+
+cd $CASES/my_branch_case
+
+# Configure as branch run
+./xmlchange RUN_TYPE=branch
+./xmlchange RUN_REFCASE=source_case_name
+./xmlchange RUN_REFDATE=0005-01-01
+./xmlchange RUN_REFDIR=/path/to/source/case/run
+
+# Copy restart files (if not in RUN_REFDIR)
+./xmlchange GET_REFCASE=FALSE
+
+./case.setup
+./case.build
+./case.submit
+```
+
+!!! note "Branch Run Restrictions"
+    Branch runs must use the **same** compset and resolution as the source case. You cannot change model configuration in a branch run.
+
+### Hybrid Runs
+
+Hybrid runs initialize from restart files but allow configuration changes:
+
+```bash
 ./xmlchange RUN_TYPE=hybrid
 ./xmlchange RUN_REFCASE=source_case_name
 ./xmlchange RUN_REFDATE=0005-01-01
 ./xmlchange GET_REFCASE=FALSE
 ```
+
+Use hybrid runs when you need to:
+- Change compset or resolution
+- Modify namelist settings that affect initialization
+- Start a new experiment from a spun-up state
 
 ## Tips
 

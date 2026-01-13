@@ -134,13 +134,9 @@ Common sites:
 
 ## Shared Subset Data
 
-Pre-generated subset data is available at:
+Your group may maintain pre-generated subset data for common sites. Check with your group before generating new ones - subset data can be shared to avoid duplicate downloads.
 
-```
-/blue/gerber/earth_models/shared.subset.data/
-```
-
-Check for existing sites before generating new ones.
+Typical location: `/blue/<group>/earth_models/shared.subset.data/`
 
 ## Troubleshooting
 

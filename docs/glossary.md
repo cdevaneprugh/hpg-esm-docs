@@ -12,25 +12,35 @@ Key terms for CTSM development on HiPerGator.
 
 **CIME** - Common Infrastructure for Modeling the Earth (pronounced "SEAM"). Provides the case control system for configuring, building, and running Earth system models.
 
+**FATES** - Functionally Assembled Terrestrial Ecosystem Simulator. A vegetation demographic model that can be coupled to CLM for more detailed vegetation dynamics. [FATES GitHub](https://github.com/NGEET/fates)
+
 ## Tools & Utilities
 
-**cprnc** - Tool for comparing NetCDF files. Used to verify model output. Location: `/blue/gerber/earth_models/shared/cprnc/bld/cprnc`
+**cprnc** - Tool for comparing NetCDF files. Used to verify model output. Each group builds their own (see [Prerequisites](installation/prerequisites.md)).
 
 **git-fleximod** - CTSM's tool for managing submodules. Replaces the older `manage_externals` used by CESM.
 
 **mksurfdata** - Tool for generating surface datasets (fsurdat files) for CTSM. Requires PIO library.
 
-**PIO** (ParallelIO) - Parallel I/O library required for mksurfdata. Our shared build: `/blue/gerber/earth_models/shared/parallelio/bld`
+**PIO** (ParallelIO) - Parallel I/O library required for mksurfdata. Each group builds their own (see [Prerequisites](installation/prerequisites.md)).
 
 ## Configuration & Data
 
 **CLM_USRDAT** - Resolution setting for user-provided datasets. Used with subset data for single-point runs.
 
-**Compset** - Component set defining which model components to use and their configurations (e.g., `I1850Clm60BgcCrop`).
+**Compset** - Component set. A predefined combination of model components and configurations. Format: `YYYYA_B_C_D_E_F` where letters represent different components. Example: `I1850Clm60BgcCrop` = Pre-industrial (1850), CLM 6.0 with BGC and crops.
 
 **Namelist** - Fortran configuration file format. Key files: `user_nl_clm`, `user_nl_datm_streams`.
 
+**PFT** - Plant Functional Type. Categories of vegetation (e.g., broadleaf deciduous tree, C3 grass, corn) that share similar characteristics. CTSM uses PFTs to represent vegetation at each grid point.
+
 **Surface data (fsurdat)** - NetCDF file containing land surface characteristics (soil, vegetation, topography).
+
+## Output Files
+
+**History files** - Model output files containing time-varying data (`.h0.nc`, `.h1.nc`, etc.). Configured via `hist_*` namelist variables. Use for analysis and plotting.
+
+**Restart files** - Checkpoint files (`.r.nc`) that capture the complete model state. Used to continue simulations from a specific point. Required for branch runs and spinup continuation.
 
 ## Case Directories
 

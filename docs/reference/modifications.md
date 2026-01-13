@@ -104,7 +104,7 @@ clmforcingindir = /glade/campaign/...
 
 # After (HiPerGator)
 [main]
-clmforcingindir = /blue/gerber/earth_models/inputdata
+clmforcingindir = /blue/<group>/earth_models/inputdata
 ```
 
 **Contribution candidate:** No - site-specific.
@@ -122,7 +122,7 @@ clmforcingindir = /blue/gerber/earth_models/inputdata
 - GCC 14.2.0, OpenMPI 5.0.7, ESMF 8.8.1
 - Shared PIO path
 - No `--exclusive` flag (HiPerGator uses shared nodes)
-- Gerber group queues
+- Group-specific QoS queues (customize for your group)
 
 ### Why Fork ccs_config?
 

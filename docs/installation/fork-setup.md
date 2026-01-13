@@ -1,16 +1,55 @@
-# Fork Setup
+# Fork Reference
 
-We maintain forks of CTSM with HiPerGator-specific modifications. This page explains the fork strategy and how to use it.
+This page explains why and how we forked CTSM for HiPerGator. Use this as a reference for understanding our modifications or for creating your own fork.
 
 ## Why We Fork
 
-CTSM requires modifications to work on HiPerGator:
+CTSM isn't plug-and-play on HiPerGator. Several issues require source-level modifications.
 
-1. **Machine configuration** - HiPerGator isn't a supported machine, so we need custom configs
-2. **Build tool fixes** - Some tools have bugs that affect GCC/shared library builds
-3. **Path customization** - Default paths point to NCAR systems
+### 1. Machine Configuration (ccs_config)
 
-Rather than manually applying patches, we maintain forks that track these changes in git.
+CTSM uses CIME (Common Infrastructure for Modeling the Earth) for builds and job submission. CIME needs machine-specific configuration files that define:
+
+- Compiler paths and flags
+- MPI library settings
+- SLURM batch directives
+- Input data locations
+
+HiPerGator isn't in the upstream machine list, so we need custom configs.
+
+**The complication:** Machine configs live in a separate repository (`ccs_config_cesm`) that CTSM pulls in as a git submodule. To add HiPerGator support, we had to:
+
+1. Fork `ccs_config_cesm`
+2. Add HiPerGator configs to our fork
+3. Fork CTSM to point its `.gitmodules` at our ccs_config fork
+
+This submodule-of-a-submodule situation makes the fork necessary.
+
+### 2. User Config (~/.cime) Doesn't Work Reliably
+
+CIME v3 theoretically supports user config overrides in `~/.cime/`. We tried this approach and encountered bugs:
+
+- Batch configuration loading was inconsistent
+- `NODENAME_REGEX` machine detection failed intermittently
+- Each user had to maintain their own config files
+
+Forking ccs_config gives us a single source of truth that works reliably for everyone.
+
+### 3. Build Tool Bugs
+
+Several CTSM build tools have issues with newer GCC versions:
+
+| Issue | Symptom | Fix |
+|-------|---------|-----|
+| PIO linking | mksurfdata fails to link | Change `STATIC` to `SHARED` in CMakeLists.txt |
+| Format specifiers | GCC 10+ compilation errors | Add explicit width to Fortran format specs (`I` → `I12`) |
+| GCC 14 flags | Compilation warnings as errors | Add `-fallow-argument-mismatch` flag |
+
+These are bugs that should be fixed upstream, but until they are, our fork includes the fixes.
+
+### 4. HiPerGator-Specific Paths
+
+Default paths in some tools point to NCAR systems. Our fork updates paths to work with HiPerGator's storage layout.
 
 ## Repository Structure
 
@@ -21,44 +60,10 @@ Rather than manually applying patches, we maintain forks that track these change
 
 The ccs_config fork is included as a submodule of the CTSM fork.
 
-## Using the Fork
+!!! note "Version Notice"
+    These forks are based on CTSM 5.3.085. Other versions may have different issues or may have fixed some of these bugs upstream.
 
-### Clone the Repository
-
-```bash
-cd /blue/gerber/$USER
-
-# Clone from our fork
-git clone https://github.com/cdevaneprugh/CTSM.git ctsm5.3
-cd ctsm5.3
-
-# Checkout the HiPerGator branch
-git checkout uf-ctsm5.3.085
-```
-
-### Initialize Submodules
-
-CTSM uses `git-fleximod` (not the older `manage_externals`):
-
-```bash
-./bin/git-fleximod update
-```
-
-This pulls in all required submodules including our ccs_config fork with HiPerGator configs.
-
-### Verify Setup
-
-```bash
-# Check submodule status
-./bin/git-fleximod status
-
-# Verify machine config exists
-ls ccs_config/machines/hipergator/
-```
-
-You should see: `config_machines.xml`, `config_batch.xml`, `gnu_hipergator.cmake`
-
-## Modifications in the Fork
+## Modifications Detail
 
 ### CTSM Modifications
 
@@ -78,25 +83,41 @@ The `machines/hipergator/` directory contains:
 - **config_batch.xml** - SLURM batch settings (no `--exclusive` flag for shared nodes)
 - **gnu_hipergator.cmake** - Compiler flags and library paths
 
-## Why Not ~/.cime?
+See [CIME Configuration](cime-config.md) for detailed explanation of these files.
 
-CIME v3 supports user config overrides in `~/.cime/`, but this approach has bugs:
+## Using This Fork
 
-- Batch config loading is inconsistent
-- NODENAME_REGEX detection issues
-- Each user must maintain their own config
+### Option 1: Clone Directly
 
-Forking ccs_config gives us a single source of truth that works reliably.
+The simplest approach - clone our fork and use it as-is. See [Quick Start](quickstart.md) for installation steps.
+
+You'll need to customize the QoS settings in the config files for your group (see [CIME Configuration](cime-config.md)).
+
+### Option 2: Fork from Us
+
+If you need additional modifications:
+
+1. Fork `cdevaneprugh/CTSM` on GitHub
+2. Clone your fork
+3. Make your modifications
+4. Update the ccs_config submodule if needed
+
+This gives you a customizable base with our fixes already applied.
+
+### Option 3: Start from Upstream
+
+If you need a different CTSM version or want full control:
+
+1. Fork `ESCOMP/CTSM` on GitHub
+2. Fork `ESMCI/ccs_config_cesm`
+3. Apply the modifications listed above
+4. Update `.gitmodules` to point to your ccs_config fork
+
+This is more work but gives you a clean slate.
 
 ## Updating the Fork
 
-When upstream releases a new version:
-
-1. Fetch upstream changes
-2. Create a new branch from the upstream tag
-3. Cherry-pick or rebase our modifications
-4. Test with a simple case
-5. Push to the fork
+When upstream releases a new CTSM version:
 
 ```bash
 # Add upstream remote (one time)
@@ -118,24 +139,5 @@ git cherry-pick <commit-hash>...
 git push -u origin uf-ctsm5.3.090
 ```
 
-## Shared Installation
-
-For the Gerber group, a shared installation exists at:
-
-```
-/blue/gerber/cdevaneprugh/ctsm5.3
-```
-
-You can use this directly without cloning your own copy. Just ensure you have the environment variables set (see [Prerequisites](prerequisites.md)).
-
-## Creating Your Own Fork
-
-If you need to make additional modifications:
-
-1. Fork `cdevaneprugh/CTSM` on GitHub
-2. Clone your fork
-3. Create a feature branch
-4. Make modifications
-5. Push to your fork
-
-For modifications that benefit everyone, consider submitting them back to the group fork.
+!!! tip "Check if fixes are still needed"
+    Before cherry-picking, check if upstream has fixed the issues. You may not need all the modifications for newer versions.

@@ -20,8 +20,10 @@ HiPerGator is UF's supercomputer - a cluster of connected nodes that share resou
 | Path | Purpose | Notes |
 |------|---------|-------|
 | `/home/$USER/` | Config files, small files | 40GB quota, backed up |
-| `/blue/gerber/$USER/` | Active projects, code, data | Group allocation, fast |
-| `/orange/gerber/` | Archival storage | Slow - don't use for active work |
+| `/blue/<group>/$USER/` | Active projects, code, data | Group allocation, fast NVME |
+| `/orange/<group>/` | Archival storage | Slow - don't use for active work |
+
+Replace `<group>` with your research group's allocation (e.g., `gerber`, `biology`, etc.).
 
 ## Module Environment
 
@@ -37,26 +39,27 @@ module list
 
 The collection includes: GCC 14.2.0, OpenMPI 5.0.7, NetCDF, HDF5, ESMF 8.8.1, CMake, Python 3.12
 
-## Environment Variables
+## Recommended Shortcuts
 
-Add these to your `~/.bashrc`:
+These environment variables can save typing. Add them to your `~/.bashrc` and customize for your setup:
 
 ```bash
-# Core paths
-export BLUE="/blue/gerber/$USER"
+# Your workspace (customize <group>)
+export BLUE="/blue/<group>/$USER"
 export CASES="$BLUE/cases"
-export ESM_OUTPUT="$BLUE/earth_model_output/cime_output_root"
 
-# CTSM paths
-export CTSMROOT="/blue/gerber/cdevaneprugh/ctsm5.3"
+# Your CTSM installation (after cloning)
+export CTSMROOT="$BLUE/ctsm5.3"
 export CIME_SCRIPTS="$CTSMROOT/cime/scripts"
 
-# Input data
-export INPUT_DATA="/blue/gerber/earth_models/inputdata"
-export SUBSET_DATA="/blue/gerber/earth_models/shared.subset.data"
+# Your group's input data location
+export INPUT_DATA="/blue/<group>/earth_models/inputdata"
 ```
 
 After editing, reload: `source ~/.bashrc`
+
+!!! tip
+    The exact paths depend on where you install CTSM and where your group stores input data. These are suggestions, not requirements.
 
 ## SLURM Basics
 
@@ -66,8 +69,8 @@ Submit jobs to compute nodes - never run heavy computation on login nodes.
 # Check your running jobs
 squeue -u $USER
 
-# Check group jobs
-squeue -A gerber
+# Check group jobs (replace <group>)
+squeue -A <group>
 
 # Cancel a job
 scancel <job_id>
@@ -78,10 +81,13 @@ scontrol show job <job_id>
 
 ### Group QOS Limits
 
-| Resource | Limit |
-|----------|-------|
-| CPU cores | 10 |
-| Memory | 80000M |
+Each group has its own resource limits. Check your group's QoS:
+
+```bash
+showQos -A <group>
+```
+
+This shows your group's CPU, memory, and GPU limits. CTSM cases will fail if they request more resources than your QoS allows.
 
 ## Useful Commands
 
@@ -92,8 +98,8 @@ env | grep HPC | sort
 # View directory structure
 tree | less
 
-# Check disk usage
-du -sh /blue/gerber/$USER/
+# Check disk usage (customize path)
+du -sh /blue/<group>/$USER/
 ```
 
 ## Learning Resources

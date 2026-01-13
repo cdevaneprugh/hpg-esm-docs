@@ -32,8 +32,10 @@ nav:
     - Onboarding: onboarding.md
     - Glossary: glossary.md
   - Installation:
+    - Quick Start: installation/quickstart.md
     - Prerequisites: installation/prerequisites.md
-    - Fork Setup: installation/fork-setup.md
+    - CIME Configuration: installation/cime-config.md
+    - Fork Reference: installation/fork-setup.md
     - Building mksurfdata: installation/mksurfdata.md
   - Running CTSM:
     - Case Workflow: running-ctsm/case-workflow.md

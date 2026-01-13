@@ -2,19 +2,22 @@
 
 Required modules, libraries, and paths for running CTSM on HiPerGator.
 
-## Shared Directory Structure
+## Directory Structure
 
-The Gerber group maintains shared resources at:
+Each research group should set up a directory structure for CTSM resources. Here's a recommended layout:
 
 ```
-/blue/gerber/earth_models/
-├── ctsm5.3/              # CTSM installation (fork)
-├── inputdata/            # Global input data
+/blue/<group>/earth_models/
+├── ctsm5.3/              # CTSM installation (your fork or clone)
+├── inputdata/            # Global input data (downloaded from NCAR)
 ├── shared/
 │   ├── cprnc/            # NetCDF comparison tool
 │   └── parallelio/       # PIO library for mksurfdata
 └── shared.subset.data/   # Subset data for single-point runs
 ```
+
+!!! warning "Input Data Storage"
+    CTSM downloads input data on-demand from NCAR servers. This can grow to **multiple terabytes** over time. Plan your storage allocation accordingly, and coordinate with your group to avoid duplicate downloads.
 
 ## Module Environment
 
@@ -53,31 +56,23 @@ module list
 
 ## Shared Libraries
 
+These libraries need to be built once per group and can be shared among group members.
+
 ### cprnc (NetCDF Comparison Tool)
 
-Used to compare NetCDF output files. Already built at:
-
-```
-/blue/gerber/earth_models/shared/cprnc/bld/cprnc
-```
+Used to compare NetCDF output files. Useful for validating model output.
 
 ### ParallelIO (PIO)
 
-Required for building mksurfdata. Our shared build:
-
-```
-/blue/gerber/earth_models/shared/parallelio/bld
-```
-
-Set the environment variable before building mksurfdata:
+Required for building the mksurfdata tool. Set the `PIO` environment variable to point to your build:
 
 ```bash
-export PIO="/blue/gerber/earth_models/shared/parallelio/bld"
+export PIO="/blue/<group>/earth_models/shared/parallelio/bld"
 ```
 
-## Building Shared Libraries (Reference)
+## Building Shared Libraries
 
-These libraries are already built for the Gerber group. This section documents how they were installed.
+Build these once for your group. Each group member can then use the same installation.
 
 ### Building cprnc
 
@@ -116,42 +111,22 @@ make install
 
 ## Environment Variables
 
-Add to your `~/.bashrc`:
+See [Onboarding](../onboarding.md#recommended-shortcuts) for recommended environment variables. Key variables for prerequisites:
 
 ```bash
-# User directories
-export BLUE="/blue/gerber/$USER"
-export CASES="$BLUE/cases"
-export ESM_OUTPUT="$BLUE/earth_model_output/cime_output_root"
-
-# CTSM installation
-export CTSMROOT="/blue/gerber/cdevaneprugh/ctsm5.3"
-export CIME_SCRIPTS="$CTSMROOT/cime/scripts"
-
-# Shared data
-export INPUT_DATA="/blue/gerber/earth_models/inputdata"
-export SUBSET_DATA="/blue/gerber/earth_models/shared.subset.data"
-
-# Shared libraries
-export PIO="/blue/gerber/earth_models/shared/parallelio/bld"
+# Shared libraries (customize path)
+export PIO="/blue/<group>/earth_models/shared/parallelio/bld"
 ```
-
-Reload after editing: `source ~/.bashrc`
 
 ## Verification
 
-Verify your setup:
+After building the shared libraries, verify your setup:
 
 ```bash
 # Check modules
 module restore ctsm-modules
 module list
 
-# Check paths exist
-ls $CTSMROOT
-ls $INPUT_DATA
+# Check PIO was built correctly
 ls $PIO/lib/libpiof.so
-
-# Check cprnc
-/blue/gerber/earth_models/shared/cprnc/bld/cprnc --help
 ```

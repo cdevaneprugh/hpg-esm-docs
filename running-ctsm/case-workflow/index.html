@@ -807,13 +807,52 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#restarting-a-case" class="md-nav__link">
+  <a href="#run-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Restarting a Case
+        Run Types
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Run Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#continuing-a-run-continue_run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continuing a Run (CONTINUE_RUN)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branch-runs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Branch Runs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hybrid-runs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hybrid Runs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1410,13 +1449,52 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#restarting-a-case" class="md-nav__link">
+  <a href="#run-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Restarting a Case
+        Run Types
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Run Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#continuing-a-run-continue_run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continuing a Run (CONTINUE_RUN)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branch-runs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Branch Runs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hybrid-runs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hybrid Runs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1662,19 +1740,86 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cat<span class="w"> </span>CaseStatus
 </code></pre></div>
 <p>Look for timestamps and success/failure messages. When a case fails, CaseStatus points to the relevant log file.</p>
-<h2 id="restarting-a-case">Restarting a Case<a class="headerlink" href="#restarting-a-case" title="Permanent link">&para;</a></h2>
-<p>Cases can be continued from restart files:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Continue from where it stopped</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>./xmlchange<span class="w"> </span><span class="nv">CONTINUE_RUN</span><span class="o">=</span>TRUE
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>./case.submit
+<h2 id="run-types">Run Types<a class="headerlink" href="#run-types" title="Permanent link">&para;</a></h2>
+<p>CTSM supports three run types:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Use Case</th>
+<th>Configuration Changes?</th>
+<th>Bit-for-bit?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>startup</strong></td>
+<td>Fresh simulation</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>branch</strong></td>
+<td>Exact continuation</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>hybrid</strong></td>
+<td>New start from restart</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="continuing-a-run-continue_run">Continuing a Run (CONTINUE_RUN)<a class="headerlink" href="#continuing-a-run-continue_run" title="Permanent link">&para;</a></h3>
+<p>To continue a run from where it stopped:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>./xmlchange<span class="w"> </span><span class="nv">CONTINUE_RUN</span><span class="o">=</span>TRUE
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>./case.submit
 </code></pre></div>
-<p>Or start a new case from another case's restart:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Hybrid run from restart file</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_TYPE</span><span class="o">=</span>hybrid
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_REFCASE</span><span class="o">=</span>source_case_name
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_REFDATE</span><span class="o">=</span><span class="m">0005</span>-01-01
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>./xmlchange<span class="w"> </span><span class="nv">GET_REFCASE</span><span class="o">=</span>FALSE
+<p>This is the simplest continuation - the run picks up exactly where it left off.</p>
+<h3 id="branch-runs">Branch Runs<a class="headerlink" href="#branch-runs" title="Permanent link">&para;</a></h3>
+<p>Branch runs continue from another case's restart, maintaining bit-for-bit reproducibility:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$CIME_SCRIPTS</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1"># Create new case</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>./create_newcase<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span>--case<span class="w"> </span><span class="nv">$CASES</span>/my_branch_case<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span>--compset<span class="w"> </span>I1850Clm60BgcCrop<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">    </span>--res<span class="w"> </span>f09_g17<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span>--machine<span class="w"> </span>hipergator<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">    </span>--run-unsupported
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$CASES</span>/my_branch_case
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="c1"># Configure as branch run</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_TYPE</span><span class="o">=</span>branch
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_REFCASE</span><span class="o">=</span>source_case_name
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_REFDATE</span><span class="o">=</span><span class="m">0005</span>-01-01
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_REFDIR</span><span class="o">=</span>/path/to/source/case/run
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="c1"># Copy restart files (if not in RUN_REFDIR)</span>
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>./xmlchange<span class="w"> </span><span class="nv">GET_REFCASE</span><span class="o">=</span>FALSE
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>./case.setup
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a>./case.build
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>./case.submit
 </code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Branch Run Restrictions</p>
+<p>Branch runs must use the <strong>same</strong> compset and resolution as the source case. You cannot change model configuration in a branch run.</p>
+</div>
+<h3 id="hybrid-runs">Hybrid Runs<a class="headerlink" href="#hybrid-runs" title="Permanent link">&para;</a></h3>
+<p>Hybrid runs initialize from restart files but allow configuration changes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_TYPE</span><span class="o">=</span>hybrid
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_REFCASE</span><span class="o">=</span>source_case_name
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_REFDATE</span><span class="o">=</span><span class="m">0005</span>-01-01
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>./xmlchange<span class="w"> </span><span class="nv">GET_REFCASE</span><span class="o">=</span>FALSE
+</code></pre></div>
+<p>Use hybrid runs when you need to:
+- Change compset or resolution
+- Modify namelist settings that affect initialization
+- Start a new experiment from a spun-up state</p>
 <h2 id="tips">Tips<a class="headerlink" href="#tips" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Naming convention:</strong> Include compset and date in case names (e.g., <code>I1850Clm60BgcCrop.f09_g17.240115</code>)</li>

@@ -1494,7 +1494,7 @@
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># After (HiPerGator)</span>
 <a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">[main]</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="na">clmforcingindir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/blue/gerber/earth_models/inputdata</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="na">clmforcingindir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/blue/&lt;group&gt;/earth_models/inputdata</span>
 </code></pre></div></p>
 <p><strong>Contribution candidate:</strong> No - site-specific.</p>
 <h2 id="ccs_config-modifications">ccs_config Modifications<a class="headerlink" href="#ccs_config-modifications" title="Permanent link">&para;</a></h2>
@@ -1507,7 +1507,7 @@
 - GCC 14.2.0, OpenMPI 5.0.7, ESMF 8.8.1
 - Shared PIO path
 - No <code>--exclusive</code> flag (HiPerGator uses shared nodes)
-- Gerber group queues</p>
+- Group-specific QoS queues (customize for your group)</p>
 <h3 id="why-fork-ccs_config">Why Fork ccs_config?<a class="headerlink" href="#why-fork-ccs_config" title="Permanent link">&para;</a></h3>
 <p>The <code>~/.cime/</code> user override approach has CIME v3 bugs:
 - Batch config loading inconsistent

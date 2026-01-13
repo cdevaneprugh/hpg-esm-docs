@@ -412,6 +412,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#output-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#case-directories" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1233,6 +1244,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#output-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#case-directories" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1311,16 +1333,21 @@
 <p><strong>CESM</strong> - Community Earth System Model. Fully-coupled global climate model. CTSM is its land component.</p>
 <p><strong>CLM</strong> - Community Land Model. The land component within CTSM that models vegetation, hydrology, carbon cycling, etc.</p>
 <p><strong>CIME</strong> - Common Infrastructure for Modeling the Earth (pronounced "SEAM"). Provides the case control system for configuring, building, and running Earth system models.</p>
+<p><strong>FATES</strong> - Functionally Assembled Terrestrial Ecosystem Simulator. A vegetation demographic model that can be coupled to CLM for more detailed vegetation dynamics. <a href="https://github.com/NGEET/fates">FATES GitHub</a></p>
 <h2 id="tools-utilities">Tools &amp; Utilities<a class="headerlink" href="#tools-utilities" title="Permanent link">&para;</a></h2>
-<p><strong>cprnc</strong> - Tool for comparing NetCDF files. Used to verify model output. Location: <code>/blue/gerber/earth_models/shared/cprnc/bld/cprnc</code></p>
+<p><strong>cprnc</strong> - Tool for comparing NetCDF files. Used to verify model output. Each group builds their own (see <a href="../installation/prerequisites/">Prerequisites</a>).</p>
 <p><strong>git-fleximod</strong> - CTSM's tool for managing submodules. Replaces the older <code>manage_externals</code> used by CESM.</p>
 <p><strong>mksurfdata</strong> - Tool for generating surface datasets (fsurdat files) for CTSM. Requires PIO library.</p>
-<p><strong>PIO</strong> (ParallelIO) - Parallel I/O library required for mksurfdata. Our shared build: <code>/blue/gerber/earth_models/shared/parallelio/bld</code></p>
+<p><strong>PIO</strong> (ParallelIO) - Parallel I/O library required for mksurfdata. Each group builds their own (see <a href="../installation/prerequisites/">Prerequisites</a>).</p>
 <h2 id="configuration-data">Configuration &amp; Data<a class="headerlink" href="#configuration-data" title="Permanent link">&para;</a></h2>
 <p><strong>CLM_USRDAT</strong> - Resolution setting for user-provided datasets. Used with subset data for single-point runs.</p>
-<p><strong>Compset</strong> - Component set defining which model components to use and their configurations (e.g., <code>I1850Clm60BgcCrop</code>).</p>
+<p><strong>Compset</strong> - Component set. A predefined combination of model components and configurations. Format: <code>YYYYA_B_C_D_E_F</code> where letters represent different components. Example: <code>I1850Clm60BgcCrop</code> = Pre-industrial (1850), CLM 6.0 with BGC and crops.</p>
 <p><strong>Namelist</strong> - Fortran configuration file format. Key files: <code>user_nl_clm</code>, <code>user_nl_datm_streams</code>.</p>
+<p><strong>PFT</strong> - Plant Functional Type. Categories of vegetation (e.g., broadleaf deciduous tree, C3 grass, corn) that share similar characteristics. CTSM uses PFTs to represent vegetation at each grid point.</p>
 <p><strong>Surface data (fsurdat)</strong> - NetCDF file containing land surface characteristics (soil, vegetation, topography).</p>
+<h2 id="output-files">Output Files<a class="headerlink" href="#output-files" title="Permanent link">&para;</a></h2>
+<p><strong>History files</strong> - Model output files containing time-varying data (<code>.h0.nc</code>, <code>.h1.nc</code>, etc.). Configured via <code>hist_*</code> namelist variables. Use for analysis and plotting.</p>
+<p><strong>Restart files</strong> - Checkpoint files (<code>.r.nc</code>) that capture the complete model state. Used to continue simulations from a specific point. Required for branch runs and spinup continuation.</p>
 <h2 id="case-directories">Case Directories<a class="headerlink" href="#case-directories" title="Permanent link">&para;</a></h2>
 <p><strong>CASEROOT</strong> - Case configuration directory. Contains XML settings, namelists, scripts.</p>
 <p><strong>EXEROOT</strong> - Build directory where compiled code lives.</p>

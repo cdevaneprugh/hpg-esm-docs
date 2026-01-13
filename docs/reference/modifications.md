@@ -13,7 +13,7 @@ Our forks include HiPerGator-specific changes and bug fixes for building tools:
 
 ## CTSM Modifications
 
-### 1. CMakeLists.txt - STATIC vs SHARED
+### 1. CMakeLists.txt - STATIC vs SHARED {#1-cmakeliststxt---static-vs-shared}
 
 **File:** `tools/mksurfdata_esmf/src/CMakeLists.txt`
 

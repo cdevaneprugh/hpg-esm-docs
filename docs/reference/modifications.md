@@ -90,6 +90,41 @@ write(ndiag,'(2(a,I12))') ' npes = ', npes, ' grid size = ', grid_size
 
 **Contribution candidate:** No - HiPerGator-specific.
 
+### mpi-serial Incompatibility
+
+!!! warning "Why We Can't Use mpi-serial"
+    This section explains why single-point runs still require OpenMPI, even though CIME supports `mpi-serial` for truly serial execution.
+
+**What is mpi-serial?**
+
+`mpi-serial` is a stub MPI library that provides MPI function signatures without actual parallelization. It's designed for running MPI-dependent code on a single processor without a real MPI installation.
+
+**Why we investigated it:**
+
+- Single-point CTSM runs use only 1 MPI task
+- Interactive execution without SLURM would be convenient for testing
+- Simpler build environment (no MPI dependencies)
+
+**Why it doesn't work with modern CTSM:**
+
+CTSM 5.3+ uses CDEPS/CMEPS (Community Data Models for Earth Prediction Systems) for atmospheric data coupling, replacing the older data model. CDEPS requires **ESMF** (Earth System Modeling Framework).
+
+On HiPerGator, ESMF is built with OpenMPI. When you try to build CTSM with `MPILIB=mpi-serial`:
+
+```
+# Build fails at link stage:
+/apps/.../libesmf.a: undefined reference to symbol 'ompi_mpi_unsigned_short'
+/apps/.../libmpi.so.40: error adding symbols: DSO missing from command line
+```
+
+The ESMF library contains calls to OpenMPI-specific symbols that mpi-serial doesn't provide.
+
+**The workaround:**
+
+Single-point runs work fine with OpenMPI using `NTASKS=1`. You still need to submit jobs via SLURM, but the job runs on a single core. This is how our fork is configured.
+
+**Bottom line:** If you're coming from an older CTSM version or another machine where mpi-serial worked, be aware it's not an option with modern CTSM on HiPerGator.
+
 ### 5. default_data_*.cfg - Input Paths
 
 **Files:** `tools/site_and_regional/default_data_2000.cfg`, `default_data_1850.cfg`
@@ -119,10 +154,42 @@ clmforcingindir = /blue/<group>/earth_models/inputdata
 - `gnu_hipergator.cmake` - Compiler flags
 
 **Key changes:**
+
 - GCC 14.2.0, OpenMPI 5.0.7, ESMF 8.8.1
-- Shared PIO path
+- Shared PIO library configuration (see below)
 - No `--exclusive` flag (HiPerGator uses shared nodes)
 - Group-specific QoS queues (customize for your group)
+
+### Shared PIO Library Support
+
+The fork configures CTSM to use a pre-built PIO library instead of rebuilding it for every case. This is controlled by environment variables in `config_machines.xml`:
+
+```xml
+<env name="PIO_VERSION_MAJOR">2</env>
+<env name="PIO_TYPENAME_VALID_VALUES">netcdf</env>
+<env name="LD_LIBRARY_PATH">/blue/<group>/earth_models/shared/parallelio/bld/lib:$ENV{LD_LIBRARY_PATH}</env>
+```
+
+**How CIME decides whether to use external PIO:**
+
+```
+if PIO_VERSION_MAJOR is set AND matches case PIO_VERSION:
+    → use external PIO from PIO_LIBDIR
+    → build log shows "Using installed PIO library"
+else:
+    → build PIO from source into EXEROOT/shared/pio2
+    → adds several minutes to each case.build
+```
+
+**Variable purposes:**
+
+| Variable | Purpose |
+|----------|---------|
+| `PIO_VERSION_MAJOR` | Triggers external PIO usage (value must match your PIO version) |
+| `PIO_TYPENAME_VALID_VALUES` | Specifies I/O backends (our build supports `netcdf` only) |
+| `LD_LIBRARY_PATH` | Required for runtime linking to shared `.so` files |
+
+See [CIME Configuration](../installation/cime-config.md#pio-shared-library) for more details.
 
 ### Why Fork ccs_config?
 

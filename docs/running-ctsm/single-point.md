@@ -6,6 +6,13 @@ Single-point (site-level) simulations allow you to run CTSM for a specific locat
 - Testing model changes quickly
 - Site-specific research
 
+!!! info "Single-Point Runs Still Use MPI"
+    Even though single-point runs use only one grid cell, they still require OpenMPI (`MPILIB=openmpi`) with `NTASKS=1`. This is because modern CTSM (5.3+) uses ESMF for data model coupling, and ESMF requires a real MPI implementation.
+
+    The `mpi-serial` stub library doesn't work with HiPerGator's ESMF build. See [mpi-serial Incompatibility](../reference/modifications.md#mpi-serial-incompatibility) for technical details.
+
+    **In practice:** You still need to submit single-point jobs through SLURM, but they run efficiently on a single core.
+
 ## Subset Data Workflow
 
 CTSM provides the `subset_data` tool to extract site-level data from global datasets.

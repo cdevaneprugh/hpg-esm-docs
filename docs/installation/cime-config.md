@@ -89,6 +89,35 @@ These must match your `ctsm-modules` collection.
 !!! warning "PIO Path"
     The PIO paths point to the shared ParallelIO build. Update these to your group's build location.
 
+#### PIO Shared Library {#pio-shared-library}
+
+Our fork includes configuration to use a pre-built PIO library instead of rebuilding it for every case. This is controlled by three environment variables:
+
+```xml
+<environment_variables>
+  <!-- Basic PIO paths -->
+  <env name="PIO">/blue/<group>/earth_models/shared/parallelio/bld</env>
+  <env name="PIO_LIBDIR">/blue/<group>/earth_models/shared/parallelio/bld/lib</env>
+  <env name="PIO_INCDIR">/blue/<group>/earth_models/shared/parallelio/bld/include</env>
+
+  <!-- These tell case.build to use external PIO -->
+  <env name="PIO_VERSION_MAJOR">2</env>
+  <env name="PIO_TYPENAME_VALID_VALUES">netcdf</env>
+  <env name="LD_LIBRARY_PATH">/blue/<group>/earth_models/shared/parallelio/bld/lib:$ENV{LD_LIBRARY_PATH}</env>
+</environment_variables>
+```
+
+| Variable | Purpose |
+|----------|---------|
+| `PIO_VERSION_MAJOR` | Tells CIME to use external PIO (must match your PIO version) |
+| `PIO_TYPENAME_VALID_VALUES` | Specifies supported I/O backends (`netcdf` for our build) |
+| `LD_LIBRARY_PATH` | Required for runtime dynamic linking to `.so` files |
+
+**How it works:** During `case.build`, CIME checks if `PIO_VERSION_MAJOR` is set. If it matches the expected version, CIME uses your external PIO library instead of building one. You'll see "Using installed PIO library" in the build log.
+
+!!! tip "Build Time Savings"
+    Without these settings, every `case.build` compiles PIO from source, adding several minutes to each build. With external PIO, builds are noticeably faster.
+
 ### config_batch.xml
 
 SLURM job submission settings:

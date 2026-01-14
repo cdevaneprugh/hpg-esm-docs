@@ -32,8 +32,9 @@ Ongoing improvements to CTSM on HiPerGator documentation.
 
 ### Research Section
 
-- [ ] **Hillslope Hydrology**: Flesh out placeholder with actual content
-- [ ] **NEON Sites**: Flesh out placeholder
+- [x] **Hillslope Hydrology**: Flesh out placeholder with actual content
+- [x] **NEON Sites**: Flesh out placeholder
+- [x] **Research Overview**: DOE project context, scientific goals
 - [ ] **Gerber workflows**: Document group-specific single-point process (in Research section)
 
 ### Tools & Tips (Future Section)
@@ -57,4 +58,4 @@ Ongoing improvements to CTSM on HiPerGator documentation.
 
 ---
 
-*Last updated: 2025-01-13*
+*Last updated: 2026-01-14*

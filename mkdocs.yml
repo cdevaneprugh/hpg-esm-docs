@@ -61,6 +61,11 @@ nav:
     - Overview: research/overview.md
     - Hillslope Hydrology: research/hillslope.md
     - NEON Sites: research/neon-sites.md
+  - Swenson Implementation:
+    - Overview: swenson/index.md
+    - pysheds Porting: swenson/pysheds-porting.md
+    - MERIT Validation: swenson/merit-validation.md
+    - OSBS Implementation: swenson/osbs-implementation.md
   - Reference:
     - Fork Modifications: reference/modifications.md
     - External Resources: reference/resources.md

@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://cdevaneprugh.github.io/hpg-esm-docs/running-ctsm/case-workflow/">
+        <link rel="canonical" href="https://cdevaneprugh.github.io/hpg-esm-docs/swenson/merit-validation/">
       
       
-        <link rel="prev" href="../../installation/mksurfdata/">
+        <link rel="prev" href="../pysheds-porting/">
       
       
-        <link rel="next" href="../single-point/">
+        <link rel="next" href="../osbs-implementation/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Case Workflow - CTSM on HiPerGator</title>
+        <title>MERIT Validation - CTSM on HiPerGator</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#case-workflow" class="md-skip">
+        <a href="#merit-dem-validation" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Case Workflow
+              MERIT Validation
             
           </span>
         </div>
@@ -580,8 +580,6 @@
       
   
   
-    
-  
   
   
     
@@ -594,11 +592,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -619,7 +619,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -634,37 +634,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Case Workflow
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../running-ctsm/case-workflow/" class="md-nav__link">
         
   
   
@@ -680,225 +653,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Overview
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#case-lifecycle" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Case Lifecycle
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Case Lifecycle">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-create-a-new-case" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Create a New Case
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-configure-the-case" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Configure the Case
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-setup-the-case" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Setup the Case
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-modify-namelists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Modify Namelists
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-build-the-case" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Build the Case
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-submit-the-case" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Submit the Case
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#directory-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Directory Structure
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#common-compsets" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Compsets
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#common-resolutions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Resolutions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#checking-case-status" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Checking Case Status
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#run-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Run Types
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Run Types">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#continuing-a-run-continue_run" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Continuing a Run (CONTINUE_RUN)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#branch-runs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Branch Runs
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hybrid-runs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hybrid Runs
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tips" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tips
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -911,7 +665,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../single-point/" class="md-nav__link">
+      <a href="../../running-ctsm/single-point/" class="md-nav__link">
         
   
   
@@ -939,7 +693,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../history-output/" class="md-nav__link">
+      <a href="../../running-ctsm/history-output/" class="md-nav__link">
         
   
   
@@ -967,7 +721,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spinup/" class="md-nav__link">
+      <a href="../../running-ctsm/spinup/" class="md-nav__link">
         
   
   
@@ -995,7 +749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../troubleshooting/" class="md-nav__link">
+      <a href="../../running-ctsm/troubleshooting/" class="md-nav__link">
         
   
   
@@ -1172,8 +926,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -1184,13 +940,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
@@ -1211,7 +965,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1229,7 +983,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../swenson/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -1257,7 +1011,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../swenson/pysheds-porting/" class="md-nav__link">
+      <a href="../pysheds-porting/" class="md-nav__link">
         
   
   
@@ -1282,10 +1036,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../swenson/merit-validation/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MERIT Validation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1301,6 +1082,208 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-1-pgrid-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 1: pgrid Validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-2-fft-spatial-scale-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2: FFT Spatial Scale Analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-3-hillslope-parameter-computation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3: Hillslope Parameter Computation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-4-initial-comparison-to-published-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 4: Initial Comparison to Published Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-5-unit-conversion-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 5: Unit Conversion Fix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-6-width-bug-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 6: Width Bug Fix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-7-region-alignment-and-bin-constraint-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 7: Region Alignment and Bin Constraint Fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stage 7: Region Alignment and Bin Constraint Fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fix-1-gridcell-based-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fix 1: Gridcell-Based Extraction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fix-2-mandatory-2m-hand-bin-constraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fix 2: Mandatory 2m HAND Bin Constraint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fix-3-spherical-pixel-area-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fix 3: Spherical Pixel Area Calculation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-8-gradient-calculation-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 8: Gradient Calculation Fix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-9-accumulation-threshold-sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 9: Accumulation Threshold Sensitivity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Final Results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#area-discrepancy-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Area Discrepancy Analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-of-bugs-found-and-fixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary of Bugs Found and Fixed
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1313,7 +1296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../swenson/osbs-implementation/" class="md-nav__link">
+      <a href="../osbs-implementation/" class="md-nav__link">
         
   
   
@@ -1512,10 +1495,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#introduction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overview
+        Introduction
       
     </span>
   </a>
@@ -1523,22 +1506,88 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#case-lifecycle" class="md-nav__link">
+  <a href="#stage-1-pgrid-validation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Case Lifecycle
+        Stage 1: pgrid Validation
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Case Lifecycle">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-2-fft-spatial-scale-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2: FFT Spatial Scale Analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-3-hillslope-parameter-computation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3: Hillslope Parameter Computation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-4-initial-comparison-to-published-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 4: Initial Comparison to Published Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-5-unit-conversion-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 5: Unit Conversion Fix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-6-width-bug-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 6: Width Bug Fix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-7-region-alignment-and-bin-constraint-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 7: Region Alignment and Bin Constraint Fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stage 7: Region Alignment and Bin Constraint Fix">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-create-a-new-case" class="md-nav__link">
+  <a href="#fix-1-gridcell-based-extraction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Create a New Case
+        Fix 1: Gridcell-Based Extraction
       
     </span>
   </a>
@@ -1546,10 +1595,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-configure-the-case" class="md-nav__link">
+  <a href="#fix-2-mandatory-2m-hand-bin-constraint" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Configure the Case
+        Fix 2: Mandatory 2m HAND Bin Constraint
       
     </span>
   </a>
@@ -1557,43 +1606,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-setup-the-case" class="md-nav__link">
+  <a href="#fix-3-spherical-pixel-area-calculation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Setup the Case
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-modify-namelists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Modify Namelists
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-build-the-case" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Build the Case
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-submit-the-case" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Submit the Case
+        Fix 3: Spherical Pixel Area Calculation
       
     </span>
   </a>
@@ -1606,10 +1622,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#directory-structure" class="md-nav__link">
+  <a href="#stage-8-gradient-calculation-fix" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Directory Structure
+        Stage 8: Gradient Calculation Fix
       
     </span>
   </a>
@@ -1617,10 +1633,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#common-compsets" class="md-nav__link">
+  <a href="#stage-9-accumulation-threshold-sensitivity" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common Compsets
+        Stage 9: Accumulation Threshold Sensitivity
       
     </span>
   </a>
@@ -1628,10 +1644,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#common-resolutions" class="md-nav__link">
+  <a href="#final-results" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common Resolutions
+        Final Results
       
     </span>
   </a>
@@ -1639,10 +1655,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#checking-case-status" class="md-nav__link">
+  <a href="#area-discrepancy-analysis" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Checking Case Status
+        Area Discrepancy Analysis
       
     </span>
   </a>
@@ -1650,60 +1666,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#run-types" class="md-nav__link">
+  <a href="#summary-of-bugs-found-and-fixed" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Run Types
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Run Types">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#continuing-a-run-continue_run" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Continuing a Run (CONTINUE_RUN)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#branch-runs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Branch Runs
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hybrid-runs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hybrid Runs
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tips" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tips
+        Summary of Bugs Found and Fixed
       
     </span>
   </a>
@@ -1727,307 +1693,473 @@
 
 
 
-<h1 id="case-workflow">Case Workflow<a class="headerlink" href="#case-workflow" title="Permanent link">&para;</a></h1>
-<p>CTSM uses a case-based workflow where each simulation is configured, built, and run from a dedicated case directory.</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>create_newcase → case.setup → case.build → case.submit
-</code></pre></div>
-<p>Each step creates or modifies files in the case directory.</p>
-<h2 id="case-lifecycle">Case Lifecycle<a class="headerlink" href="#case-lifecycle" title="Permanent link">&para;</a></h2>
-<h3 id="1-create-a-new-case">1. Create a New Case<a class="headerlink" href="#1-create-a-new-case" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$CIME_SCRIPTS</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>./create_newcase<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span>--case<span class="w"> </span><span class="nv">$CASES</span>/my_case_name<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span>--compset<span class="w"> </span>I1850Clm60BgcCrop<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span>--res<span class="w"> </span>f09_g17<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span>--machine<span class="w"> </span>hipergator<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span>--run-unsupported
-</code></pre></div>
-<p><strong>Key arguments:</strong></p>
+<h1 id="merit-dem-validation">MERIT DEM Validation<a class="headerlink" href="#merit-dem-validation" title="Permanent link">&para;</a></h1>
+<p><em>Validating the ported pysheds implementation against Swenson's published hillslope dataset using MERIT DEM data.</em></p>
+<hr />
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>Before applying the pipeline to OSBS LIDAR data, it was validated against Swenson's published global hillslope dataset (<code>hillslopes_0.9x1.25_c240416.nc</code>). The validation used a MERIT DEM tile (<code>n30w095_dem.tif</code>, 6000x6000 pixels, ~90m resolution) covering the same region as a published gridcell, allowing direct comparison of all six geomorphic parameters.</p>
+<p>The validation proceeded through nine stages, each building on the previous and addressing specific problems as they were discovered.</p>
+<hr />
+<h2 id="stage-1-pgrid-validation">Stage 1: pgrid Validation<a class="headerlink" href="#stage-1-pgrid-validation" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Confirm that pysheds methods work on MERIT DEM at scale.</p>
+<p>A full MERIT tile was loaded and processed through flow direction, accumulation, HAND, and DTND computation using a fixed accumulation threshold of 1000 cells.</p>
 <table>
 <thead>
 <tr>
-<th>Argument</th>
-<th>Description</th>
+<th>Metric</th>
+<th>Result</th>
+<th>Criterion</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>--case</code></td>
-<td>Path to the case directory</td>
+<td>DEM dimensions</td>
+<td>6000 x 6000 pixels</td>
+<td>--</td>
 </tr>
 <tr>
-<td><code>--compset</code></td>
-<td>Component set (model configuration)</td>
+<td>Elevation range</td>
+<td>-19.8 to 818.4 m</td>
+<td>--</td>
 </tr>
 <tr>
-<td><code>--res</code></td>
-<td>Resolution (grid)</td>
+<td>Stream coverage</td>
+<td>2.17%</td>
+<td>1-5%</td>
 </tr>
 <tr>
-<td><code>--machine</code></td>
-<td>Target machine</td>
+<td>HAND range</td>
+<td>-54 to 619 m</td>
+<td>0-500 m</td>
 </tr>
 <tr>
-<td><code>--run-unsupported</code></td>
-<td>Required for non-NCAR machines</td>
+<td>DTND range</td>
+<td>0 to 22.9 km</td>
+<td>0-50 km</td>
 </tr>
 </tbody>
 </table>
-<h3 id="2-configure-the-case">2. Configure the Case<a class="headerlink" href="#2-configure-the-case" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$CASES</span>/my_case_name
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Modify XML settings</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>./xmlchange<span class="w"> </span><span class="nv">STOP_OPTION</span><span class="o">=</span>nyears
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>./xmlchange<span class="w"> </span><span class="nv">STOP_N</span><span class="o">=</span><span class="m">5</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>./xmlchange<span class="w"> </span><span class="nv">JOB_WALLCLOCK_TIME</span><span class="o">=</span><span class="m">04</span>:00:00
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="c1"># Query current values</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>./xmlquery<span class="w"> </span>STOP_OPTION<span class="w"> </span>STOP_N
-</code></pre></div>
-<p><strong>Common XML variables:</strong></p>
+<p>All validation criteria passed. Processing completed in 3.4 minutes.</p>
+<hr />
+<h2 id="stage-2-fft-spatial-scale-analysis">Stage 2: FFT Spatial Scale Analysis<a class="headerlink" href="#stage-2-fft-spatial-scale-analysis" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Determine the characteristic length scale (Lc) for the MERIT tile.</p>
+<p>FFT analysis of the DEM Laplacian was performed at multiple region sizes to confirm consistency:</p>
 <table>
 <thead>
 <tr>
-<th>Variable</th>
-<th>Description</th>
-<th>Example</th>
+<th>Region Size</th>
+<th>Lc (pixels)</th>
+<th>Lc (meters)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>STOP_OPTION</code></td>
-<td>Time units</td>
-<td><code>nyears</code>, <code>nmonths</code>, <code>ndays</code></td>
+<td>500 x 500</td>
+<td>8.3</td>
+<td>766</td>
 </tr>
 <tr>
-<td><code>STOP_N</code></td>
-<td>Number of time units</td>
-<td><code>5</code></td>
+<td>1000 x 1000</td>
+<td>8.2</td>
+<td>760</td>
 </tr>
 <tr>
-<td><code>JOB_WALLCLOCK_TIME</code></td>
-<td>SLURM time limit</td>
-<td><code>04:00:00</code></td>
-</tr>
-<tr>
-<td><code>NTASKS</code></td>
-<td>Number of MPI tasks</td>
-<td><code>32</code></td>
+<td>2000 x 2000</td>
+<td>8.2</td>
+<td>758</td>
 </tr>
 </tbody>
 </table>
-<h3 id="3-setup-the-case">3. Setup the Case<a class="headerlink" href="#3-setup-the-case" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>./case.setup
-</code></pre></div>
-<p>This creates:
-- Namelist files (<code>user_nl_clm</code>, etc.)
-- Build scripts
-- Run scripts</p>
-<h3 id="4-modify-namelists">4. Modify Namelists<a class="headerlink" href="#4-modify-namelists" title="Permanent link">&para;</a></h3>
-<p>Edit <code>user_nl_clm</code> to customize model behavior:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c">! Example: Configure history output</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">hist_empty_htapes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">hist_fincl1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TSA&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;GPP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;EFLX_LH_TOT&#39;</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">hist_nhtfrq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">24</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">hist_mfilt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">365</span>
-</code></pre></div>
-<h3 id="5-build-the-case">5. Build the Case<a class="headerlink" href="#5-build-the-case" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./case.build
-</code></pre></div>
-<p>This compiles the model. Takes 10-30 minutes depending on configuration.</p>
-<p><strong>Rebuilding:</strong> If you change Fortran source code or XML build variables:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>./case.build<span class="w"> </span>--clean-all
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>./case.build
-</code></pre></div></p>
-<h3 id="6-submit-the-case">6. Submit the Case<a class="headerlink" href="#6-submit-the-case" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>./case.submit
-</code></pre></div>
-<p>This submits the job to SLURM. Monitor with:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>squeue<span class="w"> </span>-u<span class="w"> </span><span class="nv">$USER</span>
-</code></pre></div></p>
-<h2 id="directory-structure">Directory Structure<a class="headerlink" href="#directory-structure" title="Permanent link">&para;</a></h2>
-<p>After setup, each case has these key directories:</p>
+<p>The characteristic length scale was consistent across region sizes: <strong>Lc = 8.2 pixels (763 m)</strong>. The best-fit spectral model was lognormal in all cases. The derived accumulation threshold was <strong>34 cells</strong> (via Swenson's formula: A_thresh = 0.5 * Lc^2).</p>
+<hr />
+<h2 id="stage-3-hillslope-parameter-computation">Stage 3: Hillslope Parameter Computation<a class="headerlink" href="#stage-3-hillslope-parameter-computation" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Compute the six geomorphic parameters for all 16 hillslope elements (4 aspects x 4 elevation bins).</p>
+<p>Using the data-driven accumulation threshold from Stage 2, the stream network was denser than Stage 1 (10.88% coverage vs 2.17%). HAND bin boundaries were computed as [0, 2, 5, 9.6, 80] m.</p>
 <table>
 <thead>
 <tr>
-<th>Directory</th>
-<th>Variable</th>
-<th>Purpose</th>
+<th>Aspect</th>
+<th>Fraction</th>
+<th>Width (m)</th>
+<th>Lowest h/d</th>
+<th>Highest h/d</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Case root</td>
-<td><code>CASEROOT</code></td>
-<td>Configuration, scripts, namelists</td>
+<td>North</td>
+<td>24.4%</td>
+<td>271</td>
+<td>0.6m / 121m</td>
+<td>14.7m / 439m</td>
 </tr>
 <tr>
-<td>Build</td>
-<td><code>EXEROOT</code></td>
-<td>Compiled executables</td>
+<td>East</td>
+<td>27.2%</td>
+<td>304</td>
+<td>0.6m / 121m</td>
+<td>14.8m / 432m</td>
 </tr>
 <tr>
-<td>Run</td>
-<td><code>RUNDIR</code></td>
-<td>Output, restarts, logs</td>
+<td>South</td>
+<td>22.1%</td>
+<td>263</td>
+<td>0.6m / 93m</td>
+<td>15.1m / 431m</td>
 </tr>
 <tr>
-<td>Archive</td>
-<td><code>DOUT_S_ROOT</code></td>
-<td>Archived output</td>
+<td>West</td>
+<td>26.2%</td>
+<td>295</td>
+<td>0.6m / 121m</td>
+<td>15.0m / 419m</td>
 </tr>
 </tbody>
 </table>
-<p>Query paths:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>./xmlquery<span class="w"> </span>EXEROOT<span class="w"> </span>RUNDIR<span class="w"> </span>DOUT_S_ROOT
-</code></pre></div></p>
-<h2 id="common-compsets">Common Compsets<a class="headerlink" href="#common-compsets" title="Permanent link">&para;</a></h2>
+<p>All 16 elements were populated with physically reasonable values.</p>
+<hr />
+<h2 id="stage-4-initial-comparison-to-published-data">Stage 4: Initial Comparison to Published Data<a class="headerlink" href="#stage-4-initial-comparison-to-published-data" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Quantitative comparison of computed parameters to Swenson's published dataset.</p>
 <table>
 <thead>
 <tr>
-<th>Compset</th>
-<th>Description</th>
+<th>Parameter</th>
+<th>Correlation</th>
+<th>Relative Error</th>
+<th>Assessment</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>I1850Clm60BgcCrop</code></td>
-<td>Pre-industrial BGC with crops</td>
+<td>Height</td>
+<td>0.999</td>
+<td>6.7%</td>
+<td>Excellent</td>
 </tr>
 <tr>
-<td><code>I2000Clm60BgcCrop</code></td>
-<td>Present-day BGC with crops</td>
+<td>Slope</td>
+<td>0.987</td>
+<td>8.2%</td>
+<td>Excellent</td>
 </tr>
 <tr>
-<td><code>I1850Clm60Sp</code></td>
-<td>Pre-industrial satellite phenology</td>
+<td>Distance</td>
+<td>0.986</td>
+<td>34.1%</td>
+<td>Good correlation, systematic offset</td>
 </tr>
 <tr>
-<td><code>IHistClm60BgcCrop</code></td>
-<td>Historical transient run</td>
+<td>Area</td>
+<td>0.730</td>
+<td>Large</td>
+<td>Unit mismatch</td>
+</tr>
+<tr>
+<td>Aspect</td>
+<td>0.650</td>
+<td>Large</td>
+<td>Degrees vs radians</td>
+</tr>
+<tr>
+<td>Width</td>
+<td>0.090</td>
+<td>41.3%</td>
+<td>Poor -- requires investigation</td>
 </tr>
 </tbody>
 </table>
-<p>List available compsets:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>./query_config<span class="w"> </span>--compsets<span class="w"> </span>clm
-</code></pre></div></p>
-<h2 id="common-resolutions">Common Resolutions<a class="headerlink" href="#common-resolutions" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Resolution</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>f09_g17</code></td>
-<td>~1° atmosphere, ~1° ocean</td>
-</tr>
-<tr>
-<td><code>f19_g17</code></td>
-<td>~2° atmosphere, ~1° ocean</td>
-</tr>
-<tr>
-<td><code>CLM_USRDAT</code></td>
-<td>User-provided data (single-point)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="checking-case-status">Checking Case Status<a class="headerlink" href="#checking-case-status" title="Permanent link">&para;</a></h2>
-<p>The <code>CaseStatus</code> file logs all workflow steps:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cat<span class="w"> </span>CaseStatus
-</code></pre></div>
-<p>Look for timestamps and success/failure messages. When a case fails, CaseStatus points to the relevant log file.</p>
-<h2 id="run-types">Run Types<a class="headerlink" href="#run-types" title="Permanent link">&para;</a></h2>
-<p>CTSM supports three run types:</p>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Use Case</th>
-<th>Configuration Changes?</th>
-<th>Bit-for-bit?</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>startup</strong></td>
-<td>Fresh simulation</td>
-<td>N/A</td>
-<td>N/A</td>
-</tr>
-<tr>
-<td><strong>branch</strong></td>
-<td>Exact continuation</td>
-<td>No</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td><strong>hybrid</strong></td>
-<td>New start from restart</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-</tbody>
-</table>
-<h3 id="continuing-a-run-continue_run">Continuing a Run (CONTINUE_RUN)<a class="headerlink" href="#continuing-a-run-continue_run" title="Permanent link">&para;</a></h3>
-<p>To continue a run from where it stopped:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>./xmlchange<span class="w"> </span><span class="nv">CONTINUE_RUN</span><span class="o">=</span>TRUE
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>./case.submit
-</code></pre></div>
-<p>This is the simplest continuation - the run picks up exactly where it left off.</p>
-<h3 id="branch-runs">Branch Runs<a class="headerlink" href="#branch-runs" title="Permanent link">&para;</a></h3>
-<p>Branch runs continue from another case's restart, maintaining bit-for-bit reproducibility:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$CIME_SCRIPTS</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1"># Create new case</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>./create_newcase<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span>--case<span class="w"> </span><span class="nv">$CASES</span>/my_branch_case<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span>--compset<span class="w"> </span>I1850Clm60BgcCrop<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">    </span>--res<span class="w"> </span>f09_g17<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span>--machine<span class="w"> </span>hipergator<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">    </span>--run-unsupported
-<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>
-<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$CASES</span>/my_branch_case
-<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>
-<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="c1"># Configure as branch run</span>
-<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_TYPE</span><span class="o">=</span>branch
-<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_REFCASE</span><span class="o">=</span>source_case_name
-<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_REFDATE</span><span class="o">=</span><span class="m">0005</span>-01-01
-<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_REFDIR</span><span class="o">=</span>/path/to/source/case/run
-<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>
-<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="c1"># Copy restart files (if not in RUN_REFDIR)</span>
-<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>./xmlchange<span class="w"> </span><span class="nv">GET_REFCASE</span><span class="o">=</span>FALSE
-<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>
-<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>./case.setup
-<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a>./case.build
-<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>./case.submit
-</code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">Branch Run Restrictions</p>
-<p>Branch runs must use the <strong>same</strong> compset and resolution as the source case. You cannot change model configuration in a branch run.</p>
-</div>
-<h3 id="hybrid-runs">Hybrid Runs<a class="headerlink" href="#hybrid-runs" title="Permanent link">&para;</a></h3>
-<p>Hybrid runs initialize from restart files but allow configuration changes:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_TYPE</span><span class="o">=</span>hybrid
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_REFCASE</span><span class="o">=</span>source_case_name
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_REFDATE</span><span class="o">=</span><span class="m">0005</span>-01-01
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>./xmlchange<span class="w"> </span><span class="nv">GET_REFCASE</span><span class="o">=</span>FALSE
-</code></pre></div>
-<p>Use hybrid runs when you need to:
-- Change compset or resolution
-- Modify namelist settings that affect initialization
-- Start a new experiment from a spun-up state</p>
-<h2 id="tips">Tips<a class="headerlink" href="#tips" title="Permanent link">&para;</a></h2>
+<p>Height and slope showed excellent agreement, confirming that the HAND and flow routing implementation was correct. Three problems were identified: a degrees-vs-radians mismatch for aspect, an area unit discrepancy, and a systematic width calculation bug.</p>
+<hr />
+<h2 id="stage-5-unit-conversion-fix">Stage 5: Unit Conversion Fix<a class="headerlink" href="#stage-5-unit-conversion-fix" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Fix aspect and area unit mismatches.</p>
 <ul>
-<li><strong>Naming convention:</strong> Include compset and date in case names (e.g., <code>I1850Clm60BgcCrop.f09_g17.240115</code>)</li>
-<li><strong>Check before building:</strong> Use <code>./preview_namelists</code> to verify configuration</li>
-<li><strong>Don't edit generated files:</strong> Modify <code>user_nl_*</code> files, not the generated <code>*_in</code> files</li>
-<li><strong>Keep case directories:</strong> They're small and useful for reproducing runs</li>
+<li><strong>Aspect:</strong> Converting from degrees to radians improved circular correlation from 0.65 to <strong>0.9996</strong>.</li>
+<li><strong>Area:</strong> The relative distribution (fraction per bin) correlated at 0.73 despite an absolute scale difference of ~26,000x between m^2 and published units.</li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Width bug identified</p>
+<p>During this stage, all elevation bins within each aspect were found to have identical width values -- a clear bug since widths should decrease from outlet toward ridge.</p>
+</div>
+<hr />
+<h2 id="stage-6-width-bug-fix">Stage 6: Width Bug Fix<a class="headerlink" href="#stage-6-width-bug-fix" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Diagnose and fix the identical-width bug.</p>
+<p><strong>Root cause:</strong> The width calculation used raw pixel areas instead of fitted trapezoidal areas. Swenson's method computes width from cumulative <em>fitted</em> areas using the trapezoidal plan form model:</p>
+<ol>
+<li>Compute area fraction from raw pixel counts</li>
+<li>Set fitted_area = trap_area * area_fraction</li>
+<li>Accumulate fitted areas for lower bins</li>
+<li>Solve quadratic for lower edge distance</li>
+<li>Evaluate width at lower edge: w = w_base + 2 * trap_slope * d</li>
+</ol>
+<p>A <code>quadratic()</code> solver was ported from Swenson's <code>geospatial_utils</code> and the width calculation was rewritten to use a two-pass approach: first collect raw areas, then compute widths from fitted areas.</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Before (identical)</th>
+<th>After (varying)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>North</td>
+<td>271, 271, 271, 271</td>
+<td>271, 218, 177, 123</td>
+</tr>
+<tr>
+<td>East</td>
+<td>304, 304, 304, 304</td>
+<td>304, 246, 201, 143</td>
+</tr>
+<tr>
+<td>South</td>
+<td>263, 263, 263, 263</td>
+<td>263, 213, 175, 126</td>
+</tr>
+<tr>
+<td>West</td>
+<td>295, 295, 295, 295</td>
+<td>295, 237, 195, 140</td>
+</tr>
+</tbody>
+</table>
+<p>Width correlation improved from <strong>0.09 to 0.97</strong>.</p>
+<hr />
+<h2 id="stage-7-region-alignment-and-bin-constraint-fix">Stage 7: Region Alignment and Bin Constraint Fix<a class="headerlink" href="#stage-7-region-alignment-and-bin-constraint-fix" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Fix two remaining sources of area fraction discrepancy.</p>
+<h3 id="fix-1-gridcell-based-extraction">Fix 1: Gridcell-Based Extraction<a class="headerlink" href="#fix-1-gridcell-based-extraction" title="Permanent link">&para;</a></h3>
+<p>The processed region (2000x2000 pixels, ~1.67deg x 1.67deg) had only ~42% spatial overlap with the published gridcell (0.9deg x 1.25deg). The mismatch was caused by extracting a centered region that did not align with the published grid boundaries.</p>
+<p>The fix implemented explicit gridcell boundary configuration using rasterio window-based extraction:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">TARGET_GRIDCELL</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;lon_min&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">93.1250</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="s2">&quot;lon_max&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">91.8750</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="s2">&quot;lat_min&quot;</span><span class="p">:</span> <span class="mf">32.0419</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="s2">&quot;lat_max&quot;</span><span class="p">:</span> <span class="mf">32.9843</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">}</span>
+</code></pre></div>
+<p>An expansion factor (1.5x) was used for flow routing to avoid edge effects, with extraction to exact gridcell boundaries after HAND/DTND computation.</p>
+<h3 id="fix-2-mandatory-2m-hand-bin-constraint">Fix 2: Mandatory 2m HAND Bin Constraint<a class="headerlink" href="#fix-2-mandatory-2m-hand-bin-constraint" title="Permanent link">&para;</a></h3>
+<p>The initial implementation treated the lowest HAND bin upper bound (2m) as optional. Swenson's code and the paper treat it as <strong>mandatory</strong>: "The upper bound of the lowest bin must be 2 m or less." The bin computation was rewritten to match Swenson's <code>SpecifyHandBounds()</code> algorithm, including per-aspect validation that each aspect has at least 1% of pixels below the bin1_max threshold.</p>
+<h3 id="fix-3-spherical-pixel-area-calculation">Fix 3: Spherical Pixel Area Calculation<a class="headerlink" href="#fix-3-spherical-pixel-area-calculation" title="Permanent link">&para;</a></h3>
+<p>The original pixel area calculation used a single cosine-weighted approximation. Swenson's method uses per-pixel spherical coordinates:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>A_pixel = R^2 * d_theta * d_phi * sin(theta)
+</code></pre></div>
+<p>where theta is colatitude (90deg - lat). After the fix, the total gridcell area matched published data to within 0.07%.</p>
+<hr />
+<h2 id="stage-8-gradient-calculation-fix">Stage 8: Gradient Calculation Fix<a class="headerlink" href="#stage-8-gradient-calculation-fix" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Investigate the remaining area fraction discrepancy (correlation 0.64).</p>
+<p>Comparison of gradient methods revealed a <strong>North-South aspect swap</strong> affecting ~46% of pixels:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Classification transitions (our -&gt; pgrid):
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  North-&gt;South: 407,465 (24.1%)
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  South-&gt;North: 378,450 (22.4%)
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  East/West: &lt;10 pixels total
+</code></pre></div>
+<p><strong>Root cause:</strong> The custom <code>np.gradient()</code> implementation had a Y-axis sign inversion due to coordinate system convention differences -- <code>np.gradient</code> row ordering does not match geographic north. East and West aspects were unaffected because the X-axis convention was consistent.</p>
+<p><strong>Fix:</strong> Replaced the custom gradient function with pgrid's <code>slope_aspect()</code> method, which uses the Horn (1981) 8-neighbor stencil with correct geographic coordinate conventions.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Before Fix</th>
+<th>After Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Height</td>
+<td>0.9994</td>
+<td>0.9999</td>
+</tr>
+<tr>
+<td>Distance</td>
+<td>0.9967</td>
+<td>0.9982</td>
+</tr>
+<tr>
+<td><strong>Area Fraction</strong></td>
+<td><strong>0.6374</strong></td>
+<td><strong>0.8200</strong></td>
+</tr>
+<tr>
+<td>Slope</td>
+<td>0.9866</td>
+<td>0.9966</td>
+</tr>
+<tr>
+<td>Aspect (circular)</td>
+<td>0.9996</td>
+<td>0.9999</td>
+</tr>
+<tr>
+<td>Width</td>
+<td>0.9527</td>
+<td>0.9597</td>
+</tr>
+</tbody>
+</table>
+<p>Area correlation improved from 0.64 to <strong>0.82</strong> -- a 28% improvement.</p>
+<hr />
+<h2 id="stage-9-accumulation-threshold-sensitivity">Stage 9: Accumulation Threshold Sensitivity<a class="headerlink" href="#stage-9-accumulation-threshold-sensitivity" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Determine whether a different accumulation threshold could improve the remaining area discrepancy.</p>
+<p>Five thresholds were tested:</p>
+<table>
+<thead>
+<tr>
+<th>Threshold (cells)</th>
+<th>Correlation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20</td>
+<td>0.83</td>
+</tr>
+<tr>
+<td><strong>34</strong> (baseline)</td>
+<td><strong>0.80</strong></td>
+</tr>
+<tr>
+<td>50</td>
+<td>0.68</td>
+</tr>
+<tr>
+<td>100</td>
+<td>-0.01</td>
+</tr>
+<tr>
+<td>200</td>
+<td>-0.44</td>
+</tr>
+</tbody>
+</table>
+<p>The best correlation (0.83 at threshold=20) was only marginally better than the baseline. Higher thresholds degraded rapidly. The remaining ~17% unexplained variance was attributed to differences in DEM preprocessing, edge effects from spatial extent differences, and undocumented methodology differences in the published data.</p>
+<hr />
+<h2 id="final-results">Final Results<a class="headerlink" href="#final-results" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Correlation</th>
+<th>Assessment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Height</td>
+<td>0.9999</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>Distance</td>
+<td>0.9982</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>Slope</td>
+<td>0.9966</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>Aspect</td>
+<td>0.9999</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>Width</td>
+<td>0.9597</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>Area</td>
+<td>0.8200</td>
+<td>Good</td>
+</tr>
+</tbody>
+</table>
+<p>Five of six parameters achieved &gt;0.95 correlation with Swenson's published data.</p>
+<hr />
+<h2 id="area-discrepancy-analysis">Area Discrepancy Analysis<a class="headerlink" href="#area-discrepancy-analysis" title="Permanent link">&para;</a></h2>
+<p>Three potential causes of the area fraction discrepancy were investigated:</p>
+<table>
+<thead>
+<tr>
+<th>Cause</th>
+<th>Impact</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Region/gridcell mismatch</td>
+<td><strong>Primary</strong></td>
+<td>Even after the Stage 7 fix, minor boundary differences remained. The southern extension of the processed region included low-lying terrain that inflated the lowest HAND bin for north-facing slopes.</td>
+</tr>
+<tr>
+<td>HAND bin computation</td>
+<td>Secondary</td>
+<td>Differences in bin boundary rounding and per-aspect handling</td>
+</tr>
+<tr>
+<td>Accumulation threshold</td>
+<td>Minor</td>
+<td>~2% sensitivity per 3x threshold change</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Why this is acceptable</p>
+<p>Height, distance, slope, aspect, and width are all <em>means within bins</em> and are insensitive to small changes in bin boundaries. Area is the <em>total per bin</em>, making it more sensitive to bin boundary choices. The 0.82 correlation was considered sufficient to validate the methodology for OSBS, where custom data would be produced rather than replicated from the published dataset.</p>
+</div>
+<hr />
+<h2 id="summary-of-bugs-found-and-fixed">Summary of Bugs Found and Fixed<a class="headerlink" href="#summary-of-bugs-found-and-fixed" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Bug</th>
+<th>Root Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>Aspect correlation 0.65</td>
+<td>Degrees vs radians</td>
+<td>Convert to radians for comparison</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Width identical across bins</td>
+<td>Raw pixel areas instead of fitted trapezoidal areas</td>
+<td>Two-pass width calculation with <code>quadratic()</code> solver</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Area 42% spatial overlap</td>
+<td>Region not aligned to published gridcell</td>
+<td>Explicit gridcell boundary extraction</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Bin1 constraint ignored</td>
+<td>Optional vs mandatory 2m threshold</td>
+<td>Rewrote <code>compute_hand_bins()</code> per Swenson's algorithm</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Pixel area approximation</td>
+<td>Uniform cosine vs per-pixel spherical</td>
+<td>Implemented Swenson's spherical area formula</td>
+</tr>
+<tr>
+<td>8</td>
+<td>N/S aspect swap</td>
+<td>Y-axis sign inversion in np.gradient</td>
+<td>Switched to pgrid's Horn (1981) method</td>
+</tr>
+</tbody>
+</table>
 
 
 
@@ -2063,7 +2195,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../installation/mksurfdata/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Building mksurfdata">
+          <a href="../pysheds-porting/" class="md-footer__link md-footer__link--prev" aria-label="Previous: pysheds Porting">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2073,20 +2205,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Building mksurfdata
+                pysheds Porting
               </div>
             </div>
           </a>
         
         
           
-          <a href="../single-point/" class="md-footer__link md-footer__link--next" aria-label="Next: Single-Point Runs">
+          <a href="../osbs-implementation/" class="md-footer__link md-footer__link--next" aria-label="Next: OSBS Implementation">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Single-Point Runs
+                OSBS Implementation
               </div>
             </div>
             <div class="md-footer__button md-icon">

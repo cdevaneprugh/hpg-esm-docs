@@ -1,0 +1,2392 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Running CTSM at University of Florida">
+      
+      
+      
+        <link rel="canonical" href="https://cdevaneprugh.github.io/hpg-esm-docs/swenson/osbs-implementation/">
+      
+      
+        <link rel="prev" href="../merit-validation/">
+      
+      
+        <link rel="next" href="../../reference/modifications/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>OSBS Implementation - CTSM on HiPerGator</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#osbs-implementation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CTSM on HiPerGator" class="md-header__button md-logo" aria-label="CTSM on HiPerGator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CTSM on HiPerGator
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              OSBS Implementation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CTSM on HiPerGator" class="md-nav__button md-logo" aria-label="CTSM on HiPerGator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CTSM on HiPerGator
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../onboarding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Onboarding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Installation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/cime-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CIME Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/fork-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fork Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/mksurfdata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building mksurfdata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running CTSM
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Running CTSM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../running-ctsm/case-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Case Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../running-ctsm/single-point/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Single-Point Runs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../running-ctsm/history-output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    History Output
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../running-ctsm/spinup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spinup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../running-ctsm/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/hillslope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hillslope Hydrology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/neon-sites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NEON Sites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Swenson Implementation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Swenson Implementation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pysheds-porting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pysheds Porting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../merit-validation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MERIT Validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OSBS Implementation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OSBS Implementation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#neon-lidar-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NEON LIDAR Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dem-preprocessing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEM Preprocessing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DEM Preprocessing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tile-reference-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tile Reference System
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resolution-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resolution Challenges
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#small-scale-smoke-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Small-Scale Smoke Test
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Small-Scale Smoke Test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#issues-found-and-fixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Issues Found and Fixed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-mosaic-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Mosaic Processing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Full Mosaic Processing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#debugging-journey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debugging Journey
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processing-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processing Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slope-calculation-bug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slope Calculation Bug
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#algorithm-differences-from-swenson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Algorithm Differences from Swenson
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interior-tile-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interior Tile Selection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interior Tile Selection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-difference-lc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Difference: Lc
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#netcdf-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NetCDF Output
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NetCDF Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dimensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dimensions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-full-vs-interior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison: Full vs Interior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-lessons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technical Lessons
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/modifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fork Modifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#neon-lidar-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NEON LIDAR Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dem-preprocessing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEM Preprocessing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DEM Preprocessing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tile-reference-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tile Reference System
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resolution-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resolution Challenges
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#small-scale-smoke-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Small-Scale Smoke Test
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Small-Scale Smoke Test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#issues-found-and-fixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Issues Found and Fixed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-mosaic-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Mosaic Processing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Full Mosaic Processing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#debugging-journey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debugging Journey
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processing-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processing Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slope-calculation-bug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slope Calculation Bug
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#algorithm-differences-from-swenson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Algorithm Differences from Swenson
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interior-tile-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interior Tile Selection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interior Tile Selection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-difference-lc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Difference: Lc
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#netcdf-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NetCDF Output
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NetCDF Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dimensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dimensions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-full-vs-interior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison: Full vs Interior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-lessons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technical Lessons
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="osbs-implementation">OSBS Implementation<a class="headerlink" href="#osbs-implementation" title="Permanent link">&para;</a></h1>
+<p><em>Applying the validated hillslope methodology to 1m NEON LIDAR data for the Ordway-Swisher Biological Station.</em></p>
+<hr />
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>With the pipeline validated against Swenson's published data (see <a href="../merit-validation/">MERIT Validation</a>), the next step was to apply it to 1m NEON LIDAR data for OSBS. This required adapting the pipeline for a 90x finer resolution, UTM coordinates instead of geographic, and irregular tile coverage with nodata gaps.</p>
+<hr />
+<h2 id="neon-lidar-data">NEON LIDAR Data<a class="headerlink" href="#neon-lidar-data" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dataset</td>
+<td>NEON DP3.30024.001 (Elevation - LiDAR)</td>
+</tr>
+<tr>
+<td>Site</td>
+<td>OSBS (Ordway-Swisher Biological Station)</td>
+</tr>
+<tr>
+<td>Collection</td>
+<td>2023-05</td>
+</tr>
+<tr>
+<td>Files</td>
+<td>233 DTM tiles</td>
+</tr>
+<tr>
+<td>Total size</td>
+<td>554 MB</td>
+</tr>
+<tr>
+<td>Resolution</td>
+<td>1.0 m</td>
+</tr>
+<tr>
+<td>CRS</td>
+<td>EPSG:32617 (UTM Zone 17N)</td>
+</tr>
+<tr>
+<td>Tile size</td>
+<td>1000 x 1000 pixels (1 km^2)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="dem-preprocessing">DEM Preprocessing<a class="headerlink" href="#dem-preprocessing" title="Permanent link">&para;</a></h2>
+<p>The 233 tiles were stitched into a single mosaic for processing.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mosaic dimensions</td>
+<td>19,000 x 17,000 pixels</td>
+</tr>
+<tr>
+<td>Geographic extent</td>
+<td>19 x 17 km (323 km^2)</td>
+</tr>
+<tr>
+<td>Elevation range</td>
+<td>23.2 - 69.2 m</td>
+</tr>
+<tr>
+<td>Mean elevation</td>
+<td>38.4 m</td>
+</tr>
+<tr>
+<td>Valid data coverage</td>
+<td>58.5% (tiles form an irregular shape)</td>
+</tr>
+</tbody>
+</table>
+<p>The low total relief (~46 m) confirmed this is a low-relief wetlandscape where 1m LIDAR captures subtle topography that 90m MERIT would miss.</p>
+<h3 id="tile-reference-system">Tile Reference System<a class="headerlink" href="#tile-reference-system" title="Permanent link">&para;</a></h3>
+<p>A grid reference system was created for identifying tiles during review and selection:</p>
+<ul>
+<li><strong>Format:</strong> <code>R{row}C{col}</code> (e.g., R5C7)</li>
+<li><strong>Grid dimensions:</strong> 17 rows x 19 columns (233 of 323 possible positions occupied)</li>
+<li><strong>Coordinate mapping:</strong> Easting = 394000 + col * 1000; Northing = 3292000 - row * 1000</li>
+<li><strong>KML export</strong> available for Google Earth overlay</li>
+</ul>
+<hr />
+<h2 id="resolution-challenges">Resolution Challenges<a class="headerlink" href="#resolution-challenges" title="Permanent link">&para;</a></h2>
+<p>Adapting from 90m MERIT to 1m LIDAR introduced several issues that required explicit handling:</p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Impact at 1m</th>
+<th>Adaptation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FFT noise</td>
+<td>Spectral analysis detects microtopography, not drainage patterns</td>
+<td>Added minimum Lc constraint (100m)</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>323M pixels exceeds pysheds <code>resolve_flats</code> capacity</td>
+<td>4x subsampling for flow routing</td>
+</tr>
+<tr>
+<td>DTND formula</td>
+<td>pysheds <code>compute_hand()</code> uses haversine (expects lat/lon, not UTM)</td>
+<td>Replaced with <code>scipy.ndimage.distance_transform_edt</code></td>
+</tr>
+<tr>
+<td>Edge blending</td>
+<td>Original 4-pixel FFT window = 360m at 90m but only 4m at 1m</td>
+<td>Increased to 50 pixels (50m)</td>
+</tr>
+<tr>
+<td>Hardcoded thresholds</td>
+<td><code>smallest_dtnd=1.0m</code> masks fine-scale drainage at 1m res</td>
+<td>Noted; acceptable for initial runs</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="small-scale-smoke-test">Small-Scale Smoke Test<a class="headerlink" href="#small-scale-smoke-test" title="Permanent link">&para;</a></h2>
+<p>A 4x4 km subset (4000 x 4000 pixels, 100% valid data) was extracted to verify the pipeline before committing to the full mosaic.</p>
+<h3 id="issues-found-and-fixed">Issues Found and Fixed<a class="headerlink" href="#issues-found-and-fixed" title="Permanent link">&para;</a></h3>
+<p><strong>Issue 1: FFT detects noise at 1m resolution.</strong> The raw characteristic length scale was Lc = 6m, picking up high-frequency surface texture rather than drainage-scale topography. A <code>min_lc_pixels</code> parameter was added to enforce a minimum of 100m, producing a constrained Lc = 100m (100 pixels).</p>
+<p><strong>Issue 2: pysheds DTND uses haversine formula.</strong> The pysheds <code>compute_hand()</code> method calculates DTND using haversine distance, which assumes geographic coordinates in degrees. For UTM coordinates in meters, haversine produced distances of 500+ km for a 4 km domain. The fix replaced DTND computation with <code>scipy.ndimage.distance_transform_edt</code>, which computes Euclidean distance directly in the UTM coordinate system.</p>
+<h3 id="results">Results<a class="headerlink" href="#results" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Characteristic length (Lc)</td>
+<td>100 m (constrained)</td>
+</tr>
+<tr>
+<td>Accumulation threshold</td>
+<td>5000 cells</td>
+</tr>
+<tr>
+<td>Stream coverage</td>
+<td>0.88%</td>
+</tr>
+<tr>
+<td>HAND median</td>
+<td>1.3 m</td>
+</tr>
+<tr>
+<td>DTND median</td>
+<td>33 m</td>
+</tr>
+<tr>
+<td>Aspect distribution</td>
+<td>N: 17.7%, E: 34.5%, S: 17.3%, W: 30.5%</td>
+</tr>
+</tbody>
+</table>
+<p>All 16 hillslope elements were successfully computed. Runtime was 85 seconds.</p>
+<hr />
+<h2 id="full-mosaic-processing">Full Mosaic Processing<a class="headerlink" href="#full-mosaic-processing" title="Permanent link">&para;</a></h2>
+<h3 id="debugging-journey">Debugging Journey<a class="headerlink" href="#debugging-journey" title="Permanent link">&para;</a></h3>
+<p>Processing the full 17,000 x 19,000 pixel mosaic required four attempts to resolve a fundamental interaction between pysheds flow routing and the irregular NEON tile coverage.</p>
+<p><strong>Attempt 1: Out of memory.</strong> The <code>resolve_flats</code> step in pysheds exceeded 64 GB when processing the full DEM at 1m resolution. This step has O(n^2) or worse complexity for large flat regions.</p>
+<p><strong>Attempt 2: max_accumulation = 1.</strong> With 128 GB memory and nodata pixels treated as natural drainage boundaries, flow accumulation peaked at 1 -- every pixel drained immediately to a nodata boundary before accumulating any flow.</p>
+<p><strong>Attempt 3: max_accumulation = 1 (still).</strong> Extracting the largest connected component of valid data and 4x subsampling did not help. Flow accumulation was still 1 despite individual centered subregions (6000x6000, 8000x8000, etc.) producing accumulations in the millions.</p>
+<p><strong>Root cause discovery:</strong> Analysis of the extracted region's edges revealed the problem:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>top:    0 valid, 4395 nodata
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>bottom: 0 valid, 4395 nodata
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>left:   0 valid, 4081 nodata
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>right:  0 valid, 4081 nodata
+</code></pre></div>
+<p><strong>All four edges were 100% nodata.</strong> The bounding box of the largest connected component included the irregular boundary of NEON tile coverage, producing all-nodata edges. pysheds flow routing requires flow to exit the domain at boundary cells. With all edges masked, no cell could accumulate flow from others -- every cell only counted itself.</p>
+<div class="admonition warning">
+<p class="admonition-title">pysheds edge handling</p>
+<p>Flow routing algorithms (D8, Dinf) require at least some valid data on domain edges for flow to exit. When all boundary cells are nodata, pysheds creates a closed basin where max_accumulation = 1. This is a silent failure -- no error is raised.</p>
+</div>
+<p><strong>Attempt 4: Success.</strong> After subsampling and connected component extraction, nodata-only rows and columns were trimmed from the edges:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">rows_valid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">valid_mask_sub</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">cols_valid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">valid_mask_sub</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">dem_sub</span> <span class="o">=</span> <span class="n">dem_sub</span><span class="p">[</span><span class="n">rows_valid</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">rows_valid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>                  <span class="n">cols_valid</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">cols_valid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div>
+<p>This produced max_accumulation = 658,954, confirming the fix.</p>
+<h3 id="processing-pipeline">Processing Pipeline<a class="headerlink" href="#processing-pipeline" title="Permanent link">&para;</a></h3>
+<p>The final pipeline for the full mosaic:</p>
+<ol>
+<li>Load mosaic and identify valid data</li>
+<li>Extract largest connected component (<code>scipy.ndimage.label</code>)</li>
+<li>Subsample by 4x for flow routing (1m -&gt; 4m effective resolution)</li>
+<li>Trim all-nodata edges</li>
+<li>Condition DEM, compute flow direction and accumulation</li>
+<li>Compute HAND and Euclidean DTND</li>
+<li>Compute slope and aspect from <strong>original</strong> DEM (not pysheds-processed; see below)</li>
+<li>Bin by aspect (4 bins) and elevation (4 HAND bins)</li>
+<li>Calculate six geomorphic parameters per bin</li>
+<li>Output NetCDF in CTSM-compatible format</li>
+</ol>
+<hr />
+<h2 id="slope-calculation-bug">Slope Calculation Bug<a class="headerlink" href="#slope-calculation-bug" title="Permanent link">&para;</a></h2>
+<p>Initial runs produced impossible slope values (up to 783 million m/m). Three approaches were tried before finding the correct solution:</p>
+<ol>
+<li><strong>pgrid's <code>slope_aspect()</code></strong> -- assumed geographic coordinates, not UTM</li>
+<li><strong>Horn 1981 averaging from <code>spatial_scale.py</code></strong> -- designed for FFT analysis, not slope calculation</li>
+<li><strong><code>np.gradient()</code> on pysheds-processed DEM</strong> -- the problem</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">pysheds DEM conditioning replaces nodata</p>
+<p>pysheds replaces nodata values with <code>max_elevation + 1</code> to prevent flow through gaps. This creates massive false gradients at every nodata boundary. Any slope calculation must use the <strong>original</strong> DEM with nodata as NaN, not the pysheds-processed version.</p>
+</div>
+<p>The fix stored the original DEM with nodata as NaN before pysheds processing:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">dem_for_slope</span> <span class="o">=</span> <span class="n">dem_sub</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">dem_for_slope</span><span class="p">[</span><span class="o">~</span><span class="n">valid_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># ... later ...</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">dzdy</span><span class="p">,</span> <span class="n">dzdx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">dem_for_slope</span><span class="p">,</span> <span class="n">pixel_size</span><span class="p">)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">slope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dzdx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dzdy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<p>NaN values propagate correctly through gradient calculation, preventing false gradients at boundaries.</p>
+<hr />
+<h2 id="algorithm-differences-from-swenson">Algorithm Differences from Swenson<a class="headerlink" href="#algorithm-differences-from-swenson" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Swenson (90m MERIT)</th>
+<th>OSBS (1m LIDAR)</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DTND calculation</td>
+<td>Haversine (geographic)</td>
+<td>Euclidean (EDT)</td>
+<td>UTM coordinates are already in meters</td>
+</tr>
+<tr>
+<td>Processing resolution</td>
+<td>Full resolution</td>
+<td>4x subsampled</td>
+<td>Memory/compute constraints for <code>resolve_flats</code></td>
+</tr>
+<tr>
+<td>Edge handling</td>
+<td>Not needed</td>
+<td>Trim nodata edges</td>
+<td>NEON tiles have irregular coverage</td>
+</tr>
+<tr>
+<td>Lc determination</td>
+<td>FFT natural peak</td>
+<td>Constrained &gt;= 100m</td>
+<td>1m data picks up noise/microtopography</td>
+</tr>
+<tr>
+<td>Connected component</td>
+<td>Not needed</td>
+<td>Extract largest</td>
+<td>Scattered tiles create disconnected regions</td>
+</tr>
+<tr>
+<td>Slope calculation</td>
+<td><code>slope_aspect()</code> on geographic DEM</td>
+<td><code>np.gradient()</code> on original DEM with NaN</td>
+<td>UTM coords; must avoid pysheds nodata fill</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="interior-tile-selection">Interior Tile Selection<a class="headerlink" href="#interior-tile-selection" title="Permanent link">&para;</a></h2>
+<p>The full mosaic included edge tiles with urban areas and irregular coverage. Processing was run in two modes for comparison:</p>
+<ul>
+<li><strong>Full (233 tiles):</strong> All available NEON tiles</li>
+<li><strong>Interior (150 tiles):</strong> Tiles selected to exclude the irregular outer boundary, producing a more contiguous study region</li>
+</ul>
+<p>The interior selection excluded rows 0-3 (except R3C11-13 and R4C5-14), the northwest corner, and sparse southern/eastern edges, retaining 150 tiles with more uniform coverage.</p>
+<h3 id="key-difference-lc">Key Difference: Lc<a class="headerlink" href="#key-difference-lc" title="Permanent link">&para;</a></h3>
+<p>The interior mosaic produced an FFT-derived Lc of <strong>166 m</strong> (vs the 100 m minimum constraint for the full mosaic). With less edge noise, the FFT could identify a natural spectral peak. The higher Lc produced a higher accumulation threshold (864 vs 312 cells) and sparser stream network (1.44% vs 2.32%).</p>
+<hr />
+<h2 id="netcdf-output">NetCDF Output<a class="headerlink" href="#netcdf-output" title="Permanent link">&para;</a></h2>
+<p>The pipeline outputs CTSM-compatible NetCDF files with all required hillslope variables.</p>
+<h3 id="dimensions">Dimensions<a class="headerlink" href="#dimensions" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Size</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lsmlat</code></td>
+<td>1</td>
+<td>Single gridcell latitude</td>
+</tr>
+<tr>
+<td><code>lsmlon</code></td>
+<td>1</td>
+<td>Single gridcell longitude</td>
+</tr>
+<tr>
+<td><code>nhillslope</code></td>
+<td>4</td>
+<td>Aspect bins (N, E, S, W)</td>
+</tr>
+<tr>
+<td><code>nmaxhillcol</code></td>
+<td>16</td>
+<td>Total hillslope columns</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-variables">Key Variables<a class="headerlink" href="#key-variables" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Units</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nhillcolumns</code></td>
+<td>--</td>
+<td>Number of hillslope columns (16)</td>
+</tr>
+<tr>
+<td><code>pct_hillslope</code></td>
+<td>%</td>
+<td>Area fraction per aspect</td>
+</tr>
+<tr>
+<td><code>hillslope_elevation</code></td>
+<td>m</td>
+<td>Height above stream (HAND)</td>
+</tr>
+<tr>
+<td><code>hillslope_distance</code></td>
+<td>m</td>
+<td>Distance from stream (DTND)</td>
+</tr>
+<tr>
+<td><code>hillslope_width</code></td>
+<td>m</td>
+<td>Hillslope width at downslope edge</td>
+</tr>
+<tr>
+<td><code>hillslope_area</code></td>
+<td>m^2</td>
+<td>Hillslope element area</td>
+</tr>
+<tr>
+<td><code>hillslope_slope</code></td>
+<td>m/m</td>
+<td>Topographic slope</td>
+</tr>
+<tr>
+<td><code>hillslope_aspect</code></td>
+<td>radians</td>
+<td>Azimuthal orientation (0-2pi, clockwise from N)</td>
+</tr>
+</tbody>
+</table>
+<p>Key conversions applied: aspect from degrees to radians, longitude from -82deg to 278deg (0-360 convention for CTSM).</p>
+<hr />
+<h2 id="comparison-full-vs-interior">Comparison: Full vs Interior<a class="headerlink" href="#comparison-full-vs-interior" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Full (233 tiles)</th>
+<th>Interior (150 tiles)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DEM shape</td>
+<td>17k x 19k</td>
+<td>15k x 16k</td>
+</tr>
+<tr>
+<td>Valid data</td>
+<td>58.5%</td>
+<td>62.5%</td>
+</tr>
+<tr>
+<td>Characteristic Lc</td>
+<td>100 m (constrained)</td>
+<td>166 m (FFT-derived)</td>
+</tr>
+<tr>
+<td>Accumulation threshold</td>
+<td>312 cells</td>
+<td>864 cells</td>
+</tr>
+<tr>
+<td>Stream coverage</td>
+<td>2.32%</td>
+<td>1.44%</td>
+</tr>
+<tr>
+<td>HAND median</td>
+<td>1.1 m</td>
+<td>1.8 m</td>
+</tr>
+<tr>
+<td>Aspect distribution</td>
+<td>N: 17%, E: 34%, S: 17%, W: 32%</td>
+<td>N: 24%, E: 26%, S: 26%, W: 24%</td>
+</tr>
+<tr>
+<td>Processing time</td>
+<td>6.2 min</td>
+<td>2.9 min</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Aspect distribution</p>
+<p>The full mosaic showed a strong E/W bias (66% combined), likely caused by edge artifacts or non-representative terrain at the boundary. The interior mosaic produced a much more uniform aspect distribution (~25% per direction), consistent with expectations for gently rolling terrain without a dominant orientation.</p>
+</div>
+<hr />
+<h2 id="technical-lessons">Technical Lessons<a class="headerlink" href="#technical-lessons" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p><strong>pysheds edge handling is critical.</strong> Flow routing silently fails when all domain edges are nodata. Always verify that at least some boundary cells contain valid data.</p>
+</li>
+<li>
+<p><strong>Subsampling is necessary for large DEMs.</strong> The <code>resolve_flats</code> step in pysheds has poor scaling with large flat regions. 4x subsampling reduced the problem to manageable size while preserving drainage patterns at scales relevant to hillslope parameterization.</p>
+</li>
+<li>
+<p><strong>Connected component extraction alone is insufficient.</strong> Even after isolating the largest connected region, the bounding box may have all-nodata edges due to irregular tile coverage. Edge trimming is a separate, required step.</p>
+</li>
+<li>
+<p><strong>Accumulation threshold must scale with resolution.</strong> When subsampling, both Lc (in pixels) and the derived threshold must be adjusted: <code>threshold = 0.5 * (Lc / subsample)^2</code>.</p>
+</li>
+<li>
+<p><strong>Geographic bounds must track all transformations.</strong> Edge trimming, subsampling, and region extraction all modify the geographic extent. Bounds must be updated at each step for correct georeferencing in the output NetCDF.</p>
+</li>
+<li>
+<p><strong>Use the original DEM for slope calculation.</strong> pysheds DEM conditioning replaces nodata with high values that create false gradients. Store the original DEM with NaN for nodata before processing.</p>
+</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../merit-validation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: MERIT Validation">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                MERIT Validation
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../reference/modifications/" class="md-footer__link md-footer__link--next" aria-label="Next: Fork Modifications">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Fork Modifications
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

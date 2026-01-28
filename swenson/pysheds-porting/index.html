@@ -10,9 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://cdevaneprugh.github.io/hpg-esm-docs/archive/mksurfdata-fixes/">
+        <link rel="canonical" href="https://cdevaneprugh.github.io/hpg-esm-docs/swenson/pysheds-porting/">
       
       
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../merit-validation/">
       
       
         
@@ -23,7 +27,7 @@
     
     
       
-        <title>CTSM File Modifications - CTSM on HiPerGator</title>
+        <title>pysheds Porting - CTSM on HiPerGator</title>
       
     
     
@@ -74,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ctsm-file-modifications" class="md-skip">
+        <a href="#pysheds-porting" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              CTSM File Modifications
+              pysheds Porting
             
           </span>
         </div>
@@ -922,8 +926,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -934,13 +940,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
@@ -961,7 +965,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -979,7 +983,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../swenson/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -1004,10 +1008,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../swenson/pysheds-porting/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pysheds Porting
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1023,6 +1054,159 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fork-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fork Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-swenson-added" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Swenson Added
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Swenson Added">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-hillslope-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Hillslope Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supporting-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supporting Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-upstream-pysheds-lacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Upstream pysheds Lacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#numpy-20-compatibility-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NumPy 2.0 Compatibility Fixes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-suite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Suite
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Test Suite">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Classes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1035,7 +1219,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../swenson/merit-validation/" class="md-nav__link">
+      <a href="../merit-validation/" class="md-nav__link">
         
   
   
@@ -1063,7 +1247,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../swenson/osbs-implementation/" class="md-nav__link">
+      <a href="../osbs-implementation/" class="md-nav__link">
         
   
   
@@ -1215,7 +1399,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../archive/" class="md-nav__link">
         
   
   
@@ -1262,10 +1446,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#cmakeliststxt" class="md-nav__link">
+  <a href="#fork-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CMakeLists.txt
+        Fork Setup
       
     </span>
   </a>
@@ -1273,10 +1457,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mksurfdataf90" class="md-nav__link">
+  <a href="#what-swenson-added" class="md-nav__link">
     <span class="md-ellipsis">
       
-        mksurfdata.F90
+        What Swenson Added
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Swenson Added">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-hillslope-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Hillslope Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supporting-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supporting Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-upstream-pysheds-lacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Upstream pysheds Lacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Strategy
       
     </span>
   </a>
@@ -1284,10 +1518,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#build-script" class="md-nav__link">
+  <a href="#numpy-20-compatibility-fixes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Build Script
+        NumPy 2.0 Compatibility Fixes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-suite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Suite
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Test Suite">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Classes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Notes
       
     </span>
   </a>
@@ -1311,50 +1595,240 @@
 
 
 
-<h1 id="ctsm-file-modifications">CTSM File Modifications<a class="headerlink" href="#ctsm-file-modifications" title="Permanent link">&para;</a></h1>
-<p>We need to modify several buggy files in CTSM in order to build <code>mksurfdata</code>. I have forked CTSM and fixed these bugs in the uf repo. If that is not available for some reason, here is how to fix the existing code. </p>
-<p>First go to the directory at <code>$CTSMROOT/tools/mksurfdata_esmf</code>.</p>
-<h2 id="cmakeliststxt">CMakeLists.txt<a class="headerlink" href="#cmakeliststxt" title="Permanent link">&para;</a></h2>
-<p>Then modify the <code>CMakeLists.txt</code> file at <code>CTSMROOT/tools/mksurfdata_esmf/src/CMakeLists.txt</code>.
-<code>CMakeLists.txt</code> is a configuration file that CMake uses to define the build process, including source files, dependencies, build targets, and project settings.</p>
-<p>At lines 51 and 52, change the word STATIC to SHARED so the lines read as follows.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>add_library(pioc SHARED IMPORTED)
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>add_library(piof SHARED IMPORTED)
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>set_property(TARGET pioc PROPERTY IMPORTED_LOCATION $ENV{PIO}/lib/libpioc.so)
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>set_property(TARGET piof PROPERTY IMPORTED_LOCATION $ENV{PIO}/lib/libpiof.so)
+<h1 id="pysheds-porting">pysheds Porting<a class="headerlink" href="#pysheds-porting" title="Permanent link">&para;</a></h1>
+<p><em>Porting Swenson's hillslope methods to our own pysheds fork with NumPy 2.0 compatibility.</em></p>
+<hr />
+<h2 id="fork-setup">Fork Setup<a class="headerlink" href="#fork-setup" title="Permanent link">&para;</a></h2>
+<p>A fork of <a href="https://github.com/mdbartos/pysheds">pysheds</a> was created at <code>$BLUE/pysheds_fork</code> with two branches:</p>
+<table>
+<thead>
+<tr>
+<th>Branch</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>master</code></td>
+<td>Synced with upstream (<code>mdbartos/pysheds</code>)</td>
+</tr>
+<tr>
+<td><code>uf-development</code></td>
+<td>Development branch with Swenson's hillslope methods</td>
+</tr>
+</tbody>
+</table>
+<p>Verification:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pysheds-env
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from pysheds.pgrid import Grid; print(&#39;OK&#39;)&quot;</span>
 </code></pre></div>
-<p>If you notice in the bottom two lines, we are looking for the shared libraries <code>libpioc.so</code> and <code>libpiof.so</code>. This conflicted with the previous two lines looking for static libraries.</p>
-<h2 id="mksurfdataf90">mksurfdata.F90<a class="headerlink" href="#mksurfdataf90" title="Permanent link">&para;</a></h2>
-<p>Next we have to correct some Fortran syntax errors in <code>src/mksurfdata.F90</code>. If you try to compile you will be met with the following errors.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/ctsm5.3/tools/mksurfdata_esmf/src/mksurfdata.F90:271:24:
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  271 |      write(ndiag,&#39;(2(a,I))&#39;) &#39; npes = &#39;, npes, &#39; grid size = &#39;, grid_size
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>      |                        1
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Error: Nonnegative width required in format string at (1)
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>/ctsm5.3/tools/mksurfdata_esmf/src/mksurfdata.F90:295:19:
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  295 |      read(nfpio, &#39;(i)&#39;, iostat=ier) pio_iotype
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>      |                   1
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>Error: Nonnegative width required in format string at (1)
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>/ctsm5.3/tools/mksurfdata_esmf/src/mksurfdata.F90:328:27:
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  328 |         write (ndiag,&#39;(a, I, a, I)&#39;) &#39; node_count = &#39;, node_count, &#39; grid_size = &#39;, grid_size
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>      |                           1
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>Error: Nonnegative width required in format string at (1)
+<hr />
+<h2 id="what-swenson-added">What Swenson Added<a class="headerlink" href="#what-swenson-added" title="Permanent link">&para;</a></h2>
+<p>Swenson created <code>pgrid.py</code> (~4,200 lines) -- a pure-Python Grid class containing all hillslope-specific methods not present in upstream pysheds. This file was the core dependency for the entire hillslope parameter calculation pipeline.</p>
+<h3 id="core-hillslope-methods">Core Hillslope Methods<a class="headerlink" href="#core-hillslope-methods" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>compute_hand()</code></td>
+<td>Extended HAND + DTND + AZND + drainage ID assignment</td>
+</tr>
+<tr>
+<td><code>compute_hillslope()</code></td>
+<td>Classify pixels as headwater, left bank, right bank, or channel</td>
+</tr>
+<tr>
+<td><code>slope_aspect()</code></td>
+<td>Calculate slope and aspect from DEM using Horn (1981) 8-neighbor stencil</td>
+</tr>
+<tr>
+<td><code>extract_profiles()</code></td>
+<td>Delineate river segments with connectivity information</td>
+</tr>
+<tr>
+<td><code>river_network_length_and_slope()</code></td>
+<td>Calculate network length and mean slope</td>
+</tr>
+<tr>
+<td><code>create_channel_mask()</code></td>
+<td>Create channel mask, IDs, and bank classification masks</td>
+</tr>
+</tbody>
+</table>
+<h3 id="supporting-methods">Supporting Methods<a class="headerlink" href="#supporting-methods" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_2d_geographic_coordinates()</code></td>
+<td>Generate 2D lon/lat arrays from affine transform</td>
+</tr>
+<tr>
+<td><code>_gradient_horn_1981()</code></td>
+<td>Horn (1981) gradient calculation for slope and aspect</td>
+</tr>
+<tr>
+<td><code>_translate_dict()</code></td>
+<td>Map flow direction values to array indices</td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-upstream-pysheds-lacks">What Upstream pysheds Lacks<a class="headerlink" href="#what-upstream-pysheds-lacks" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status in Upstream</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DTND (Distance To Nearest Drainage)</td>
+<td>Not implemented</td>
+</tr>
+<tr>
+<td>AZND (Azimuth To Nearest Drainage)</td>
+<td>Not implemented</td>
+</tr>
+<tr>
+<td>Drainage ID per pixel</td>
+<td>Not implemented</td>
+</tr>
+<tr>
+<td>Hillslope classification (L/R bank, headwater)</td>
+<td>Not implemented</td>
+</tr>
+<tr>
+<td>Slope/Aspect from DEM</td>
+<td>Not implemented</td>
+</tr>
+<tr>
+<td>Channel mask with IDs</td>
+<td>Not implemented</td>
+</tr>
+<tr>
+<td>River network length/slope</td>
+<td>Not implemented</td>
+</tr>
+</tbody>
+</table>
+<p>Upstream provides flow direction, flow accumulation, catchment delineation, and basic HAND (height only), but none of the hillslope-specific processing needed for Swenson's methodology.</p>
+<hr />
+<h2 id="implementation-strategy">Implementation Strategy<a class="headerlink" href="#implementation-strategy" title="Permanent link">&para;</a></h2>
+<p>The approach was to copy the entire <code>pgrid.py</code> from Swenson's fork rather than surgically porting individual methods. This preserved internal dependencies and ensured API compatibility with Swenson's <code>Representative_Hillslopes</code> processing pipeline.</p>
+<p>Key decisions:</p>
+<ul>
+<li><strong>Copy entire <code>pgrid.py</code></strong> -- not surgical porting of individual methods</li>
+<li><strong>Pure Python</strong> -- no numba optimization (Swenson's code uses numba optionally)</li>
+<li><strong>Match API signatures</strong> -- maintain compatibility with <code>Representative_Hillslopes</code> scripts</li>
+</ul>
+<p>The <code>grid.py</code> entry point was updated to fall back to <code>pgrid</code> when numba is unavailable, matching Swenson's import pattern.</p>
+<hr />
+<h2 id="numpy-20-compatibility-fixes">NumPy 2.0 Compatibility Fixes<a class="headerlink" href="#numpy-20-compatibility-fixes" title="Permanent link">&para;</a></h2>
+<p>Swenson's code was written for NumPy 1.x. Four categories of fixes were required:</p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Occurrences</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>np.warnings</code> deprecated</td>
+<td>12</td>
+<td>Replaced with <code>warnings</code> module</td>
+</tr>
+<tr>
+<td><code>np.bool</code> deprecated</td>
+<td>13</td>
+<td>Replaced with <code>bool</code></td>
+</tr>
+<tr>
+<td><code>np.float</code> deprecated</td>
+<td>2</td>
+<td>Replaced with <code>np.float64</code></td>
+</tr>
+<tr>
+<td>Unsigned integer overflow in <code>_flatten_fdir</code></td>
+<td>1</td>
+<td>Added <code>_signed_mintype()</code> helper function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="test-suite">Test Suite<a class="headerlink" href="#test-suite" title="Permanent link">&para;</a></h2>
+<p>Swenson's fork included a pytest test suite (<code>test_grid.py</code>, ~40 tests) covering core pysheds functionality but not the hillslope-specific methods. A new test file (<code>test_hillslope.py</code>) was created to cover the hillslope additions.</p>
+<h3 id="test-classes">Test Classes<a class="headerlink" href="#test-classes" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Tests</th>
+<th>Coverage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TestSlopeAspect</code></td>
+<td>4</td>
+<td>Slope/aspect calculation on synthetic and real DEMs</td>
+</tr>
+<tr>
+<td><code>TestChannelMask</code></td>
+<td>3</td>
+<td>Channel mask creation, ID assignment, bank classification</td>
+</tr>
+<tr>
+<td><code>TestComputeHand</code></td>
+<td>2</td>
+<td>Extended HAND with DTND and drainage ID</td>
+</tr>
+<tr>
+<td><code>TestComputeHillslope</code></td>
+<td>2</td>
+<td>Hillslope classification (left/right bank, headwater)</td>
+</tr>
+<tr>
+<td><code>TestExtractProfiles</code></td>
+<td>2</td>
+<td>River segment extraction with connectivity</td>
+</tr>
+<tr>
+<td><code>TestIntegration</code></td>
+<td>1</td>
+<td>Full pipeline workflow on test DEM</td>
+</tr>
+</tbody>
+</table>
+<h3 id="results">Results<a class="headerlink" href="#results" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>================== 14 passed, 1 skipped, 33 warnings in 3.63s ==================
 </code></pre></div>
-<p>To fix this we make the following changes at lines 271, 295, and 328 respectively.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>271 |      write(ndiag,&#39;(2(a,I10))&#39;) &#39; npes = &#39;, npes, &#39; grid size = &#39;, grid_size
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>295 |      read(nfpio, &#39;(I5)&#39;, iostat=ier) pio_iotype
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>328 |         write (ndiag,&#39;(a, I10, a, I10)&#39;) &#39; node_count = &#39;, node_count, &#39; grid_size = &#39;, grid_size
+<p>All hillslope-specific methods verified working.</p>
+<hr />
+<h2 id="api-notes">API Notes<a class="headerlink" href="#api-notes" title="Permanent link">&para;</a></h2>
+<p>The <code>pgrid</code> API uses an <strong>inplace pattern</strong> by default:</p>
+<ul>
+<li>Methods store results as grid attributes (e.g., <code>grid.slope</code>, <code>grid.aspect</code>)</li>
+<li>Methods return <code>None</code> when <code>inplace=True</code> (the default)</li>
+<li>Access results via attributes after calling methods</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">grid</span><span class="o">.</span><span class="n">slope_aspect</span><span class="p">(</span><span class="s2">&quot;dem&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">slope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">slope</span><span class="p">)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">aspect</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">aspect</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="build-script">Build Script<a class="headerlink" href="#build-script" title="Permanent link">&para;</a></h2>
-<p>Finally, modify line 170 of the <code>gen_mksurfdata_build</code> script to the following.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>CC=mpicc FC=mpif90 cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_Fortran_FLAGS=&quot; -fallow-argument-mismatch -fallow-invalid-boz -ffree-line-length-none&quot; $options $cwd/src
-</code></pre></div>
+<p>This pattern applies to <code>compute_hand()</code>, <code>compute_hillslope()</code>, <code>slope_aspect()</code>, and other methods.</p>
 
 
 
@@ -1385,6 +1859,44 @@
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../merit-validation/" class="md-footer__link md-footer__link--next" aria-label="Next: MERIT Validation">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                MERIT Validation
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">

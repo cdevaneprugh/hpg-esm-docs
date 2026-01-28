@@ -1465,7 +1465,7 @@
 <p><em>Implementing the Swenson &amp; Lawrence (2025) representative hillslope methodology for OSBS using 1m NEON LIDAR data.</em></p>
 <hr />
 <h2 id="goal">Goal<a class="headerlink" href="#goal" title="Permanent link">&para;</a></h2>
-<p>The global hillslope dataset shipped with CTSM was derived from MERIT DEM at ~90m resolution. Swenson &amp; Lawrence (2025) explicitly noted that this resolution "may not be fine enough to capture topographic variations in areas of very low topographic relief, such as wetlands." OSBS is exactly this case -- a low-relief wetlandscape where the Terrestrial-Aquatic Interface depends on meter-scale elevation differences.</p>
+<p>Swenson &amp; Lawrence (2025) published a global hillslope dataset derived from MERIT DEM at ~90m resolution. This dataset is available independently (not bundled with CTSM) and can be used with CTSM's hillslope hydrology mode. However, Swenson &amp; Lawrence explicitly noted that this resolution "may not be fine enough to capture topographic variations in areas of very low topographic relief, such as wetlands." OSBS is exactly this case -- a low-relief wetlandscape where the Terrestrial-Aquatic Interface depends on meter-scale elevation differences.</p>
 <p>The goal of this work was to implement Swenson's methodology using 1m NEON LIDAR data to produce custom hillslope parameters that resolve the fine-scale topography controlling wetland-upland transitions at OSBS.</p>
 <hr />
 <h2 id="key-differences-from-swenson">Key Differences from Swenson<a class="headerlink" href="#key-differences-from-swenson" title="Permanent link">&para;</a></h2>
@@ -1548,28 +1548,23 @@
 <tbody>
 <tr>
 <td>pysheds fork</td>
-<td><code>$BLUE/pysheds_fork</code> (branch: <code>uf-development</code>)</td>
+<td><a href="https://github.com/cdevaneprugh/pysheds">cdevaneprugh/pysheds</a> (branch: <code>uf-development</code>)</td>
 <td>Flow routing, HAND, DTND, hillslope classification</td>
 </tr>
 <tr>
 <td>Swenson's codebase</td>
-<td><code>$BLUE/Representative_Hillslopes/</code></td>
+<td><a href="https://github.com/swensosc/Representative_Hillslopes">swensosc/Representative_Hillslopes</a></td>
 <td>Reference implementation</td>
 </tr>
 <tr>
 <td>Processing scripts</td>
-<td><code>$TOOLS/swenson/scripts/osbs/</code></td>
+<td><a href="https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/scripts/osbs">hpg-esm-tools/swenson/scripts/osbs/</a></td>
 <td>OSBS pipeline</td>
 </tr>
 <tr>
 <td>Validation scripts</td>
-<td><code>$TOOLS/swenson/scripts/merit_validation/</code></td>
+<td><a href="https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/scripts/merit_validation">hpg-esm-tools/swenson/scripts/merit_validation/</a></td>
 <td>MERIT DEM validation stages 1-9</td>
-</tr>
-<tr>
-<td>Shared FFT module</td>
-<td><code>$TOOLS/swenson/scripts/spatial_scale.py</code></td>
-<td>Spectral analysis for characteristic length scale</td>
 </tr>
 </tbody>
 </table>

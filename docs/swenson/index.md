@@ -6,7 +6,7 @@
 
 ## Goal
 
-The global hillslope dataset shipped with CTSM was derived from MERIT DEM at ~90m resolution. Swenson & Lawrence (2025) explicitly noted that this resolution "may not be fine enough to capture topographic variations in areas of very low topographic relief, such as wetlands." OSBS is exactly this case -- a low-relief wetlandscape where the Terrestrial-Aquatic Interface depends on meter-scale elevation differences.
+Swenson & Lawrence (2025) published a global hillslope dataset derived from MERIT DEM at ~90m resolution. This dataset is available independently (not bundled with CTSM) and can be used with CTSM's hillslope hydrology mode. However, Swenson & Lawrence explicitly noted that this resolution "may not be fine enough to capture topographic variations in areas of very low topographic relief, such as wetlands." OSBS is exactly this case -- a low-relief wetlandscape where the Terrestrial-Aquatic Interface depends on meter-scale elevation differences.
 
 The goal of this work was to implement Swenson's methodology using 1m NEON LIDAR data to produce custom hillslope parameters that resolve the fine-scale topography controlling wetland-upland transitions at OSBS.
 
@@ -50,11 +50,10 @@ The work proceeded in four phases:
 
 | Resource | Location | Purpose |
 |----------|----------|---------|
-| pysheds fork | `$BLUE/pysheds_fork` (branch: `uf-development`) | Flow routing, HAND, DTND, hillslope classification |
-| Swenson's codebase | `$BLUE/Representative_Hillslopes/` | Reference implementation |
-| Processing scripts | `$TOOLS/swenson/scripts/osbs/` | OSBS pipeline |
-| Validation scripts | `$TOOLS/swenson/scripts/merit_validation/` | MERIT DEM validation stages 1-9 |
-| Shared FFT module | `$TOOLS/swenson/scripts/spatial_scale.py` | Spectral analysis for characteristic length scale |
+| pysheds fork | [cdevaneprugh/pysheds](https://github.com/cdevaneprugh/pysheds) (branch: `uf-development`) | Flow routing, HAND, DTND, hillslope classification |
+| Swenson's codebase | [swensosc/Representative_Hillslopes](https://github.com/swensosc/Representative_Hillslopes) | Reference implementation |
+| Processing scripts | [hpg-esm-tools/swenson/scripts/osbs/](https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/scripts/osbs) | OSBS pipeline |
+| Validation scripts | [hpg-esm-tools/swenson/scripts/merit_validation/](https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/scripts/merit_validation) | MERIT DEM validation stages 1-9 |
 
 ---
 

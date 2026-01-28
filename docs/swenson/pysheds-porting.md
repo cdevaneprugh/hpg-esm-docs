@@ -6,7 +6,7 @@
 
 ## Fork Setup
 
-A fork of [pysheds](https://github.com/mdbartos/pysheds) was created at `$BLUE/pysheds_fork` with two branches:
+A fork of [pysheds](https://github.com/mdbartos/pysheds) was created at [cdevaneprugh/pysheds](https://github.com/cdevaneprugh/pysheds) with two branches:
 
 | Branch | Purpose |
 |--------|---------|

@@ -43,6 +43,8 @@ The low total relief (~46 m) confirmed this is a low-relief wetlandscape where 1
 
 A grid reference system was created for identifying tiles during review and selection:
 
+![Tile grid reference showing OSBS NEON tile coverage](images/tile_grid_reference.png)
+
 - **Format:** `R{row}C{col}` (e.g., R5C7)
 - **Grid dimensions:** 17 rows x 19 columns (233 of 323 possible positions occupied)
 - **Coordinate mapping:** Easting = 394000 + col * 1000; Northing = 3292000 - row * 1000

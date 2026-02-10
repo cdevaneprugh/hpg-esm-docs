@@ -174,12 +174,12 @@ NaN values propagate correctly through gradient calculation, preventing false gr
 
 | Component | Swenson (90m MERIT) | OSBS (1m LIDAR) | Reason |
 |-----------|---------------------|-----------------|--------|
-| DTND calculation | Haversine (geographic) | Euclidean (EDT) | UTM coordinates are already in meters |
-| Processing resolution | Full resolution | 4x subsampled | Memory/compute constraints for `resolve_flats` |
+| DTND calculation | Haversine (geographic) | Euclidean (EDT) | pysheds haversine assumes lat/lon, produces garbage on UTM; EDT fixes the math but changes the concept (see [Known Limitations](#known-limitations)) |
+| Processing resolution | Full resolution | 4x subsampled | `resolve_flats` OOM at 64GB; full-res at 256GB and 2x subsampling were never tested |
 | Edge handling | Not needed | Trim nodata edges | NEON tiles have irregular coverage |
-| Lc determination | FFT natural peak | Constrained >= 100m | 1m data picks up noise/microtopography |
+| Lc determination | FFT natural peak | Constrained >= 100m | 1m data picks up noise/microtopography; FFT has only run at 4m effective resolution |
 | Connected component | Not needed | Extract largest | Scattered tiles create disconnected regions |
-| Slope calculation | `slope_aspect()` on geographic DEM | `np.gradient()` on original DEM with NaN | UTM coords; must avoid pysheds nodata fill |
+| Slope calculation | `slope_aspect()` on geographic DEM | `np.gradient()` on original DEM with NaN | pgrid's Horn 1981 method assumes geographic coords; `np.gradient` sign convention not validated against stage 8 findings |
 
 ---
 
@@ -246,11 +246,47 @@ Key conversions applied: aspect from degrees to radians, longitude from -82deg t
 
 ---
 
+## Known Limitations
+
+!!! warning "Current output is not suitable for CTSM simulations"
+    The February 2026 audit identified four issues that directly affect the hillslope parameters produced by this pipeline. The methodology is validated and the pipeline engineering is solid, but the specific parameter values in the current NetCDF output will change when these issues are resolved.
+
+### 1. DTND algorithm computes the wrong distance
+
+The pipeline replaced pysheds' haversine-based DTND with `scipy.ndimage.distance_transform_edt`. This fixed the math (Euclidean distance on UTM coordinates instead of haversine) but changed the concept: EDT finds the *geographically nearest* stream pixel, while Swenson's method finds the *hydrologically nearest* stream pixel (the one each cell actually drains to via D8 routing). These differ whenever a pixel is geographically closer to a stream on the opposite side of a drainage divide.
+
+| Approach | Concept | Math |
+|----------|---------|------|
+| pysheds DTND | Correct (flow-path-linked) | Wrong (haversine on UTM) |
+| Pipeline EDT | Wrong (nearest regardless of drainage) | Correct (Euclidean on UTM) |
+
+Neither DTND is currently correct. The fix requires modifying pysheds' `compute_hand()` to detect UTM CRS and use Euclidean distance. Wrong DTND also corrupts the trapezoidal width fit, since width is derived from the A_sum(d) curve.
+
+### 2. 4x subsampling discards 93.75% of data
+
+The 4x subsampling was adopted after a single OOM failure at 64GB. Full resolution at 256GB was never tested. Neither was 2x subsampling at 128GB.
+
+The entire justification for using 1m LIDAR is to capture fine-scale drainage in a low-relief wetlandscape. Subsampling to 4m effective resolution undermines that purpose — small channels, wetland margins, and subtle elevation differences that drive TAI dynamics become invisible. Whether the current 4x factor is acceptable, excessive, or unnecessary is an open question that requires systematic testing across resolutions.
+
+### 3. Lc has never been computed at full resolution
+
+The FFT spectral analysis ran on the 4x-subsampled grid. For the full mosaic, it failed to find a real peak and fell back to the hardcoded 100m minimum. For the interior mosaic, it found 166m — but at 4m effective resolution, features at wavelengths below 8m are invisible.
+
+The full-resolution FFT has never been run on OSBS data. NumPy handles arrays of this size without difficulty, so this is an easy fix. Additionally, the FFT parameters (blend window, zero margin, wavelength bins, max search length) were copied from Swenson's 90m defaults without testing at 1m.
+
+### 4. Slope/aspect not validated for UTM
+
+Stage 8 of the MERIT validation discovered a Y-axis sign inversion in `np.gradient`-based aspect that swapped North and South. The fix (pgrid's `slope_aspect()` with Horn 1981 stencil) was applied to the MERIT validation scripts but *not* to the OSBS pipeline, because pgrid's method assumes geographic coordinates.
+
+The OSBS pipeline uses `np.gradient` with `arctan2(-dzdx, -dzdy)`, which may compensate for the sign issue, but this was never validated against the stage 8 findings. Since aspect controls which bin each pixel falls into, an error here would corrupt all six parameters through incorrect binning.
+
+---
+
 ## Technical Lessons
 
 1. **pysheds edge handling is critical.** Flow routing silently fails when all domain edges are nodata. Always verify that at least some boundary cells contain valid data.
 
-2. **Subsampling is necessary for large DEMs.** The `resolve_flats` step in pysheds has poor scaling with large flat regions. 4x subsampling reduced the problem to manageable size while preserving drainage patterns at scales relevant to hillslope parameterization.
+2. **Subsampling is an open question, not a settled answer.** The `resolve_flats` step in pysheds has poor scaling with large flat regions. 4x subsampling made the problem tractable at 64GB, but the minimum necessary subsampling factor has not been determined. Full resolution and 2x subsampling need to be tested before accepting the current 4x compromise.
 
 3. **Connected component extraction alone is insufficient.** Even after isolating the largest connected region, the bounding box may have all-nodata edges due to irregular tile coverage. Edge trimming is a separate, required step.
 

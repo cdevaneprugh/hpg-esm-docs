@@ -34,7 +34,7 @@ The goal of this work was to implement Swenson's methodology using 1m NEON LIDAR
 
 ## Implementation Arc
 
-The work proceeded in four phases:
+The work has proceeded through six phases:
 
 1. **Port code** -- Fork pysheds, copy Swenson's `pgrid.py` with hillslope methods, fix NumPy 2.0 compatibility, create test suite. See [pysheds Porting](pysheds-porting.md).
 
@@ -42,7 +42,24 @@ The work proceeded in four phases:
 
 3. **Plan OSBS** -- Document resolution-sensitive issues, identify adaptations needed for 1m data, design processing pipeline.
 
-4. **Execute** -- Process 233 NEON LIDAR tiles through the pipeline, debug pysheds scaling issues, produce CTSM-compatible NetCDF output. See [OSBS Implementation](osbs-implementation.md).
+4. **Execute** -- Process 233 NEON LIDAR tiles through the pipeline, debug pysheds scaling issues, produce CTSM-compatible NetCDF output. **In progress — blocked by known issues.** See [OSBS Implementation](osbs-implementation.md).
+
+5. **Fix pipeline** -- Resolve the four issues identified by the February 2026 audit: fix pysheds for UTM coordinates, determine processing resolution, establish trustworthy Lc, validate slope/aspect. *Pending.*
+
+6. **Validate and deploy** -- Produce corrected hillslope parameters, verify physical plausibility, run CTSM branch simulations against the osbs2 baseline. *Pending.*
+
+## Current Status
+
+The methodology is validated and the pipeline runs, but the OSBS output has four known issues that affect the scientific validity of the hillslope parameters:
+
+1. **DTND uses the wrong algorithm** — Euclidean distance to the nearest stream pixel instead of hydrological distance to the drainage-linked stream pixel. Corrupts distance and width parameters.
+2. **4x subsampling discards 93.75% of data** — adopted after a single OOM failure at 64GB; full-resolution and 2x subsampling were never tested.
+3. **Lc computed at 4m, not 1m** — the characteristic length scale has never been determined at full resolution. NumPy handles this easily.
+4. **Slope/aspect not validated for UTM** — a known sign-convention bug was fixed in the MERIT validation but the fix was not carried to the OSBS pipeline.
+
+The current NetCDF output should not be used for CTSM simulations until these are resolved. See [OSBS Implementation — Known Limitations](osbs-implementation.md#known-limitations) for technical details.
+
+The fix work is organized into six phases (A through F), with Phases A-C (pysheds UTM fix, resolution testing, Lc determination) proceeding in parallel, followed by a pipeline rebuild (D), parameter completion (E), and validation (F).
 
 ---
 

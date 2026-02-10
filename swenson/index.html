@@ -1087,6 +1087,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#current-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tools-and-repositories" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1451,6 +1462,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#current-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tools-and-repositories" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1548,7 +1570,7 @@
 <p><strong>Do not reinvent the wheel.</strong> Swenson's paper and codebase served as the template throughout. The implementation followed Swenson's algorithms as closely as possible, deviating only where the change in resolution or coordinate system required adaptation.</p>
 <hr />
 <h2 id="implementation-arc">Implementation Arc<a class="headerlink" href="#implementation-arc" title="Permanent link">&para;</a></h2>
-<p>The work proceeded in four phases:</p>
+<p>The work has proceeded through six phases:</p>
 <ol>
 <li>
 <p><strong>Port code</strong> -- Fork pysheds, copy Swenson's <code>pgrid.py</code> with hillslope methods, fix NumPy 2.0 compatibility, create test suite. See <a href="pysheds-porting/">pysheds Porting</a>.</p>
@@ -1560,9 +1582,25 @@
 <p><strong>Plan OSBS</strong> -- Document resolution-sensitive issues, identify adaptations needed for 1m data, design processing pipeline.</p>
 </li>
 <li>
-<p><strong>Execute</strong> -- Process 233 NEON LIDAR tiles through the pipeline, debug pysheds scaling issues, produce CTSM-compatible NetCDF output. See <a href="osbs-implementation/">OSBS Implementation</a>.</p>
+<p><strong>Execute</strong> -- Process 233 NEON LIDAR tiles through the pipeline, debug pysheds scaling issues, produce CTSM-compatible NetCDF output. <strong>In progress — blocked by known issues.</strong> See <a href="osbs-implementation/">OSBS Implementation</a>.</p>
+</li>
+<li>
+<p><strong>Fix pipeline</strong> -- Resolve the four issues identified by the February 2026 audit: fix pysheds for UTM coordinates, determine processing resolution, establish trustworthy Lc, validate slope/aspect. <em>Pending.</em></p>
+</li>
+<li>
+<p><strong>Validate and deploy</strong> -- Produce corrected hillslope parameters, verify physical plausibility, run CTSM branch simulations against the osbs2 baseline. <em>Pending.</em></p>
 </li>
 </ol>
+<h2 id="current-status">Current Status<a class="headerlink" href="#current-status" title="Permanent link">&para;</a></h2>
+<p>The methodology is validated and the pipeline runs, but the OSBS output has four known issues that affect the scientific validity of the hillslope parameters:</p>
+<ol>
+<li><strong>DTND uses the wrong algorithm</strong> — Euclidean distance to the nearest stream pixel instead of hydrological distance to the drainage-linked stream pixel. Corrupts distance and width parameters.</li>
+<li><strong>4x subsampling discards 93.75% of data</strong> — adopted after a single OOM failure at 64GB; full-resolution and 2x subsampling were never tested.</li>
+<li><strong>Lc computed at 4m, not 1m</strong> — the characteristic length scale has never been determined at full resolution. NumPy handles this easily.</li>
+<li><strong>Slope/aspect not validated for UTM</strong> — a known sign-convention bug was fixed in the MERIT validation but the fix was not carried to the OSBS pipeline.</li>
+</ol>
+<p>The current NetCDF output should not be used for CTSM simulations until these are resolved. See <a href="osbs-implementation/#known-limitations">OSBS Implementation — Known Limitations</a> for technical details.</p>
+<p>The fix work is organized into six phases (A through F), with Phases A-C (pysheds UTM fix, resolution testing, Lc determination) proceeding in parallel, followed by a pipeline rebuild (D), parameter completion (E), and validation (F).</p>
 <hr />
 <h2 id="tools-and-repositories">Tools and Repositories<a class="headerlink" href="#tools-and-repositories" title="Permanent link">&para;</a></h2>
 <table>

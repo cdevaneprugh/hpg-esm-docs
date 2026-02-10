@@ -1355,10 +1355,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
+  <a href="#current-status" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Next Steps
+        Current Status
       
     </span>
   </a>
@@ -1752,10 +1752,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
+  <a href="#current-status" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Next Steps
+        Current Status
       
     </span>
   </a>
@@ -2005,11 +2005,18 @@
 <p><strong>Scale consistency</strong>: The 1m LIDAR data represents a single catchment's actual topography, while the global data represents an average over a much larger gridcell.</p>
 </li>
 </ol>
-<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<h2 id="current-status">Current Status<a class="headerlink" href="#current-status" title="Permanent link">&para;</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Known issues affect parameter values</p>
+<p>The datasets shown above were produced with the pipeline as it existed before the February 2026 audit. Four issues affecting the OSBS pipeline mean the specific parameter values will change when fixes are applied. See <a href="../osbs-implementation/#known-limitations">OSBS Implementation — Known Limitations</a> for details.</p>
+</div>
+<p>The comparison remains useful for understanding the <em>scale</em> of differences between 90m global and 1m site-specific hillslope data — distances are 5-25x shorter, slopes are 3.5x steeper, and the overall relief is comparable. These qualitative patterns will hold regardless of pipeline fixes.</p>
+<p>However, the specific numbers (and any CTSM simulations derived from them) should not be treated as final. The path forward:</p>
 <ol>
-<li>Run branch simulations with both datasets to quantify hydrological differences</li>
-<li>Compare simulated water table dynamics against observations</li>
-<li>Evaluate which resolution better represents OSBS wetland hydrology</li>
+<li>Resolve the four pipeline issues (DTND algorithm, processing resolution, Lc determination, slope/aspect validation)</li>
+<li>Rerun the pipeline to produce corrected datasets</li>
+<li>Update this comparison with the corrected values</li>
+<li>Run branch simulations against the osbs2 baseline to quantify hydrological differences</li>
 </ol>
 
 

@@ -1366,6 +1366,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#known-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known Limitations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Known Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-dtnd-algorithm-computes-the-wrong-distance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. DTND algorithm computes the wrong distance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-4x-subsampling-discards-9375-of-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 4x subsampling discards 93.75% of data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-lc-has-never-been-computed-at-full-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Lc has never been computed at full resolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-slopeaspect-not-validated-for-utm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Slope/aspect not validated for UTM
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#technical-lessons" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1830,6 +1891,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#known-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known Limitations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Known Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-dtnd-algorithm-computes-the-wrong-distance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. DTND algorithm computes the wrong distance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-4x-subsampling-discards-9375-of-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 4x subsampling discards 93.75% of data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-lc-has-never-been-computed-at-full-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Lc has never been computed at full resolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-slopeaspect-not-validated-for-utm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Slope/aspect not validated for UTM
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#technical-lessons" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2105,13 +2227,13 @@
 <td>DTND calculation</td>
 <td>Haversine (geographic)</td>
 <td>Euclidean (EDT)</td>
-<td>UTM coordinates are already in meters</td>
+<td>pysheds haversine assumes lat/lon, produces garbage on UTM; EDT fixes the math but changes the concept (see <a href="#known-limitations">Known Limitations</a>)</td>
 </tr>
 <tr>
 <td>Processing resolution</td>
 <td>Full resolution</td>
 <td>4x subsampled</td>
-<td>Memory/compute constraints for <code>resolve_flats</code></td>
+<td><code>resolve_flats</code> OOM at 64GB; full-res at 256GB and 2x subsampling were never tested</td>
 </tr>
 <tr>
 <td>Edge handling</td>
@@ -2123,7 +2245,7 @@
 <td>Lc determination</td>
 <td>FFT natural peak</td>
 <td>Constrained &gt;= 100m</td>
-<td>1m data picks up noise/microtopography</td>
+<td>1m data picks up noise/microtopography; FFT has only run at 4m effective resolution</td>
 </tr>
 <tr>
 <td>Connected component</td>
@@ -2135,7 +2257,7 @@
 <td>Slope calculation</td>
 <td><code>slope_aspect()</code> on geographic DEM</td>
 <td><code>np.gradient()</code> on original DEM with NaN</td>
-<td>UTM coords; must avoid pysheds nodata fill</td>
+<td>pgrid's Horn 1981 method assumes geographic coords; <code>np.gradient</code> sign convention not validated against stage 8 findings</td>
 </tr>
 </tbody>
 </table>
@@ -2295,13 +2417,52 @@
 <p>The full mosaic showed a strong E/W bias (66% combined), likely caused by edge artifacts or non-representative terrain at the boundary. The interior mosaic produced a much more uniform aspect distribution (~25% per direction), consistent with expectations for gently rolling terrain without a dominant orientation.</p>
 </div>
 <hr />
+<h2 id="known-limitations">Known Limitations<a class="headerlink" href="#known-limitations" title="Permanent link">&para;</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Current output is not suitable for CTSM simulations</p>
+<p>The February 2026 audit identified four issues that directly affect the hillslope parameters produced by this pipeline. The methodology is validated and the pipeline engineering is solid, but the specific parameter values in the current NetCDF output will change when these issues are resolved.</p>
+</div>
+<h3 id="1-dtnd-algorithm-computes-the-wrong-distance">1. DTND algorithm computes the wrong distance<a class="headerlink" href="#1-dtnd-algorithm-computes-the-wrong-distance" title="Permanent link">&para;</a></h3>
+<p>The pipeline replaced pysheds' haversine-based DTND with <code>scipy.ndimage.distance_transform_edt</code>. This fixed the math (Euclidean distance on UTM coordinates instead of haversine) but changed the concept: EDT finds the <em>geographically nearest</em> stream pixel, while Swenson's method finds the <em>hydrologically nearest</em> stream pixel (the one each cell actually drains to via D8 routing). These differ whenever a pixel is geographically closer to a stream on the opposite side of a drainage divide.</p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Concept</th>
+<th>Math</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pysheds DTND</td>
+<td>Correct (flow-path-linked)</td>
+<td>Wrong (haversine on UTM)</td>
+</tr>
+<tr>
+<td>Pipeline EDT</td>
+<td>Wrong (nearest regardless of drainage)</td>
+<td>Correct (Euclidean on UTM)</td>
+</tr>
+</tbody>
+</table>
+<p>Neither DTND is currently correct. The fix requires modifying pysheds' <code>compute_hand()</code> to detect UTM CRS and use Euclidean distance. Wrong DTND also corrupts the trapezoidal width fit, since width is derived from the A_sum(d) curve.</p>
+<h3 id="2-4x-subsampling-discards-9375-of-data">2. 4x subsampling discards 93.75% of data<a class="headerlink" href="#2-4x-subsampling-discards-9375-of-data" title="Permanent link">&para;</a></h3>
+<p>The 4x subsampling was adopted after a single OOM failure at 64GB. Full resolution at 256GB was never tested. Neither was 2x subsampling at 128GB.</p>
+<p>The entire justification for using 1m LIDAR is to capture fine-scale drainage in a low-relief wetlandscape. Subsampling to 4m effective resolution undermines that purpose — small channels, wetland margins, and subtle elevation differences that drive TAI dynamics become invisible. Whether the current 4x factor is acceptable, excessive, or unnecessary is an open question that requires systematic testing across resolutions.</p>
+<h3 id="3-lc-has-never-been-computed-at-full-resolution">3. Lc has never been computed at full resolution<a class="headerlink" href="#3-lc-has-never-been-computed-at-full-resolution" title="Permanent link">&para;</a></h3>
+<p>The FFT spectral analysis ran on the 4x-subsampled grid. For the full mosaic, it failed to find a real peak and fell back to the hardcoded 100m minimum. For the interior mosaic, it found 166m — but at 4m effective resolution, features at wavelengths below 8m are invisible.</p>
+<p>The full-resolution FFT has never been run on OSBS data. NumPy handles arrays of this size without difficulty, so this is an easy fix. Additionally, the FFT parameters (blend window, zero margin, wavelength bins, max search length) were copied from Swenson's 90m defaults without testing at 1m.</p>
+<h3 id="4-slopeaspect-not-validated-for-utm">4. Slope/aspect not validated for UTM<a class="headerlink" href="#4-slopeaspect-not-validated-for-utm" title="Permanent link">&para;</a></h3>
+<p>Stage 8 of the MERIT validation discovered a Y-axis sign inversion in <code>np.gradient</code>-based aspect that swapped North and South. The fix (pgrid's <code>slope_aspect()</code> with Horn 1981 stencil) was applied to the MERIT validation scripts but <em>not</em> to the OSBS pipeline, because pgrid's method assumes geographic coordinates.</p>
+<p>The OSBS pipeline uses <code>np.gradient</code> with <code>arctan2(-dzdx, -dzdy)</code>, which may compensate for the sign issue, but this was never validated against the stage 8 findings. Since aspect controls which bin each pixel falls into, an error here would corrupt all six parameters through incorrect binning.</p>
+<hr />
 <h2 id="technical-lessons">Technical Lessons<a class="headerlink" href="#technical-lessons" title="Permanent link">&para;</a></h2>
 <ol>
 <li>
 <p><strong>pysheds edge handling is critical.</strong> Flow routing silently fails when all domain edges are nodata. Always verify that at least some boundary cells contain valid data.</p>
 </li>
 <li>
-<p><strong>Subsampling is necessary for large DEMs.</strong> The <code>resolve_flats</code> step in pysheds has poor scaling with large flat regions. 4x subsampling reduced the problem to manageable size while preserving drainage patterns at scales relevant to hillslope parameterization.</p>
+<p><strong>Subsampling is an open question, not a settled answer.</strong> The <code>resolve_flats</code> step in pysheds has poor scaling with large flat regions. 4x subsampling made the problem tractable at 64GB, but the minimum necessary subsampling factor has not been determined. Full resolution and 2x subsampling need to be tested before accepting the current 4x compromise.</p>
 </li>
 <li>
 <p><strong>Connected component extraction alone is insufficient.</strong> Even after isolating the largest connected region, the bounding box may have all-nodata edges due to irregular tile coverage. Edge trimming is a separate, required step.</p>

@@ -42,6 +42,7 @@ Ongoing improvements to CTSM on HiPerGator documentation.
 - [ ] **Claude Code page** (tentative): How to use Claude for CTSM work
 - [ ] **Analysis scripts**: Document hpg-esm-tools scripts
 - [ ] **Recommended workflows**: Best practices accumulated over time
+- [ ] **Best Practices**: Add the best practices and development guide. Maybe restructure to be human friendly instead of Claude friendly.
 
 ## Deferred
 

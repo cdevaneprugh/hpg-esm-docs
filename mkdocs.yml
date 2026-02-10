@@ -66,6 +66,7 @@ nav:
     - pysheds Porting: swenson/pysheds-porting.md
     - MERIT Validation: swenson/merit-validation.md
     - OSBS Implementation: swenson/osbs-implementation.md
+    - Dataset Comparison: swenson/dataset-comparison.md
   - Reference:
     - Fork Modifications: reference/modifications.md
     - External Resources: reference/resources.md

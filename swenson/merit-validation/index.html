@@ -1018,7 +1018,7 @@
   <span class="md-ellipsis">
     
   
-    pysheds Porting
+    pysheds Fork
   
 
     
@@ -1278,6 +1278,73 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Summary of Bugs Found and Fixed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validation-stages-january-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation Stages (January 2026)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-audit-fixes-february-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-Audit Fixes (February 2026)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-audit-improvements-february-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-Audit Improvements (February 2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Post-Audit Improvements (February 2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#area-fraction-progression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Area Fraction Progression
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consolidated-regression-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consolidated Regression Test
+      
+    </span>
+  </a>
+  
 </li>
       
     </ul>
@@ -1303,7 +1370,7 @@
   <span class="md-ellipsis">
     
   
-    OSBS Implementation
+    Methodology
   
 
     
@@ -1702,6 +1769,73 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Summary of Bugs Found and Fixed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validation-stages-january-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation Stages (January 2026)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-audit-fixes-february-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-Audit Fixes (February 2026)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-audit-improvements-february-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-Audit Improvements (February 2026)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Post-Audit Improvements (February 2026)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#area-fraction-progression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Area Fraction Progression
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consolidated-regression-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consolidated Regression Test
+      
+    </span>
+  </a>
+  
 </li>
       
     </ul>
@@ -2063,6 +2197,7 @@
 <p>The best correlation (0.83 at threshold=20) was only marginally better than the baseline. Higher thresholds degraded rapidly. The remaining ~17% unexplained variance was attributed to differences in DEM preprocessing, edge effects from spatial extent differences, and undocumented methodology differences in the published data.</p>
 <hr />
 <h2 id="final-results">Final Results<a class="headerlink" href="#final-results" title="Permanent link">&para;</a></h2>
+<p>After the nine validation stages and subsequent post-audit improvements (see below), the consolidated regression test establishes these baseline correlations:</p>
 <table>
 <thead>
 <tr>
@@ -2074,40 +2209,44 @@
 <tbody>
 <tr>
 <td>Height</td>
-<td>0.9999</td>
+<td>0.9979</td>
 <td>Excellent</td>
 </tr>
 <tr>
 <td>Distance</td>
-<td>0.9982</td>
+<td>0.9992</td>
 <td>Excellent</td>
 </tr>
 <tr>
 <td>Slope</td>
-<td>0.9966</td>
+<td>0.9839</td>
 <td>Excellent</td>
 </tr>
 <tr>
 <td>Aspect</td>
-<td>0.9999</td>
+<td>1.0000</td>
 <td>Excellent</td>
 </tr>
 <tr>
 <td>Width</td>
-<td>0.9597</td>
+<td>0.9919</td>
 <td>Excellent</td>
 </tr>
 <tr>
 <td>Area</td>
-<td>0.8200</td>
-<td>Good</td>
+<td>0.9244</td>
+<td>Excellent</td>
 </tr>
 </tbody>
 </table>
-<p>Five of six parameters achieved &gt;0.95 correlation with Swenson's published data.</p>
+<p>All six parameters achieved &gt;0.92 correlation with Swenson's published data, with five above 0.98. These values serve as the regression baseline -- the automated regression test confirms them within 0.01 tolerance on each run.</p>
+<div class="admonition note">
+<p class="admonition-title">Correlation shifts from Stage 8</p>
+<p>Some individual parameter correlations shifted slightly from the Stage 8 values (e.g., Height 0.9999 -&gt; 0.9979) because the post-audit fixes changed stream network delineation, aspect averaging, and indexing. This is not a regression -- area fraction improved from 0.82 to 0.92, which was the primary target. All other parameters remain above 0.98.</p>
+</div>
 <hr />
 <h2 id="area-discrepancy-analysis">Area Discrepancy Analysis<a class="headerlink" href="#area-discrepancy-analysis" title="Permanent link">&para;</a></h2>
-<p>Three potential causes of the area fraction discrepancy were investigated:</p>
+<p>The area fraction gap (0.92 vs 1.0) was investigated through 15 hypotheses during a systematic audit (see <code>area_fraction_research.md</code>). The dominant remaining sources are:</p>
 <table>
 <thead>
 <tr>
@@ -2118,28 +2257,26 @@
 </thead>
 <tbody>
 <tr>
-<td>Region/gridcell mismatch</td>
+<td>Stream network delineation</td>
 <td><strong>Primary</strong></td>
-<td>Even after the Stage 7 fix, minor boundary differences remained. The southern extension of the processed region included low-lying terrain that inflated the lowest HAND bin for north-facing slopes.</td>
+<td>Differences between pysheds versions and our multi-region median Lc approach vs Swenson's single-region Lc produce slightly different stream networks, shifting catchment boundaries and bin populations</td>
 </tr>
 <tr>
-<td>HAND bin computation</td>
+<td>Accumulation threshold sensitivity</td>
 <td>Secondary</td>
-<td>Differences in bin boundary rounding and per-aspect handling</td>
+<td>~2% sensitivity per 3x threshold change</td>
 </tr>
 <tr>
-<td>Accumulation threshold</td>
+<td>Per-aspect bin boundary variation</td>
 <td>Minor</td>
-<td>~2% sensitivity per 3x threshold change</td>
+<td>Small HAND differences push the Q25 statistic across the mandatory 2m threshold differently per aspect</td>
 </tr>
 </tbody>
 </table>
-<div class="admonition tip">
-<p class="admonition-title">Why this is acceptable</p>
-<p>Height, distance, slope, aspect, and width are all <em>means within bins</em> and are insensitive to small changes in bin boundaries. Area is the <em>total per bin</em>, making it more sensitive to bin boundary choices. The 0.82 correlation was considered sufficient to validate the methodology for OSBS, where custom data would be produced rather than replicated from the published dataset.</p>
-</div>
+<p>The 0.92 correlation represents the practical ceiling for this validation approach. Height, distance, slope, aspect, and width are all <em>means within bins</em> and are insensitive to small changes in bin boundaries. Area fraction is the <em>total per bin</em>, making it inherently more sensitive to bin boundary choices and stream network differences.</p>
 <hr />
 <h2 id="summary-of-bugs-found-and-fixed">Summary of Bugs Found and Fixed<a class="headerlink" href="#summary-of-bugs-found-and-fixed" title="Permanent link">&para;</a></h2>
+<h3 id="validation-stages-january-2026">Validation Stages (January 2026)<a class="headerlink" href="#validation-stages-january-2026" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -2188,6 +2325,109 @@
 </tr>
 </tbody>
 </table>
+<h3 id="post-audit-fixes-february-2026">Post-Audit Fixes (February 2026)<a class="headerlink" href="#post-audit-fixes-february-2026" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Bug</th>
+<th>Root Cause</th>
+<th>Fix</th>
+<th>Area fraction impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Basin mask using DEM difference</td>
+<td><code>identify_open_water</code> should be binary mask</td>
+<td>Binary flood-fill mask</td>
+<td>+0.01</td>
+</tr>
+<tr>
+<td>Per-pixel aspect binning</td>
+<td>Pixels near aspect boundaries misassigned</td>
+<td>Catchment-level circular mean aspect averaging</td>
+<td>+0.08</td>
+</tr>
+<tr>
+<td>n_hillslopes indexing</td>
+<td>Indexed expanded grid with gridcell-level indices</td>
+<td>Extract drainage_id to gridcell before indexing</td>
+<td>+0.02</td>
+</tr>
+<tr>
+<td>Polynomial fit weighting</td>
+<td>w^2 weighting vs Swenson's w^1</td>
+<td>Match Swenson's normal equations</td>
+<td>minor</td>
+</tr>
+<tr>
+<td>DTND tail outliers</td>
+<td>Long-DTND pixels from DEM artifacts</td>
+<td>Exponential tail removal before width fitting</td>
+<td>+0.002</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="post-audit-improvements-february-2026">Post-Audit Improvements (February 2026)<a class="headerlink" href="#post-audit-improvements-february-2026" title="Permanent link">&para;</a></h2>
+<p>A line-by-line audit of the validation pipeline against Swenson's original code identified five additional alignment opportunities. The area fraction — the weakest parameter at 0.82 after Stage 8 — improved to 0.92.</p>
+<h3 id="area-fraction-progression">Area Fraction Progression<a class="headerlink" href="#area-fraction-progression" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Fix</th>
+<th>Area fraction</th>
+<th>Delta</th>
+<th>Mechanism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stage 8 baseline</td>
+<td>0.82</td>
+<td>--</td>
+<td>N/S aspect fix applied</td>
+</tr>
+<tr>
+<td>Basin mask correction</td>
+<td>0.8284</td>
+<td>+0.01</td>
+<td>Binary <code>identify_open_water</code> mask instead of DEM-difference threshold</td>
+</tr>
+<tr>
+<td>Catchment-level aspect averaging</td>
+<td>0.9047</td>
+<td>+0.08</td>
+<td>Per-catchment circular mean before aspect binning</td>
+</tr>
+<tr>
+<td>n_hillslopes indexing fix</td>
+<td>0.9221</td>
+<td>+0.02</td>
+<td>Extract drainage_id to gridcell before indexing hillslope counts</td>
+</tr>
+<tr>
+<td>DTND tail removal</td>
+<td>0.9244</td>
+<td>+0.002</td>
+<td>Exponential fit removes long-DTND outliers before width fitting</td>
+</tr>
+</tbody>
+</table>
+<p>Catchment-level aspect averaging was the single largest improvement (+0.08). Swenson replaces per-pixel aspects with the circular mean of all pixels in the same catchment-side group before aspect binning. This stabilizes bin assignments for pixels near aspect boundaries, which is important because small HAND differences push the Q25 statistic across the mandatory 2m bin threshold differently per aspect.</p>
+<hr />
+<h2 id="consolidated-regression-test">Consolidated Regression Test<a class="headerlink" href="#consolidated-regression-test" title="Permanent link">&para;</a></h2>
+<p>The nine stage scripts were consolidated into a single regression script (<code>merit_regression.py</code>) that serves as an automated regression test for the pysheds fork. Run after any changes to <code>pgrid.py</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$TOOLS</span>/swenson
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>sbatch<span class="w"> </span>scripts/merit_validation/merit_regression.sh
+</code></pre></div>
+<p>The script computes Lc via multi-region FFT and all six hillslope parameters for the published MERIT gridcell, then asserts:</p>
+<ul>
+<li><strong>Lc</strong>: Within 5% of 763m</li>
+<li><strong>All 6 parameter correlations</strong>: Within 0.01 of expected baselines</li>
+</ul>
+<p>Runtime: ~10-20 minutes, 48GB allocation. Outputs <code>results.json</code> and <code>summary.txt</code> to <code>scripts/merit_validation/output/</code>. Exits 0 on PASS, 1 on FAIL.</p>
+<p>The original nine stage scripts are archived in <code>audit/merit_validation_stages/</code>.</p>
 
 
 
@@ -2223,7 +2463,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../pysheds-porting/" class="md-footer__link md-footer__link--prev" aria-label="Previous: pysheds Porting">
+          <a href="../pysheds-porting/" class="md-footer__link md-footer__link--prev" aria-label="Previous: pysheds Fork">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2233,20 +2473,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                pysheds Porting
+                pysheds Fork
               </div>
             </div>
           </a>
         
         
           
-          <a href="../osbs-implementation/" class="md-footer__link md-footer__link--next" aria-label="Next: OSBS Implementation">
+          <a href="../osbs-implementation/" class="md-footer__link md-footer__link--next" aria-label="Next: Methodology">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                OSBS Implementation
+                Methodology
               </div>
             </div>
             <div class="md-footer__button md-icon">

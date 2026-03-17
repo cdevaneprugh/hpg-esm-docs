@@ -27,7 +27,7 @@
     
     
       
-        <title>OSBS Implementation - CTSM on HiPerGator</title>
+        <title>Methodology - CTSM on HiPerGator</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#osbs-implementation" class="md-skip">
+        <a href="#methodology" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              OSBS Implementation
+              Methodology
             
           </span>
         </div>
@@ -1018,7 +1018,7 @@
   <span class="md-ellipsis">
     
   
-    pysheds Porting
+    pysheds Fork
   
 
     
@@ -1083,7 +1083,7 @@
   <span class="md-ellipsis">
     
   
-    OSBS Implementation
+    Methodology
   
 
     
@@ -1101,7 +1101,7 @@
   <span class="md-ellipsis">
     
   
-    OSBS Implementation
+    Methodology
   
 
     
@@ -1127,38 +1127,38 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
+  <a href="#study-domain-and-data" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Introduction
+        Study Domain and Data
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#neon-lidar-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        NEON LIDAR Data
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dem-preprocessing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DEM Preprocessing
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="DEM Preprocessing">
+    <nav class="md-nav" aria-label="Study Domain and Data">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#neon-lidar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NEON LIDAR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production Domain
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#tile-reference-system" class="md-nav__link">
@@ -1177,33 +1177,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#resolution-challenges" class="md-nav__link">
+  <a href="#characteristic-length-scale-lc" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Resolution Challenges
+        Characteristic Length Scale (Lc)
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#small-scale-smoke-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Small-Scale Smoke Test
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Small-Scale Smoke Test">
+    <nav class="md-nav" aria-label="Characteristic Length Scale (Lc)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#issues-found-and-fixed" class="md-nav__link">
+  <a href="#standard-method" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Issues Found and Fixed
+        Standard method
       
     </span>
   </a>
@@ -1211,10 +1200,54 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#results" class="md-nav__link">
+  <a href="#the-k2-artifact-at-1m" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Results
+        The k^2 artifact at 1m
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution-restricted-wavelength-fft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solution: restricted-wavelength FFT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Result
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#physical-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Physical validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sensitivity
       
     </span>
   </a>
@@ -1227,22 +1260,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#full-mosaic-processing" class="md-nav__link">
+  <a href="#stream-network-delineation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Full Mosaic Processing
+        Stream Network Delineation
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Full Mosaic Processing">
+    <nav class="md-nav" aria-label="Stream Network Delineation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#debugging-journey" class="md-nav__link">
+  <a href="#accumulation-threshold" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Debugging Journey
+        Accumulation threshold
       
     </span>
   </a>
@@ -1250,10 +1283,43 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#processing-pipeline" class="md-nav__link">
+  <a href="#dem-conditioning" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Processing Pipeline
+        DEM conditioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connected-component-extraction-and-edge-trimming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connected-component extraction and edge trimming
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stream-network-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stream network results
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitation-depression-filling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known limitation: depression filling
       
     </span>
   </a>
@@ -1266,44 +1332,88 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#slope-calculation-bug" class="md-nav__link">
+  <a href="#hillslope-parameter-computation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Slope Calculation Bug
+        Hillslope Parameter Computation
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#algorithm-differences-from-swenson" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Algorithm Differences from Swenson
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#interior-tile-selection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interior Tile Selection
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Interior Tile Selection">
+    <nav class="md-nav" aria-label="Hillslope Parameter Computation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#key-difference-lc" class="md-nav__link">
+  <a href="#hand-and-dtnd" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Difference: Lc
+        HAND and DTND
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#slope-and-aspect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slope and aspect
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#catchment-level-aspect-averaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Catchment-level aspect averaging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aspect-binning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aspect binning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hand-binning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HAND binning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dtnd-tail-removal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DTND tail removal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trapezoidal-width-fitting-swenson-eq-9-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trapezoidal width fitting (Swenson Eq. 9--16)
       
     </span>
   </a>
@@ -1316,15 +1426,37 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#netcdf-output" class="md-nav__link">
+  <a href="#processing-resolution" class="md-nav__link">
     <span class="md-ellipsis">
       
-        NetCDF Output
+        Processing Resolution
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="NetCDF Output">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adaptations-from-swenson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adaptations from Swenson
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Format
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Format">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1342,7 +1474,7 @@
   <a href="#key-variables" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Variables
+        Key variables
       
     </span>
   </a>
@@ -1355,82 +1487,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#comparison-full-vs-interior" class="md-nav__link">
+  <a href="#current-limitations-and-remaining-work" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Comparison: Full vs Interior
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#known-limitations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Known Limitations
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Known Limitations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-dtnd-algorithm-computes-the-wrong-distance" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. DTND algorithm computes the wrong distance
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-4x-subsampling-discards-9375-of-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. 4x subsampling discards 93.75% of data
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-lc-has-never-been-computed-at-full-resolution" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Lc has never been computed at full resolution
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-slopeaspect-not-validated-for-utm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Slope/aspect not validated for UTM
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#technical-lessons" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Technical Lessons
+        Current Limitations and Remaining Work
       
     </span>
   </a>
@@ -1652,38 +1712,38 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
+  <a href="#study-domain-and-data" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Introduction
+        Study Domain and Data
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#neon-lidar-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        NEON LIDAR Data
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dem-preprocessing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DEM Preprocessing
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="DEM Preprocessing">
+    <nav class="md-nav" aria-label="Study Domain and Data">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#neon-lidar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NEON LIDAR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production Domain
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#tile-reference-system" class="md-nav__link">
@@ -1702,33 +1762,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#resolution-challenges" class="md-nav__link">
+  <a href="#characteristic-length-scale-lc" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Resolution Challenges
+        Characteristic Length Scale (Lc)
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#small-scale-smoke-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Small-Scale Smoke Test
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Small-Scale Smoke Test">
+    <nav class="md-nav" aria-label="Characteristic Length Scale (Lc)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#issues-found-and-fixed" class="md-nav__link">
+  <a href="#standard-method" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Issues Found and Fixed
+        Standard method
       
     </span>
   </a>
@@ -1736,10 +1785,54 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#results" class="md-nav__link">
+  <a href="#the-k2-artifact-at-1m" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Results
+        The k^2 artifact at 1m
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution-restricted-wavelength-fft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solution: restricted-wavelength FFT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Result
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#physical-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Physical validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sensitivity
       
     </span>
   </a>
@@ -1752,22 +1845,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#full-mosaic-processing" class="md-nav__link">
+  <a href="#stream-network-delineation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Full Mosaic Processing
+        Stream Network Delineation
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Full Mosaic Processing">
+    <nav class="md-nav" aria-label="Stream Network Delineation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#debugging-journey" class="md-nav__link">
+  <a href="#accumulation-threshold" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Debugging Journey
+        Accumulation threshold
       
     </span>
   </a>
@@ -1775,10 +1868,43 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#processing-pipeline" class="md-nav__link">
+  <a href="#dem-conditioning" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Processing Pipeline
+        DEM conditioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connected-component-extraction-and-edge-trimming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connected-component extraction and edge trimming
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stream-network-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stream network results
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitation-depression-filling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known limitation: depression filling
       
     </span>
   </a>
@@ -1791,44 +1917,88 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#slope-calculation-bug" class="md-nav__link">
+  <a href="#hillslope-parameter-computation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Slope Calculation Bug
+        Hillslope Parameter Computation
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#algorithm-differences-from-swenson" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Algorithm Differences from Swenson
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#interior-tile-selection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interior Tile Selection
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Interior Tile Selection">
+    <nav class="md-nav" aria-label="Hillslope Parameter Computation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#key-difference-lc" class="md-nav__link">
+  <a href="#hand-and-dtnd" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Difference: Lc
+        HAND and DTND
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#slope-and-aspect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slope and aspect
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#catchment-level-aspect-averaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Catchment-level aspect averaging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aspect-binning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aspect binning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hand-binning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HAND binning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dtnd-tail-removal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DTND tail removal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trapezoidal-width-fitting-swenson-eq-9-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trapezoidal width fitting (Swenson Eq. 9--16)
       
     </span>
   </a>
@@ -1841,15 +2011,37 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#netcdf-output" class="md-nav__link">
+  <a href="#processing-resolution" class="md-nav__link">
     <span class="md-ellipsis">
       
-        NetCDF Output
+        Processing Resolution
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="NetCDF Output">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adaptations-from-swenson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adaptations from Swenson
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Format
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Format">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1867,7 +2059,7 @@
   <a href="#key-variables" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Variables
+        Key variables
       
     </span>
   </a>
@@ -1880,82 +2072,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#comparison-full-vs-interior" class="md-nav__link">
+  <a href="#current-limitations-and-remaining-work" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Comparison: Full vs Interior
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#known-limitations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Known Limitations
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Known Limitations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-dtnd-algorithm-computes-the-wrong-distance" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. DTND algorithm computes the wrong distance
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-4x-subsampling-discards-9375-of-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. 4x subsampling discards 93.75% of data
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-lc-has-never-been-computed-at-full-resolution" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Lc has never been computed at full resolution
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-slopeaspect-not-validated-for-utm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Slope/aspect not validated for UTM
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#technical-lessons" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Technical Lessons
+        Current Limitations and Remaining Work
       
     </span>
   </a>
@@ -1979,13 +2099,13 @@
 
 
 
-<h1 id="osbs-implementation">OSBS Implementation<a class="headerlink" href="#osbs-implementation" title="Permanent link">&para;</a></h1>
-<p><em>Applying the validated hillslope methodology to 1m NEON LIDAR data for the Ordway-Swisher Biological Station.</em></p>
+<h1 id="methodology">Methodology<a class="headerlink" href="#methodology" title="Permanent link">&para;</a></h1>
+<p><em>Representative hillslope parameters for OSBS from 1m NEON LIDAR following Swenson &amp; Lawrence (2025).</em></p>
 <hr />
-<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
-<p>With the pipeline validated against Swenson's published data (see <a href="../merit-validation/">MERIT Validation</a>), the next step was to apply it to 1m NEON LIDAR data for OSBS. This required adapting the pipeline for a 90x finer resolution, UTM coordinates instead of geographic, and irregular tile coverage with nodata gaps.</p>
+<p>This page describes the methods used to produce the hillslope parameter file for OSBS. The methodology follows Swenson &amp; Lawrence (2025) with adaptations for UTM CRS and 1m resolution. The pipeline was validated against Swenson's published data (see <a href="../merit-validation/">MERIT Validation</a>) and verified through three independent audits: equation verification, full pipeline audit, and line-by-line divergence audit against Swenson's original code.</p>
 <hr />
-<h2 id="neon-lidar-data">NEON LIDAR Data<a class="headerlink" href="#neon-lidar-data" title="Permanent link">&para;</a></h2>
+<h2 id="study-domain-and-data">Study Domain and Data<a class="headerlink" href="#study-domain-and-data" title="Permanent link">&para;</a></h2>
+<h3 id="neon-lidar">NEON LIDAR<a class="headerlink" href="#neon-lidar" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -2011,10 +2131,6 @@
 <td>233 DTM tiles</td>
 </tr>
 <tr>
-<td>Total size</td>
-<td>554 MB</td>
-</tr>
-<tr>
 <td>Resolution</td>
 <td>1.0 m</td>
 </tr>
@@ -2028,42 +2144,10 @@
 </tr>
 </tbody>
 </table>
-<hr />
-<h2 id="dem-preprocessing">DEM Preprocessing<a class="headerlink" href="#dem-preprocessing" title="Permanent link">&para;</a></h2>
-<p>The 233 tiles were stitched into a single mosaic for processing.</p>
-<table>
-<thead>
-<tr>
-<th>Property</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Mosaic dimensions</td>
-<td>19,000 x 17,000 pixels</td>
-</tr>
-<tr>
-<td>Geographic extent</td>
-<td>19 x 17 km (323 km^2)</td>
-</tr>
-<tr>
-<td>Elevation range</td>
-<td>23.2 - 69.2 m</td>
-</tr>
-<tr>
-<td>Mean elevation</td>
-<td>38.4 m</td>
-</tr>
-<tr>
-<td>Valid data coverage</td>
-<td>58.5% (tiles form an irregular shape)</td>
-</tr>
-</tbody>
-</table>
-<p>The low total relief (~46 m) confirmed this is a low-relief wetlandscape where 1m LIDAR captures subtle topography that 90m MERIT would miss.</p>
+<h3 id="production-domain">Production Domain<a class="headerlink" href="#production-domain" title="Permanent link">&para;</a></h3>
+<p>The production domain is R4C5--R12C14: a 9x10 km (90 km^2) rectangle of 90 tiles with 0% nodata --- the largest contiguous rectangle within the NEON tile coverage. This domain was selected to avoid the nodata gaps present in the full tile mosaic (233 tiles, 323 km^2, 58.5% valid data), which cause silent failures in pysheds flow routing when all domain boundary cells are nodata.</p>
+<p>DEM elevation ranges from 23 to 69 m with ~46 m total relief. The low total relief confirms this is a low-relief wetlandscape where meter-scale elevation differences control wetland-upland transitions.</p>
 <h3 id="tile-reference-system">Tile Reference System<a class="headerlink" href="#tile-reference-system" title="Permanent link">&para;</a></h3>
-<p>A grid reference system was created for identifying tiles during review and selection:</p>
 <p><img alt="Tile grid reference showing OSBS NEON tile coverage" src="../images/tile_grid_reference.png" /></p>
 <ul>
 <li><strong>Format:</strong> <code>R{row}C{col}</code> (e.g., R5C7)</li>
@@ -2072,51 +2156,85 @@
 <li><strong>KML export</strong> available for Google Earth overlay</li>
 </ul>
 <hr />
-<h2 id="resolution-challenges">Resolution Challenges<a class="headerlink" href="#resolution-challenges" title="Permanent link">&para;</a></h2>
-<p>Adapting from 90m MERIT to 1m LIDAR introduced several issues that required explicit handling:</p>
+<h2 id="characteristic-length-scale-lc">Characteristic Length Scale (Lc)<a class="headerlink" href="#characteristic-length-scale-lc" title="Permanent link">&para;</a></h2>
+<p>The characteristic length scale Lc determines the accumulation threshold A_thresh = 0.5 * Lc^2 (Swenson Eq. 6), which controls stream network density. All downstream parameters --- HAND, DTND, catchment delineation, and all six hillslope parameters --- depend on it.</p>
+<h3 id="standard-method">Standard method<a class="headerlink" href="#standard-method" title="Permanent link">&para;</a></h3>
+<p>Swenson's approach applies the Laplacian operator to the DEM, computes the 2D Fourier transform, bins the spectrum radially, and fits Gaussian/lognormal models to identify the wavelength of peak amplitude. This works at 90m MERIT resolution because features below ~180m (the Nyquist limit) are already averaged away, leaving a single dominant drainage-scale peak. On MERIT, this produces Lc = 763 m.</p>
+<h3 id="the-k2-artifact-at-1m">The k^2 artifact at 1m<a class="headerlink" href="#the-k2-artifact-at-1m" title="Permanent link">&para;</a></h3>
+<p>At 1m resolution, the standard method identifies a peak at 8.1 m. This is not the drainage scale --- it is a spectral artifact. The Laplacian operator weights the spectrum by k^2, amplifying short-wavelength features relative to longer ones. The raw DEM spectrum (without the Laplacian) is monotonically increasing red noise with no peaked feature at any scale. The k^2 weighting amplifies micro-topographic features (tree-throw mounds, animal burrows, shallow rills) that are invisible at 90m by orders of magnitude relative to the drainage-scale features at 200--500 m. At 1m, the raw 8 m amplitude is ~620x weaker than the 200--500 m amplitude, but the k^2 factor (300/8)^2 ~ 1400x inverts their relative prominence in the Laplacian spectrum.</p>
+<p>Physical implausibility confirms the artifact interpretation: A_thresh = 0.5 * 8^2 = 32 m^2 would classify 20--40% of all pixels as stream --- not a meaningful drainage network.</p>
+<h3 id="solution-restricted-wavelength-fft">Solution: restricted-wavelength FFT<a class="headerlink" href="#solution-restricted-wavelength-fft" title="Permanent link">&para;</a></h3>
+<p>Excluding wavelengths below 20 m before peak fitting reveals the drainage-scale peak. The 20 m cutoff separates micro-topography from organized drainage structure, analogous to what 90m resolution does implicitly by averaging away sub-180 m features.</p>
+<p>Restricted-wavelength sweep on the contiguous production mosaic (9000 x 10000 pixels, 0% nodata):</p>
 <table>
 <thead>
 <tr>
-<th>Issue</th>
-<th>Impact at 1m</th>
-<th>Adaptation</th>
+<th>Min wavelength</th>
+<th>Lc (m)</th>
+<th>Model</th>
+<th>Interpretation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>FFT noise</td>
-<td>Spectral analysis detects microtopography, not drainage patterns</td>
-<td>Added minimum Lc constraint (100m)</td>
+<td>None (full)</td>
+<td>8.1</td>
+<td>lognormal</td>
+<td>Micro-topographic artifact</td>
 </tr>
 <tr>
-<td>Memory</td>
-<td>323M pixels exceeds pysheds <code>resolve_flats</code> capacity</td>
-<td>4x subsampling for flow routing</td>
+<td>10 m</td>
+<td>11.7</td>
+<td>lognormal</td>
+<td>Still dominated by micro-topography</td>
 </tr>
 <tr>
-<td>DTND formula</td>
-<td>pysheds <code>compute_hand()</code> uses haversine (expects lat/lon, not UTM)</td>
-<td>Replaced with <code>scipy.ndimage.distance_transform_edt</code></td>
+<td>20 m</td>
+<td>356</td>
+<td>lognormal</td>
+<td>Drainage-scale peak emerges</td>
 </tr>
 <tr>
-<td>Edge blending</td>
-<td>Original 4-pixel FFT window = 360m at 90m but only 4m at 1m</td>
-<td>Increased to 50 pixels (50m)</td>
+<td>50 m</td>
+<td>356</td>
+<td>lognormal</td>
+<td>Stable</td>
 </tr>
 <tr>
-<td>Hardcoded thresholds</td>
-<td><code>smallest_dtnd=1.0m</code> masks fine-scale drainage at 1m res</td>
-<td>Noted; acceptable for initial runs</td>
+<td>100 m</td>
+<td>285</td>
+<td>gaussian</td>
+<td>Stable (different model, same feature)</td>
+</tr>
+<tr>
+<td>180 m</td>
+<td>229</td>
+<td>linear (no peak)</td>
+<td>Too few bins below peak</td>
 </tr>
 </tbody>
 </table>
+<p>The transition at 20 m is sharp --- the drainage-scale peak jumps from invisible to dominant when micro-topographic wavelengths are excluded. The 285--356 m range from different cutoffs and models represents uncertainty in the exact Lc value.</p>
+<h3 id="result">Result<a class="headerlink" href="#result" title="Permanent link">&para;</a></h3>
+<p><strong>Lc = 356 m</strong> (lognormal fit at 20 m cutoff), <strong>A_thresh = 63,362 pixels</strong> at 1m resolution.</p>
+<h3 id="physical-validation">Physical validation<a class="headerlink" href="#physical-validation" title="Permanent link">&para;</a></h3>
+<p>Two consistency checks from Swenson Section 2.4:</p>
+<ul>
+<li><strong>P95 DTND / Lc = 1.17.</strong> Swenson's criterion: the largest values of DTND should be "of similar magnitude" to Lc. P95 is the appropriate comparison statistic at 1m (see below). <strong>PASS.</strong></li>
+<li><strong>Mean catchment area / Lc^2 = 0.876.</strong> Swenson's calibration: 0.94 for low-relief terrain. Close agreement. <strong>PASS.</strong></li>
+</ul>
+<p>Note on <code>max(DTND)</code>: the raw maximum DTND/Lc ratio is 3.1, but <code>max()</code> is not comparable between 90m MERIT (~12K pixels per gridcell) and 1m OSBS (25M pixels). At 90m, each pixel averages a 90x90 m area, blunting ridge extremes; at 1m, individual ridgeline pixels are preserved. The 2000x sample size difference shifts the extreme value distribution rightward. P95 is the resolution-fair comparison.</p>
+<h3 id="sensitivity">Sensitivity<a class="headerlink" href="#sensitivity" title="Permanent link">&para;</a></h3>
+<p>Lc is insensitive to all FFT parameters. A sweep of 20 configurations (blend_edges, zero_edges, NLAMBDA, MAX_HILLSLOPE_LENGTH, detrend) produced Lc variation of only 1.7 m. The spectral peak is strong enough (psharp 9--12) that preprocessing choices do not affect the result.</p>
 <hr />
-<h2 id="small-scale-smoke-test">Small-Scale Smoke Test<a class="headerlink" href="#small-scale-smoke-test" title="Permanent link">&para;</a></h2>
-<p>A 4x4 km subset (4000 x 4000 pixels, 100% valid data) was extracted to verify the pipeline before committing to the full mosaic.</p>
-<h3 id="issues-found-and-fixed">Issues Found and Fixed<a class="headerlink" href="#issues-found-and-fixed" title="Permanent link">&para;</a></h3>
-<p><strong>Issue 1: FFT detects noise at 1m resolution.</strong> The raw characteristic length scale was Lc = 6m, picking up high-frequency surface texture rather than drainage-scale topography. A <code>min_lc_pixels</code> parameter was added to enforce a minimum of 100m, producing a constrained Lc = 100m (100 pixels).</p>
-<p><strong>Issue 2: pysheds DTND uses haversine formula.</strong> The pysheds <code>compute_hand()</code> method calculates DTND using haversine distance, which assumes geographic coordinates in degrees. For UTM coordinates in meters, haversine produced distances of 500+ km for a 4 km domain. The fix replaced DTND computation with <code>scipy.ndimage.distance_transform_edt</code>, which computes Euclidean distance directly in the UTM coordinate system.</p>
-<h3 id="results">Results<a class="headerlink" href="#results" title="Permanent link">&para;</a></h3>
+<h2 id="stream-network-delineation">Stream Network Delineation<a class="headerlink" href="#stream-network-delineation" title="Permanent link">&para;</a></h2>
+<h3 id="accumulation-threshold">Accumulation threshold<a class="headerlink" href="#accumulation-threshold" title="Permanent link">&para;</a></h3>
+<p>A_thresh = 0.5 * 356^2 = 63,362 pixels at 1m resolution. This is the same order of magnitude as MERIT (275,400 m^2 at 90m), scaled for the finer drainage structure visible at 1m.</p>
+<h3 id="dem-conditioning">DEM conditioning<a class="headerlink" href="#dem-conditioning" title="Permanent link">&para;</a></h3>
+<p>The DEM is conditioned through pysheds' standard sequence: fill_pits, fill_depressions, resolve_flats (with fallback to conditioned DEM if resolve_flats fails on the full domain), D8 flow direction, and flow accumulation. Pixels exceeding A_thresh are classified as stream.</p>
+<h3 id="connected-component-extraction-and-edge-trimming">Connected-component extraction and edge trimming<a class="headerlink" href="#connected-component-extraction-and-edge-trimming" title="Permanent link">&para;</a></h3>
+<p>Two preprocessing steps are required for mosaicked NEON data that are not needed for continuous MERIT tiles. First, <code>scipy.ndimage.label</code> isolates the largest contiguous data region from the mosaic. Second, all-nodata rows and columns are trimmed from the bounding box. Both steps address a fundamental constraint of D8 flow routing: pysheds requires flow to exit the domain at boundary cells. When all boundary cells are nodata, no cell can accumulate flow from others --- max_accumulation silently equals 1 with no error raised.</p>
+<h3 id="stream-network-results">Stream network results<a class="headerlink" href="#stream-network-results" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -2126,154 +2244,124 @@
 </thead>
 <tbody>
 <tr>
-<td>Characteristic length (Lc)</td>
-<td>100 m (constrained)</td>
+<td>Stream cells</td>
+<td>207,832 (0.23% of domain)</td>
 </tr>
 <tr>
-<td>Accumulation threshold</td>
-<td>5000 cells</td>
+<td>Network length</td>
+<td>256,519 m</td>
 </tr>
 <tr>
-<td>Stream coverage</td>
-<td>0.88%</td>
-</tr>
-<tr>
-<td>HAND median</td>
-<td>1.3 m</td>
-</tr>
-<tr>
-<td>DTND median</td>
-<td>33 m</td>
-</tr>
-<tr>
-<td>Aspect distribution</td>
-<td>N: 17.7%, E: 34.5%, S: 17.3%, W: 30.5%</td>
+<td>Network slope</td>
+<td>0.004755 m/m</td>
 </tr>
 </tbody>
 </table>
-<p>All 16 hillslope elements were successfully computed. Runtime was 85 seconds.</p>
+<h3 id="known-limitation-depression-filling">Known limitation: depression filling<a class="headerlink" href="#known-limitation-depression-filling" title="Permanent link">&para;</a></h3>
+<p>DEM conditioning fills all depressions, which at 1m resolution erases real geomorphic features --- sinkholes, wetland depressions, karst dissolution features --- that are central to OSBS hydrology. Standard D8 flow routing requires a depression-free DEM. Alternative approaches (priority-flood with depression retention, depression-aware routing) exist but would require a different hydrological framework. This is a fundamental limitation of applying Swenson's D8-based methodology to high-resolution data in a landscape where closed basins are common.</p>
 <hr />
-<h2 id="full-mosaic-processing">Full Mosaic Processing<a class="headerlink" href="#full-mosaic-processing" title="Permanent link">&para;</a></h2>
-<h3 id="debugging-journey">Debugging Journey<a class="headerlink" href="#debugging-journey" title="Permanent link">&para;</a></h3>
-<p>Processing the full 17,000 x 19,000 pixel mosaic required four attempts to resolve a fundamental interaction between pysheds flow routing and the irregular NEON tile coverage.</p>
-<p><strong>Attempt 1: Out of memory.</strong> The <code>resolve_flats</code> step in pysheds exceeded 64 GB when processing the full DEM at 1m resolution. This step has O(n^2) or worse complexity for large flat regions.</p>
-<p><strong>Attempt 2: max_accumulation = 1.</strong> With 128 GB memory and nodata pixels treated as natural drainage boundaries, flow accumulation peaked at 1 -- every pixel drained immediately to a nodata boundary before accumulating any flow.</p>
-<p><strong>Attempt 3: max_accumulation = 1 (still).</strong> Extracting the largest connected component of valid data and 4x subsampling did not help. Flow accumulation was still 1 despite individual centered subregions (6000x6000, 8000x8000, etc.) producing accumulations in the millions.</p>
-<p><strong>Root cause discovery:</strong> Analysis of the extracted region's edges revealed the problem:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>top:    0 valid, 4395 nodata
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>bottom: 0 valid, 4395 nodata
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>left:   0 valid, 4081 nodata
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>right:  0 valid, 4081 nodata
-</code></pre></div>
-<p><strong>All four edges were 100% nodata.</strong> The bounding box of the largest connected component included the irregular boundary of NEON tile coverage, producing all-nodata edges. pysheds flow routing requires flow to exit the domain at boundary cells. With all edges masked, no cell could accumulate flow from others -- every cell only counted itself.</p>
-<div class="admonition warning">
-<p class="admonition-title">pysheds edge handling</p>
-<p>Flow routing algorithms (D8, Dinf) require at least some valid data on domain edges for flow to exit. When all boundary cells are nodata, pysheds creates a closed basin where max_accumulation = 1. This is a silent failure -- no error is raised.</p>
-</div>
-<p><strong>Attempt 4: Success.</strong> After subsampling and connected component extraction, nodata-only rows and columns were trimmed from the edges:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">rows_valid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">valid_mask_sub</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">cols_valid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">valid_mask_sub</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">dem_sub</span> <span class="o">=</span> <span class="n">dem_sub</span><span class="p">[</span><span class="n">rows_valid</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">rows_valid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>                  <span class="n">cols_valid</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">cols_valid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
-</code></pre></div>
-<p>This produced max_accumulation = 658,954, confirming the fix.</p>
-<h3 id="processing-pipeline">Processing Pipeline<a class="headerlink" href="#processing-pipeline" title="Permanent link">&para;</a></h3>
-<p>The final pipeline for the full mosaic:</p>
-<ol>
-<li>Load mosaic and identify valid data</li>
-<li>Extract largest connected component (<code>scipy.ndimage.label</code>)</li>
-<li>Subsample by 4x for flow routing (1m -&gt; 4m effective resolution)</li>
-<li>Trim all-nodata edges</li>
-<li>Condition DEM, compute flow direction and accumulation</li>
-<li>Compute HAND and Euclidean DTND</li>
-<li>Compute slope and aspect from <strong>original</strong> DEM (not pysheds-processed; see below)</li>
-<li>Bin by aspect (4 bins) and elevation (4 HAND bins)</li>
-<li>Calculate six geomorphic parameters per bin</li>
-<li>Output NetCDF in CTSM-compatible format</li>
-</ol>
-<hr />
-<h2 id="slope-calculation-bug">Slope Calculation Bug<a class="headerlink" href="#slope-calculation-bug" title="Permanent link">&para;</a></h2>
-<p>Initial runs produced impossible slope values (up to 783 million m/m). Three approaches were tried before finding the correct solution:</p>
-<ol>
-<li><strong>pgrid's <code>slope_aspect()</code></strong> -- assumed geographic coordinates, not UTM</li>
-<li><strong>Horn 1981 averaging from <code>spatial_scale.py</code></strong> -- designed for FFT analysis, not slope calculation</li>
-<li><strong><code>np.gradient()</code> on pysheds-processed DEM</strong> -- the problem</li>
-</ol>
-<div class="admonition warning">
-<p class="admonition-title">pysheds DEM conditioning replaces nodata</p>
-<p>pysheds replaces nodata values with <code>max_elevation + 1</code> to prevent flow through gaps. This creates massive false gradients at every nodata boundary. Any slope calculation must use the <strong>original</strong> DEM with nodata as NaN, not the pysheds-processed version.</p>
-</div>
-<p>The fix stored the original DEM with nodata as NaN before pysheds processing:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">dem_for_slope</span> <span class="o">=</span> <span class="n">dem_sub</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">dem_for_slope</span><span class="p">[</span><span class="o">~</span><span class="n">valid_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># ... later ...</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">dzdy</span><span class="p">,</span> <span class="n">dzdx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">dem_for_slope</span><span class="p">,</span> <span class="n">pixel_size</span><span class="p">)</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">slope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dzdx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dzdy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div>
-<p>NaN values propagate correctly through gradient calculation, preventing false gradients at boundaries.</p>
-<hr />
-<h2 id="algorithm-differences-from-swenson">Algorithm Differences from Swenson<a class="headerlink" href="#algorithm-differences-from-swenson" title="Permanent link">&para;</a></h2>
+<h2 id="hillslope-parameter-computation">Hillslope Parameter Computation<a class="headerlink" href="#hillslope-parameter-computation" title="Permanent link">&para;</a></h2>
+<h3 id="hand-and-dtnd">HAND and DTND<a class="headerlink" href="#hand-and-dtnd" title="Permanent link">&para;</a></h3>
+<p>Computed by pysheds <code>compute_hand()</code>, which traces each pixel's D8 flow path to its drainage stream pixel and returns the elevation difference (HAND) and horizontal distance (DTND). This produces hydrologically-linked values --- each pixel's distance is to the stream pixel it actually drains to, not to the geographically nearest stream pixel. The UTM-aware fork (Phase A) uses Euclidean distance for projected CRS rather than haversine.</p>
+<p>HAND range: 0--25.1 m, median 1.6 m. The low median reflects the flat terrain --- over half the domain is within 1.6 m of its nearest stream.</p>
+<h3 id="slope-and-aspect">Slope and aspect<a class="headerlink" href="#slope-and-aspect" title="Permanent link">&para;</a></h3>
+<p>Computed from the original DEM (not the pysheds-conditioned DEM) using pgrid's Horn (1981) 8-neighbor stencil. The conditioned DEM replaces nodata values with max_elevation + 1 to prevent flow through gaps, creating massive false gradients at every nodata boundary. The original DEM preserves nodata as NaN, which propagates correctly through the gradient computation, preventing false gradients at boundaries.</p>
+<p>The Horn stencil uses the UTM-aware code path (Phase A) with uniform pixel spacing from the affine transform rather than haversine-based variable spacing. This produces correct slope and aspect values on projected coordinates.</p>
+<h3 id="catchment-level-aspect-averaging">Catchment-level aspect averaging<a class="headerlink" href="#catchment-level-aspect-averaging" title="Permanent link">&para;</a></h3>
+<p>Before aspect binning, per-pixel aspects are replaced with the circular mean aspect of each catchment side (left bank, right bank, headwater). Swenson's code performs this step (<code>set_aspect_to_hillslope_mean_serial</code>, <code>Representative_Hillslopes/terrain_utils.py</code>) before the binning loop. This stabilizes bin assignments for pixels near aspect boundaries, where small HAND differences can push the per-aspect Q25 statistic across the mandatory 2 m bin threshold. This was the single largest improvement found during the MERIT validation audit (+0.08 to area fraction correlation, from 0.83 to 0.90).</p>
+<h3 id="aspect-binning">Aspect binning<a class="headerlink" href="#aspect-binning" title="Permanent link">&para;</a></h3>
+<p>4 bins following Swenson Table 1:</p>
 <table>
 <thead>
 <tr>
-<th>Component</th>
-<th>Swenson (90m MERIT)</th>
-<th>OSBS (1m LIDAR)</th>
-<th>Reason</th>
+<th>Bin</th>
+<th>Range</th>
+<th>Label</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>DTND calculation</td>
-<td>Haversine (geographic)</td>
-<td>Euclidean (EDT)</td>
-<td>pysheds haversine assumes lat/lon, produces garbage on UTM; EDT fixes the math but changes the concept (see <a href="#known-limitations">Known Limitations</a>)</td>
+<td>1</td>
+<td>315 deg -- 45 deg</td>
+<td>North</td>
 </tr>
 <tr>
-<td>Processing resolution</td>
-<td>Full resolution</td>
-<td>4x subsampled</td>
-<td><code>resolve_flats</code> OOM at 64GB; full-res at 256GB and 2x subsampling were never tested</td>
+<td>2</td>
+<td>45 deg -- 135 deg</td>
+<td>East</td>
 </tr>
 <tr>
-<td>Edge handling</td>
-<td>Not needed</td>
-<td>Trim nodata edges</td>
-<td>NEON tiles have irregular coverage</td>
+<td>3</td>
+<td>135 deg -- 225 deg</td>
+<td>South</td>
 </tr>
 <tr>
-<td>Lc determination</td>
-<td>FFT natural peak</td>
-<td>Constrained &gt;= 100m</td>
-<td>1m data picks up noise/microtopography; FFT has only run at 4m effective resolution</td>
+<td>4</td>
+<td>225 deg -- 315 deg</td>
+<td>West</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hand-binning">HAND binning<a class="headerlink" href="#hand-binning" title="Permanent link">&para;</a></h3>
+<p>4 elevation bins with approximately equal pixel counts per aspect. The paper mandates that the upper bound of the lowest bin be &lt;= 2 m, ensuring the soil column extends below stream channel elevation for two-way water exchange between stream and groundwater. The bin computation follows Swenson's <code>SpecifyHandBounds()</code> algorithm.</p>
+<p>Production bin boundaries: [0.0, 0.00027, 1.61, 5.29, 25.1] m. The near-zero lowest boundary (Q25 = 0.00027 m) reflects equal-area binning on flat terrain --- 25% of pixels in each aspect have HAND below 0.00027 m because a large fraction of this low-relief site is at stream level.</p>
+<h3 id="dtnd-tail-removal">DTND tail removal<a class="headerlink" href="#dtnd-tail-removal" title="Permanent link">&para;</a></h3>
+<p>An exponential fit to the DTND distribution identifies and removes long-distance outliers before parameter computation. Applied per-catchment-side. This prevents a few pixels with anomalously long flow paths (e.g., single ridgeline pixels) from distorting the trapezoidal width fit.</p>
+<h3 id="trapezoidal-width-fitting-swenson-eq-9-16">Trapezoidal width fitting (Swenson Eq. 9--16)<a class="headerlink" href="#trapezoidal-width-fitting-swenson-eq-9-16" title="Permanent link">&para;</a></h3>
+<p>For each aspect bin, area is accumulated as a function of distance from stream: A_sum(d). The paper models hillslope plan form as a trapezoid: w(d) = w_base + 2<em>alpha</em>d, where w_base is the width at the stream channel and alpha is the plan form divergence parameter. The cumulative area curve A_sum(d) is fit with a degree-2 polynomial whose coefficients yield the trapezoidal parameters (Eq. 12, 14): alpha = -a_2, w_base = -a_1.</p>
+<p>Width for each HAND bin is computed from the quadratic solver on fitted trapezoidal areas (not raw pixel counts): the accumulated fitted area at each bin's lower distance boundary is solved via Eq. 16 (A = alpha * d^2 + w_base * d), and the width evaluated from the trapezoidal model at that distance (Eq. 9). This two-pass approach (first collect raw areas, then compute widths from fitted areas) ensures width varies monotonically from outlet to ridge and matches Swenson's implementation.</p>
+<hr />
+<h2 id="processing-resolution">Processing Resolution<a class="headerlink" href="#processing-resolution" title="Permanent link">&para;</a></h2>
+<p>Full 1m resolution, no subsampling. The production domain (90M pixels) processes in 22.6 minutes at ~29 GB peak memory on a single HPC node with 64 GB allocation.</p>
+<p>Earlier work subsampled to 4m after an OOM failure at 64 GB. Phase B testing demonstrated this was unnecessary: the OOM occurred on a nodata-contaminated mosaic (189M pixels, 37.5% nodata) where tile gap fill created artificial flat regions that inflated <code>resolve_flats</code> memory. The contiguous production domain (90M pixels, 0% nodata) completes at 29 GB peak.</p>
+<p>Resolution comparison across 1m, 2m, and 4m on both a 5x5 tile block (25M pixels) and the full 90-tile domain:</p>
+<ul>
+<li><strong>Height and distance:</strong> &gt;0.999 correlation across all resolutions (resolution-insensitive). These are the parameters that drive lateral flow in CTSM.</li>
+<li><strong>Slope:</strong> Systematically underestimated at coarser resolution (~50% lower at 4m in the lowest HAND bin). This is a smoothing artifact --- coarser pixels average away local gradients.</li>
+<li><strong>Area and aspect:</strong> 0.64--0.99 correlations. More catchments (larger domain) produce more stable statistics.</li>
+</ul>
+<p>No parameter improves with coarser resolution. Computational cost at 1m is not a barrier (17 min wall time, 58 GB peak for the full domain).</p>
+<hr />
+<h2 id="adaptations-from-swenson">Adaptations from Swenson<a class="headerlink" href="#adaptations-from-swenson" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>What</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Kept identical</strong></td>
+<td>Trapezoidal width model (Eq. 9--16), HAND binning algorithm, quadratic solver, 2 m lowest-bin constraint, circular mean aspect, DEM conditioning chain (fill pits, fill depressions, resolve flats, D8, accumulation)</td>
+<td>Core methodology validated against Swenson's published data. MERIT validation: 5 of 6 parameters &gt;0.98 correlation, area fraction 0.92.</td>
 </tr>
 <tr>
-<td>Connected component</td>
-<td>Not needed</td>
-<td>Extract largest</td>
-<td>Scattered tiles create disconnected regions</td>
+<td><strong>CRS adaptation</strong></td>
+<td>Euclidean DTND in <code>compute_hand()</code> (vs haversine), Horn 1981 stencil with uniform pixel spacing in <code>_gradient_horn_1981()</code> (vs haversine + cos(lat) spacing), planar arctan2 for AZND (vs spherical bearing), Euclidean segment length in <code>river_network_length_and_slope()</code></td>
+<td>UTM coordinates are in meters. Haversine formulas applied to UTM easting/northing produce incorrect distances (treating 404000 m as 404000 deg). All CRS-dependent functions detect the grid's CRS automatically via <code>_crs_is_geographic()</code> and branch appropriately.</td>
 </tr>
 <tr>
-<td>Slope calculation</td>
-<td><code>slope_aspect()</code> on geographic DEM</td>
-<td><code>np.gradient()</code> on original DEM with NaN</td>
-<td>pgrid's Horn 1981 method assumes geographic coords; <code>np.gradient</code> sign convention not validated against stage 8 findings</td>
+<td><strong>Resolution adaptation</strong></td>
+<td>Restricted-wavelength FFT with min_wavelength=20 m (vs direct peak from full spectrum), blend_edges=50 px (vs 4 px), full 1m processing (vs direct ~90m)</td>
+<td>1m data contains micro-topographic noise invisible at 90m. The Laplacian k^2 weighting creates an artifact peak at 8 m. Excluding wavelengths &lt;20 m exposes the drainage-scale peak at 285--356 m. Larger edge blending windows compensate for the different geographic footprint per pixel.</td>
+</tr>
+<tr>
+<td><strong>Improved during validation</strong></td>
+<td>Catchment-level aspect averaging before binning, binary basin mask (vs DEM-difference threshold), corrected n_hillslopes indexing (extract drainage_id to gridcell before indexing), DTND tail removal (exponential fit), polynomial fit weighting matching Swenson's normal equations</td>
+<td>Found and fixed during systematic line-by-line audit of the MERIT validation pipeline against Swenson's original code. Collectively improved area fraction correlation from 0.82 to 0.92.</td>
+</tr>
+<tr>
+<td><strong>Known limitations</strong></td>
+<td>Stream depth (0.141 m) and width (1.7 m) from interim power law, bedrock depth set to 0, depression filling erases real closed basins</td>
+<td>Phase E: stream parameters require field data or regional empirical relationships. Bedrock depth of 0 is a no-op under CTSM's Uniform soil profile method. Depression filling is inherent to D8 routing.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="interior-tile-selection">Interior Tile Selection<a class="headerlink" href="#interior-tile-selection" title="Permanent link">&para;</a></h2>
-<p>The full mosaic included edge tiles with urban areas and irregular coverage. Processing was run in two modes for comparison:</p>
-<ul>
-<li><strong>Full (233 tiles):</strong> All available NEON tiles</li>
-<li><strong>Interior (150 tiles):</strong> Tiles selected to exclude the irregular outer boundary, producing a more contiguous study region</li>
-</ul>
-<p>The interior selection excluded rows 0-3 (except R3C11-13 and R4C5-14), the northwest corner, and sparse southern/eastern edges, retaining 150 tiles with more uniform coverage.</p>
-<h3 id="key-difference-lc">Key Difference: Lc<a class="headerlink" href="#key-difference-lc" title="Permanent link">&para;</a></h3>
-<p>The interior mosaic produced an FFT-derived Lc of <strong>166 m</strong> (vs the 100 m minimum constraint for the full mosaic). With less edge noise, the FFT could identify a natural spectral peak. The higher Lc produced a higher accumulation threshold (864 vs 312 cells) and sparser stream network (1.44% vs 2.32%).</p>
-<hr />
-<h2 id="netcdf-output">NetCDF Output<a class="headerlink" href="#netcdf-output" title="Permanent link">&para;</a></h2>
-<p>The pipeline outputs CTSM-compatible NetCDF files with all required hillslope variables.</p>
+<h2 id="output-format">Output Format<a class="headerlink" href="#output-format" title="Permanent link">&para;</a></h2>
+<p>The pipeline outputs a CTSM-compatible NetCDF file containing all required hillslope variables.</p>
 <h3 id="dimensions">Dimensions<a class="headerlink" href="#dimensions" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2306,7 +2394,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="key-variables">Key Variables<a class="headerlink" href="#key-variables" title="Permanent link">&para;</a></h3>
+<h3 id="key-variables">Key variables<a class="headerlink" href="#key-variables" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -2354,129 +2442,39 @@
 <tr>
 <td><code>hillslope_aspect</code></td>
 <td>radians</td>
-<td>Azimuthal orientation (0-2pi, clockwise from N)</td>
+<td>Azimuthal orientation (0--2pi, clockwise from N)</td>
+</tr>
+<tr>
+<td><code>hillslope_bedrock_depth</code></td>
+<td>m</td>
+<td>Bedrock depth (0 = use CTSM default)</td>
+</tr>
+<tr>
+<td><code>hillslope_stream_depth</code></td>
+<td>m</td>
+<td>Stream bankfull depth</td>
+</tr>
+<tr>
+<td><code>hillslope_stream_width</code></td>
+<td>m</td>
+<td>Stream bankfull width</td>
+</tr>
+<tr>
+<td><code>hillslope_stream_slope</code></td>
+<td>m/m</td>
+<td>Stream channel slope</td>
 </tr>
 </tbody>
 </table>
-<p>Key conversions applied: aspect from degrees to radians, longitude from -82deg to 278deg (0-360 convention for CTSM).</p>
+<p>Production output: <code>hillslopes_osbs_tier3_contiguous_c260317.nc</code>. 16 columns (4 aspects x 4 HAND bins). NetCDF structure verified against Swenson reference (<code>hillslopes_osbs_c240416.nc</code>) --- all 4 dimensions match, all 20 variables present with identical names, dtypes, and units.</p>
+<p>Conversions applied: aspect from degrees to radians, longitude to 0--360 deg convention for CTSM.</p>
 <hr />
-<h2 id="comparison-full-vs-interior">Comparison: Full vs Interior<a class="headerlink" href="#comparison-full-vs-interior" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Metric</th>
-<th>Full (233 tiles)</th>
-<th>Interior (150 tiles)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>DEM shape</td>
-<td>17k x 19k</td>
-<td>15k x 16k</td>
-</tr>
-<tr>
-<td>Valid data</td>
-<td>58.5%</td>
-<td>62.5%</td>
-</tr>
-<tr>
-<td>Characteristic Lc</td>
-<td>100 m (constrained)</td>
-<td>166 m (FFT-derived)</td>
-</tr>
-<tr>
-<td>Accumulation threshold</td>
-<td>312 cells</td>
-<td>864 cells</td>
-</tr>
-<tr>
-<td>Stream coverage</td>
-<td>2.32%</td>
-<td>1.44%</td>
-</tr>
-<tr>
-<td>HAND median</td>
-<td>1.1 m</td>
-<td>1.8 m</td>
-</tr>
-<tr>
-<td>Aspect distribution</td>
-<td>N: 17%, E: 34%, S: 17%, W: 32%</td>
-<td>N: 24%, E: 26%, S: 26%, W: 24%</td>
-</tr>
-<tr>
-<td>Processing time</td>
-<td>6.2 min</td>
-<td>2.9 min</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition note">
-<p class="admonition-title">Aspect distribution</p>
-<p>The full mosaic showed a strong E/W bias (66% combined), likely caused by edge artifacts or non-representative terrain at the boundary. The interior mosaic produced a much more uniform aspect distribution (~25% per direction), consistent with expectations for gently rolling terrain without a dominant orientation.</p>
-</div>
-<hr />
-<h2 id="known-limitations">Known Limitations<a class="headerlink" href="#known-limitations" title="Permanent link">&para;</a></h2>
-<div class="admonition warning">
-<p class="admonition-title">Current output is not suitable for CTSM simulations</p>
-<p>The February 2026 audit identified four issues that directly affect the hillslope parameters produced by this pipeline. The methodology is validated and the pipeline engineering is solid, but the specific parameter values in the current NetCDF output will change when these issues are resolved.</p>
-</div>
-<h3 id="1-dtnd-algorithm-computes-the-wrong-distance">1. DTND algorithm computes the wrong distance<a class="headerlink" href="#1-dtnd-algorithm-computes-the-wrong-distance" title="Permanent link">&para;</a></h3>
-<p>The pipeline replaced pysheds' haversine-based DTND with <code>scipy.ndimage.distance_transform_edt</code>. This fixed the math (Euclidean distance on UTM coordinates instead of haversine) but changed the concept: EDT finds the <em>geographically nearest</em> stream pixel, while Swenson's method finds the <em>hydrologically nearest</em> stream pixel (the one each cell actually drains to via D8 routing). These differ whenever a pixel is geographically closer to a stream on the opposite side of a drainage divide.</p>
-<table>
-<thead>
-<tr>
-<th>Approach</th>
-<th>Concept</th>
-<th>Math</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pysheds DTND</td>
-<td>Correct (flow-path-linked)</td>
-<td>Wrong (haversine on UTM)</td>
-</tr>
-<tr>
-<td>Pipeline EDT</td>
-<td>Wrong (nearest regardless of drainage)</td>
-<td>Correct (Euclidean on UTM)</td>
-</tr>
-</tbody>
-</table>
-<p>Neither DTND is currently correct. The fix requires modifying pysheds' <code>compute_hand()</code> to detect UTM CRS and use Euclidean distance. Wrong DTND also corrupts the trapezoidal width fit, since width is derived from the A_sum(d) curve.</p>
-<h3 id="2-4x-subsampling-discards-9375-of-data">2. 4x subsampling discards 93.75% of data<a class="headerlink" href="#2-4x-subsampling-discards-9375-of-data" title="Permanent link">&para;</a></h3>
-<p>The 4x subsampling was adopted after a single OOM failure at 64GB. Full resolution at 256GB was never tested. Neither was 2x subsampling at 128GB.</p>
-<p>The entire justification for using 1m LIDAR is to capture fine-scale drainage in a low-relief wetlandscape. Subsampling to 4m effective resolution undermines that purpose — small channels, wetland margins, and subtle elevation differences that drive TAI dynamics become invisible. Whether the current 4x factor is acceptable, excessive, or unnecessary is an open question that requires systematic testing across resolutions.</p>
-<h3 id="3-lc-has-never-been-computed-at-full-resolution">3. Lc has never been computed at full resolution<a class="headerlink" href="#3-lc-has-never-been-computed-at-full-resolution" title="Permanent link">&para;</a></h3>
-<p>The FFT spectral analysis ran on the 4x-subsampled grid. For the full mosaic, it failed to find a real peak and fell back to the hardcoded 100m minimum. For the interior mosaic, it found 166m — but at 4m effective resolution, features at wavelengths below 8m are invisible.</p>
-<p>The full-resolution FFT has never been run on OSBS data. NumPy handles arrays of this size without difficulty, so this is an easy fix. Additionally, the FFT parameters (blend window, zero margin, wavelength bins, max search length) were copied from Swenson's 90m defaults without testing at 1m.</p>
-<h3 id="4-slopeaspect-not-validated-for-utm">4. Slope/aspect not validated for UTM<a class="headerlink" href="#4-slopeaspect-not-validated-for-utm" title="Permanent link">&para;</a></h3>
-<p>Stage 8 of the MERIT validation discovered a Y-axis sign inversion in <code>np.gradient</code>-based aspect that swapped North and South. The fix (pgrid's <code>slope_aspect()</code> with Horn 1981 stencil) was applied to the MERIT validation scripts but <em>not</em> to the OSBS pipeline, because pgrid's method assumes geographic coordinates.</p>
-<p>The OSBS pipeline uses <code>np.gradient</code> with <code>arctan2(-dzdx, -dzdy)</code>, which may compensate for the sign issue, but this was never validated against the stage 8 findings. Since aspect controls which bin each pixel falls into, an error here would corrupt all six parameters through incorrect binning.</p>
-<hr />
-<h2 id="technical-lessons">Technical Lessons<a class="headerlink" href="#technical-lessons" title="Permanent link">&para;</a></h2>
-<ol>
-<li>
-<p><strong>pysheds edge handling is critical.</strong> Flow routing silently fails when all domain edges are nodata. Always verify that at least some boundary cells contain valid data.</p>
-</li>
-<li>
-<p><strong>Subsampling is an open question, not a settled answer.</strong> The <code>resolve_flats</code> step in pysheds has poor scaling with large flat regions. 4x subsampling made the problem tractable at 64GB, but the minimum necessary subsampling factor has not been determined. Full resolution and 2x subsampling need to be tested before accepting the current 4x compromise.</p>
-</li>
-<li>
-<p><strong>Connected component extraction alone is insufficient.</strong> Even after isolating the largest connected region, the bounding box may have all-nodata edges due to irregular tile coverage. Edge trimming is a separate, required step.</p>
-</li>
-<li>
-<p><strong>Accumulation threshold must scale with resolution.</strong> When subsampling, both Lc (in pixels) and the derived threshold must be adjusted: <code>threshold = 0.5 * (Lc / subsample)^2</code>.</p>
-</li>
-<li>
-<p><strong>Geographic bounds must track all transformations.</strong> Edge trimming, subsampling, and region extraction all modify the geographic extent. Bounds must be updated at each step for correct georeferencing in the output NetCDF.</p>
-</li>
-<li>
-<p><strong>Use the original DEM for slope calculation.</strong> pysheds DEM conditioning replaces nodata with high values that create false gradients. Store the original DEM with NaN for nodata before processing.</p>
-</li>
-</ol>
+<h2 id="current-limitations-and-remaining-work">Current Limitations and Remaining Work<a class="headerlink" href="#current-limitations-and-remaining-work" title="Permanent link">&para;</a></h2>
+<p><strong>Stream channel parameters</strong> are interim estimates derived from power-law relationships applied to the computed stream network: depth 0.141 m, width 1.7 m, slope 0.00476 m/m. For comparison, Swenson's global values for this gridcell are: depth 0.269 m, width 4.41 m, slope 0.00233 m/m. The interim values are in the right order of magnitude but lack a rigorous basis. Phase E will derive these from field data or regional empirical relationships (e.g., Leopold curves, MERIT Hydro).</p>
+<p><strong>Bedrock depth</strong> is set to 0. Under CTSM's Uniform soil profile method (used by the osbs2 reference case), a bedrock depth of 0 tells CTSM to use its default soil profile --- it is a no-op. The Swenson reference file also has all zeros. If a non-Uniform soil profile method is used in the future, this parameter would need physical values from subsurface data.</p>
+<p><strong>DEM conditioning erases real closed basins.</strong> At 1m resolution, pits and depressions include real features: sinkholes, wetland depressions, karst dissolution features. Filling them enforces a continuous drainage network but destroys information about closed basins that are central to OSBS hydrology. This is inherent to D8 flow routing and is the same approach Swenson uses at 90m (where these features are already below the resolution). Alternative approaches (depression-aware routing, synthetic lake bottoms) would require a different hydrological framework and are beyond the scope of the current implementation.</p>
+<p><strong>Hillslope structure</strong> is 4 aspects x 4 HAND bins (16 columns), matching the Swenson default. An alternative configuration of 1 aspect x 8 HAND bins may better represent this nearly-flat site, where aspect-dependent insolation has negligible physical impact (slopes 0.01--0.06 m/m produce a maximum 6% correction to solar incidence angle). More elevation bins would provide finer resolution of the water table gradient across the hillslope profile. CTSM supports arbitrary configurations --- it reads <code>nhillslope</code> and <code>nmaxhillcol</code> from the input file. This decision is under consideration (STATUS.md, open question #2).</p>
+<p><strong>No CTSM simulation comparison yet.</strong> Phase F will create a branch case from the osbs2 baseline (year 861) with the custom hillslope file and compare outputs (water table depth, soil moisture, carbon fluxes) against the baseline.</p>
 
 
 

@@ -1,16 +1,16 @@
-# OSBS Implementation
+# Methodology
 
-*Applying the validated hillslope methodology to 1m NEON LIDAR data for the Ordway-Swisher Biological Station.*
-
----
-
-## Introduction
-
-With the pipeline validated against Swenson's published data (see [MERIT Validation](merit-validation.md)), the next step was to apply it to 1m NEON LIDAR data for OSBS. This required adapting the pipeline for a 90x finer resolution, UTM coordinates instead of geographic, and irregular tile coverage with nodata gaps.
+*Representative hillslope parameters for OSBS from 1m NEON LIDAR following Swenson & Lawrence (2025).*
 
 ---
 
-## NEON LIDAR Data
+This page describes the methods used to produce the hillslope parameter file for OSBS. The methodology follows Swenson & Lawrence (2025) with adaptations for UTM CRS and 1m resolution. The pipeline was validated against Swenson's published data (see [MERIT Validation](merit-validation.md)) and verified through three independent audits: equation verification, full pipeline audit, and line-by-line divergence audit against Swenson's original code.
+
+---
+
+## Study Domain and Data
+
+### NEON LIDAR
 
 | Property | Value |
 |----------|-------|
@@ -18,30 +18,17 @@ With the pipeline validated against Swenson's published data (see [MERIT Validat
 | Site | OSBS (Ordway-Swisher Biological Station) |
 | Collection | 2023-05 |
 | Files | 233 DTM tiles |
-| Total size | 554 MB |
 | Resolution | 1.0 m |
 | CRS | EPSG:32617 (UTM Zone 17N) |
 | Tile size | 1000 x 1000 pixels (1 km^2) |
 
----
+### Production Domain
 
-## DEM Preprocessing
+The production domain is R4C5--R12C14: a 9x10 km (90 km^2) rectangle of 90 tiles with 0% nodata --- the largest contiguous rectangle within the NEON tile coverage. This domain was selected to avoid the nodata gaps present in the full tile mosaic (233 tiles, 323 km^2, 58.5% valid data), which cause silent failures in pysheds flow routing when all domain boundary cells are nodata.
 
-The 233 tiles were stitched into a single mosaic for processing.
-
-| Property | Value |
-|----------|-------|
-| Mosaic dimensions | 19,000 x 17,000 pixels |
-| Geographic extent | 19 x 17 km (323 km^2) |
-| Elevation range | 23.2 - 69.2 m |
-| Mean elevation | 38.4 m |
-| Valid data coverage | 58.5% (tiles form an irregular shape) |
-
-The low total relief (~46 m) confirmed this is a low-relief wetlandscape where 1m LIDAR captures subtle topography that 90m MERIT would miss.
+DEM elevation ranges from 23 to 69 m with ~46 m total relief. The low total relief confirms this is a low-relief wetlandscape where meter-scale elevation differences control wetland-upland transitions.
 
 ### Tile Reference System
-
-A grid reference system was created for identifying tiles during review and selection:
 
 ![Tile grid reference showing OSBS NEON tile coverage](images/tile_grid_reference.png)
 
@@ -52,155 +39,162 @@ A grid reference system was created for identifying tiles during review and sele
 
 ---
 
-## Resolution Challenges
+## Characteristic Length Scale (Lc)
 
-Adapting from 90m MERIT to 1m LIDAR introduced several issues that required explicit handling:
+The characteristic length scale Lc determines the accumulation threshold A_thresh = 0.5 * Lc^2 (Swenson Eq. 6), which controls stream network density. All downstream parameters --- HAND, DTND, catchment delineation, and all six hillslope parameters --- depend on it.
 
-| Issue | Impact at 1m | Adaptation |
-|-------|-------------|------------|
-| FFT noise | Spectral analysis detects microtopography, not drainage patterns | Added minimum Lc constraint (100m) |
-| Memory | 323M pixels exceeds pysheds `resolve_flats` capacity | 4x subsampling for flow routing |
-| DTND formula | pysheds `compute_hand()` uses haversine (expects lat/lon, not UTM) | Replaced with `scipy.ndimage.distance_transform_edt` |
-| Edge blending | Original 4-pixel FFT window = 360m at 90m but only 4m at 1m | Increased to 50 pixels (50m) |
-| Hardcoded thresholds | `smallest_dtnd=1.0m` masks fine-scale drainage at 1m res | Noted; acceptable for initial runs |
+### Standard method
+
+Swenson's approach applies the Laplacian operator to the DEM, computes the 2D Fourier transform, bins the spectrum radially, and fits Gaussian/lognormal models to identify the wavelength of peak amplitude. This works at 90m MERIT resolution because features below ~180m (the Nyquist limit) are already averaged away, leaving a single dominant drainage-scale peak. On MERIT, this produces Lc = 763 m.
+
+### The k^2 artifact at 1m
+
+At 1m resolution, the standard method identifies a peak at 8.1 m. This is not the drainage scale --- it is a spectral artifact. The Laplacian operator weights the spectrum by k^2, amplifying short-wavelength features relative to longer ones. The raw DEM spectrum (without the Laplacian) is monotonically increasing red noise with no peaked feature at any scale. The k^2 weighting amplifies micro-topographic features (tree-throw mounds, animal burrows, shallow rills) that are invisible at 90m by orders of magnitude relative to the drainage-scale features at 200--500 m. At 1m, the raw 8 m amplitude is ~620x weaker than the 200--500 m amplitude, but the k^2 factor (300/8)^2 ~ 1400x inverts their relative prominence in the Laplacian spectrum.
+
+Physical implausibility confirms the artifact interpretation: A_thresh = 0.5 * 8^2 = 32 m^2 would classify 20--40% of all pixels as stream --- not a meaningful drainage network.
+
+### Solution: restricted-wavelength FFT
+
+Excluding wavelengths below 20 m before peak fitting reveals the drainage-scale peak. The 20 m cutoff separates micro-topography from organized drainage structure, analogous to what 90m resolution does implicitly by averaging away sub-180 m features.
+
+Restricted-wavelength sweep on the contiguous production mosaic (9000 x 10000 pixels, 0% nodata):
+
+| Min wavelength | Lc (m) | Model | Interpretation |
+|----------------|--------|-------|----------------|
+| None (full) | 8.1 | lognormal | Micro-topographic artifact |
+| 10 m | 11.7 | lognormal | Still dominated by micro-topography |
+| 20 m | 356 | lognormal | Drainage-scale peak emerges |
+| 50 m | 356 | lognormal | Stable |
+| 100 m | 285 | gaussian | Stable (different model, same feature) |
+| 180 m | 229 | linear (no peak) | Too few bins below peak |
+
+The transition at 20 m is sharp --- the drainage-scale peak jumps from invisible to dominant when micro-topographic wavelengths are excluded. The 285--356 m range from different cutoffs and models represents uncertainty in the exact Lc value.
+
+### Result
+
+**Lc = 356 m** (lognormal fit at 20 m cutoff), **A_thresh = 63,362 pixels** at 1m resolution.
+
+### Physical validation
+
+Two consistency checks from Swenson Section 2.4:
+
+- **P95 DTND / Lc = 1.17.** Swenson's criterion: the largest values of DTND should be "of similar magnitude" to Lc. P95 is the appropriate comparison statistic at 1m (see below). **PASS.**
+- **Mean catchment area / Lc^2 = 0.876.** Swenson's calibration: 0.94 for low-relief terrain. Close agreement. **PASS.**
+
+Note on `max(DTND)`: the raw maximum DTND/Lc ratio is 3.1, but `max()` is not comparable between 90m MERIT (~12K pixels per gridcell) and 1m OSBS (25M pixels). At 90m, each pixel averages a 90x90 m area, blunting ridge extremes; at 1m, individual ridgeline pixels are preserved. The 2000x sample size difference shifts the extreme value distribution rightward. P95 is the resolution-fair comparison.
+
+### Sensitivity
+
+Lc is insensitive to all FFT parameters. A sweep of 20 configurations (blend_edges, zero_edges, NLAMBDA, MAX_HILLSLOPE_LENGTH, detrend) produced Lc variation of only 1.7 m. The spectral peak is strong enough (psharp 9--12) that preprocessing choices do not affect the result.
 
 ---
 
-## Small-Scale Smoke Test
+## Stream Network Delineation
 
-A 4x4 km subset (4000 x 4000 pixels, 100% valid data) was extracted to verify the pipeline before committing to the full mosaic.
+### Accumulation threshold
 
-### Issues Found and Fixed
+A_thresh = 0.5 * 356^2 = 63,362 pixels at 1m resolution. This is the same order of magnitude as MERIT (275,400 m^2 at 90m), scaled for the finer drainage structure visible at 1m.
 
-**Issue 1: FFT detects noise at 1m resolution.** The raw characteristic length scale was Lc = 6m, picking up high-frequency surface texture rather than drainage-scale topography. A `min_lc_pixels` parameter was added to enforce a minimum of 100m, producing a constrained Lc = 100m (100 pixels).
+### DEM conditioning
 
-**Issue 2: pysheds DTND uses haversine formula.** The pysheds `compute_hand()` method calculates DTND using haversine distance, which assumes geographic coordinates in degrees. For UTM coordinates in meters, haversine produced distances of 500+ km for a 4 km domain. The fix replaced DTND computation with `scipy.ndimage.distance_transform_edt`, which computes Euclidean distance directly in the UTM coordinate system.
+The DEM is conditioned through pysheds' standard sequence: fill_pits, fill_depressions, resolve_flats (with fallback to conditioned DEM if resolve_flats fails on the full domain), D8 flow direction, and flow accumulation. Pixels exceeding A_thresh are classified as stream.
 
-### Results
+### Connected-component extraction and edge trimming
+
+Two preprocessing steps are required for mosaicked NEON data that are not needed for continuous MERIT tiles. First, `scipy.ndimage.label` isolates the largest contiguous data region from the mosaic. Second, all-nodata rows and columns are trimmed from the bounding box. Both steps address a fundamental constraint of D8 flow routing: pysheds requires flow to exit the domain at boundary cells. When all boundary cells are nodata, no cell can accumulate flow from others --- max_accumulation silently equals 1 with no error raised.
+
+### Stream network results
 
 | Metric | Value |
 |--------|-------|
-| Characteristic length (Lc) | 100 m (constrained) |
-| Accumulation threshold | 5000 cells |
-| Stream coverage | 0.88% |
-| HAND median | 1.3 m |
-| DTND median | 33 m |
-| Aspect distribution | N: 17.7%, E: 34.5%, S: 17.3%, W: 30.5% |
+| Stream cells | 207,832 (0.23% of domain) |
+| Network length | 256,519 m |
+| Network slope | 0.004755 m/m |
 
-All 16 hillslope elements were successfully computed. Runtime was 85 seconds.
+### Known limitation: depression filling
 
----
-
-## Full Mosaic Processing
-
-### Debugging Journey
-
-Processing the full 17,000 x 19,000 pixel mosaic required four attempts to resolve a fundamental interaction between pysheds flow routing and the irregular NEON tile coverage.
-
-**Attempt 1: Out of memory.** The `resolve_flats` step in pysheds exceeded 64 GB when processing the full DEM at 1m resolution. This step has O(n^2) or worse complexity for large flat regions.
-
-**Attempt 2: max_accumulation = 1.** With 128 GB memory and nodata pixels treated as natural drainage boundaries, flow accumulation peaked at 1 -- every pixel drained immediately to a nodata boundary before accumulating any flow.
-
-**Attempt 3: max_accumulation = 1 (still).** Extracting the largest connected component of valid data and 4x subsampling did not help. Flow accumulation was still 1 despite individual centered subregions (6000x6000, 8000x8000, etc.) producing accumulations in the millions.
-
-**Root cause discovery:** Analysis of the extracted region's edges revealed the problem:
-
-```
-top:    0 valid, 4395 nodata
-bottom: 0 valid, 4395 nodata
-left:   0 valid, 4081 nodata
-right:  0 valid, 4081 nodata
-```
-
-**All four edges were 100% nodata.** The bounding box of the largest connected component included the irregular boundary of NEON tile coverage, producing all-nodata edges. pysheds flow routing requires flow to exit the domain at boundary cells. With all edges masked, no cell could accumulate flow from others -- every cell only counted itself.
-
-!!! warning "pysheds edge handling"
-    Flow routing algorithms (D8, Dinf) require at least some valid data on domain edges for flow to exit. When all boundary cells are nodata, pysheds creates a closed basin where max_accumulation = 1. This is a silent failure -- no error is raised.
-
-**Attempt 4: Success.** After subsampling and connected component extraction, nodata-only rows and columns were trimmed from the edges:
-
-```python
-rows_valid = np.where(np.any(valid_mask_sub, axis=1))[0]
-cols_valid = np.where(np.any(valid_mask_sub, axis=0))[0]
-dem_sub = dem_sub[rows_valid[0]:rows_valid[-1]+1,
-                  cols_valid[0]:cols_valid[-1]+1]
-```
-
-This produced max_accumulation = 658,954, confirming the fix.
-
-### Processing Pipeline
-
-The final pipeline for the full mosaic:
-
-1. Load mosaic and identify valid data
-2. Extract largest connected component (`scipy.ndimage.label`)
-3. Subsample by 4x for flow routing (1m -> 4m effective resolution)
-4. Trim all-nodata edges
-5. Condition DEM, compute flow direction and accumulation
-6. Compute HAND and Euclidean DTND
-7. Compute slope and aspect from **original** DEM (not pysheds-processed; see below)
-8. Bin by aspect (4 bins) and elevation (4 HAND bins)
-9. Calculate six geomorphic parameters per bin
-10. Output NetCDF in CTSM-compatible format
+DEM conditioning fills all depressions, which at 1m resolution erases real geomorphic features --- sinkholes, wetland depressions, karst dissolution features --- that are central to OSBS hydrology. Standard D8 flow routing requires a depression-free DEM. Alternative approaches (priority-flood with depression retention, depression-aware routing) exist but would require a different hydrological framework. This is a fundamental limitation of applying Swenson's D8-based methodology to high-resolution data in a landscape where closed basins are common.
 
 ---
 
-## Slope Calculation Bug
+## Hillslope Parameter Computation
 
-Initial runs produced impossible slope values (up to 783 million m/m). Three approaches were tried before finding the correct solution:
+### HAND and DTND
 
-1. **pgrid's `slope_aspect()`** -- assumed geographic coordinates, not UTM
-2. **Horn 1981 averaging from `spatial_scale.py`** -- designed for FFT analysis, not slope calculation
-3. **`np.gradient()` on pysheds-processed DEM** -- the problem
+Computed by pysheds `compute_hand()`, which traces each pixel's D8 flow path to its drainage stream pixel and returns the elevation difference (HAND) and horizontal distance (DTND). This produces hydrologically-linked values --- each pixel's distance is to the stream pixel it actually drains to, not to the geographically nearest stream pixel. The UTM-aware fork (Phase A) uses Euclidean distance for projected CRS rather than haversine.
 
-!!! warning "pysheds DEM conditioning replaces nodata"
-    pysheds replaces nodata values with `max_elevation + 1` to prevent flow through gaps. This creates massive false gradients at every nodata boundary. Any slope calculation must use the **original** DEM with nodata as NaN, not the pysheds-processed version.
+HAND range: 0--25.1 m, median 1.6 m. The low median reflects the flat terrain --- over half the domain is within 1.6 m of its nearest stream.
 
-The fix stored the original DEM with nodata as NaN before pysheds processing:
+### Slope and aspect
 
-```python
-dem_for_slope = dem_sub.copy().astype(float)
-dem_for_slope[~valid_mask] = np.nan
-# ... later ...
-dzdy, dzdx = np.gradient(dem_for_slope, pixel_size)
-slope = np.sqrt(dzdx**2 + dzdy**2)
-```
+Computed from the original DEM (not the pysheds-conditioned DEM) using pgrid's Horn (1981) 8-neighbor stencil. The conditioned DEM replaces nodata values with max_elevation + 1 to prevent flow through gaps, creating massive false gradients at every nodata boundary. The original DEM preserves nodata as NaN, which propagates correctly through the gradient computation, preventing false gradients at boundaries.
 
-NaN values propagate correctly through gradient calculation, preventing false gradients at boundaries.
+The Horn stencil uses the UTM-aware code path (Phase A) with uniform pixel spacing from the affine transform rather than haversine-based variable spacing. This produces correct slope and aspect values on projected coordinates.
 
----
+### Catchment-level aspect averaging
 
-## Algorithm Differences from Swenson
+Before aspect binning, per-pixel aspects are replaced with the circular mean aspect of each catchment side (left bank, right bank, headwater). Swenson's code performs this step (`set_aspect_to_hillslope_mean_serial`, `Representative_Hillslopes/terrain_utils.py`) before the binning loop. This stabilizes bin assignments for pixels near aspect boundaries, where small HAND differences can push the per-aspect Q25 statistic across the mandatory 2 m bin threshold. This was the single largest improvement found during the MERIT validation audit (+0.08 to area fraction correlation, from 0.83 to 0.90).
 
-| Component | Swenson (90m MERIT) | OSBS (1m LIDAR) | Reason |
-|-----------|---------------------|-----------------|--------|
-| DTND calculation | Haversine (geographic) | Euclidean (EDT) | pysheds haversine assumes lat/lon, produces garbage on UTM; EDT fixes the math but changes the concept (see [Known Limitations](#known-limitations)) |
-| Processing resolution | Full resolution | 4x subsampled | `resolve_flats` OOM at 64GB; full-res at 256GB and 2x subsampling were never tested |
-| Edge handling | Not needed | Trim nodata edges | NEON tiles have irregular coverage |
-| Lc determination | FFT natural peak | Constrained >= 100m | 1m data picks up noise/microtopography; FFT has only run at 4m effective resolution |
-| Connected component | Not needed | Extract largest | Scattered tiles create disconnected regions |
-| Slope calculation | `slope_aspect()` on geographic DEM | `np.gradient()` on original DEM with NaN | pgrid's Horn 1981 method assumes geographic coords; `np.gradient` sign convention not validated against stage 8 findings |
+### Aspect binning
 
----
+4 bins following Swenson Table 1:
 
-## Interior Tile Selection
+| Bin | Range | Label |
+|-----|-------|-------|
+| 1 | 315 deg -- 45 deg | North |
+| 2 | 45 deg -- 135 deg | East |
+| 3 | 135 deg -- 225 deg | South |
+| 4 | 225 deg -- 315 deg | West |
 
-The full mosaic included edge tiles with urban areas and irregular coverage. Processing was run in two modes for comparison:
+### HAND binning
 
-- **Full (233 tiles):** All available NEON tiles
-- **Interior (150 tiles):** Tiles selected to exclude the irregular outer boundary, producing a more contiguous study region
+4 elevation bins with approximately equal pixel counts per aspect. The paper mandates that the upper bound of the lowest bin be <= 2 m, ensuring the soil column extends below stream channel elevation for two-way water exchange between stream and groundwater. The bin computation follows Swenson's `SpecifyHandBounds()` algorithm.
 
-The interior selection excluded rows 0-3 (except R3C11-13 and R4C5-14), the northwest corner, and sparse southern/eastern edges, retaining 150 tiles with more uniform coverage.
+Production bin boundaries: [0.0, 0.00027, 1.61, 5.29, 25.1] m. The near-zero lowest boundary (Q25 = 0.00027 m) reflects equal-area binning on flat terrain --- 25% of pixels in each aspect have HAND below 0.00027 m because a large fraction of this low-relief site is at stream level.
 
-### Key Difference: Lc
+### DTND tail removal
 
-The interior mosaic produced an FFT-derived Lc of **166 m** (vs the 100 m minimum constraint for the full mosaic). With less edge noise, the FFT could identify a natural spectral peak. The higher Lc produced a higher accumulation threshold (864 vs 312 cells) and sparser stream network (1.44% vs 2.32%).
+An exponential fit to the DTND distribution identifies and removes long-distance outliers before parameter computation. Applied per-catchment-side. This prevents a few pixels with anomalously long flow paths (e.g., single ridgeline pixels) from distorting the trapezoidal width fit.
+
+### Trapezoidal width fitting (Swenson Eq. 9--16)
+
+For each aspect bin, area is accumulated as a function of distance from stream: A_sum(d). The paper models hillslope plan form as a trapezoid: w(d) = w_base + 2*alpha*d, where w_base is the width at the stream channel and alpha is the plan form divergence parameter. The cumulative area curve A_sum(d) is fit with a degree-2 polynomial whose coefficients yield the trapezoidal parameters (Eq. 12, 14): alpha = -a_2, w_base = -a_1.
+
+Width for each HAND bin is computed from the quadratic solver on fitted trapezoidal areas (not raw pixel counts): the accumulated fitted area at each bin's lower distance boundary is solved via Eq. 16 (A = alpha * d^2 + w_base * d), and the width evaluated from the trapezoidal model at that distance (Eq. 9). This two-pass approach (first collect raw areas, then compute widths from fitted areas) ensures width varies monotonically from outlet to ridge and matches Swenson's implementation.
 
 ---
 
-## NetCDF Output
+## Processing Resolution
 
-The pipeline outputs CTSM-compatible NetCDF files with all required hillslope variables.
+Full 1m resolution, no subsampling. The production domain (90M pixels) processes in 22.6 minutes at ~29 GB peak memory on a single HPC node with 64 GB allocation.
+
+Earlier work subsampled to 4m after an OOM failure at 64 GB. Phase B testing demonstrated this was unnecessary: the OOM occurred on a nodata-contaminated mosaic (189M pixels, 37.5% nodata) where tile gap fill created artificial flat regions that inflated `resolve_flats` memory. The contiguous production domain (90M pixels, 0% nodata) completes at 29 GB peak.
+
+Resolution comparison across 1m, 2m, and 4m on both a 5x5 tile block (25M pixels) and the full 90-tile domain:
+
+- **Height and distance:** >0.999 correlation across all resolutions (resolution-insensitive). These are the parameters that drive lateral flow in CTSM.
+- **Slope:** Systematically underestimated at coarser resolution (~50% lower at 4m in the lowest HAND bin). This is a smoothing artifact --- coarser pixels average away local gradients.
+- **Area and aspect:** 0.64--0.99 correlations. More catchments (larger domain) produce more stable statistics.
+
+No parameter improves with coarser resolution. Computational cost at 1m is not a barrier (17 min wall time, 58 GB peak for the full domain).
+
+---
+
+## Adaptations from Swenson
+
+| Category | What | Why |
+|----------|------|-----|
+| **Kept identical** | Trapezoidal width model (Eq. 9--16), HAND binning algorithm, quadratic solver, 2 m lowest-bin constraint, circular mean aspect, DEM conditioning chain (fill pits, fill depressions, resolve flats, D8, accumulation) | Core methodology validated against Swenson's published data. MERIT validation: 5 of 6 parameters >0.98 correlation, area fraction 0.92. |
+| **CRS adaptation** | Euclidean DTND in `compute_hand()` (vs haversine), Horn 1981 stencil with uniform pixel spacing in `_gradient_horn_1981()` (vs haversine + cos(lat) spacing), planar arctan2 for AZND (vs spherical bearing), Euclidean segment length in `river_network_length_and_slope()` | UTM coordinates are in meters. Haversine formulas applied to UTM easting/northing produce incorrect distances (treating 404000 m as 404000 deg). All CRS-dependent functions detect the grid's CRS automatically via `_crs_is_geographic()` and branch appropriately. |
+| **Resolution adaptation** | Restricted-wavelength FFT with min_wavelength=20 m (vs direct peak from full spectrum), blend_edges=50 px (vs 4 px), full 1m processing (vs direct ~90m) | 1m data contains micro-topographic noise invisible at 90m. The Laplacian k^2 weighting creates an artifact peak at 8 m. Excluding wavelengths <20 m exposes the drainage-scale peak at 285--356 m. Larger edge blending windows compensate for the different geographic footprint per pixel. |
+| **Improved during validation** | Catchment-level aspect averaging before binning, binary basin mask (vs DEM-difference threshold), corrected n_hillslopes indexing (extract drainage_id to gridcell before indexing), DTND tail removal (exponential fit), polynomial fit weighting matching Swenson's normal equations | Found and fixed during systematic line-by-line audit of the MERIT validation pipeline against Swenson's original code. Collectively improved area fraction correlation from 0.82 to 0.92. |
+| **Known limitations** | Stream depth (0.141 m) and width (1.7 m) from interim power law, bedrock depth set to 0, depression filling erases real closed basins | Phase E: stream parameters require field data or regional empirical relationships. Bedrock depth of 0 is a no-op under CTSM's Uniform soil profile method. Depression filling is inherent to D8 routing. |
+
+---
+
+## Output Format
+
+The pipeline outputs a CTSM-compatible NetCDF file containing all required hillslope variables.
 
 ### Dimensions
 
@@ -211,7 +205,7 @@ The pipeline outputs CTSM-compatible NetCDF files with all required hillslope va
 | `nhillslope` | 4 | Aspect bins (N, E, S, W) |
 | `nmaxhillcol` | 16 | Total hillslope columns |
 
-### Key Variables
+### Key variables
 
 | Variable | Units | Description |
 |----------|-------|-------------|
@@ -222,76 +216,26 @@ The pipeline outputs CTSM-compatible NetCDF files with all required hillslope va
 | `hillslope_width` | m | Hillslope width at downslope edge |
 | `hillslope_area` | m^2 | Hillslope element area |
 | `hillslope_slope` | m/m | Topographic slope |
-| `hillslope_aspect` | radians | Azimuthal orientation (0-2pi, clockwise from N) |
+| `hillslope_aspect` | radians | Azimuthal orientation (0--2pi, clockwise from N) |
+| `hillslope_bedrock_depth` | m | Bedrock depth (0 = use CTSM default) |
+| `hillslope_stream_depth` | m | Stream bankfull depth |
+| `hillslope_stream_width` | m | Stream bankfull width |
+| `hillslope_stream_slope` | m/m | Stream channel slope |
 
-Key conversions applied: aspect from degrees to radians, longitude from -82deg to 278deg (0-360 convention for CTSM).
+Production output: `hillslopes_osbs_tier3_contiguous_c260317.nc`. 16 columns (4 aspects x 4 HAND bins). NetCDF structure verified against Swenson reference (`hillslopes_osbs_c240416.nc`) --- all 4 dimensions match, all 20 variables present with identical names, dtypes, and units.
 
----
-
-## Comparison: Full vs Interior
-
-| Metric | Full (233 tiles) | Interior (150 tiles) |
-|--------|------------------|----------------------|
-| DEM shape | 17k x 19k | 15k x 16k |
-| Valid data | 58.5% | 62.5% |
-| Characteristic Lc | 100 m (constrained) | 166 m (FFT-derived) |
-| Accumulation threshold | 312 cells | 864 cells |
-| Stream coverage | 2.32% | 1.44% |
-| HAND median | 1.1 m | 1.8 m |
-| Aspect distribution | N: 17%, E: 34%, S: 17%, W: 32% | N: 24%, E: 26%, S: 26%, W: 24% |
-| Processing time | 6.2 min | 2.9 min |
-
-!!! note "Aspect distribution"
-    The full mosaic showed a strong E/W bias (66% combined), likely caused by edge artifacts or non-representative terrain at the boundary. The interior mosaic produced a much more uniform aspect distribution (~25% per direction), consistent with expectations for gently rolling terrain without a dominant orientation.
+Conversions applied: aspect from degrees to radians, longitude to 0--360 deg convention for CTSM.
 
 ---
 
-## Known Limitations
+## Current Limitations and Remaining Work
 
-!!! warning "Current output is not suitable for CTSM simulations"
-    The February 2026 audit identified four issues that directly affect the hillslope parameters produced by this pipeline. The methodology is validated and the pipeline engineering is solid, but the specific parameter values in the current NetCDF output will change when these issues are resolved.
+**Stream channel parameters** are interim estimates derived from power-law relationships applied to the computed stream network: depth 0.141 m, width 1.7 m, slope 0.00476 m/m. For comparison, Swenson's global values for this gridcell are: depth 0.269 m, width 4.41 m, slope 0.00233 m/m. The interim values are in the right order of magnitude but lack a rigorous basis. Phase E will derive these from field data or regional empirical relationships (e.g., Leopold curves, MERIT Hydro).
 
-### 1. DTND algorithm computes the wrong distance
+**Bedrock depth** is set to 0. Under CTSM's Uniform soil profile method (used by the osbs2 reference case), a bedrock depth of 0 tells CTSM to use its default soil profile --- it is a no-op. The Swenson reference file also has all zeros. If a non-Uniform soil profile method is used in the future, this parameter would need physical values from subsurface data.
 
-The pipeline replaced pysheds' haversine-based DTND with `scipy.ndimage.distance_transform_edt`. This fixed the math (Euclidean distance on UTM coordinates instead of haversine) but changed the concept: EDT finds the *geographically nearest* stream pixel, while Swenson's method finds the *hydrologically nearest* stream pixel (the one each cell actually drains to via D8 routing). These differ whenever a pixel is geographically closer to a stream on the opposite side of a drainage divide.
+**DEM conditioning erases real closed basins.** At 1m resolution, pits and depressions include real features: sinkholes, wetland depressions, karst dissolution features. Filling them enforces a continuous drainage network but destroys information about closed basins that are central to OSBS hydrology. This is inherent to D8 flow routing and is the same approach Swenson uses at 90m (where these features are already below the resolution). Alternative approaches (depression-aware routing, synthetic lake bottoms) would require a different hydrological framework and are beyond the scope of the current implementation.
 
-| Approach | Concept | Math |
-|----------|---------|------|
-| pysheds DTND | Correct (flow-path-linked) | Wrong (haversine on UTM) |
-| Pipeline EDT | Wrong (nearest regardless of drainage) | Correct (Euclidean on UTM) |
+**Hillslope structure** is 4 aspects x 4 HAND bins (16 columns), matching the Swenson default. An alternative configuration of 1 aspect x 8 HAND bins may better represent this nearly-flat site, where aspect-dependent insolation has negligible physical impact (slopes 0.01--0.06 m/m produce a maximum 6% correction to solar incidence angle). More elevation bins would provide finer resolution of the water table gradient across the hillslope profile. CTSM supports arbitrary configurations --- it reads `nhillslope` and `nmaxhillcol` from the input file. This decision is under consideration (STATUS.md, open question #2).
 
-Neither DTND is currently correct. The fix requires modifying pysheds' `compute_hand()` to detect UTM CRS and use Euclidean distance. Wrong DTND also corrupts the trapezoidal width fit, since width is derived from the A_sum(d) curve.
-
-### 2. 4x subsampling discards 93.75% of data
-
-The 4x subsampling was adopted after a single OOM failure at 64GB. Full resolution at 256GB was never tested. Neither was 2x subsampling at 128GB.
-
-The entire justification for using 1m LIDAR is to capture fine-scale drainage in a low-relief wetlandscape. Subsampling to 4m effective resolution undermines that purpose — small channels, wetland margins, and subtle elevation differences that drive TAI dynamics become invisible. Whether the current 4x factor is acceptable, excessive, or unnecessary is an open question that requires systematic testing across resolutions.
-
-### 3. Lc has never been computed at full resolution
-
-The FFT spectral analysis ran on the 4x-subsampled grid. For the full mosaic, it failed to find a real peak and fell back to the hardcoded 100m minimum. For the interior mosaic, it found 166m — but at 4m effective resolution, features at wavelengths below 8m are invisible.
-
-The full-resolution FFT has never been run on OSBS data. NumPy handles arrays of this size without difficulty, so this is an easy fix. Additionally, the FFT parameters (blend window, zero margin, wavelength bins, max search length) were copied from Swenson's 90m defaults without testing at 1m.
-
-### 4. Slope/aspect not validated for UTM
-
-Stage 8 of the MERIT validation discovered a Y-axis sign inversion in `np.gradient`-based aspect that swapped North and South. The fix (pgrid's `slope_aspect()` with Horn 1981 stencil) was applied to the MERIT validation scripts but *not* to the OSBS pipeline, because pgrid's method assumes geographic coordinates.
-
-The OSBS pipeline uses `np.gradient` with `arctan2(-dzdx, -dzdy)`, which may compensate for the sign issue, but this was never validated against the stage 8 findings. Since aspect controls which bin each pixel falls into, an error here would corrupt all six parameters through incorrect binning.
-
----
-
-## Technical Lessons
-
-1. **pysheds edge handling is critical.** Flow routing silently fails when all domain edges are nodata. Always verify that at least some boundary cells contain valid data.
-
-2. **Subsampling is an open question, not a settled answer.** The `resolve_flats` step in pysheds has poor scaling with large flat regions. 4x subsampling made the problem tractable at 64GB, but the minimum necessary subsampling factor has not been determined. Full resolution and 2x subsampling need to be tested before accepting the current 4x compromise.
-
-3. **Connected component extraction alone is insufficient.** Even after isolating the largest connected region, the bounding box may have all-nodata edges due to irregular tile coverage. Edge trimming is a separate, required step.
-
-4. **Accumulation threshold must scale with resolution.** When subsampling, both Lc (in pixels) and the derived threshold must be adjusted: `threshold = 0.5 * (Lc / subsample)^2`.
-
-5. **Geographic bounds must track all transformations.** Edge trimming, subsampling, and region extraction all modify the geographic extent. Bounds must be updated at each step for correct georeferencing in the output NetCDF.
-
-6. **Use the original DEM for slope calculation.** pysheds DEM conditioning replaces nodata with high values that create false gradients. Store the original DEM with NaN for nodata before processing.
+**No CTSM simulation comparison yet.** Phase F will create a branch case from the osbs2 baseline (year 861) with the custom hillslope file and compare outputs (water table depth, soil moisture, carbon fluxes) against the baseline.

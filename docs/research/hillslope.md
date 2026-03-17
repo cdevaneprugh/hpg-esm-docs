@@ -21,11 +21,10 @@ CTSM's **hillslope hydrology** mode addresses these limitations by dividing each
 
 ### Column Organization
 
-Each gridcell contains 17 columns in hillslope mode:
+Each gridcell contains 16 hillslope columns in hillslope mode:
 
 ```
 Gridcell
-├── Stream column (1)
 ├── North-facing hillslope (4 columns)
 │   ├── Outlet (lowest, near stream)
 │   ├── Lower
@@ -36,14 +35,15 @@ Gridcell
 └── West-facing hillslope (4 columns)
 ```
 
+Stream channel properties (depth, width, slope) are stored at the hillslope landunit level, not as a separate column.
+
 ### Column Indices
 
 ```
-Column 1:  Stream
-Column 2-5:  North aspect (Outlet → Ridge)
-Column 6-9:  East aspect (Outlet → Ridge)
-Column 10-13: South aspect (Outlet → Ridge)
-Column 14-17: West aspect (Outlet → Ridge)
+Column 1-4:   North aspect (Outlet → Ridge)
+Column 5-8:   East aspect (Outlet → Ridge)
+Column 9-12:  South aspect (Outlet → Ridge)
+Column 13-16: West aspect (Outlet → Ridge)
 ```
 
 ---

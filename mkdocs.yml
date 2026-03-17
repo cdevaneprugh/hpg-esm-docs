@@ -63,9 +63,9 @@ nav:
     - NEON Sites: research/neon-sites.md
   - Swenson Implementation:
     - Overview: swenson/index.md
-    - pysheds Porting: swenson/pysheds-porting.md
+    - pysheds Fork: swenson/pysheds-porting.md
     - MERIT Validation: swenson/merit-validation.md
-    - OSBS Implementation: swenson/osbs-implementation.md
+    - Methodology: swenson/osbs-implementation.md
     - Dataset Comparison: swenson/dataset-comparison.md
   - Reference:
     - Fork Modifications: reference/modifications.md

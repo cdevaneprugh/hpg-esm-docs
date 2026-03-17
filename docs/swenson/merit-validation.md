@@ -204,35 +204,41 @@ The best correlation (0.83 at threshold=20) was only marginally better than the 
 
 ## Final Results
 
+After the nine validation stages and subsequent post-audit improvements (see below), the consolidated regression test establishes these baseline correlations:
+
 | Parameter | Correlation | Assessment |
 |-----------|-------------|------------|
-| Height | 0.9999 | Excellent |
-| Distance | 0.9982 | Excellent |
-| Slope | 0.9966 | Excellent |
-| Aspect | 0.9999 | Excellent |
-| Width | 0.9597 | Excellent |
-| Area | 0.8200 | Good |
+| Height | 0.9979 | Excellent |
+| Distance | 0.9992 | Excellent |
+| Slope | 0.9839 | Excellent |
+| Aspect | 1.0000 | Excellent |
+| Width | 0.9919 | Excellent |
+| Area | 0.9244 | Excellent |
 
-Five of six parameters achieved >0.95 correlation with Swenson's published data.
+All six parameters achieved >0.92 correlation with Swenson's published data, with five above 0.98. These values serve as the regression baseline -- the automated regression test confirms them within 0.01 tolerance on each run.
+
+!!! note "Correlation shifts from Stage 8"
+    Some individual parameter correlations shifted slightly from the Stage 8 values (e.g., Height 0.9999 -> 0.9979) because the post-audit fixes changed stream network delineation, aspect averaging, and indexing. This is not a regression -- area fraction improved from 0.82 to 0.92, which was the primary target. All other parameters remain above 0.98.
 
 ---
 
 ## Area Discrepancy Analysis
 
-Three potential causes of the area fraction discrepancy were investigated:
+The area fraction gap (0.92 vs 1.0) was investigated through 15 hypotheses during a systematic audit (see `area_fraction_research.md`). The dominant remaining sources are:
 
 | Cause | Impact | Explanation |
 |-------|--------|-------------|
-| Region/gridcell mismatch | **Primary** | Even after the Stage 7 fix, minor boundary differences remained. The southern extension of the processed region included low-lying terrain that inflated the lowest HAND bin for north-facing slopes. |
-| HAND bin computation | Secondary | Differences in bin boundary rounding and per-aspect handling |
-| Accumulation threshold | Minor | ~2% sensitivity per 3x threshold change |
+| Stream network delineation | **Primary** | Differences between pysheds versions and our multi-region median Lc approach vs Swenson's single-region Lc produce slightly different stream networks, shifting catchment boundaries and bin populations |
+| Accumulation threshold sensitivity | Secondary | ~2% sensitivity per 3x threshold change |
+| Per-aspect bin boundary variation | Minor | Small HAND differences push the Q25 statistic across the mandatory 2m threshold differently per aspect |
 
-!!! tip "Why this is acceptable"
-    Height, distance, slope, aspect, and width are all *means within bins* and are insensitive to small changes in bin boundaries. Area is the *total per bin*, making it more sensitive to bin boundary choices. The 0.82 correlation was considered sufficient to validate the methodology for OSBS, where custom data would be produced rather than replicated from the published dataset.
+The 0.92 correlation represents the practical ceiling for this validation approach. Height, distance, slope, aspect, and width are all *means within bins* and are insensitive to small changes in bin boundaries. Area fraction is the *total per bin*, making it inherently more sensitive to bin boundary choices and stream network differences.
 
 ---
 
 ## Summary of Bugs Found and Fixed
+
+### Validation Stages (January 2026)
 
 | Stage | Bug | Root Cause | Fix |
 |-------|-----|-----------|-----|
@@ -242,3 +248,51 @@ Three potential causes of the area fraction discrepancy were investigated:
 | 7 | Bin1 constraint ignored | Optional vs mandatory 2m threshold | Rewrote `compute_hand_bins()` per Swenson's algorithm |
 | 7 | Pixel area approximation | Uniform cosine vs per-pixel spherical | Implemented Swenson's spherical area formula |
 | 8 | N/S aspect swap | Y-axis sign inversion in np.gradient | Switched to pgrid's Horn (1981) method |
+
+### Post-Audit Fixes (February 2026)
+
+| Bug | Root Cause | Fix | Area fraction impact |
+|-----|-----------|-----|---------------------|
+| Basin mask using DEM difference | `identify_open_water` should be binary mask | Binary flood-fill mask | +0.01 |
+| Per-pixel aspect binning | Pixels near aspect boundaries misassigned | Catchment-level circular mean aspect averaging | +0.08 |
+| n_hillslopes indexing | Indexed expanded grid with gridcell-level indices | Extract drainage_id to gridcell before indexing | +0.02 |
+| Polynomial fit weighting | w^2 weighting vs Swenson's w^1 | Match Swenson's normal equations | minor |
+| DTND tail outliers | Long-DTND pixels from DEM artifacts | Exponential tail removal before width fitting | +0.002 |
+
+---
+
+## Post-Audit Improvements (February 2026)
+
+A line-by-line audit of the validation pipeline against Swenson's original code identified five additional alignment opportunities. The area fraction — the weakest parameter at 0.82 after Stage 8 — improved to 0.92.
+
+### Area Fraction Progression
+
+| Fix | Area fraction | Delta | Mechanism |
+|-----|---------------|-------|-----------|
+| Stage 8 baseline | 0.82 | -- | N/S aspect fix applied |
+| Basin mask correction | 0.8284 | +0.01 | Binary `identify_open_water` mask instead of DEM-difference threshold |
+| Catchment-level aspect averaging | 0.9047 | +0.08 | Per-catchment circular mean before aspect binning |
+| n_hillslopes indexing fix | 0.9221 | +0.02 | Extract drainage_id to gridcell before indexing hillslope counts |
+| DTND tail removal | 0.9244 | +0.002 | Exponential fit removes long-DTND outliers before width fitting |
+
+Catchment-level aspect averaging was the single largest improvement (+0.08). Swenson replaces per-pixel aspects with the circular mean of all pixels in the same catchment-side group before aspect binning. This stabilizes bin assignments for pixels near aspect boundaries, which is important because small HAND differences push the Q25 statistic across the mandatory 2m bin threshold differently per aspect.
+
+---
+
+## Consolidated Regression Test
+
+The nine stage scripts were consolidated into a single regression script (`merit_regression.py`) that serves as an automated regression test for the pysheds fork. Run after any changes to `pgrid.py`:
+
+```bash
+cd $TOOLS/swenson
+sbatch scripts/merit_validation/merit_regression.sh
+```
+
+The script computes Lc via multi-region FFT and all six hillslope parameters for the published MERIT gridcell, then asserts:
+
+- **Lc**: Within 5% of 763m
+- **All 6 parameter correlations**: Within 0.01 of expected baselines
+
+Runtime: ~10-20 minutes, 48GB allocation. Outputs `results.json` and `summary.txt` to `scripts/merit_validation/output/`. Exits 0 on PASS, 1 on FAIL.
+
+The original nine stage scripts are archived in `audit/merit_validation_stages/`.

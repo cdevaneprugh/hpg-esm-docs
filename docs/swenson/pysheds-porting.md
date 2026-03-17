@@ -1,6 +1,6 @@
-# pysheds Porting
+# pysheds Fork
 
-*Porting Swenson's hillslope methods to our own pysheds fork with NumPy 2.0 compatibility.*
+*Swenson's hillslope methods ported to our own pysheds fork, extended with UTM CRS support.*
 
 ---
 
@@ -90,26 +90,24 @@ Swenson's code was written for NumPy 1.x. Four categories of fixes were required
 
 ## Test Suite
 
-Swenson's fork included a pytest test suite (`test_grid.py`, ~40 tests) covering core pysheds functionality but not the hillslope-specific methods. A new test file (`test_hillslope.py`) was created to cover the hillslope additions.
+The test suite covers both the original hillslope methods and the UTM CRS additions across four test files:
 
-### Test Classes
+| File | Tests | Coverage |
+|------|-------|----------|
+| `test_hillslope.py` | 15 | Hillslope methods on geographic DEM (slope/aspect, channel mask, HAND, hillslope classification, river network, integration) |
+| `test_utm.py` | 22 | UTM CRS: slope, aspect, HAND, DTND, AZND, river network, classification on synthetic V-valley DEM |
+| `test_grid.py` | ~40 | Core pysheds functionality (pre-existing) |
+| `test_dem.py` | ~5 | DEM I/O and conditioning (pre-existing) |
 
-| Class | Tests | Coverage |
-|-------|-------|----------|
-| `TestSlopeAspect` | 4 | Slope/aspect calculation on synthetic and real DEMs |
-| `TestChannelMask` | 3 | Channel mask creation, ID assignment, bank classification |
-| `TestComputeHand` | 2 | Extended HAND with DTND and drainage ID |
-| `TestComputeHillslope` | 2 | Hillslope classification (left/right bank, headwater) |
-| `TestExtractProfiles` | 2 | River segment extraction with connectivity |
-| `TestIntegration` | 1 | Full pipeline workflow on test DEM |
+The UTM tests use a synthetic V-valley DEM (1000x1000, 5m pixel spacing, UTM CRS) with analytically known slope, aspect, HAND, and DTND values. The 5m pixel size prevents tests from silently passing at unit pixel spacing.
 
 ### Results
 
 ```
-================== 14 passed, 1 skipped, 33 warnings in 3.63s ==================
+================== 82 passed, 0 warnings ==================
 ```
 
-All hillslope-specific methods verified working.
+Mutation testing: 30 mutations applied to CRS-dependent code paths, 100% effective score (all mutations caught or functionally equivalent).
 
 ---
 
@@ -128,3 +126,61 @@ aspect = np.array(grid.aspect)
 ```
 
 This pattern applies to `compute_hand()`, `compute_hillslope()`, `slope_aspect()`, and other methods.
+
+CRS handling is transparent -- methods detect the grid's CRS automatically and use the appropriate math (haversine for geographic, Euclidean for projected). The caller does not need to specify or know the CRS type.
+
+---
+
+## UTM CRS Support
+
+### Problem
+
+pysheds assumes geographic (lat/lon) coordinates throughout. On UTM data, haversine formulas produce garbage distances (e.g., treating UTM easting 404000 as 404000 degrees longitude), and the Horn 1981 gradient uses incorrect pixel spacing derived from haversine on meter-valued coordinates.
+
+### Solution
+
+A `_crs_is_geographic()` helper detects the CRS from the grid's pyproj metadata. All CRS-dependent functions branch: the geographic code path uses haversine (unchanged from Swenson's original), the projected code path uses Euclidean distance in the CRS linear units.
+
+### Functions Modified
+
+| Function | Geographic path | Projected path |
+|----------|----------------|----------------|
+| `compute_hand()` DTND | Haversine distance | Euclidean distance |
+| `compute_hand()` AZND | Spherical bearing | Planar arctan2 |
+| `_gradient_horn_1981()` | Haversine + cos(lat) spacing | Uniform dx, dy from affine transform |
+| `river_network_length_and_slope()` | Haversine segment length | Euclidean segment length |
+| `flow_direction()` D8 gradient | Haversine + cos(lat) spacing | Uniform dx, dy from affine transform |
+
+### Validation
+
+Three-level validation confirms correctness of both code paths:
+
+1. **Synthetic V-valley DEM** (1000x1000, 5m pixel, UTM CRS): Analytically known slope, aspect, HAND, and DTND. 22 tests catch CRS math errors directly against known solutions.
+
+2. **MERIT geographic regression**: Confirms UTM additions did not perturb the geographic code path. All 6 hillslope parameters match baseline correlations within 0.01 tolerance.
+
+3. **R6C10 single-tile smoke test**: Real 1m NEON LIDAR with lake, swamp, and upland terrain. 14 validation checks pass (stream coverage, HAND range, DTND range, slope statistics, aspect distribution, etc.).
+
+---
+
+## Additional Improvements
+
+### Deprecation Fixes
+
+| Issue | Fix |
+|-------|-----|
+| `distutils.version.LooseVersion` removed in Python 3.12 | Replaced with `looseversion` package |
+| `np.in1d` deprecated | Replaced with `np.isin` |
+| `pd._append()` deprecated | Replaced with `pd.concat()` |
+| `np.warnings`, `np.bool`, `np.float` (NumPy 2.0) | See NumPy 2.0 section above |
+
+### Code Cleanup
+
+- `_propagate_uphill()` extracted from three duplicate loops into a single reusable function
+- Module-level constants: `_EARTH_RADIUS_M`, `_DEG_TO_RAD` replace scattered magic numbers
+- Bare `except:` clauses replaced with specific exception types
+
+### CRS-Neutral Naming
+
+- `_2d_geographic_coordinates()` renamed to `_2d_crs_coordinates()`
+- `lon2d`/`lat2d` renamed to `x2d`/`y2d` throughout CRS-dependent functions

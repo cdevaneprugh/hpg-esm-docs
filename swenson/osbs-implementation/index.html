@@ -16,14 +16,14 @@
         <link rel="prev" href="../merit-validation/">
       
       
-        <link rel="next" href="../dataset-comparison/">
+        <link rel="next" href="../hand-binning-and-lake-column/">
       
       
         
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -1316,6 +1316,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#water-masking-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Water masking strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#known-limitation-depression-filling" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1388,10 +1399,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#hand-binning" class="md-nav__link">
+  <a href="#hand-binning-24-bin-tai-focused-scheme" class="md-nav__link">
     <span class="md-ellipsis">
       
-        HAND binning
+        HAND binning (24-bin TAI-focused scheme)
       
     </span>
   </a>
@@ -1501,6 +1512,62 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hand-binning-and-lake-column/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HAND Binning and Lake Column
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lateral-flow-and-routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lateral Flow and Routing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1901,6 +1968,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#water-masking-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Water masking strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#known-limitation-depression-filling" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1973,10 +2051,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#hand-binning" class="md-nav__link">
+  <a href="#hand-binning-24-bin-tai-focused-scheme" class="md-nav__link">
     <span class="md-ellipsis">
       
-        HAND binning
+        HAND binning (24-bin TAI-focused scheme)
       
     </span>
   </a>
@@ -2257,6 +2335,13 @@
 </tr>
 </tbody>
 </table>
+<h3 id="water-masking-strategy">Water masking strategy<a class="headerlink" href="#water-masking-strategy" title="Permanent link">&para;</a></h3>
+<p>Two water masks are computed and used at different stages of the pipeline:</p>
+<ul>
+<li>A <strong>narrow stream mask</strong> identifies pixels above the accumulation threshold and drives catchment delineation. This is the input to stream network density and to the downstream / upstream flow-routing arithmetic.</li>
+<li>A <strong>wide water mask</strong> (stream pixels + NWI open-water polygons from Lacustrine and Palustrine Unconsolidated Bottom features) is excluded from HAND binning and from the DTND tail fit. The wide mask ensures that lake-surface pixels do not contaminate the land-bin HAND statistics; the lake area is then represented as a separate column at chain index 1 (see <a href="../hand-binning-and-lake-column/">HAND Binning and Lake Column</a>).</li>
+</ul>
+<p>The raw NWI polygons miss interior holes that are visible in the LIDAR (small islands, sub-polygon gaps, mis-digitized edges). A <code>scipy.ndimage.binary_fill_holes</code> pass over the rasterized NWI mask closes ~400,000 pixels of these holes, bringing the masked footprint closer to what NEON LIDAR confirms is contiguous open water. The hole-fill is applied before the wide mask is used downstream.</p>
 <h3 id="known-limitation-depression-filling">Known limitation: depression filling<a class="headerlink" href="#known-limitation-depression-filling" title="Permanent link">&para;</a></h3>
 <p>DEM conditioning fills all depressions, which at 1m resolution erases real geomorphic features --- sinkholes, wetland depressions, karst dissolution features --- that are central to OSBS hydrology. Standard D8 flow routing requires a depression-free DEM. Alternative approaches (priority-flood with depression retention, depression-aware routing) exist but would require a different hydrological framework. This is a fundamental limitation of applying Swenson's D8-based methodology to high-resolution data in a landscape where closed basins are common.</p>
 <hr />
@@ -2270,41 +2355,15 @@
 <h3 id="catchment-level-aspect-averaging">Catchment-level aspect averaging<a class="headerlink" href="#catchment-level-aspect-averaging" title="Permanent link">&para;</a></h3>
 <p>Before aspect binning, per-pixel aspects are replaced with the circular mean aspect of each catchment side (left bank, right bank, headwater). Swenson's code performs this step (<code>set_aspect_to_hillslope_mean_serial</code>, <code>Representative_Hillslopes/terrain_utils.py</code>) before the binning loop. This stabilizes bin assignments for pixels near aspect boundaries, where small HAND differences can push the per-aspect Q25 statistic across the mandatory 2 m bin threshold. This was the single largest improvement found during the MERIT validation audit (+0.08 to area fraction correlation, from 0.83 to 0.90).</p>
 <h3 id="aspect-binning">Aspect binning<a class="headerlink" href="#aspect-binning" title="Permanent link">&para;</a></h3>
-<p>4 bins following Swenson Table 1:</p>
-<table>
-<thead>
-<tr>
-<th>Bin</th>
-<th>Range</th>
-<th>Label</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>315 deg -- 45 deg</td>
-<td>North</td>
-</tr>
-<tr>
-<td>2</td>
-<td>45 deg -- 135 deg</td>
-<td>East</td>
-</tr>
-<tr>
-<td>3</td>
-<td>135 deg -- 225 deg</td>
-<td>South</td>
-</tr>
-<tr>
-<td>4</td>
-<td>225 deg -- 315 deg</td>
-<td>West</td>
-</tr>
-</tbody>
-</table>
-<h3 id="hand-binning">HAND binning<a class="headerlink" href="#hand-binning" title="Permanent link">&para;</a></h3>
-<p>4 elevation bins with approximately equal pixel counts per aspect. The paper mandates that the upper bound of the lowest bin be &lt;= 2 m, ensuring the soil column extends below stream channel elevation for two-way water exchange between stream and groundwater. The bin computation follows Swenson's <code>SpecifyHandBounds()</code> algorithm.</p>
-<p>Production bin boundaries: [0.0, 0.00027, 1.61, 5.29, 25.1] m. The near-zero lowest boundary (Q25 = 0.00027 m) reflects equal-area binning on flat terrain --- 25% of pixels in each aspect have HAND below 0.00027 m because a large fraction of this low-relief site is at stream level.</p>
+<p>The production configuration uses a single aspect (omnidirectional). At OSBS slopes (median ~0.05 m/m, all bins below 0.06 m/m), the aspect-dependent insolation correction is at most ~6 % of incident solar — small enough that aspect partitioning carries no physical signal worth resolving, and the same 24 HAND bins serve every direction. The four-aspect Swenson default (Table 1 of the paper) is preserved as an implementation option but is not used for OSBS production.</p>
+<h3 id="hand-binning-24-bin-tai-focused-scheme">HAND binning (24-bin TAI-focused scheme)<a class="headerlink" href="#hand-binning-24-bin-tai-focused-scheme" title="Permanent link">&para;</a></h3>
+<p>Equal-area binning on flat terrain crushes the lowest bin to near-zero height (Q25 = 0.00027 m in earlier 4-bin OSBS output), erasing the saturation gradient that defines the terrestrial-aquatic interface. The production OSBS file uses a 24-bin scheme tilted toward the TAI:</p>
+<ul>
+<li>12 flood-zone bins covering HAND from −6.34 m (Q01 of raw HAND) to 0 m, plus 12 upland bins from 0 m to +17.46 m (Q99). Pixels outside the Q01–Q99 envelope are discarded, not clipped — both tails are real terrain (negligible singleton mass), and clipping into sentinel bins would over-weight the deepest pits and ridge extrema in gridcell aggregation.</li>
+<li>A 0.25 m floor on bin width, set by the LIDAR 2σ vertical noise budget (NEON DP3.30024.001 stated accuracy 0.10 m; OSBS empirical residual standard deviation 0.058 m; 2σ ≈ 0.116 m, rounded up for headroom). Bins narrower than 0.25 m would partition pixels into adjacent classes by noise, not by terrain.</li>
+<li>Geometric width progression outward from the TAI core: 0.25 m → 0.5 m → 1.0 m → 2.0 m → ~7 m (ridge sentinel). The smoothness criterion is per-meter pixel density, not per-bin area — the density curve is monotonic toward the peak from each side, which is the physically meaningful aggregation invariant.</li>
+</ul>
+<p>The bin edges, per-bin area allocation, motivation for the asymmetric flood-zone tilt, and the LIDAR error-budget derivation are documented in detail on the <a href="../hand-binning-and-lake-column/">HAND Binning and Lake Column</a> page.</p>
 <h3 id="dtnd-tail-removal">DTND tail removal<a class="headerlink" href="#dtnd-tail-removal" title="Permanent link">&para;</a></h3>
 <p>An exponential fit to the DTND distribution identifies and removes long-distance outliers before parameter computation. Applied per-catchment-side. This prevents a few pixels with anomalously long flow paths (e.g., single ridgeline pixels) from distorting the trapezoidal width fit.</p>
 <h3 id="trapezoidal-width-fitting-swenson-eq-9-16">Trapezoidal width fitting (Swenson Eq. 9--16)<a class="headerlink" href="#trapezoidal-width-fitting-swenson-eq-9-16" title="Permanent link">&para;</a></h3>
@@ -2334,7 +2393,7 @@
 <tbody>
 <tr>
 <td><strong>Kept identical</strong></td>
-<td>Trapezoidal width model (Eq. 9--16), HAND binning algorithm, quadratic solver, 2 m lowest-bin constraint, circular mean aspect, DEM conditioning chain (fill pits, fill depressions, resolve flats, D8, accumulation)</td>
+<td>Trapezoidal width model (Eq. 9--16), quadratic solver for width, circular mean aspect, DEM conditioning chain (fill pits, fill depressions, resolve flats, D8, accumulation)</td>
 <td>Core methodology validated against Swenson's published data. MERIT validation: 5 of 6 parameters &gt;0.98 correlation, area fraction 0.92.</td>
 </tr>
 <tr>
@@ -2345,17 +2404,22 @@
 <tr>
 <td><strong>Resolution adaptation</strong></td>
 <td>Restricted-wavelength FFT with min_wavelength=20 m (vs direct peak from full spectrum), blend_edges=50 px (vs 4 px), full 1m processing (vs direct ~90m)</td>
-<td>1m data contains micro-topographic noise invisible at 90m. The Laplacian k^2 weighting creates an artifact peak at 8 m. Excluding wavelengths &lt;20 m exposes the drainage-scale peak at 285--356 m. Larger edge blending windows compensate for the different geographic footprint per pixel.</td>
+<td>1m data contains micro-topographic noise invisible at 90m. The Laplacian k² weighting creates an artifact peak at 8 m. Excluding wavelengths &lt;20 m exposes the drainage-scale peak at 285--356 m. Larger edge blending windows compensate for the different geographic footprint per pixel.</td>
 </tr>
 <tr>
-<td><strong>Improved during validation</strong></td>
+<td><strong>OSBS-specific refinements</strong></td>
+<td>24-bin TAI-focused HAND scheme (12 FZ + 12 upland, 0.25 m floor) replacing Swenson's 4-bin equal-area <code>SpecifyHandBounds()</code>; single aspect replacing 4-aspect partition; raw-HAND binning with Q01/Q99 outlier discard; dual water-mask strategy (narrow stream mask for delineation, wide mask including NWI open water for HAND statistics); dedicated lake column at chain index 1</td>
+<td>Equal-area binning on flat terrain crushes the lowest bin's mean HAND to LIDAR noise (Q25 = 0.0003 m), erasing the saturation gradient that defines the terrestrial-aquatic interface. The 24-bin scheme resolves the wet-to-dry gradient at the LIDAR 2σ vertical noise floor. The lake column gives aggregated NWI open water a dedicated column for two-way exchange with adjacent land bins. See <a href="../hand-binning-and-lake-column/">HAND Binning and Lake Column</a>.</td>
+</tr>
+<tr>
+<td><strong>Improved during MERIT validation</strong></td>
 <td>Catchment-level aspect averaging before binning, binary basin mask (vs DEM-difference threshold), corrected n_hillslopes indexing (extract drainage_id to gridcell before indexing), DTND tail removal (exponential fit), polynomial fit weighting matching Swenson's normal equations</td>
 <td>Found and fixed during systematic line-by-line audit of the MERIT validation pipeline against Swenson's original code. Collectively improved area fraction correlation from 0.82 to 0.92.</td>
 </tr>
 <tr>
 <td><strong>Known limitations</strong></td>
 <td>Stream depth (0.141 m) and width (1.7 m) from interim power law, bedrock depth set to 0, depression filling erases real closed basins</td>
-<td>Phase E: stream parameters require field data or regional empirical relationships. Bedrock depth of 0 is a no-op under CTSM's Uniform soil profile method. Depression filling is inherent to D8 routing.</td>
+<td>Stream parameters are inert under the operative routing-off configuration; if <code>use_hillslope_routing</code> is later enabled, they would require field data or regional empirical relationships. Bedrock depth of 0 is a no-op under CTSM's Uniform soil profile method. Depression filling is inherent to D8 routing.</td>
 </tr>
 </tbody>
 </table>
@@ -2384,13 +2448,13 @@
 </tr>
 <tr>
 <td><code>nhillslope</code></td>
-<td>4</td>
-<td>Aspect bins (N, E, S, W)</td>
+<td>1</td>
+<td>Aspect (single, omnidirectional)</td>
 </tr>
 <tr>
 <td><code>nmaxhillcol</code></td>
-<td>16</td>
-<td>Total hillslope columns</td>
+<td>25</td>
+<td>Total hillslope columns (1 lake at chain index 1 + 24 HAND bins)</td>
 </tr>
 </tbody>
 </table>
@@ -2466,15 +2530,14 @@
 </tr>
 </tbody>
 </table>
-<p>Production output: <code>hillslopes_osbs_tier3_contiguous_c260317.nc</code>. 16 columns (4 aspects x 4 HAND bins). NetCDF structure verified against Swenson reference (<code>hillslopes_osbs_c240416.nc</code>) --- all 4 dimensions match, all 20 variables present with identical names, dtypes, and units.</p>
+<p>Production output: <code>hillslopes_osbs_production_c260505.nc</code>. 25 columns (1 lake column + 24 HAND bins on a single aspect). NetCDF structure verified against Swenson reference (<code>hillslopes_osbs_c240416.nc</code>) --- all required variables present with identical names, dtypes, and units; dimension cardinalities differ deliberately (1 vs 4 aspects; 25 vs 16 columns) per the locked column-structure decision.</p>
 <p>Conversions applied: aspect from degrees to radians, longitude to 0--360 deg convention for CTSM.</p>
 <hr />
 <h2 id="current-limitations-and-remaining-work">Current Limitations and Remaining Work<a class="headerlink" href="#current-limitations-and-remaining-work" title="Permanent link">&para;</a></h2>
 <p><strong>Stream channel parameters</strong> are interim estimates derived from power-law relationships applied to the computed stream network: depth 0.141 m, width 1.7 m, slope 0.00476 m/m. For comparison, Swenson's global values for this gridcell are: depth 0.269 m, width 4.41 m, slope 0.00233 m/m. The interim values are in the right order of magnitude but lack a rigorous basis. Phase E will derive these from field data or regional empirical relationships (e.g., Leopold curves, MERIT Hydro).</p>
 <p><strong>Bedrock depth</strong> is set to 0. Under CTSM's Uniform soil profile method (used by the osbs2 reference case), a bedrock depth of 0 tells CTSM to use its default soil profile --- it is a no-op. The Swenson reference file also has all zeros. If a non-Uniform soil profile method is used in the future, this parameter would need physical values from subsurface data.</p>
 <p><strong>DEM conditioning erases real closed basins.</strong> At 1m resolution, pits and depressions include real features: sinkholes, wetland depressions, karst dissolution features. Filling them enforces a continuous drainage network but destroys information about closed basins that are central to OSBS hydrology. This is inherent to D8 flow routing and is the same approach Swenson uses at 90m (where these features are already below the resolution). Alternative approaches (depression-aware routing, synthetic lake bottoms) would require a different hydrological framework and are beyond the scope of the current implementation.</p>
-<p><strong>Hillslope structure</strong> is 4 aspects x 4 HAND bins (16 columns), matching the Swenson default. An alternative configuration of 1 aspect x 8 HAND bins may better represent this nearly-flat site, where aspect-dependent insolation has negligible physical impact (slopes 0.01--0.06 m/m produce a maximum 6% correction to solar incidence angle). More elevation bins would provide finer resolution of the water table gradient across the hillslope profile. CTSM supports arbitrary configurations --- it reads <code>nhillslope</code> and <code>nmaxhillcol</code> from the input file. This decision is under consideration (STATUS.md, open question #2).</p>
-<p><strong>No CTSM simulation comparison yet.</strong> Phase F will create a branch case from the osbs2 baseline (year 861) with the custom hillslope file and compare outputs (water table depth, soil moisture, carbon fluxes) against the baseline.</p>
+<p><strong>Phase F deployment is in progress.</strong> The production hillslope file is deployed in the operative case <code>osbs.swenson.spinup</code>, a fresh startup (<code>RUN_TYPE=startup</code>) with 4-stream <code>h0/h1/h2/h3</code> history-output configuration. A 600-yr accelerated AD spinup has completed; analysis is in progress and will be documented in a subsequent pass. The namelist toggles <code>use_hillslope=.true.</code> and <code>use_hillslope_routing=.false.</code> are explained in <a href="../lateral-flow-and-routing/">Lateral Flow and Routing</a>.</p>
 
 
 
@@ -2527,13 +2590,13 @@
         
         
           
-          <a href="../dataset-comparison/" class="md-footer__link md-footer__link--next" aria-label="Next: Dataset Comparison">
+          <a href="../hand-binning-and-lake-column/" class="md-footer__link md-footer__link--next" aria-label="Next: HAND Binning and Lake Column">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Dataset Comparison
+                HAND Binning and Lake Column
               </div>
             </div>
             <div class="md-footer__button md-icon">

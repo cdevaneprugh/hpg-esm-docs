@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -959,17 +959,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#column-indices" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Column Indices
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -1144,10 +1133,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#enabling-hillslope-mode" class="md-nav__link">
+  <a href="#use_hillslope" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Enabling Hillslope Mode
+        use_hillslope
       
     </span>
   </a>
@@ -1155,10 +1144,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#spillheight" class="md-nav__link">
+  <a href="#use_hillslope_routing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Spillheight
+        use_hillslope_routing
       
     </span>
   </a>
@@ -1448,6 +1437,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../swenson/hand-binning-and-lake-column/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HAND Binning and Lake Column
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../swenson/lateral-flow-and-routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lateral Flow and Routing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../swenson/dataset-comparison/" class="md-nav__link">
         
   
@@ -1680,17 +1725,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#column-indices" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Column Indices
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -1865,10 +1899,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#enabling-hillslope-mode" class="md-nav__link">
+  <a href="#use_hillslope" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Enabling Hillslope Mode
+        use_hillslope
       
     </span>
   </a>
@@ -1876,10 +1910,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#spillheight" class="md-nav__link">
+  <a href="#use_hillslope_routing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Spillheight
+        use_hillslope_routing
       
     </span>
   </a>
@@ -1984,24 +2018,16 @@
 <hr />
 <h2 id="hillslope-structure">Hillslope Structure<a class="headerlink" href="#hillslope-structure" title="Permanent link">&para;</a></h2>
 <h3 id="column-organization">Column Organization<a class="headerlink" href="#column-organization" title="Permanent link">&para;</a></h3>
-<p>Each gridcell contains 16 hillslope columns in hillslope mode:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Gridcell
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── North-facing hillslope (4 columns)
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   ├── Outlet (lowest, near stream)
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   ├── Lower
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   ├── Upper
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   └── Ridge (highest)
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├── East-facing hillslope (4 columns)
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>├── South-facing hillslope (4 columns)
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>└── West-facing hillslope (4 columns)
+<p>Hillslope mode partitions each gridcell into an arbitrary number of columns at different topographic positions. The cardinality is read at runtime from the hillslope input NetCDF (<code>nhillslope</code> × <code>nmaxhillcol</code>), so the same CTSM build supports varied column-structure decisions.</p>
+<p>The Swenson global default uses 4 aspects × 4 elevation bins = 16 columns:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Gridcell (Swenson default)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── North-facing hillslope (4 columns: Outlet → Lower → Upper → Ridge)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── East-facing hillslope (4 columns)
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── South-facing hillslope (4 columns)
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>└── West-facing hillslope (4 columns)
 </code></pre></div>
-<p>Stream channel properties (depth, width, slope) are stored at the hillslope landunit level, not as a separate column.</p>
-<h3 id="column-indices">Column Indices<a class="headerlink" href="#column-indices" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Column 1-4:   North aspect (Outlet → Ridge)
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Column 5-8:   East aspect (Outlet → Ridge)
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Column 9-12:  South aspect (Outlet → Ridge)
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Column 13-16: West aspect (Outlet → Ridge)
-</code></pre></div>
+<p>The OSBS production file departs from this default, using 1 aspect × 24 elevation bins + 1 dedicated lake column = 25 columns. The aspect partition is collapsed because OSBS slopes are too shallow (median ~0.05 m/m, max ~0.06 m/m) for aspect-dependent insolation to carry a meaningful signal; the 24 elevation bins resolve the wet-to-dry gradient at the LIDAR vertical noise floor. See <a href="../../swenson/hand-binning-and-lake-column/">HAND Binning and Lake Column</a> for the OSBS rationale.</p>
+<p>Stream channel properties (depth, width, slope) are stored at the hillslope landunit level in either configuration, not as a separate column.</p>
 <hr />
 <h2 id="six-geomorphic-parameters">Six Geomorphic Parameters<a class="headerlink" href="#six-geomorphic-parameters" title="Permanent link">&para;</a></h2>
 <p>Each hillslope element is defined by six parameters (Swenson &amp; Lawrence 2025):</p>
@@ -2128,25 +2154,26 @@
 </ul>
 <hr />
 <h2 id="key-namelist-parameters">Key Namelist Parameters<a class="headerlink" href="#key-namelist-parameters" title="Permanent link">&para;</a></h2>
-<h3 id="enabling-hillslope-mode">Enabling Hillslope Mode<a class="headerlink" href="#enabling-hillslope-mode" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">use_hillslope</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">use_hillslope_routing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<p>CTSM hillslope mode is controlled by two related-but-distinct toggles. A 2026-05-19 source-code audit of CTSM 5.3.085 established what each one activates; the <a href="../../swenson/lateral-flow-and-routing/">Lateral Flow and Routing</a> page documents the file:line evidence.</p>
+<h3 id="use_hillslope"><code>use_hillslope</code><a class="headerlink" href="#use_hillslope" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">use_hillslope</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
 </code></pre></div>
-<h3 id="spillheight">Spillheight<a class="headerlink" href="#spillheight" title="Permanent link">&para;</a></h3>
-<p>The spillheight parameter controls surface water redistribution when water table exceeds a threshold:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">hillslope_pft_spill_height_to_bedrock_frac</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span>
+<p>Activates <strong>inter-column lateral subsurface flow</strong>. With this toggle on, <code>PerchedLateralFlow</code> and <code>SubsurfaceLateralFlow</code> (<code>SoilHydrologyMod.F90</code>) are dispatched unconditionally from <code>HydrologyDrainageMod.F90</code>; the Darcy gradient between adjacent columns is computed every hydrology step, and the net inflow/outflow is applied to each column's soil-water state. This is what makes a hillslope-mode case differ physically from a stack of independent 1-D soil columns.</p>
+<h3 id="use_hillslope_routing"><code>use_hillslope_routing</code><a class="headerlink" href="#use_hillslope_routing" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">use_hillslope_routing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
 </code></pre></div>
+<p>Additionally activates the <strong>stream-side machinery</strong>: an internal <code>stream_water_volume</code> ledger, Manning's-equation streamflow at the chain bottom, a stream-channel boundary condition that supersedes MOSART's <code>tdepth_grc</code> at the terminal column, the <code>VOLUMETRIC_STREAMFLOW</code> history field, and the land-to-runoff streamflow export. Routing-on does <strong>not</strong> activate inter-column lateral flow — that already runs under <code>use_hillslope</code> alone.</p>
 <hr />
 <h2 id="analysis-scripts">Analysis Scripts<a class="headerlink" href="#analysis-scripts" title="Permanent link">&para;</a></h2>
 <p>Analysis scripts are available in <a href="https://github.com/cdevaneprugh/hpg-esm-tools">hpg-esm-tools</a>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>scripts/hillslope.analysis/
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>├── bin_temporal.sh                    # Temporal binning (N-year averages)
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>├── plot_timeseries_*.py               # Time series plots
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>├── plot_zwt_hillslope_profile.py      # Water table vs elevation
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>├── plot_elevation_width_overlay.py    # Hillslope geometry
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>├── plot_col_areas.py                  # Column area bar charts
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>├── plot_pft_distribution.py           # PFT distribution
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>└── plot_vr_profile.py                 # Vertical profiles
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>scripts/hillslope.analysis/
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>├── bin_temporal.sh                    # Temporal binning (N-year averages)
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>├── plot_timeseries_*.py               # Time series plots
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>├── plot_zwt_hillslope_profile.py      # Water table vs elevation
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>├── plot_elevation_width_overlay.py    # Hillslope geometry
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>├── plot_col_areas.py                  # Column area bar charts
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>├── plot_pft_distribution.py           # PFT distribution
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>└── plot_vr_profile.py                 # Vertical profiles
 </code></pre></div>
 <hr />
 <h2 id="history-output">History Output<a class="headerlink" href="#history-output" title="Permanent link">&para;</a></h2>

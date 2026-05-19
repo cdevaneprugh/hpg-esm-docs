@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -1230,6 +1230,62 @@
   
   
     <li class="md-nav__item">
+      <a href="hand-binning-and-lake-column/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HAND Binning and Lake Column
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lateral-flow-and-routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lateral Flow and Routing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="dataset-comparison/" class="md-nav__link">
         
   
@@ -1602,27 +1658,33 @@
 <p><strong>Port code</strong> -- Complete. Forked pysheds, ported Swenson's <code>pgrid.py</code> with hillslope methods, fixed NumPy 2.0 compatibility, created test suite. See <a href="pysheds-porting/">pysheds Fork</a>.</p>
 </li>
 <li>
-<p><strong>Validate</strong> -- Complete. Reproduced Swenson's published results using MERIT DEM. All 6 parameters &gt;0.92 correlation, 5 above 0.98. See <a href="merit-validation/">MERIT Validation</a>.</p>
+<p><strong>Validate methodology</strong> -- Complete. Reproduced Swenson's published results using MERIT DEM. All 6 parameters &gt;0.92 correlation, 5 above 0.98. See <a href="merit-validation/">MERIT Validation</a>.</p>
 </li>
 <li>
-<p><strong>Adapt for OSBS</strong> -- Complete. Added UTM CRS support to pysheds fork (Phase A). Determined full 1m resolution is feasible and necessary (Phase B). Established Lc = 300m via restricted-wavelength FFT (Phase C).</p>
+<p><strong>Adapt for OSBS</strong> -- Complete. Added UTM CRS support to pysheds fork (Phase A). Determined full 1m resolution is feasible and necessary (Phase B). Established Lc = 356 m via restricted-wavelength FFT (Phase C).</p>
 </li>
 <li>
-<p><strong>Build pipeline</strong> -- Complete. Rebuilt pipeline with hydrological DTND, Horn 1981 slope/aspect, 1m resolution, and Lc = 356m. Extracted shared analysis module. Three audits completed: equation verification, full pipeline audit, line-by-line divergence audit (Phase D). See <a href="osbs-implementation/">Methodology</a>.</p>
+<p><strong>Build pipeline</strong> -- Complete. Rebuilt pipeline with hydrological DTND, Horn 1981 slope/aspect, 1m resolution. Extracted shared analysis module. Three audits completed: equation verification, full pipeline audit, line-by-line divergence audit (Phase D). See <a href="osbs-implementation/">Methodology</a>.</p>
 </li>
 <li>
-<p><strong>Complete parameters</strong> -- Pending. Stream channel parameters, bedrock depth, and DEM conditioning approach require field data and PI decisions (Phase E).</p>
+<p><strong>Refine parameter set</strong> -- Complete. Locked the 24-bin TAI-focused HAND scheme (12 flood-zone + 12 upland, 0.25 m floor), single-aspect configuration, raw-HAND Q01/Q99 outlier discard, and dual water-mask strategy with NWI hole-fill (Phases E.5, E.6). See <a href="hand-binning-and-lake-column/">HAND Binning and Lake Column</a>.</p>
 </li>
 <li>
-<p><strong>Validate and deploy</strong> -- Pending. Compare custom hillslope file to baseline, run CTSM branch simulation against osbs2 (Phase F).</p>
+<p><strong>Lake column construction</strong> -- Complete. Added a submerged lake column at chain index 1 representing all NWI open water (≈ 10.68 km² aggregated); per-rep rescaling (<code>nhill_implicit ≈ 533</code>) calibrated lake <code>wtlunit</code> to 12.3 %. Production NetCDF released 2026-05-05 (Phase G Stage 1). See <a href="hand-binning-and-lake-column/">HAND Binning and Lake Column</a>.</p>
+</li>
+<li>
+<p><strong>Validate and deploy</strong> -- In progress. A 600-yr accelerated AD spinup using the 2026-05-05 production hillslope file has completed (operative case <code>osbs.swenson.spinup</code>, 4-stream <code>h0/h1/h2/h3</code> configuration; <code>use_hillslope=.true.</code>, <code>use_hillslope_routing=.false.</code>). Analysis is in progress; findings will be documented in a subsequent pass. See <a href="lateral-flow-and-routing/">Lateral Flow and Routing</a> for the operative-case configuration.</p>
+</li>
+<li>
+<p><strong>Stream-side coupling (routing-on)</strong> -- Contingent. Phase H Track A (mesh-mode workaround for CTSM Issue #1432) is complete; Tracks B and C are on hold pending Phase F analysis. The original motivation — turn routing on to activate inter-column lateral flow — was retired when a 2026-05-19 source-code audit established that lateral flow already runs under <code>use_hillslope=.true.</code>. See <a href="lateral-flow-and-routing/">Lateral Flow and Routing</a>.</p>
 </li>
 </ol>
 <h2 id="current-status">Current Status<a class="headerlink" href="#current-status" title="Permanent link">&para;</a></h2>
-<p>The pipeline produces scientifically defensible hillslope parameters for the OSBS production domain (R4C5-R12C14, 90 tiles, 90M pixels at 1m). The latest production run (2026-03-17) completed in 22.6 minutes with Lc = 356m and A_thresh = 63,362 pixels.</p>
-<p><strong>Remaining work:</strong></p>
+<p>The pipeline produces the OSBS production hillslope file <code>hillslopes_osbs_production_c260505.nc</code> — 25 columns (1 lake at chain index 1 + 24 land bins) on a single aspect, computed over the R4C5–R12C14 production domain (90 tiles, 9 × 10 km, 0 % nodata, 1 m resolution). The file is deployed in the operative case <code>osbs.swenson.spinup</code>; the 600-yr accelerated AD spinup has completed and analysis is in progress.</p>
+<p><strong>Two items remain:</strong></p>
 <ul>
-<li><strong>Phase E (parameter completion):</strong> Stream channel depth, width, and slope are interim power-law estimates. Bedrock depth is set to 0. The hillslope structure (4 aspects x 4 bins vs 1 aspect x 8 bins) is under consideration. These require PI decisions and potentially field data or empirical relationships.</li>
-<li><strong>Phase F (CTSM validation):</strong> Run a short branch simulation from the osbs2 baseline (year 861) with the custom hillslope file and compare outputs.</li>
+<li><strong>Phase F analysis</strong> -- writing up convergence, water-table differentiation across the column chain, lake-column dynamics, and any TAI signature. Findings will land in a separate documentation pass once the analysis pattern stabilizes.</li>
+<li><strong>Phase H Tracks B/C</strong> -- whether to enable <code>use_hillslope_routing</code> to add the CTSM-internal stream-water ledger and stream-channel boundary condition. Decision depends on Phase F results.</li>
 </ul>
 <hr />
 <h2 id="development-history">Development History<a class="headerlink" href="#development-history" title="Permanent link">&para;</a></h2>
@@ -1658,7 +1720,7 @@
 <tr>
 <td>2026-02</td>
 <td>C</td>
-<td>Lc = 300m established via restricted-wavelength FFT</td>
+<td>Lc = 356 m established via restricted-wavelength FFT (20 m cutoff)</td>
 </tr>
 <tr>
 <td>2026-02</td>
@@ -1670,9 +1732,44 @@
 <td>D</td>
 <td>Pipeline rebuilt with all fixes; equation and divergence audits completed</td>
 </tr>
+<tr>
+<td>2026-04</td>
+<td>E.6</td>
+<td>NWI mask hole-fill (<code>binary_fill_holes</code>) closed ~400 K interior polygon gaps</td>
+</tr>
+<tr>
+<td>2026-04</td>
+<td>E.5</td>
+<td>Lake column placement at chain index 1; raw-HAND Q01/Q99 outlier discard locked (PI direction)</td>
+</tr>
+<tr>
+<td>2026-05</td>
+<td>E.5</td>
+<td>24-bin TAI-focused HAND scheme locked; lake <code>hill_elev = −6.0 m</code>; dynamic <code>hill_distance</code></td>
+</tr>
+<tr>
+<td>2026-05</td>
+<td>G</td>
+<td>Production NetCDF <code>hillslopes_osbs_production_c260505.nc</code> released (25 columns, 1 aspect)</td>
+</tr>
+<tr>
+<td>2026-05</td>
+<td>H Track A</td>
+<td>Mesh-mode workaround for CTSM Issue #1432 verified (paired 5-yr test/control smoke test)</td>
+</tr>
+<tr>
+<td>2026-05</td>
+<td>F</td>
+<td><code>osbs.swenson.spinup</code> 600-yr accelerated AD spinup completed (4-stream h0/h1/h2/h3 configuration)</td>
+</tr>
+<tr>
+<td>2026-05</td>
+<td>--</td>
+<td>Routing-gate source audit: inter-column lateral flow runs under <code>use_hillslope</code>, not <code>use_hillslope_routing</code>; Phase H Tracks B/C reframed as contingent</td>
+</tr>
 </tbody>
 </table>
-<p>Internal phase tracking files: <code>swenson/phases/A-pysheds-utm.md</code> through <code>F-validate-deploy.md</code>.</p>
+<p>Internal phase tracking files: <code>swenson/phases/A-pysheds-utm.md</code> through <code>H-lateral-flow.md</code>.</p>
 <hr />
 <h2 id="tools-and-repositories">Tools and Repositories<a class="headerlink" href="#tools-and-repositories" title="Permanent link">&para;</a></h2>
 <table>

@@ -66,6 +66,8 @@ nav:
     - pysheds Fork: swenson/pysheds-porting.md
     - MERIT Validation: swenson/merit-validation.md
     - Methodology: swenson/osbs-implementation.md
+    - HAND Binning and Lake Column: swenson/hand-binning-and-lake-column.md
+    - Lateral Flow and Routing: swenson/lateral-flow-and-routing.md
     - Dataset Comparison: swenson/dataset-comparison.md
   - Reference:
     - Fork Modifications: reference/modifications.md

@@ -10,6 +10,8 @@ The Swenson global methodology bins HAND so each elevation bin holds approximate
 
 The 24-bin scheme addresses this by tilting bin resolution toward the TAI and lifting the bin-width floor to the LIDAR vertical noise budget.
 
+![HAND map of the production domain (R4C5--R12C14, 9 × 10 km, 1 m). Dark purple is low HAND (near streams and flood-zone interiors); bright yellow is upland ridge; white pixels are NWI open water excluded from land bins. The TAI is the colour band where the saturation gradient is steepest --- the 24-bin scheme concentrates bin resolution there.](images/production_hand_map.png)
+
 ---
 
 ## 24-bin TAI-focused scheme
@@ -85,6 +87,8 @@ The OSBS production file places a dedicated lake column at chain index 1, shifti
 | `hill_slope` | 0 | Water surface is horizontal. |
 | `hill_aspect` | 0 | Inconsequential for the flat lake column. |
 | `hill_bedrock_depth` | 0 | Matches the hillslope convention; inert under CTSM's Uniform soil profile method. |
+
+![Four hillslope parameters across the 25 columns of the production NetCDF: mean raw HAND (top-left), mean DTND (top-right), per-rep hillslope element area (bottom-left), and lower-edge width (bottom-right). The chain is ordered lake → deepest flood-zone bin (1) → ridge bin (24). Colour-coded: lake (light blue), flood zone with raw HAND < 0 (dark red), upland with raw HAND ≥ 0 (green). The HAND chain rises monotonically from −6.0 m at the lake to +12.5 m at the ridge bin. DTND grows smoothly from ~1 m at the lake to ~350 m at the ridge. Area is small in the flood zone (narrow bins resolve the TAI core) and largest in mid-upland (where bin widths broaden). Width is set by the trapezoidal plan-form fit and is largest near the stream-margin bins.](images/production_hillslope_params.png)
 
 ---
 

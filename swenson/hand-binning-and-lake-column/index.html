@@ -1266,13 +1266,41 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#spillheight-decision" class="md-nav__link">
+  <a href="#spillheight-and-the-sourcemod-retirement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SPILLHEIGHT decision
+        SPILLHEIGHT and the SourceMod retirement
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="SPILLHEIGHT and the SourceMod retirement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-raw-hand-binning-superseded-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why raw-HAND binning superseded this
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-2026-04-30-pi-meeting-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 2026-04-30 PI meeting decision
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1641,13 +1669,41 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#spillheight-decision" class="md-nav__link">
+  <a href="#spillheight-and-the-sourcemod-retirement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SPILLHEIGHT decision
+        SPILLHEIGHT and the SourceMod retirement
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="SPILLHEIGHT and the SourceMod retirement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-raw-hand-binning-superseded-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why raw-HAND binning superseded this
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-2026-04-30-pi-meeting-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 2026-04-30 PI meeting decision
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1856,12 +1912,28 @@
 </ul>
 <p>Within the representative hillslope, the lake column ends up with <code>wtlunit ≈ 12.3 %</code>, calibrated to the NWI water footprint as a fraction of the production domain (~12 % open water). The land bins partition the remaining 87.7 % according to their NWI-masked, water-excluded pixel areas.</p>
 <hr />
-<h2 id="spillheight-decision">SPILLHEIGHT decision<a class="headerlink" href="#spillheight-decision" title="Permanent link">&para;</a></h2>
-<p>An earlier design used a SourceMod-installed <code>SPILLHEIGHT</code> constant in <code>HillslopeHydrologyMod.F90</code> to subtract a fixed offset (originally 0.2 m) from every column's <code>hill_elev</code> at runtime. The lake column then sat at <code>hill_elev = −SPILLHEIGHT</code>, anchoring a stratified submergence regime.</p>
-<p>At the 2026-04-30 PI meeting, this approach was retired: the lake column became fully data-derived (chain-bookkeeping <code>hill_elev = −6.0 m</code>), and <code>SPILLHEIGHT</code> was zeroed via namelist override:</p>
+<h2 id="spillheight-and-the-sourcemod-retirement">SPILLHEIGHT and the SourceMod retirement<a class="headerlink" href="#spillheight-and-the-sourcemod-retirement" title="Permanent link">&para;</a></h2>
+<p>Before Phase E.5, the pipeline binned on <strong>conditioned HAND</strong> --- the depression-filled DEM's elevation above stream. Conditioned HAND is zero or positive by construction: pixels inside filled depressions sit <em>at</em> the depression's fill level, not below it. Equal-area binning on this signal produced no flood-zone columns; the lowest land bin's mean HAND landed at LIDAR noise (Q25 = 0.00027 m on earlier 4-bin runs), as documented in the <a href="#motivation">Motivation</a> section.</p>
+<p>To represent the wet, low-lying terrain visible in the NEON LIDAR, the PI installed two SourceMods in <code>osbs4-6/SourceMods/src.clm/</code>:</p>
+<ul>
+<li><strong><code>HillslopeHydrologyMod.F90</code></strong> --- modified <code>InitHillslope</code> to subtract a uniform <code>SPILLHEIGHT</code> constant (originally 0.2 m, hard-coded) from every column's <code>hill_elev</code> after reading the NetCDF. This effectively lowered the whole chain at runtime.</li>
+<li><strong><code>SurfaceWaterMod.F90</code></strong> --- added runoff suppression for any column satisfying <code>hill_elev + h2osfc &lt; 0</code>. Columns lowered below the stream by the SPILLHEIGHT subtraction would pond instead of drain, producing a stratified submergence regime.</li>
+</ul>
+<p>Combined, the two SourceMods turned the lowest land bins into "usually wet, sometimes dry" columns and the lake column (sitting at <code>hill_elev = −SPILLHEIGHT</code> in the input file) into the permanently submerged anchor of the chain.</p>
+<h3 id="why-raw-hand-binning-superseded-this">Why raw-HAND binning superseded this<a class="headerlink" href="#why-raw-hand-binning-superseded-this" title="Permanent link">&para;</a></h3>
+<p>Phase E.5 switched the pipeline's binning input from conditioned HAND to <strong>raw HAND</strong> (elevation above stream measured on the original DEM, signed). Raw HAND preserves the depression-fill depth as a negative HAND value, so flood-zone columns emerge from the data:</p>
+<ul>
+<li>The deepest land bin (chain index 2 in the production NetCDF) has a mean HAND of −5.13 m.</li>
+<li>Eleven additional flood-zone bins (chain indices 3 through 13) resolve the saturation gradient up to HAND = 0.</li>
+<li>The bin areas, per-meter density, and Darcy-relevant geometry all derive from the original LIDAR rather than from a runtime offset to the deposited input file.</li>
+</ul>
+<p>The runtime elevation shift is no longer needed because the flood zone is in the file. The SourceMod's purpose --- creating submerged columns to represent low-lying terrain --- is solved at file-construction time rather than at runtime.</p>
+<h3 id="the-2026-04-30-pi-meeting-decision">The 2026-04-30 PI meeting decision<a class="headerlink" href="#the-2026-04-30-pi-meeting-decision" title="Permanent link">&para;</a></h3>
+<p>The SourceMod's runtime mechanism was retired. <code>SPILLHEIGHT = 0.0</code> set via namelist override (rather than editing the SourceMod constant) keeps the SourceMod files retained but inert:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">spillheight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
 </code></pre></div>
-<p>The SourceMod is retained in the case directory but is inert under this setting. The decision was driven by the realization that the chain-monotonicity constraint (lake below the deepest land bin) is the actual binding criterion, and the chain-bookkeeping value can be set directly in the input file rather than constructed at runtime from a SourceMod offset.</p>
+<p>This lowers the maintenance burden across cases --- no Fortran rewrite, no case-by-case SourceMod synchronization --- while disabling the runtime elevation shift. The lake column's <code>hill_elev = −6.0 m</code> (chain-bookkeeping value, locked 2026-05-04; see Lake column construction below) replaces the earlier <code>−SPILLHEIGHT</code> framing as the chain anchor.</p>
+<p>Both approaches produce a stratified submergence regime; the data-derived approach is more faithful to the underlying NEON LIDAR (basin depths read from the input file rather than imposed as a domain-wide uniform offset) and removes the need to keep the SourceMod's <code>SPILLHEIGHT</code> constant in sync with the pipeline.</p>
 <hr />
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
 <ul>

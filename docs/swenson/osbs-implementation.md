@@ -130,9 +130,16 @@ DEM conditioning fills all depressions, which at 1m resolution erases real geomo
 
 ### HAND and DTND
 
-Computed by pysheds `compute_hand()`, which traces each pixel's D8 flow path to its drainage stream pixel and returns the elevation difference (HAND) and horizontal distance (DTND). This produces hydrologically-linked values --- each pixel's distance is to the stream pixel it actually drains to, not to the geographically nearest stream pixel. The UTM-aware fork (Phase A) uses Euclidean distance for projected CRS rather than haversine.
+Computed by pysheds `compute_hand()`, which traces each pixel's D8 flow path to its drainage stream pixel and returns the elevation difference and horizontal distance. The UTM-aware fork (Phase A) uses Euclidean distance for projected CRS rather than haversine.
 
-HAND range: 0--25.1 m, median 1.6 m. The low median reflects the flat terrain --- over half the domain is within 1.6 m of its nearest stream.
+The pipeline uses two distinct HAND quantities:
+
+- **Conditioned HAND** --- elevation above the drainage stream measured on the depression-filled DEM. This is the standard pysheds output and what feeds the flow-routing arithmetic, catchment delineation, and stream-network length / slope computation. Range on the production domain: 0--25.2 m, median 2.3 m.
+- **Raw HAND** --- elevation above the drainage stream measured on the original DEM (signed). Equivalent to conditioned HAND minus the local depression-fill depth. Pixels inside filled depressions have raw HAND < 0 --- they sit physically below stream level. Range on the production domain (after Q01/Q99 trim): −6.34 m to +17.02 m.
+
+The split exists because D8 flow routing requires a depression-free DEM (otherwise the algorithm cannot define unambiguous downstream paths), but the physically meaningful elevation for the flood zone is the original-DEM value. Raw HAND drives bin assignment; conditioned HAND drives flow topology. The flood-zone columns in the production NetCDF (chain indices 2 through 13) come from the negative raw-HAND range and would not exist if binning used conditioned HAND. See [HAND Binning and Lake Column](hand-binning-and-lake-column.md) for the binning consequences.
+
+DTND is unaffected by the conditioned-vs-raw distinction: it is a horizontal distance along the flow path, which is the same in either DEM. Production DTND range: 3 m (lake column, half of Bin 1's distance per the dynamic-distance rule) to 353 m (deepest upland bin).
 
 ### Slope and aspect
 
@@ -216,7 +223,7 @@ The pipeline outputs a CTSM-compatible NetCDF file containing all required hills
 
 | Variable | Units | Description |
 |----------|-------|-------------|
-| `nhillcolumns` | -- | Number of hillslope columns (16) |
+| `nhillcolumns` | -- | Number of hillslope columns (25 for OSBS production: 1 lake + 24 land bins) |
 | `pct_hillslope` | % | Area fraction per aspect |
 | `hillslope_elevation` | m | Height above stream (HAND) |
 | `hillslope_distance` | m | Distance from stream (DTND) |
@@ -237,10 +244,10 @@ Conversions applied: aspect from degrees to radians, longitude to 0--360 deg con
 
 ## Current Limitations and Remaining Work
 
-**Stream channel parameters** are interim estimates derived from power-law relationships applied to the computed stream network: depth 0.141 m, width 1.7 m, slope 0.00476 m/m. For comparison, Swenson's global values for this gridcell are: depth 0.269 m, width 4.41 m, slope 0.00233 m/m. The interim values are in the right order of magnitude but lack a rigorous basis. Phase E will derive these from field data or regional empirical relationships (e.g., Leopold curves, MERIT Hydro).
+**Stream channel parameters** are interim estimates derived from Swenson's power-law relationships applied to the computed stream network: depth 1.519 m, width 59.2 m, slope 0.00690 m/m. For comparison, Swenson's global values for this gridcell are: depth 0.269 m, width 4.41 m, slope 0.00233 m/m. The OSBS values are larger because the production domain's denser 1 m stream network sets a larger drainage-area input to the power-law relation. The values are stored in the NetCDF for completeness but are inert under the operative `use_hillslope_routing=.false.` configuration (see [Lateral Flow and Routing](lateral-flow-and-routing.md)); if routing is later enabled, they would require field data or regional empirical relationships (e.g., Leopold curves, MERIT Hydro) to replace the power-law placeholder.
 
 **Bedrock depth** is set to 0. Under CTSM's Uniform soil profile method (used by the osbs2 reference case), a bedrock depth of 0 tells CTSM to use its default soil profile --- it is a no-op. The Swenson reference file also has all zeros. If a non-Uniform soil profile method is used in the future, this parameter would need physical values from subsurface data.
 
-**DEM conditioning erases real closed basins.** At 1m resolution, pits and depressions include real features: sinkholes, wetland depressions, karst dissolution features. Filling them enforces a continuous drainage network but destroys information about closed basins that are central to OSBS hydrology. This is inherent to D8 flow routing and is the same approach Swenson uses at 90m (where these features are already below the resolution). Alternative approaches (depression-aware routing, synthetic lake bottoms) would require a different hydrological framework and are beyond the scope of the current implementation.
+**DEM conditioning erases real closed basins for the flow-routing topology.** At 1 m resolution, pits and depressions include real features: sinkholes, wetland depressions, karst dissolution features. Filling them enforces a continuous drainage network but destroys information about closed basins that are central to OSBS hydrology. This is inherent to D8 flow routing and is the same approach Swenson uses at 90 m (where these features are already below the resolution). The depression-fill depth is partially recovered for the column structure via raw-HAND binning, which preserves negative HAND values for pixels inside filled depressions; the flood-zone columns in the production NetCDF (chain indices 2 through 13) are populated from this recovered depth, even though the routing topology treats every filled basin as drained (see [HAND Binning and Lake Column](hand-binning-and-lake-column.md)). Alternative approaches that recover closed-basin topology for routing as well (depression-aware routing, synthetic lake bottoms) would require a different hydrological framework and are beyond the scope of the current implementation.
 
 **Phase F deployment is in progress.** The production hillslope file is deployed in the operative case `osbs.swenson.spinup`, a fresh startup (`RUN_TYPE=startup`) with 4-stream `h0/h1/h2/h3` history-output configuration. A 600-yr accelerated AD spinup has completed; analysis is in progress and will be documented in a subsequent pass. The namelist toggles `use_hillslope=.true.` and `use_hillslope_routing=.false.` are explained in [Lateral Flow and Routing](lateral-flow-and-routing.md).

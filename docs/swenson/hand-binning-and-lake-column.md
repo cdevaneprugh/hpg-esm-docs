@@ -104,17 +104,38 @@ Within the representative hillslope, the lake column ends up with `wtlunit ≈ 1
 
 ---
 
-## SPILLHEIGHT decision
+## SPILLHEIGHT and the SourceMod retirement
 
-An earlier design used a SourceMod-installed `SPILLHEIGHT` constant in `HillslopeHydrologyMod.F90` to subtract a fixed offset (originally 0.2 m) from every column's `hill_elev` at runtime. The lake column then sat at `hill_elev = −SPILLHEIGHT`, anchoring a stratified submergence regime.
+Before Phase E.5, the pipeline binned on **conditioned HAND** --- the depression-filled DEM's elevation above stream. Conditioned HAND is zero or positive by construction: pixels inside filled depressions sit *at* the depression's fill level, not below it. Equal-area binning on this signal produced no flood-zone columns; the lowest land bin's mean HAND landed at LIDAR noise (Q25 = 0.00027 m on earlier 4-bin runs), as documented in the [Motivation](#motivation) section.
 
-At the 2026-04-30 PI meeting, this approach was retired: the lake column became fully data-derived (chain-bookkeeping `hill_elev = −6.0 m`), and `SPILLHEIGHT` was zeroed via namelist override:
+To represent the wet, low-lying terrain visible in the NEON LIDAR, the PI installed two SourceMods in `osbs4-6/SourceMods/src.clm/`:
+
+- **`HillslopeHydrologyMod.F90`** --- modified `InitHillslope` to subtract a uniform `SPILLHEIGHT` constant (originally 0.2 m, hard-coded) from every column's `hill_elev` after reading the NetCDF. This effectively lowered the whole chain at runtime.
+- **`SurfaceWaterMod.F90`** --- added runoff suppression for any column satisfying `hill_elev + h2osfc < 0`. Columns lowered below the stream by the SPILLHEIGHT subtraction would pond instead of drain, producing a stratified submergence regime.
+
+Combined, the two SourceMods turned the lowest land bins into "usually wet, sometimes dry" columns and the lake column (sitting at `hill_elev = −SPILLHEIGHT` in the input file) into the permanently submerged anchor of the chain.
+
+### Why raw-HAND binning superseded this
+
+Phase E.5 switched the pipeline's binning input from conditioned HAND to **raw HAND** (elevation above stream measured on the original DEM, signed). Raw HAND preserves the depression-fill depth as a negative HAND value, so flood-zone columns emerge from the data:
+
+- The deepest land bin (chain index 2 in the production NetCDF) has a mean HAND of −5.13 m.
+- Eleven additional flood-zone bins (chain indices 3 through 13) resolve the saturation gradient up to HAND = 0.
+- The bin areas, per-meter density, and Darcy-relevant geometry all derive from the original LIDAR rather than from a runtime offset to the deposited input file.
+
+The runtime elevation shift is no longer needed because the flood zone is in the file. The SourceMod's purpose --- creating submerged columns to represent low-lying terrain --- is solved at file-construction time rather than at runtime.
+
+### The 2026-04-30 PI meeting decision
+
+The SourceMod's runtime mechanism was retired. `SPILLHEIGHT = 0.0` set via namelist override (rather than editing the SourceMod constant) keeps the SourceMod files retained but inert:
 
 ```fortran
 spillheight = 0.0
 ```
 
-The SourceMod is retained in the case directory but is inert under this setting. The decision was driven by the realization that the chain-monotonicity constraint (lake below the deepest land bin) is the actual binding criterion, and the chain-bookkeeping value can be set directly in the input file rather than constructed at runtime from a SourceMod offset.
+This lowers the maintenance burden across cases --- no Fortran rewrite, no case-by-case SourceMod synchronization --- while disabling the runtime elevation shift. The lake column's `hill_elev = −6.0 m` (chain-bookkeeping value, locked 2026-05-04; see Lake column construction below) replaces the earlier `−SPILLHEIGHT` framing as the chain anchor.
+
+Both approaches produce a stratified submergence regime; the data-derived approach is more faithful to the underlying NEON LIDAR (basin depths read from the input file rather than imposed as a domain-wide uniform offset) and removes the need to keep the SourceMod's `SPILLHEIGHT` constant in sync with the pipeline.
 
 ---
 

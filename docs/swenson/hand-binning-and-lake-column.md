@@ -108,7 +108,7 @@ Within the representative hillslope, the lake column ends up with `wtlunit ≈ 1
 
 Before Phase E.5, the pipeline binned on **conditioned HAND** --- the depression-filled DEM's elevation above stream. Conditioned HAND is zero or positive by construction: pixels inside filled depressions sit *at* the depression's fill level, not below it. Equal-area binning on this signal produced no flood-zone columns; the lowest land bin's mean HAND landed at LIDAR noise (Q25 = 0.00027 m on earlier 4-bin runs), as documented in the [Motivation](#motivation) section.
 
-To represent the wet, low-lying terrain visible in the NEON LIDAR, the PI installed two SourceMods in `osbs4-6/SourceMods/src.clm/`:
+To represent the wet, low-lying terrain visible in the NEON LIDAR, the PI installed two SourceMods:
 
 - **`HillslopeHydrologyMod.F90`** --- modified `InitHillslope` to subtract a uniform `SPILLHEIGHT` constant (originally 0.2 m, hard-coded) from every column's `hill_elev` after reading the NetCDF. This effectively lowered the whole chain at runtime.
 - **`SurfaceWaterMod.F90`** --- added runoff suppression for any column satisfying `hill_elev + h2osfc < 0`. Columns lowered below the stream by the SPILLHEIGHT subtraction would pond instead of drain, producing a stratified submergence regime.

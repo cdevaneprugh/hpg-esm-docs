@@ -53,12 +53,20 @@ The goal of this work was to implement Swenson's methodology using 1m NEON LIDAR
 
 ## Current Status
 
-The pipeline produces the OSBS production hillslope file `hillslopes_osbs_production_c260505.nc` — 25 columns (1 lake at chain index 1 + 24 land bins) on a single aspect, computed over the R4C5–R12C14 production domain (90 tiles, 9 × 10 km, 0 % nodata, 1 m resolution). The file is deployed in the operative case `osbs.swenson.spinup`; the 600-yr accelerated AD spinup has completed and analysis is in progress.
+The pipeline produces the OSBS production hillslope file `hillslopes_osbs_production_c260505.nc` — 25 columns (1 lake at chain index 1 + 24 land bins) on a single aspect, computed over the R4C5–R12C14 production domain (90 tiles, 9 × 10 km, 0 % nodata, 1 m resolution). Deployed in the operative case `osbs.swenson.spinup`.
 
-**Two items remain:**
+**Phase F results (2026-05-19 closeout):**
 
-- **Phase F analysis** -- writing up convergence, water-table differentiation across the column chain, lake-column dynamics, and any TAI signature. Findings will land in a separate documentation pass once the analysis pattern stabilizes.
-- **Phase H Tracks B/C** -- whether to enable `use_hillslope_routing` to add the CTSM-internal stream-water ledger and stream-channel boundary condition. Decision depends on Phase F results.
+- **Convergence PASS** — `drift_50yr = 0.48 %`, well under the 3 % threshold.
+- **TAI signal absent** — `O_SCALAR ≈ 1.0` across the full 25-column × 600-yr array; the expected anoxia depression in decomposition output does not emerge.
+- **Lake column stable** — max 5.78 m at year 107, drained to 2.5 m by year 600. No runaway accumulation; the Darcy-drain mitigation contemplated in Phase H is not required.
+
+**Production hillslope file is frozen** pending PI investigation of two open scientific questions:
+
+1. **O_SCALAR anoxia absence** — the TAI carbon-side signature the column structure was designed to resolve is not visible in the current output. Headline issue for the project's central scientific question.
+2. **Bridge-zone anomaly** at chain indices 3–6 (HAND −3 to −1.5 m) — the deepest water tables of any lower-hillslope column, caused by steep Darcy gradients over short distances.
+
+Post-AD continuation `osbs.swenson.post-ad` (200 yr, completed 2026-05-21) is idle pending the PI investigation. Phase H Tracks B/C (enable `use_hillslope_routing` for the CTSM-internal stream-water ledger) remain contingent on the Phase F outcome.
 
 ---
 
@@ -80,6 +88,9 @@ The pipeline produces the OSBS production hillslope file `hillslopes_osbs_produc
 | 2026-05 | H Track A | Mesh-mode workaround for CTSM Issue #1432 verified (paired 5-yr test/control smoke test) |
 | 2026-05 | F | `osbs.swenson.spinup` 600-yr accelerated AD spinup completed (4-stream h0/h1/h2/h3 configuration) |
 | 2026-05 | -- | Routing-gate source audit: inter-column lateral flow runs under `use_hillslope`, not `use_hillslope_routing`; Phase H Tracks B/C reframed as contingent |
+| 2026-05 | F | 600-yr AD spinup analyzed: convergence PASS (drift_50yr = 0.48 %); TAI signal absent; lake column stable |
+| 2026-05 | -- | Post-AD continuation `osbs.swenson.post-ad` completed 200 yr; idle pending PI investigation |
+| 2026-06 | -- | Production hillslope file frozen; PI investigating O_SCALAR absence and bridge-zone anomaly |
 
 Internal phase tracking files: `swenson/phases/A-pysheds-utm.md` through `H-lateral-flow.md`.
 

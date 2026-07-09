@@ -161,11 +161,13 @@ The global Swenson hillslope dataset (~90m source resolution) is too coarse for 
 
 ## Reference Cases
 
-| Case | Purpose | Status |
-|------|---------|--------|
-| `osbs2.branch.spillheight/` | Spillheight mechanism testing | Development |
-| `osbs2.branch.v2/` | Development branch | Active |
-| `osbs2.branch.v3/` | Development branch | Active |
+| Case | Role | Configuration |
+|------|------|---------------|
+| `osbs.swenson.spinup` | **Operative** — 600-yr accelerated AD spinup | `use_hillslope=.true.`, `use_hillslope_routing=.false.`; 2026-05-05 production hillslope file; 4-stream h0/h1/h2/h3 |
+| `osbs.swenson.post-ad` | **Secondary** — 200-yr post-AD continuation | Completed 2026-05-21; idle pending PI investigation of Phase F open questions |
+| `osbs2` | Reference — 860+ yr spinup with the global Swenson hillslope file | Source of restart data for early branch-case tests |
+
+The earlier `osbs2.branch.spillheight`, `.v2`, and `.v3` cases exercised the runtime `SPILLHEIGHT` SourceMod retired 2026-04-30 (superseded by raw-HAND binning at file-construction time) and are no longer active.
 
 ---
 

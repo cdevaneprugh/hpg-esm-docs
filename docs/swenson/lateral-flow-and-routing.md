@@ -171,7 +171,7 @@ This is canonical [CTSM Issue #1432](https://github.com/ESCOMP/CTSM/issues/1432)
 
 Replace the `PTS_LAT` / `PTS_LON` single-column shortcut with an explicit single-cell ESMF mesh (`LND_DOMAIN_MESH`). CTSM's mode-decision logic then routes through `lnd_set_decomp_and_domain_from_readmesh` instead of `lnd_set_decomp_and_domain_for_single_column`, and `ldomain%area` is populated from the mesh via `ESMF_FieldRegridGetArea()` --- a real number, not `spval`.
 
-This is the workaround Swenson recommends to single-point users; the necessary tooling (`tools/site_and_regional/mesh_maker`) ships with the CTSM source tree.
+Swenson recommends this workaround to single-point users. CTSM's shipped `tools/site_and_regional/mesh_maker.py` aborts on 1×1 input (`mesh_maker.py:214`), so Phase H Track A wrote [`make_osbs_scrip.py`](https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/scripts/osbs/make_osbs_scrip.py) (`swenson/scripts/osbs/`) to produce a single-cell SCRIP-format NetCDF; the prebuilt `ESMF_Scrip2Unstruct` binary then converts it to the ESMF mesh CTSM reads.
 
 Phase H Track A (2026-05-11 to 2026-05-12) built the single-cell ESMF mesh for the production domain, the supporting input file conversions (surface dataset reformat, domain mesh), and a paired test/control case configuration. The 2026-05-12 smoke test confirmed `grc%area = 90.006 km²` (matching the production domain area, not `spval`) under mesh mode; gridcell aggregates are bit-identical between the mesh-mode test and the production-mode control. The workaround is OSBS-side; no upstream CTSM PR is planned.
 

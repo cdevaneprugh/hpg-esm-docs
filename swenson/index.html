@@ -1680,12 +1680,19 @@
 </li>
 </ol>
 <h2 id="current-status">Current Status<a class="headerlink" href="#current-status" title="Permanent link">&para;</a></h2>
-<p>The pipeline produces the OSBS production hillslope file <code>hillslopes_osbs_production_c260505.nc</code> — 25 columns (1 lake at chain index 1 + 24 land bins) on a single aspect, computed over the R4C5–R12C14 production domain (90 tiles, 9 × 10 km, 0 % nodata, 1 m resolution). The file is deployed in the operative case <code>osbs.swenson.spinup</code>; the 600-yr accelerated AD spinup has completed and analysis is in progress.</p>
-<p><strong>Two items remain:</strong></p>
+<p>The pipeline produces the OSBS production hillslope file <code>hillslopes_osbs_production_c260505.nc</code> — 25 columns (1 lake at chain index 1 + 24 land bins) on a single aspect, computed over the R4C5–R12C14 production domain (90 tiles, 9 × 10 km, 0 % nodata, 1 m resolution). Deployed in the operative case <code>osbs.swenson.spinup</code>.</p>
+<p><strong>Phase F results (2026-05-19 closeout):</strong></p>
 <ul>
-<li><strong>Phase F analysis</strong> -- writing up convergence, water-table differentiation across the column chain, lake-column dynamics, and any TAI signature. Findings will land in a separate documentation pass once the analysis pattern stabilizes.</li>
-<li><strong>Phase H Tracks B/C</strong> -- whether to enable <code>use_hillslope_routing</code> to add the CTSM-internal stream-water ledger and stream-channel boundary condition. Decision depends on Phase F results.</li>
+<li><strong>Convergence PASS</strong> — <code>drift_50yr = 0.48 %</code>, well under the 3 % threshold.</li>
+<li><strong>TAI signal absent</strong> — <code>O_SCALAR ≈ 1.0</code> across the full 25-column × 600-yr array; the expected anoxia depression in decomposition output does not emerge.</li>
+<li><strong>Lake column stable</strong> — max 5.78 m at year 107, drained to 2.5 m by year 600. No runaway accumulation; the Darcy-drain mitigation contemplated in Phase H is not required.</li>
 </ul>
+<p><strong>Production hillslope file is frozen</strong> pending PI investigation of two open scientific questions:</p>
+<ol>
+<li><strong>O_SCALAR anoxia absence</strong> — the TAI carbon-side signature the column structure was designed to resolve is not visible in the current output. Headline issue for the project's central scientific question.</li>
+<li><strong>Bridge-zone anomaly</strong> at chain indices 3–6 (HAND −3 to −1.5 m) — the deepest water tables of any lower-hillslope column, caused by steep Darcy gradients over short distances.</li>
+</ol>
+<p>Post-AD continuation <code>osbs.swenson.post-ad</code> (200 yr, completed 2026-05-21) is idle pending the PI investigation. Phase H Tracks B/C (enable <code>use_hillslope_routing</code> for the CTSM-internal stream-water ledger) remain contingent on the Phase F outcome.</p>
 <hr />
 <h2 id="development-history">Development History<a class="headerlink" href="#development-history" title="Permanent link">&para;</a></h2>
 <table>
@@ -1766,6 +1773,21 @@
 <td>2026-05</td>
 <td>--</td>
 <td>Routing-gate source audit: inter-column lateral flow runs under <code>use_hillslope</code>, not <code>use_hillslope_routing</code>; Phase H Tracks B/C reframed as contingent</td>
+</tr>
+<tr>
+<td>2026-05</td>
+<td>F</td>
+<td>600-yr AD spinup analyzed: convergence PASS (drift_50yr = 0.48 %); TAI signal absent; lake column stable</td>
+</tr>
+<tr>
+<td>2026-05</td>
+<td>--</td>
+<td>Post-AD continuation <code>osbs.swenson.post-ad</code> completed 200 yr; idle pending PI investigation</td>
+</tr>
+<tr>
+<td>2026-06</td>
+<td>--</td>
+<td>Production hillslope file frozen; PI investigating O_SCALAR absence and bridge-zone anomaly</td>
 </tr>
 </tbody>
 </table>

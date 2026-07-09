@@ -2001,28 +2001,29 @@
 <thead>
 <tr>
 <th>Case</th>
-<th>Purpose</th>
-<th>Status</th>
+<th>Role</th>
+<th>Configuration</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>osbs2.branch.spillheight/</code></td>
-<td>Spillheight mechanism testing</td>
-<td>Development</td>
+<td><code>osbs.swenson.spinup</code></td>
+<td><strong>Operative</strong> — 600-yr accelerated AD spinup</td>
+<td><code>use_hillslope=.true.</code>, <code>use_hillslope_routing=.false.</code>; 2026-05-05 production hillslope file; 4-stream h0/h1/h2/h3</td>
 </tr>
 <tr>
-<td><code>osbs2.branch.v2/</code></td>
-<td>Development branch</td>
-<td>Active</td>
+<td><code>osbs.swenson.post-ad</code></td>
+<td><strong>Secondary</strong> — 200-yr post-AD continuation</td>
+<td>Completed 2026-05-21; idle pending PI investigation of Phase F open questions</td>
 </tr>
 <tr>
-<td><code>osbs2.branch.v3/</code></td>
-<td>Development branch</td>
-<td>Active</td>
+<td><code>osbs2</code></td>
+<td>Reference — 860+ yr spinup with the global Swenson hillslope file</td>
+<td>Source of restart data for early branch-case tests</td>
 </tr>
 </tbody>
 </table>
+<p>The earlier <code>osbs2.branch.spillheight</code>, <code>.v2</code>, and <code>.v3</code> cases exercised the runtime <code>SPILLHEIGHT</code> SourceMod retired 2026-04-30 (superseded by raw-HAND binning at file-construction time) and are no longer active.</p>
 <hr />
 <p><em>See <a href="../../running-ctsm/single-point/">Single-Point Runs</a> for creating site simulations.</em></p>
 

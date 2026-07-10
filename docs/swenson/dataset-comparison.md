@@ -83,10 +83,9 @@ The OSBS file's negative HAND values are real terrain — pixels in filled depre
 
 ### OSBS (Current — 1m NEON LIDAR)
 
-<!-- TODO: Generate elevation/width profile plots from production data -->
-*Elevation and width profile plots for the current production data will be added here.*
+![OSBS elevation and width profiles across 25 columns (1 lake at chain index 1 + 24 land bins) on a single aspect. Lake column marked with a blue star; flood-zone bins (raw HAND < 0) in dark red; upland bins in green.](images/production_elevation_width.png)
 
-The plots will show the OSBS column chain on a single aspect: HAND above stream (left panel) and hillslope width (right panel) vs distance from stream (x-axis), with the lake column annotated at chain index 1.
+The elevation curve is smooth from the lake column (HAND = −6.0 m at ~1 m from the stream) through the 12 flood-zone bins, crossing zero at ~62 m, and rising to the ridge (+12.5 m at ~353 m). The width curve tapers from ~555 m near the stream to ~270 m at the ridge, following the trapezoidal plan-form fit. Contrast with Swenson's four-aspect profiles above, which lack the flood-zone segment — MERIT 90 m data cannot resolve HAND below the depression-filled drainage network.
 
 ---
 
@@ -98,10 +97,9 @@ The plots will show the OSBS column chain on a single aspect: HAND above stream 
 
 ### OSBS (Current — 1m NEON LIDAR)
 
-<!-- TODO: Generate column area distribution plots from production data -->
-*Column area distribution plots for the current production data will be added here.*
+![OSBS per-representative column areas across 25 columns. Lake (light blue), flood zone (dark red), upland (green).](images/production_col_areas.png)
 
-Expected pattern: bar charts showing area per column, grouped by aspect. Expect relatively uniform distribution across bins and aspects for the flat OSBS terrain, in contrast to Swenson's global data where the lowest bin captures disproportionately more area.
+The distribution is heavily non-uniform: the lake column alone holds 12.3 % of per-rep area (matching the `wtlunit ≈ 12.3 %` design derived from the NWI footprint), the 12 flood-zone bins take small slices (0.7–2.9 %) because the TAI-focused fine binning concentrates resolution where terrain area is scarce, and the 12 upland bins are broader (3.6–8.0 %). Contrast with Swenson's global 4 × 4 partition above, where the equal-area algorithm smoothes the distribution across all 16 columns.
 
 ---
 

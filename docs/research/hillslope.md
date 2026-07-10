@@ -163,10 +163,10 @@ Activates **inter-column lateral subsurface flow**. With this toggle on, `Perche
 ### `use_hillslope_routing`
 
 ```fortran
-use_hillslope_routing = .true.
+use_hillslope_routing = .false.    ! current OSBS production setting
 ```
 
-Additionally activates the **stream-side machinery**: an internal `stream_water_volume` ledger, Manning's-equation streamflow at the chain bottom, a stream-channel boundary condition that supersedes MOSART's `tdepth_grc` at the terminal column, the `VOLUMETRIC_STREAMFLOW` history field, and the land-to-runoff streamflow export. Routing-on does **not** activate inter-column lateral flow — that already runs under `use_hillslope` alone.
+When set to `.true.`, this additionally activates the **stream-side machinery**: an internal `stream_water_volume` ledger, Manning's-equation streamflow at the chain bottom, a stream-channel boundary condition that supersedes MOSART's `tdepth_grc` at the terminal column, the `VOLUMETRIC_STREAMFLOW` history field, and the land-to-runoff streamflow export. Routing-on does **not** activate inter-column lateral flow — that already runs under `use_hillslope` alone. The operative case `osbs.swenson.spinup` runs with routing off; see [Lateral Flow and Routing](../swenson/lateral-flow-and-routing.md) for the source-code evidence.
 
 ---
 
@@ -189,13 +189,16 @@ scripts/hillslope.analysis/
 
 ## History Output
 
-### Required History Streams
+### Streams used at OSBS
 
-| Stream | Content | Use |
-|--------|---------|-----|
-| h0 | Gridcell averages | Standard CLM output |
-| h1 | Column-level data | Hillslope column analysis |
-| h2 | PFT-level data | Vegetation analysis |
+The OSBS production case `osbs.swenson.spinup` writes four history streams. These are configuration choices for our hillslope analysis, not a CTSM requirement — hillslope mode runs with any subset of streams.
+
+| Stream | Content | Typical use |
+|--------|---------|-------------|
+| h0 | Gridcell averages | Standard CLM output, BGC pools, water balance |
+| h1 | Column-level data | Hillslope-column water-table depth, runoff, soil moisture |
+| h2 | PFT-level data | Vegetation dynamics |
+| h3 | Additional column-level variables | Extended per-column spinup diagnostics |
 
 ### Key Variables for Hillslope Analysis
 

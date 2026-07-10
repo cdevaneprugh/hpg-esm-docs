@@ -20,8 +20,8 @@ A full MERIT tile was loaded and processed through flow direction, accumulation,
 
 | Metric | Result | Criterion |
 |--------|--------|-----------|
-| DEM dimensions | 6000 x 6000 pixels | -- |
-| Elevation range | -19.8 to 818.4 m | -- |
+| DEM dimensions | 6000 x 6000 pixels | — |
+| Elevation range | -19.8 to 818.4 m | — |
 | Stream coverage | 2.17% | 1-5% |
 | HAND range | -54 to 619 m | 0-500 m |
 | DTND range | 0 to 22.9 km | 0-50 km |
@@ -74,7 +74,7 @@ All 16 elements were populated with physically reasonable values.
 | Distance | 0.986 | 34.1% | Good correlation, systematic offset |
 | Area | 0.730 | Large | Unit mismatch |
 | Aspect | 0.650 | Large | Degrees vs radians |
-| Width | 0.090 | 41.3% | Poor -- requires investigation |
+| Width | 0.090 | 41.3% | Poor — requires investigation |
 
 Height and slope showed excellent agreement, confirming that the HAND and flow routing implementation was correct. Three problems were identified: a degrees-vs-radians mismatch for aspect, an area unit discrepancy, and a systematic width calculation bug.
 
@@ -88,7 +88,7 @@ Height and slope showed excellent agreement, confirming that the HAND and flow r
 - **Area:** The relative distribution (fraction per bin) correlated at 0.73 despite an absolute scale difference of ~26,000x between m^2 and published units.
 
 !!! note "Width bug identified"
-    During this stage, all elevation bins within each aspect were found to have identical width values -- a clear bug since widths should decrease from outlet toward ridge.
+    During this stage, all elevation bins within each aspect were found to have identical width values — a clear bug since widths should decrease from outlet toward ridge.
 
 ---
 
@@ -167,7 +167,7 @@ Classification transitions (our -> pgrid):
   East/West: <10 pixels total
 ```
 
-**Root cause:** The custom `np.gradient()` implementation had a Y-axis sign inversion due to coordinate system convention differences -- `np.gradient` row ordering does not match geographic north. East and West aspects were unaffected because the X-axis convention was consistent.
+**Root cause:** The custom `np.gradient()` implementation had a Y-axis sign inversion due to coordinate system convention differences — `np.gradient` row ordering does not match geographic north. East and West aspects were unaffected because the X-axis convention was consistent.
 
 **Fix:** Replaced the custom gradient function with pgrid's `slope_aspect()` method, which uses the Horn (1981) 8-neighbor stencil with correct geographic coordinate conventions.
 
@@ -180,7 +180,7 @@ Classification transitions (our -> pgrid):
 | Aspect (circular) | 0.9996 | 0.9999 |
 | Width | 0.9527 | 0.9597 |
 
-Area correlation improved from 0.64 to **0.82** -- a 28% improvement.
+Area correlation improved from 0.64 to **0.82** — a 28% improvement.
 
 ---
 
@@ -215,10 +215,10 @@ After the nine validation stages and subsequent post-audit improvements (see bel
 | Width | 0.9919 | Excellent |
 | Area | 0.9244 | Excellent |
 
-All six parameters achieved >0.92 correlation with Swenson's published data, with five above 0.98. These values serve as the regression baseline -- the automated regression test confirms them within 0.01 tolerance on each run.
+All six parameters achieved >0.92 correlation with Swenson's published data, with five above 0.98. These values serve as the regression baseline — the automated regression test confirms them within 0.01 tolerance on each run.
 
 !!! note "Correlation shifts from Stage 8"
-    Some individual parameter correlations shifted slightly from the Stage 8 values (e.g., Height 0.9999 -> 0.9979) because the post-audit fixes changed stream network delineation, aspect averaging, and indexing. This is not a regression -- area fraction improved from 0.82 to 0.92, which was the primary target. All other parameters remain above 0.98.
+    Some individual parameter correlations shifted slightly from the Stage 8 values (e.g., Height 0.9999 -> 0.9979) because the post-audit fixes changed stream network delineation, aspect averaging, and indexing. This is not a regression — area fraction improved from 0.82 to 0.92, which was the primary target. All other parameters remain above 0.98.
 
 ---
 
@@ -269,7 +269,7 @@ A line-by-line audit of the validation pipeline against Swenson's original code 
 
 | Fix | Area fraction | Delta | Mechanism |
 |-----|---------------|-------|-----------|
-| Stage 8 baseline | 0.82 | -- | N/S aspect fix applied |
+| Stage 8 baseline | 0.82 | — | N/S aspect fix applied |
 | Basin mask correction | 0.8284 | +0.01 | Binary `identify_open_water` mask instead of DEM-difference threshold |
 | Catchment-level aspect averaging | 0.9047 | +0.08 | Per-catchment circular mean before aspect binning |
 | n_hillslopes indexing fix | 0.9221 | +0.02 | Extract drainage_id to gridcell before indexing hillslope counts |

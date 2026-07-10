@@ -6,7 +6,7 @@
 
 ## Goal
 
-Swenson & Lawrence (2025) published a global hillslope dataset derived from MERIT DEM at ~90m resolution. This dataset is available independently (not bundled with CTSM) and can be used with CTSM's hillslope hydrology mode. However, Swenson & Lawrence explicitly noted that this resolution "may not be fine enough to capture topographic variations in areas of very low topographic relief, such as wetlands." OSBS is exactly this case -- a low-relief wetlandscape where the Terrestrial-Aquatic Interface depends on meter-scale elevation differences.
+Swenson & Lawrence (2025) published a global hillslope dataset derived from MERIT DEM at ~90m resolution. This dataset is available independently (not bundled with CTSM) and can be used with CTSM's hillslope hydrology mode. However, Swenson & Lawrence explicitly noted that this resolution "may not be fine enough to capture topographic variations in areas of very low topographic relief, such as wetlands." OSBS is exactly this case — a low-relief wetlandscape where the Terrestrial-Aquatic Interface depends on meter-scale elevation differences.
 
 The goal of this work was to implement Swenson's methodology using 1m NEON LIDAR data to produce custom hillslope parameters that resolve the fine-scale topography controlling wetland-upland transitions at OSBS.
 
@@ -33,23 +33,23 @@ The goal of this work was to implement Swenson's methodology using 1m NEON LIDAR
 
 ---
 
-## Implementation Arc
+## Phases
 
-1. **Port code** -- Complete. Forked pysheds, ported Swenson's `pgrid.py` with hillslope methods, fixed NumPy 2.0 compatibility, created test suite. See [pysheds Fork](pysheds-porting.md).
+The pipeline was built up incrementally. Early work (December 2025 to January 2026) focused on porting Swenson's `pgrid.py` to the pysheds fork and reproducing his published MERIT results as a methodology validation, before the phase scheme was introduced. As the OSBS implementation revealed problems that couldn't be solved in a single pass, remaining work was split into discrete phases (A–H) — each addressing a specific blocker. The phases cluster into five groups matching the roadmap in [`swenson/STATUS.md`](https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/STATUS.md).
 
-2. **Validate methodology** -- Complete. Reproduced Swenson's published results using MERIT DEM. All 6 parameters >0.92 correlation, 5 above 0.98. See [MERIT Validation](merit-validation.md).
+**Pre-phase (2025-12 to 2026-01) — Methodology validation.** Ported Swenson's `pgrid.py` to the pysheds fork; nine-stage MERIT regression achieved >0.95 correlation on five of six parameters (area fraction later improved from 0.82 to 0.92 in a 2026-02 post-audit).
 
-3. **Adapt for OSBS** -- Complete. Added UTM CRS support to pysheds fork (Phase A). Determined full 1m resolution is feasible and necessary (Phase B). Established Lc = 356 m via restricted-wavelength FFT (Phase C).
+**Phases A–D (2026-02 to 2026-03) — Pipeline foundations.** A added UTM CRS support to the pysheds fork so it could process OSBS NEON tiles (EPSG:32617) in projected coordinates; 82 unit tests, 0 failures. B confirmed the full 1 m LIDAR could be processed at 64 GB without subsampling (29 GB peak, 6 min for 90 M pixels). C established **Lc = 356 m** via a restricted-wavelength FFT (20 m cutoff), circumventing the k² Laplacian artifact that surfaces at high-resolution DEMs. D rebuilt the pipeline with the A/B/C fixes; three independent audits (equation verification, full pipeline audit, line-by-line divergence audit against Swenson's original code) all cleared.
 
-4. **Build pipeline** -- Complete. Rebuilt pipeline with hydrological DTND, Horn 1981 slope/aspect, 1m resolution. Extracted shared analysis module. Three audits completed: equation verification, full pipeline audit, line-by-line divergence audit (Phase D). See [Methodology](osbs-implementation.md).
+**Phases E.5 + E.6 (2026-04 to 2026-05) — Parameter set.** E.5 replaced Swenson's 4-bin equal-area scheme with the 24-bin TAI-focused scheme (12 flood-zone + 12 upland, 0.25 m floor) and locked raw-HAND binning with Q01/Q99 outlier discard; lake column placement at chain index 1 with `hill_elev = −6.0 m`. E.6 closed ~400 K interior polygon gaps in the rasterized NWI water mask via `scipy.ndimage.binary_fill_holes`.
 
-5. **Refine parameter set** -- Complete. Locked the 24-bin TAI-focused HAND scheme (12 flood-zone + 12 upland, 0.25 m floor), single-aspect configuration, raw-HAND Q01/Q99 outlier discard, and dual water-mask strategy with NWI hole-fill (Phases E.5, E.6). See [HAND Binning and Lake Column](hand-binning-and-lake-column.md).
+**Phases F + G (2026-05 → in progress) — Validate and deploy.** G Stage 1 completed the submerged lake column and released the production NetCDF `hillslopes_osbs_production_c260505.nc` on 2026-05-05. Phase F consumed that file: a 600-yr accelerated AD spinup with the operative case `osbs.swenson.spinup` completed 2026-05-14 and was analyzed 2026-05-19. Three verdicts: convergence PASS (`drift_50yr = 0.48 %`), TAI signal absent (`O_SCALAR ≈ 1.0`), lake column stable. PI is investigating the O_SCALAR anoxia absence and a bridge-zone water-table anomaly at chain indices 3–6 (see Current Status below).
 
-6. **Lake column construction** -- Complete. Added a submerged lake column at chain index 1 representing all NWI open water (≈ 10.68 km² aggregated); per-rep rescaling (`nhill_implicit ≈ 533`) calibrated lake `wtlunit` to 12.3 %. Production NetCDF released 2026-05-05 (Phase G Stage 1). See [HAND Binning and Lake Column](hand-binning-and-lake-column.md).
+**Phase H (2026-05 → contingent) — Stream-side coupling.** Track A completed the mesh-mode workaround for CTSM Issue #1432 (see [Lateral Flow and Routing](lateral-flow-and-routing.md)). Tracks B and C — enabling `use_hillslope_routing = .true.` — are contingent on the Phase F outcome and may not be pursued; the 2026-05-19 routing-gate source audit established that inter-column lateral flow already runs under `use_hillslope = .true.` regardless.
 
-7. **Validate and deploy** -- In progress. A 600-yr accelerated AD spinup using the 2026-05-05 production hillslope file has completed (operative case `osbs.swenson.spinup`, 4-stream `h0/h1/h2/h3` configuration; `use_hillslope=.true.`, `use_hillslope_routing=.false.`). Analysis is in progress; findings will be documented in a subsequent pass. See [Lateral Flow and Routing](lateral-flow-and-routing.md) for the operative-case configuration.
+Detailed phase records: [`swenson/phases/`](https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/phases) in the hpg-esm-tools repo.
 
-8. **Stream-side coupling (routing-on)** -- Contingent. Phase H Track A (mesh-mode workaround for CTSM Issue #1432) is complete; Tracks B and C are on hold pending Phase F analysis. The original motivation — turn routing on to activate inter-column lateral flow — was retired when a 2026-05-19 source-code audit established that lateral flow already runs under `use_hillslope=.true.`. See [Lateral Flow and Routing](lateral-flow-and-routing.md).
+---
 
 ## Current Status
 
@@ -70,45 +70,21 @@ Post-AD continuation `osbs.swenson.post-ad` (200 yr, completed 2026-05-21) is id
 
 ---
 
-## Development History
-
-| Date | Phase | Key Decision |
-|------|-------|--------------|
-| 2025-12 | -- | Ported Swenson's pgrid.py to pysheds fork, created initial test suite |
-| 2026-01 | -- | 9-stage MERIT validation achieved >0.95 on 5/6 parameters |
-| 2026-02 | A | Added UTM CRS support to pysheds fork (82 tests, 0 failures) |
-| 2026-02 | B | Full 1m resolution confirmed feasible (29 GB peak, 6 min for 90M pixels) |
-| 2026-02 | C | Lc = 356 m established via restricted-wavelength FFT (20 m cutoff) |
-| 2026-02 | -- | MERIT post-audit: area fraction improved 0.82 to 0.92 |
-| 2026-03 | D | Pipeline rebuilt with all fixes; equation and divergence audits completed |
-| 2026-04 | E.6 | NWI mask hole-fill (`binary_fill_holes`) closed ~400 K interior polygon gaps |
-| 2026-04 | E.5 | Lake column placement at chain index 1; raw-HAND Q01/Q99 outlier discard locked (PI direction) |
-| 2026-05 | E.5 | 24-bin TAI-focused HAND scheme locked; lake `hill_elev = −6.0 m`; dynamic `hill_distance` |
-| 2026-05 | G | Production NetCDF `hillslopes_osbs_production_c260505.nc` released (25 columns, 1 aspect) |
-| 2026-05 | H Track A | Mesh-mode workaround for CTSM Issue #1432 verified (paired 5-yr test/control smoke test) |
-| 2026-05 | F | `osbs.swenson.spinup` 600-yr accelerated AD spinup completed (4-stream h0/h1/h2/h3 configuration) |
-| 2026-05 | -- | Routing-gate source audit: inter-column lateral flow runs under `use_hillslope`, not `use_hillslope_routing`; Phase H Tracks B/C reframed as contingent |
-| 2026-05 | F | 600-yr AD spinup analyzed: convergence PASS (drift_50yr = 0.48 %); TAI signal absent; lake column stable |
-| 2026-05 | -- | Post-AD continuation `osbs.swenson.post-ad` completed 200 yr; idle pending PI investigation |
-| 2026-06 | -- | Production hillslope file frozen; PI investigating O_SCALAR absence and bridge-zone anomaly |
-
-Internal phase tracking files: `swenson/phases/A-pysheds-utm.md` through `H-lateral-flow.md`.
-
----
-
 ## Tools and Repositories
 
-| Resource | Location | Purpose |
-|----------|----------|---------|
-| pysheds fork | [cdevaneprugh/pysheds](https://github.com/cdevaneprugh/pysheds) (branch: `uf-development`) | Flow routing, HAND, DTND, hillslope classification |
-| Swenson's codebase | [swensosc/Representative_Hillslopes](https://github.com/swensosc/Representative_Hillslopes) | Reference implementation |
-| Processing scripts | [hpg-esm-tools/swenson/scripts/osbs/](https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/scripts/osbs) | OSBS pipeline |
-| Validation scripts | [hpg-esm-tools/swenson/scripts/merit_validation/](https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/scripts/merit_validation) | MERIT DEM regression test |
+Local paths use `$BLUE = /blue/<group>/<user>/` — the working directory on HiPerGator. Adjust for your setup.
+
+| Resource | Local path | Repository | Purpose |
+|----------|------------|------------|---------|
+| pysheds fork | `$BLUE/pysheds_fork/` | [cdevaneprugh/pysheds](https://github.com/cdevaneprugh/pysheds) (branch: `uf-development`) | Flow routing, HAND, DTND, hillslope classification |
+| Swenson's codebase | `$BLUE/Representative_Hillslopes/` | [swensosc/Representative_Hillslopes](https://github.com/swensosc/Representative_Hillslopes) | Reference implementation |
+| Processing scripts | `$BLUE/hpg-esm-tools/swenson/scripts/osbs/` | [hpg-esm-tools/swenson/scripts/osbs/](https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/scripts/osbs) | OSBS pipeline |
+| Validation scripts | `$BLUE/hpg-esm-tools/swenson/scripts/merit_validation/` | [hpg-esm-tools/swenson/scripts/merit_validation/](https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/scripts/merit_validation) | MERIT DEM regression test |
 
 ---
 
 ## Cross-References
 
-- [Hillslope Hydrology](../research/hillslope.md) -- Theoretical background on CTSM hillslope mode, the six geomorphic parameters, and physical processes
-- [Swenson & Lawrence 2025 summary](https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/docs/papers/Swenson_2025_Hillslope_Dataset_Summary.md) -- Detailed paper summary with equations and methodology
-- [Representative_Hillslopes](https://github.com/swensosc/Representative_Hillslopes) -- Swenson's original processing pipeline
+- [Hillslope Hydrology](../research/hillslope.md) — Theoretical background on CTSM hillslope mode, the six geomorphic parameters, and physical processes
+- [Swenson & Lawrence 2025 summary](https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/docs/papers/Swenson_2025_Hillslope_Dataset_Summary.md) — Detailed paper summary with equations and methodology
+- [Representative_Hillslopes](https://github.com/swensosc/Representative_Hillslopes) — Swenson's original processing pipeline

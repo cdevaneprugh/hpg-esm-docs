@@ -24,7 +24,7 @@ python -c "from pysheds.pgrid import Grid; print('OK')"
 
 ## What Swenson Added
 
-Swenson created `pgrid.py` (~4,200 lines) -- a pure-Python Grid class containing all hillslope-specific methods not present in upstream pysheds. This file was the core dependency for the entire hillslope parameter calculation pipeline.
+Swenson created `pgrid.py` (~4,200 lines) — a pure-Python Grid class containing all hillslope-specific methods not present in upstream pysheds. This file was the core dependency for the entire hillslope parameter calculation pipeline.
 
 ### Core Hillslope Methods
 
@@ -67,9 +67,9 @@ The approach was to copy the entire `pgrid.py` from Swenson's fork rather than s
 
 Key decisions:
 
-- **Copy entire `pgrid.py`** -- not surgical porting of individual methods
-- **Pure Python** -- no numba optimization (Swenson's code uses numba optionally)
-- **Match API signatures** -- maintain compatibility with `Representative_Hillslopes` scripts
+- **Copy entire `pgrid.py`** — not surgical porting of individual methods
+- **Pure Python** — no numba optimization (Swenson's code uses numba optionally)
+- **Match API signatures** — maintain compatibility with `Representative_Hillslopes` scripts
 
 The `grid.py` entry point was updated to fall back to `pgrid` when numba is unavailable, matching Swenson's import pattern.
 
@@ -127,7 +127,7 @@ aspect = np.array(grid.aspect)
 
 This pattern applies to `compute_hand()`, `compute_hillslope()`, `slope_aspect()`, and other methods.
 
-CRS handling is transparent -- methods detect the grid's CRS automatically and use the appropriate math (haversine for geographic, Euclidean for projected). The caller does not need to specify or know the CRS type.
+CRS handling is transparent — methods detect the grid's CRS automatically and use the appropriate math (haversine for geographic, Euclidean for projected). The caller does not need to specify or know the CRS type.
 
 ---
 

@@ -259,7 +259,7 @@ The full comment from my [post](https://bb.cgd.ucar.edu/cesm/threads/issues-down
 
 > The error message in the cesm log is:
 >
-> MCT::m_SparseMatrixPlus:: FATAL--length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 13824
+> MCT::m_SparseMatrixPlus:: FATAL-length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 13824
 > 000.MCT(MPEU)::die.: from MCT::m_SparseMatrixPlus::initDistributed_()
 >
 > It seems like there must be mismatch between two of the datasets you are using. One seems to be single point (y=1) and the other is 1.9x2.5 (144x96=13824). I think it might be because the compset you are using has CISM and MOSART in it. The long name for that compset is:
@@ -286,7 +286,7 @@ With the abundance of compsets and resolutions, I'm going to need a better namin
 
 Anytime we get an error that is something like:
 
-> MCT::m_SparseMatrixPlus:: FATAL--length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 55296
+> MCT::m_SparseMatrixPlus:: FATAL-length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 55296
 
 We can assume there is some issue with MOSART or CISM. The goal of running the following cases is to determine which is causing the error in single point mode.
 I did this by choosing similar compsets that use physics from clm4.0 4.5 and 5.0 as well as running a global and PTS version of each compset.
@@ -306,7 +306,7 @@ __Compset Long Name	:	Compset Alias	:	Resolution Used__
 
 2. PTS: Fail 
 
-   > MCT::m_SparseMatrixPlus:: FATAL--length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 13824
+   > MCT::m_SparseMatrixPlus:: FATAL-length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 13824
    >
    > 000.MCT(MPEU)::die.: from MCT::m_SparseMatrixPlus::initDistributed_()
 
@@ -316,7 +316,7 @@ __Compset Long Name	:	Compset Alias	:	Resolution Used__
 
 2. PTS: Fail
 
-   > MCT::m_SparseMatrixPlus:: FATAL--length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 13824
+   > MCT::m_SparseMatrixPlus:: FATAL-length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 13824
    >
    > 000.MCT(MPEU)::die.: from MCT::m_SparseMatrixPlus::initDistributed_()
 
@@ -364,7 +364,7 @@ __Compset Long Name	:	Compset Alias	:	Resolution Used__
 
 2. PTS: Fail
 
-   > MCT::m_SparseMatrixPlus:: FATAL--length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 55296
+   > MCT::m_SparseMatrixPlus:: FATAL-length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 55296
    > 
    > 000.MCT(MPEU)::die.: from MCT::m_SparseMatrixPlus::initDistributed_()
 

@@ -130,8 +130,7 @@ Pre-generated subset data structure:
 
 ### Current Data Strategy
 
-- **Development**: Global data subset via `run_tower` script
-- **Production goal**: Maximize use of NEON-provided local data
+OSBS production cases use globally-subset atmospheric forcing and surface data extracted via CTSM's `subset_data` script (in `tools/site_and_regional/`). NEON-native atmospheric forcing is a future direction, not the current path — the pre-built `run_tower` NEON forcing was tested and found insufficient (per PI, a manual NCAR-NEON pipeline is required; see [`neon-data-products.md`](https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/docs/neon-data-products.md) in the hpg-esm-tools repo). `run_tower` remains useful for basic NEON site tests but does not drive OSBS production.
 
 ---
 

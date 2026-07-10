@@ -1918,17 +1918,15 @@
 <h3 id="swenson-global-90m-merit">Swenson (Global — 90m MERIT)<a class="headerlink" href="#swenson-global-90m-merit" title="Permanent link">&para;</a></h3>
 <p><img alt="Swenson elevation/width profiles" src="../images/swenson_elevation_width.png" /></p>
 <h3 id="osbs-current-1m-neon-lidar">OSBS (Current — 1m NEON LIDAR)<a class="headerlink" href="#osbs-current-1m-neon-lidar" title="Permanent link">&para;</a></h3>
-<!-- TODO: Generate elevation/width profile plots from production data -->
-<p><em>Elevation and width profile plots for the current production data will be added here.</em></p>
-<p>The plots will show the OSBS column chain on a single aspect: HAND above stream (left panel) and hillslope width (right panel) vs distance from stream (x-axis), with the lake column annotated at chain index 1.</p>
+<p><img alt="OSBS elevation and width profiles across 25 columns (1 lake at chain index 1 + 24 land bins) on a single aspect. Lake column marked with a blue star; flood-zone bins (raw HAND &lt; 0) in dark red; upland bins in green." src="../images/production_elevation_width.png" /></p>
+<p>The elevation curve is smooth from the lake column (HAND = −6.0 m at ~1 m from the stream) through the 12 flood-zone bins, crossing zero at ~62 m, and rising to the ridge (+12.5 m at ~353 m). The width curve tapers from ~555 m near the stream to ~270 m at the ridge, following the trapezoidal plan-form fit. Contrast with Swenson's four-aspect profiles above, which lack the flood-zone segment — MERIT 90 m data cannot resolve HAND below the depression-filled drainage network.</p>
 <hr />
 <h2 id="column-area-distribution">Column Area Distribution<a class="headerlink" href="#column-area-distribution" title="Permanent link">&para;</a></h2>
 <h3 id="swenson-global-90m-merit_1">Swenson (Global — 90m MERIT)<a class="headerlink" href="#swenson-global-90m-merit_1" title="Permanent link">&para;</a></h3>
 <p><img alt="Swenson column areas" src="../images/swenson_col_areas.png" /></p>
 <h3 id="osbs-current-1m-neon-lidar_1">OSBS (Current — 1m NEON LIDAR)<a class="headerlink" href="#osbs-current-1m-neon-lidar_1" title="Permanent link">&para;</a></h3>
-<!-- TODO: Generate column area distribution plots from production data -->
-<p><em>Column area distribution plots for the current production data will be added here.</em></p>
-<p>Expected pattern: bar charts showing area per column, grouped by aspect. Expect relatively uniform distribution across bins and aspects for the flat OSBS terrain, in contrast to Swenson's global data where the lowest bin captures disproportionately more area.</p>
+<p><img alt="OSBS per-representative column areas across 25 columns. Lake (light blue), flood zone (dark red), upland (green)." src="../images/production_col_areas.png" /></p>
+<p>The distribution is heavily non-uniform: the lake column alone holds 12.3 % of per-rep area (matching the <code>wtlunit ≈ 12.3 %</code> design derived from the NWI footprint), the 12 flood-zone bins take small slices (0.7–2.9 %) because the TAI-focused fine binning concentrates resolution where terrain area is scarce, and the 12 upland bins are broader (3.6–8.0 %). Contrast with Swenson's global 4 × 4 partition above, where the equal-area algorithm smoothes the distribution across all 16 columns.</p>
 <hr />
 <h2 id="implications-for-ctsm-simulations">Implications for CTSM Simulations<a class="headerlink" href="#implications-for-ctsm-simulations" title="Permanent link">&para;</a></h2>
 <p><strong>1. Lateral flow dynamics.</strong> Shorter hillslope distances (3-353 m vs 67-541 m) mean faster lateral water redistribution between columns. The shorter flow paths reduce the response time of the inter-column Darcy gradient (<code>SoilHydrologyMod.F90</code>), which runs whenever <code>use_hillslope=.true.</code> independent of the routing toggle (<a href="../lateral-flow-and-routing/">Lateral Flow and Routing</a>).</p>

@@ -72,10 +72,10 @@ Post-AD continuation `osbs.swenson.post-ad` (200 yr, completed 2026-05-21) is id
 
 ## Tools and Repositories
 
-Local paths use `$BLUE = /blue/<group>/<user>/` — the working directory on HiPerGator. Adjust for your setup.
+The local paths below reflect our team's HiPerGator setup, where `$BLUE = /blue/gerber/cdevaneprugh/`. They are provided for internal reference — external readers should clone the repositories at right into whatever workspace they prefer.
 
-| Resource | Local path | Repository | Purpose |
-|----------|------------|------------|---------|
+| Resource | Team local path | Repository | Purpose |
+|----------|-----------------|------------|---------|
 | pysheds fork | `$BLUE/pysheds_fork/` | [cdevaneprugh/pysheds](https://github.com/cdevaneprugh/pysheds) (branch: `uf-development`) | Flow routing, HAND, DTND, hillslope classification |
 | Swenson's codebase | `$BLUE/Representative_Hillslopes/` | [swensosc/Representative_Hillslopes](https://github.com/swensosc/Representative_Hillslopes) | Reference implementation |
 | Processing scripts | `$BLUE/hpg-esm-tools/swenson/scripts/osbs/` | [hpg-esm-tools/swenson/scripts/osbs/](https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/scripts/osbs) | OSBS pipeline |

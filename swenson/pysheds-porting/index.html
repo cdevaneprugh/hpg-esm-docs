@@ -1908,7 +1908,7 @@
 </code></pre></div>
 <hr />
 <h2 id="what-swenson-added">What Swenson Added<a class="headerlink" href="#what-swenson-added" title="Permanent link">&para;</a></h2>
-<p>Swenson created <code>pgrid.py</code> (~4,200 lines) -- a pure-Python Grid class containing all hillslope-specific methods not present in upstream pysheds. This file was the core dependency for the entire hillslope parameter calculation pipeline.</p>
+<p>Swenson created <code>pgrid.py</code> (~4,200 lines) — a pure-Python Grid class containing all hillslope-specific methods not present in upstream pysheds. This file was the core dependency for the entire hillslope parameter calculation pipeline.</p>
 <h3 id="core-hillslope-methods">Core Hillslope Methods<a class="headerlink" href="#core-hillslope-methods" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2012,9 +2012,9 @@
 <p>The approach was to copy the entire <code>pgrid.py</code> from Swenson's fork rather than surgically porting individual methods. This preserved internal dependencies and ensured API compatibility with Swenson's <code>Representative_Hillslopes</code> processing pipeline.</p>
 <p>Key decisions:</p>
 <ul>
-<li><strong>Copy entire <code>pgrid.py</code></strong> -- not surgical porting of individual methods</li>
-<li><strong>Pure Python</strong> -- no numba optimization (Swenson's code uses numba optionally)</li>
-<li><strong>Match API signatures</strong> -- maintain compatibility with <code>Representative_Hillslopes</code> scripts</li>
+<li><strong>Copy entire <code>pgrid.py</code></strong> — not surgical porting of individual methods</li>
+<li><strong>Pure Python</strong> — no numba optimization (Swenson's code uses numba optionally)</li>
+<li><strong>Match API signatures</strong> — maintain compatibility with <code>Representative_Hillslopes</code> scripts</li>
 </ul>
 <p>The <code>grid.py</code> entry point was updated to fall back to <code>pgrid</code> when numba is unavailable, matching Swenson's import pattern.</p>
 <hr />
@@ -2103,7 +2103,7 @@
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">aspect</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">aspect</span><span class="p">)</span>
 </code></pre></div>
 <p>This pattern applies to <code>compute_hand()</code>, <code>compute_hillslope()</code>, <code>slope_aspect()</code>, and other methods.</p>
-<p>CRS handling is transparent -- methods detect the grid's CRS automatically and use the appropriate math (haversine for geographic, Euclidean for projected). The caller does not need to specify or know the CRS type.</p>
+<p>CRS handling is transparent — methods detect the grid's CRS automatically and use the appropriate math (haversine for geographic, Euclidean for projected). The caller does not need to specify or know the CRS type.</p>
 <hr />
 <h2 id="utm-crs-support">UTM CRS Support<a class="headerlink" href="#utm-crs-support" title="Permanent link">&para;</a></h2>
 <h3 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">&para;</a></h3>

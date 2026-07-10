@@ -1720,7 +1720,7 @@ The next section will go into where we went wrong, and some things we can do to 
 <p>The full comment from my <a href="https://bb.cgd.ucar.edu/cesm/threads/issues-downloading-input-data-in-clm5-single-point-mode.9600/#post-55331">post</a> is:</p>
 <blockquote>
 <p>The error message in the cesm log is:</p>
-<p>MCT::m_SparseMatrixPlus:: FATAL--length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 13824
+<p>MCT::m_SparseMatrixPlus:: FATAL-length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 13824
 000.MCT(MPEU)::die.: from MCT::m_SparseMatrixPlus::initDistributed_()</p>
 <p>It seems like there must be mismatch between two of the datasets you are using. One seems to be single point (y=1) and the other is 1.9x2.5 (144x96=13824). I think it might be because the compset you are using has CISM and MOSART in it. The long name for that compset is:</p>
 <p>1850_DATM%CRUv7_CLM50%SP_SICE_SOCN_MOSART_CISM2%NOEVOLVE_SWAV</p>
@@ -1738,7 +1738,7 @@ The next section will go into where we went wrong, and some things we can do to 
 <h3 id="22-compset-testing">2.2 Compset Testing<a name="clm_compset_testing"></a><a class="headerlink" href="#22-compset-testing" title="Permanent link">&para;</a></h3>
 <p>Anytime we get an error that is something like:</p>
 <blockquote>
-<p>MCT::m_SparseMatrixPlus:: FATAL--length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 55296</p>
+<p>MCT::m_SparseMatrixPlus:: FATAL-length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 55296</p>
 </blockquote>
 <p>We can assume there is some issue with MOSART or CISM. The goal of running the following cases is to determine which is causing the error in single point mode.
 I did this by choosing similar compsets that use physics from clm4.0 4.5 and 5.0 as well as running a global and PTS version of each compset.</p>
@@ -1762,7 +1762,7 @@ I did this by choosing similar compsets that use physics from clm4.0 4.5 and 5.0
 </li>
 </ol>
 <blockquote>
-<p>MCT::m_SparseMatrixPlus:: FATAL--length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 13824</p>
+<p>MCT::m_SparseMatrixPlus:: FATAL-length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 13824</p>
 <p>000.MCT(MPEU)::die.: from MCT::m_SparseMatrixPlus::initDistributed_()</p>
 </blockquote>
 <p><strong>1850_DATM%CRUv7_CLM50%SP_SICE_SOCN_MOSART_CISM2%NOEVOLVE_SWAV :   I1850Clm50SpCru :   f19_g17</strong></p>
@@ -1775,7 +1775,7 @@ I did this by choosing similar compsets that use physics from clm4.0 4.5 and 5.0
 </li>
 </ol>
 <blockquote>
-<p>MCT::m_SparseMatrixPlus:: FATAL--length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 13824</p>
+<p>MCT::m_SparseMatrixPlus:: FATAL-length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 13824</p>
 <p>000.MCT(MPEU)::die.: from MCT::m_SparseMatrixPlus::initDistributed_()</p>
 </blockquote>
 <p><strong>1850_DATM%CRUv7_CLM50%SP_SICE_SOCN_SROF_SGLC_SWAV :   NONE    :   f19_g17</strong></p>
@@ -1832,7 +1832,7 @@ I did this by choosing similar compsets that use physics from clm4.0 4.5 and 5.0
 <li>PTS: Fail</li>
 </ol>
 <blockquote>
-<p>MCT::m_SparseMatrixPlus:: FATAL--length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 55296</p>
+<p>MCT::m_SparseMatrixPlus:: FATAL-length of vector y different from row count of sMat.Length of y = 1 Number of rows in sMat = 55296</p>
 <p>000.MCT(MPEU)::die.: from MCT::m_SparseMatrixPlus::initDistributed_()</p>
 </blockquote>
 <p><strong>Conclusion</strong>

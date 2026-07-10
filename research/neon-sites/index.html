@@ -1969,10 +1969,7 @@
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>└── .../
 </code></pre></div>
 <h3 id="current-data-strategy">Current Data Strategy<a class="headerlink" href="#current-data-strategy" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Development</strong>: Global data subset via <code>run_tower</code> script</li>
-<li><strong>Production goal</strong>: Maximize use of NEON-provided local data</li>
-</ul>
+<p>OSBS production cases use globally-subset atmospheric forcing and surface data extracted via CTSM's <code>subset_data</code> script (in <code>tools/site_and_regional/</code>). NEON-native atmospheric forcing is a future direction, not the current path — the pre-built <code>run_tower</code> NEON forcing was tested and found insufficient (per PI, a manual NCAR-NEON pipeline is required; see <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/docs/neon-data-products.md"><code>neon-data-products.md</code></a> in the hpg-esm-tools repo). <code>run_tower</code> remains useful for basic NEON site tests but does not drive OSBS production.</p>
 <hr />
 <h2 id="custom-hillslope-data-for-osbs">Custom Hillslope Data for OSBS<a class="headerlink" href="#custom-hillslope-data-for-osbs" title="Permanent link">&para;</a></h2>
 <p>The global Swenson hillslope dataset (~90m source resolution) is too coarse for OSBS. Custom data from 1m NEON LIDAR will provide:</p>

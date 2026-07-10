@@ -1747,7 +1747,7 @@
 <hr />
 <h2 id="what-use_hillslope-true-activates">What <code>use_hillslope = .true.</code> activates<a class="headerlink" href="#what-use_hillslope-true-activates" title="Permanent link">&para;</a></h2>
 <h3 id="inter-column-lateral-subsurface-flow">Inter-column lateral subsurface flow<a class="headerlink" href="#inter-column-lateral-subsurface-flow" title="Permanent link">&para;</a></h3>
-<p><code>HydrologyDrainageMod.F90:127--160</code> dispatches the lateral-flow routines outside any routing gate:</p>
+<p><code>HydrologyDrainageMod.F90:127-160</code> dispatches the lateral-flow routines outside any routing gate:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">use_aquifer_layer</span><span class="p">())</span><span class="w"> </span><span class="k">then</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">   call </span><span class="n">Drainage</span><span class="p">(...)</span><span class="w">                          </span><span class="c">! aquifer-layer mode (not used at OSBS)</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">else</span>
@@ -1761,18 +1761,18 @@
 </code></pre></div>
 <p>The OSBS case takes the <code>else</code> branch (<code>lower_boundary_condition=2</code> → <code>bc_zero_flux</code> → <code>use_aquifer_layer() = .false.</code>; see <code>bld/namelist_files/namelist_defaults_ctsm.xml:448</code> and <code>SoilWaterMovementMod.F90:229</code>). <code>PerchedLateralFlow</code> and <code>SubsurfaceLateralFlow</code> are therefore called every hydrology step regardless of routing.</p>
 <h3 id="the-darcy-gradient-between-adjacent-columns">The Darcy gradient between adjacent columns<a class="headerlink" href="#the-darcy-gradient-between-adjacent-columns" title="Permanent link">&para;</a></h3>
-<p><code>SubsurfaceLateralFlow</code> (<code>SoilHydrologyMod.F90:2086+</code>) is the canonical inter-column water-table flow routine. Its main loop at <code>:2249--2402</code> processes every active hillslope column. Inside the loop, two paths:</p>
+<p><code>SubsurfaceLateralFlow</code> (<code>SoilHydrologyMod.F90:2086+</code>) is the canonical inter-column water-table flow routine. Its main loop at <code>:2249-2402</code> processes every active hillslope column. Inside the loop, two paths:</p>
 <p><strong>Internal columns</strong> (those with a downhill neighbor, <code>col%cold(c) /= ispval</code>):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c">! Darcy head gradient at :2261-2263</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">head_gradient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">col</span><span class="p">%</span><span class="n">hill_elev</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">zwt</span><span class="p">(</span><span class="n">c</span><span class="p">))</span><span class="w"> </span><span class="p">&amp;</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">              </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">col</span><span class="p">%</span><span class="n">hill_elev</span><span class="p">(</span><span class="n">col</span><span class="p">%</span><span class="n">cold</span><span class="p">(</span><span class="n">c</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">zwt</span><span class="p">(</span><span class="n">col</span><span class="p">%</span><span class="n">cold</span><span class="p">(</span><span class="n">c</span><span class="p">)))</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">head_gradient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">head_gradient</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">col</span><span class="p">%</span><span class="n">hill_distance</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 </code></pre></div>
-<p>The outflow volume at <code>:2358</code> is <code>qflx_latflow_out_vol = transmissivity × col%hill_width(c) × head_gradient</code>. The downhill column accumulates the inflow at <code>:2386--2388</code>. No routing gate anywhere in this path.</p>
-<p><strong>Terminal column</strong> (the chain bottom, <code>col%cold(c) == ispval</code>): the same Darcy machinery, but the "downhill neighbor" is the stream channel. Routing matters here for the stream-depth source --- see the next section.</p>
-<p><code>PerchedLateralFlow</code> (<code>:1703+</code>) is structurally identical for the perched water table; the same column-to-column Darcy gradient runs at <code>:1817--1820</code>.</p>
+<p>The outflow volume at <code>:2358</code> is <code>qflx_latflow_out_vol = transmissivity × col%hill_width(c) × head_gradient</code>. The downhill column accumulates the inflow at <code>:2386-2388</code>. No routing gate anywhere in this path.</p>
+<p><strong>Terminal column</strong> (the chain bottom, <code>col%cold(c) == ispval</code>): the same Darcy machinery, but the "downhill neighbor" is the stream channel. Routing matters here for the stream-depth source — see the next section.</p>
+<p><code>PerchedLateralFlow</code> (<code>:1703+</code>) is structurally identical for the perched water table; the same column-to-column Darcy gradient runs at <code>:1817-1820</code>.</p>
 <h3 id="where-the-flow-is-applied-to-soil-water">Where the flow is applied to soil water<a class="headerlink" href="#where-the-flow-is-applied-to-soil-water" title="Permanent link">&para;</a></h3>
-<p><code>SubsurfaceLateralFlow</code> at <code>:2433--2509</code>:</p>
+<p><code>SubsurfaceLateralFlow</code> at <code>:2433-2509</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">qflx_net_latflow</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qflx_latflow_out</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">qflx_latflow_in</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p">...</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">drainage</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qflx_net_latflow</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w">                  </span><span class="c">! for hillslope columns</span>
@@ -1797,43 +1797,43 @@
 </thead>
 <tbody>
 <tr>
-<td><code>HillslopeHydrologyMod.F90:378--411</code></td>
+<td><code>HillslopeHydrologyMod.F90:378-411</code></td>
 <td>Read <code>hillslope_stream_depth/width/slope</code> from the NetCDF</td>
 </tr>
 <tr>
-<td><code>HillslopeHydrologyMod.F90:475--507</code></td>
+<td><code>HillslopeHydrologyMod.F90:475-507</code></td>
 <td>Compute <code>nhill_per_landunit</code>, <code>stream_channel_length</code>, <code>stream_channel_number</code></td>
 </tr>
 <tr>
-<td><code>HillslopeHydrologyMod.F90:1078+</code> (<code>HillslopeUpdateStreamWater</code>, called only from <code>HydrologyDrainageMod.F90:150--158</code>)</td>
+<td><code>HillslopeHydrologyMod.F90:1078+</code> (<code>HillslopeUpdateStreamWater</code>, called only from <code>HydrologyDrainageMod.F90:150-158</code>)</td>
 <td>Advance <code>stream_water_volume</code></td>
 </tr>
 <tr>
-<td><code>HillslopeHydrologyMod.F90:977+</code> (<code>HillslopeStreamOutflow</code>, called only from <code>HydrologyDrainageMod.F90:151--153</code>)</td>
+<td><code>HillslopeHydrologyMod.F90:977+</code> (<code>HillslopeStreamOutflow</code>, called only from <code>HydrologyDrainageMod.F90:151-153</code>)</td>
 <td>Manning's-equation streamflow velocity</td>
 </tr>
 <tr>
-<td><code>SoilHydrologyMod.F90:1822--1829</code></td>
+<td><code>SoilHydrologyMod.F90:1822-1829</code></td>
 <td>Perched-LF stream-depth source switch (internal ledger vs MOSART)</td>
 </tr>
 <tr>
-<td><code>SoilHydrologyMod.F90:2265--2272</code></td>
+<td><code>SoilHydrologyMod.F90:2265-2272</code></td>
 <td>Subsurface-LF stream-depth source switch (internal ledger vs MOSART)</td>
 </tr>
 <tr>
-<td><code>SoilHydrologyMod.F90:2362--2367</code></td>
+<td><code>SoilHydrologyMod.F90:2362-2367</code></td>
 <td>Losing-stream outflow cap</td>
 </tr>
 <tr>
-<td><code>WaterFluxType.F90:525--534</code></td>
+<td><code>WaterFluxType.F90:525-534</code></td>
 <td>Register <code>VOLUMETRIC_STREAMFLOW</code> history field</td>
 </tr>
 <tr>
-<td><code>WaterFluxType.F90:922--928</code></td>
+<td><code>WaterFluxType.F90:922-928</code></td>
 <td>Zero <code>volumetric_streamflow_lun</code> each step</td>
 </tr>
 <tr>
-<td><code>BalanceCheckMod.F90:274--280, 744--750</code></td>
+<td><code>BalanceCheckMod.F90:274-280, 744-750</code></td>
 <td>Add <code>stream_water_volume</code> / <code>qflx_streamflow_grc</code> into gridcell water-balance ledger</td>
 </tr>
 <tr>
@@ -1841,13 +1841,13 @@
 <td>Sum streamflow over landunits for lnd→rof coupling</td>
 </tr>
 <tr>
-<td><code>lnd_import_export.F90:916--919</code></td>
+<td><code>lnd_import_export.F90:916-919</code></td>
 <td>Add stream component to subsurface-runoff field exported to coupler</td>
 </tr>
 </tbody>
 </table>
 <h3 id="the-stream-depth-source-swap">The stream-depth source swap<a class="headerlink" href="#the-stream-depth-source-swap" title="Permanent link">&para;</a></h3>
-<p>The single physically-meaningful difference inside the lateral-flow code path is the stream-depth source at the terminal column. <code>SoilHydrologyMod.F90:2265--2272</code>:</p>
+<p>The single physically-meaningful difference inside the lateral-flow code path is the stream-depth source at the terminal column. <code>SoilHydrologyMod.F90:2265-2272</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">use_hillslope_routing</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">   </span><span class="n">stream_water_depth</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">stream_water_volume</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">&amp;</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">                          </span><span class="n">lun</span><span class="p">%</span><span class="n">stream_channel_length</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">&amp;</span>
@@ -1881,19 +1881,23 @@
 <p>Phase H Tracks B and C would enable <code>use_hillslope_routing = .true.</code> and switch the terminal-column boundary to the internal <code>stream_water_volume</code> ledger. Whether to pursue them depends on what the Phase F analysis shows; the routing-on machinery is built and validated (Track A, below) but is not deployed by default.</p>
 <hr />
 <h2 id="ctsm-issue-1432-and-the-mesh-mode-workaround">CTSM Issue #1432 and the mesh-mode workaround<a class="headerlink" href="#ctsm-issue-1432-and-the-mesh-mode-workaround" title="Permanent link">&para;</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Status: built and validated, not deployed</p>
+<p>The mesh-mode workaround described below is complete and verified but is <strong>not active</strong> in the operative <code>osbs.swenson.spinup</code> configuration. Issue #1432 only bites when <code>use_hillslope_routing = .true.</code>; the operative case runs with routing off, so <code>grc%area = spval</code> never reaches a live computation. Phase H Track A built and validated the workaround so it is ready if Tracks B/C later enable routing.</p>
+</div>
 <h3 id="the-bug">The bug<a class="headerlink" href="#the-bug" title="Permanent link">&para;</a></h3>
 <p>In single-point NUOPC mode, <code>grc%area</code> is initialized to <code>spval</code> (~1×10³⁶) at <code>lnd_set_decomp_and_domain.F90:342</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">ldomain</span><span class="p">%</span><span class="n">area</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spval</span>
 </code></pre></div>
 <p>and propagated to <code>grc%area(g)</code> via <code>initGridCellsMod.F90:179</code>. The value is never repopulated. Under <code>use_hillslope_routing = .false.</code>, the routing gate at <code>HillslopeHydrologyMod.F90:475</code> protects every downstream use of <code>grc%area</code>, so the <code>spval</code> does not corrupt any computation.</p>
-<p>Under routing-on, the same gate becomes a release valve. <code>HillslopeHydrologyMod.F90:486--487</code>:</p>
+<p>Under routing-on, the same gate becomes a release valve. <code>HillslopeHydrologyMod.F90:486-487</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">nhill_per_landunit</span><span class="p">(</span><span class="n">nh</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grc</span><span class="p">%</span><span class="n">area</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1.e6_r8</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">lun</span><span class="p">%</span><span class="n">wtgcell</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">     </span><span class="o">*</span><span class="w"> </span><span class="n">pct_hillslope</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">nh</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.01</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">hillslope_area</span><span class="p">(</span><span class="n">nh</span><span class="p">)</span>
 </code></pre></div>
-<p>With <code>grc%area = spval</code>, <code>nhill_per_landunit ≈ 1×10³⁶</code> --- physically nonsense, but no error is raised because CTSM has no defensive guards on <code>grc%area</code>. <code>stream_channel_length</code> inherits the <code>1e36</code> magnitude at <code>:501--502</code>, and from there every downstream stream-side computation produces garbage in silence.</p>
+<p>With <code>grc%area = spval</code>, <code>nhill_per_landunit ≈ 1×10³⁶</code> — physically nonsense, but no error is raised because CTSM has no defensive guards on <code>grc%area</code>. <code>stream_channel_length</code> inherits the <code>1e36</code> magnitude at <code>:501-502</code>, and from there every downstream stream-side computation produces garbage in silence.</p>
 <p>This is canonical <a href="https://github.com/ESCOMP/CTSM/issues/1432">CTSM Issue #1432</a> (open since 2021-07-20). The community has not encountered it in practice because Swenson's published hillslope users run gridded (the validated mode), and single-point users have run with routing off.</p>
 <h3 id="the-mesh-mode-workaround">The mesh-mode workaround<a class="headerlink" href="#the-mesh-mode-workaround" title="Permanent link">&para;</a></h3>
-<p>Replace the <code>PTS_LAT</code> / <code>PTS_LON</code> single-column shortcut with an explicit single-cell ESMF mesh (<code>LND_DOMAIN_MESH</code>). CTSM's mode-decision logic then routes through <code>lnd_set_decomp_and_domain_from_readmesh</code> instead of <code>lnd_set_decomp_and_domain_for_single_column</code>, and <code>ldomain%area</code> is populated from the mesh via <code>ESMF_FieldRegridGetArea()</code> --- a real number, not <code>spval</code>.</p>
+<p>Replace the <code>PTS_LAT</code> / <code>PTS_LON</code> single-column shortcut with an explicit single-cell ESMF mesh (<code>LND_DOMAIN_MESH</code>). CTSM's mode-decision logic then routes through <code>lnd_set_decomp_and_domain_from_readmesh</code> instead of <code>lnd_set_decomp_and_domain_for_single_column</code>, and <code>ldomain%area</code> is populated from the mesh via <code>ESMF_FieldRegridGetArea()</code> — a real number, not <code>spval</code>.</p>
 <p>Swenson recommends this workaround to single-point users. CTSM's shipped <code>tools/site_and_regional/mesh_maker.py</code> aborts on 1×1 input (<code>mesh_maker.py:214</code>), so Phase H Track A wrote <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/scripts/osbs/make_osbs_scrip.py"><code>make_osbs_scrip.py</code></a> (<code>swenson/scripts/osbs/</code>) to produce a single-cell SCRIP-format NetCDF; the prebuilt <code>ESMF_Scrip2Unstruct</code> binary then converts it to the ESMF mesh CTSM reads.</p>
 <p>Phase H Track A (2026-05-11 to 2026-05-12) built the single-cell ESMF mesh for the production domain, the supporting input file conversions (surface dataset reformat, domain mesh), and a paired test/control case configuration. The 2026-05-12 smoke test confirmed <code>grc%area = 90.006 km²</code> (matching the production domain area, not <code>spval</code>) under mesh mode; gridcell aggregates are bit-identical between the mesh-mode test and the production-mode control. The workaround is OSBS-side; no upstream CTSM PR is planned.</p>
 <hr />
@@ -1901,8 +1905,8 @@
 <ul>
 <li>Phase H source audit (this page's primary source): <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/phases/H-lateral-flow.md"><code>swenson/phases/H-lateral-flow.md</code></a>, Sections 7 and 8</li>
 <li>CTSM Issue #1432: <a href="https://github.com/ESCOMP/CTSM/issues/1432">Area is not set for NUOPC single point cases</a> (open since 2021-07-20)</li>
-<li>Swenson, S. C., &amp; Lawrence, D. M. (2025), <a href="https://doi.org/10.1029/2024MS004410">Development of a Global Representative Hillslope Data Set for Use in Earth System Models</a>, <em>Journal of Advances in Modeling Earth Systems</em>, 17 --- hillslope-mode methodology (gridded-only validation; no single-point routing case)</li>
-<li>DiscussCESM thread, Johanna Teresa, Feb 2025: <a href="https://bb.cgd.ucar.edu/cesm/threads/point-scale-simulation-with-ctsm5-3.11125/">Point-scale simulation with CTSM 5.3.11</a> --- only public reference to Swenson's mesh-mode recommendation</li>
+<li>Swenson, S. C., &amp; Lawrence, D. M. (2025), <a href="https://doi.org/10.1029/2024MS004410">Development of a Global Representative Hillslope Data Set for Use in Earth System Models</a>, <em>Journal of Advances in Modeling Earth Systems</em>, 17 — hillslope-mode methodology (gridded-only validation; no single-point routing case)</li>
+<li>DiscussCESM thread, Johanna Teresa, Feb 2025: <a href="https://bb.cgd.ucar.edu/cesm/threads/point-scale-simulation-with-ctsm5-3.11125/">Point-scale simulation with CTSM 5.3.11</a> — only public reference to Swenson's mesh-mode recommendation</li>
 <li>CTSM source: <code>git rev dc3aa5ddc</code> (audit target, CTSM 5.3.085)</li>
 </ul>
 

@@ -1289,10 +1289,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#the-2026-04-30-pi-meeting-decision" class="md-nav__link">
+  <a href="#pi-decision-2026-04-30" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The 2026-04-30 PI meeting decision
+        PI decision (2026-04-30)
       
     </span>
   </a>
@@ -1692,10 +1692,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#the-2026-04-30-pi-meeting-decision" class="md-nav__link">
+  <a href="#pi-decision-2026-04-30" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The 2026-04-30 PI meeting decision
+        PI decision (2026-04-30)
       
     </span>
   </a>
@@ -1736,12 +1736,12 @@
 
 
 <h1 id="hand-binning-and-lake-column">HAND Binning and Lake Column<a class="headerlink" href="#hand-binning-and-lake-column" title="Permanent link">&para;</a></h1>
-<p><em>The OSBS production hillslope file departs from the Swenson default 4-aspect × 4-elevation-bin structure in two coupled ways: a 24-bin TAI-focused HAND scheme replaces the 4-bin equal-area partition, and a dedicated lake column at chain index 1 represents aggregated NWI open water. The two changes are documented together because the bin scheme and the lake column are co-designed --- the lake anchors the bottom of the chain and the lowest land bin sits just above it.</em></p>
+<p><em>The OSBS production hillslope file departs from the Swenson default 4-aspect × 4-elevation-bin structure in two coupled ways: a 24-bin TAI-focused HAND scheme replaces the 4-bin equal-area partition, and a dedicated lake column at chain index 1 represents aggregated NWI open water. The two changes are documented together because the bin scheme and the lake column are co-designed — the lake anchors the bottom of the chain and the lowest land bin sits just above it.</em></p>
 <hr />
 <h2 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h2>
-<p>The Swenson global methodology bins HAND so each elevation bin holds approximately the same number of pixels per aspect, with a mandatory 2 m upper bound on the lowest bin. On flat terrain this produces near-zero lowest-bin mean HAND --- earlier OSBS runs at 4 bins × 4 aspects gave Q25 = 0.00027 m for the lowest bin, because 25 % of the production-domain pixels have HAND below LIDAR noise. A bin whose mean elevation sits at the LIDAR noise floor cannot resolve the saturation gradient that defines the terrestrial-aquatic interface.</p>
+<p>The Swenson global methodology bins HAND so each elevation bin holds approximately the same number of pixels per aspect, with a mandatory 2 m upper bound on the lowest bin. On flat terrain this produces near-zero lowest-bin mean HAND — earlier OSBS runs at 4 bins × 4 aspects gave Q25 = 0.00027 m for the lowest bin, because 25 % of the production-domain pixels have HAND below LIDAR noise. A bin whose mean elevation sits at the LIDAR noise floor cannot resolve the saturation gradient that defines the terrestrial-aquatic interface.</p>
 <p>The 24-bin scheme addresses this by tilting bin resolution toward the TAI and lifting the bin-width floor to the LIDAR vertical noise budget.</p>
-<p><img alt="HAND map of the production domain (R4C5--R12C14, 9 × 10 km, 1 m). Dark purple is low HAND (near streams and flood-zone interiors); bright yellow is upland ridge; white pixels are NWI open water excluded from land bins. The TAI is the colour band where the saturation gradient is steepest --- the 24-bin scheme concentrates bin resolution there." src="../images/production_hand_map.png" /></p>
+<p><img alt="HAND map of the production domain (R4C5-R12C14, 9 × 10 km, 1 m). Dark purple is low HAND (near streams and flood-zone interiors); bright yellow is upland ridge; white pixels are NWI open water excluded from land bins. The TAI is the colour band where the saturation gradient is steepest — the 24-bin scheme concentrates bin resolution there." src="../images/production_hand_map.png" /></p>
 <hr />
 <h2 id="24-bin-tai-focused-scheme">24-bin TAI-focused scheme<a class="headerlink" href="#24-bin-tai-focused-scheme" title="Permanent link">&para;</a></h2>
 <p>The production scheme uses 24 bins total: 12 flood-zone bins (HAND &lt; 0 m, set by the depression-filled reference DEM) plus 12 upland bins (HAND ≥ 0 m). The width allocation tilts toward the TAI core:</p>
@@ -1800,7 +1800,7 @@
 <h3 id="why-025-m-as-the-bin-width-floor">Why 0.25 m as the bin-width floor<a class="headerlink" href="#why-025-m-as-the-bin-width-floor" title="Permanent link">&para;</a></h3>
 <p>NEON DP3.30024.001 (1 m raster LIDAR) has a stated vertical accuracy of 0.10 m. The empirical residual standard deviation at OSBS, measured against benchmark check points, is 0.058 m. Taking 2σ as the threshold below which two HAND values are not reliably distinguishable: 2σ ≈ 0.116 m, rounded to 0.25 m for headroom (accounts for systematic spatial trends in the residuals). Bins narrower than 0.25 m would partition pixels into adjacent classes by LIDAR noise rather than by terrain.</p>
 <h3 id="why-we-accept-non-monotonic-bin-areas">Why we accept non-monotonic bin areas<a class="headerlink" href="#why-we-accept-non-monotonic-bin-areas" title="Permanent link">&para;</a></h3>
-<p>Swenson's bin algorithm targets approximately equal per-bin areas; CTSM imposes no monotonicity requirement on <code>hill_area</code>. The 24-bin scheme allows bin areas to vary with terrain heterogeneity. The smoothness criterion used instead is <strong>per-meter pixel density</strong> (area ÷ bin width): the density curve rises smoothly to a peak and tapers, tracking the underlying HAND distribution. The production scheme's per-meter density rises from 0.62 km²/m at the deepest sentinel to a peak of 13.9 km²/m at bin 13 (just above stream level, where OSBS pixel density peaks) and tapers smoothly to 0.92 km²/m at the ridge sentinel. The density curve is monotonic toward the peak from each side --- the physically meaningful invariant for gridcell aggregation.</p>
+<p>Swenson's bin algorithm targets approximately equal per-bin areas; CTSM imposes no monotonicity requirement on <code>hill_area</code>. The 24-bin scheme allows bin areas to vary with terrain heterogeneity. The smoothness criterion used instead is <strong>per-meter pixel density</strong> (area ÷ bin width): the density curve rises smoothly to a peak and tapers, tracking the underlying HAND distribution. The production scheme's per-meter density rises from 0.62 km²/m at the deepest sentinel to a peak of 13.9 km²/m at bin 13 (just above stream level, where OSBS pixel density peaks) and tapers smoothly to 0.92 km²/m at the ridge sentinel. The density curve is monotonic toward the peak from each side — the physically meaningful invariant for gridcell aggregation.</p>
 <hr />
 <h2 id="outlier-handling">Outlier handling<a class="headerlink" href="#outlier-handling" title="Permanent link">&para;</a></h2>
 <p>Q01 (raw HAND) = −6.35 m and Q99 = +17.02 m define the binning envelope for the production domain. Pixels outside this envelope are <strong>discarded</strong>, not clipped into sentinel bins, for two reasons:</p>
@@ -1839,7 +1839,7 @@
 <p>Raw NWI polygons (downloaded from the NWI v3.2 OSBS subset) miss interior holes that the 1 m LIDAR confirms are contiguous open water: small islands inside larger features, sub-polygon gaps where the digitizer missed thin shore strips, and mis-aligned edges. A <code>scipy.ndimage.binary_fill_holes</code> pass over the rasterized NWI mask closes approximately 400,000 pixels of these holes. The hole-fill is applied before the mask is used downstream (wide-mask construction, lake-area aggregation, perimeter computation).</p>
 <hr />
 <h2 id="lake-column-construction">Lake column construction<a class="headerlink" href="#lake-column-construction" title="Permanent link">&para;</a></h2>
-<p>The OSBS production file places a dedicated lake column at chain index 1, shifting land columns to indices 2--25. The lake column represents the aggregate of all NWI open water in the production domain as a single submerged element.</p>
+<p>The OSBS production file places a dedicated lake column at chain index 1, shifting land columns to indices 2-25. The lake column represents the aggregate of all NWI open water in the production domain as a single submerged element.</p>
 <table>
 <thead>
 <tr>
@@ -1867,7 +1867,7 @@
 <tr>
 <td><code>hill_elev</code></td>
 <td>−6.0 m</td>
-<td>Chain-bookkeeping value. Set 0.87 m below the deepest land bin's mean (−5.13 m, bin 1 of the production output) to keep the column chain monotonic in elevation. <strong>Does not represent a physical lake bottom</strong> --- empirical lake bathymetry from NWI digitizing and Lee 2023 spill-stage data is far shallower (NWI mean ~−2.5 m, Lee/pipeline spill 2.6--3.3 m), but the deepest land bin's HAND (−5.13 m) is the binding constraint on monotonicity. PI direction (2026-05-04): tuning the lake elevation toward a physical lake depth is deferred to model-output review; the chain-integrity constraint comes first.</td>
+<td>Chain-bookkeeping value. Set 0.87 m below the deepest land bin's mean (−5.13 m, bin 1 of the production output) to keep the column chain monotonic in elevation. <strong>Does not represent a physical lake bottom</strong> — empirical lake bathymetry from NWI digitizing and Lee 2023 spill-stage data is far shallower (NWI mean ~−2.5 m, Lee/pipeline spill 2.6-3.3 m), but the deepest land bin's HAND (−5.13 m) is the binding constraint on monotonicity. PI direction (2026-05-04): tuning the lake elevation toward a physical lake depth is deferred to model-output review; the chain-integrity constraint comes first.</td>
 </tr>
 <tr>
 <td><code>hill_distance</code></td>
@@ -1906,18 +1906,18 @@
 <h2 id="per-rep-rescaling">Per-rep rescaling<a class="headerlink" href="#per-rep-rescaling" title="Permanent link">&para;</a></h2>
 <p>The lake-column raw area (10.68 km²) is far larger than any single representative hillslope's footprint, because OSBS open water is the aggregate of 103 NWI features distributed across the 90 km² production domain. To fit the column inside a representative-hillslope shape, the pipeline computes:</p>
 <ul>
-<li><strong><code>nhill_implicit</code></strong> --- the implicit number of representative-hillslope copies that tile the gridcell. For the 2026-05-05 production: <code>nhill_implicit ≈ 533.7</code>.</li>
+<li><strong><code>nhill_implicit</code></strong> — the implicit number of representative-hillslope copies that tile the gridcell. For the 2026-05-05 production: <code>nhill_implicit ≈ 533.7</code>.</li>
 <li><strong>Per-rep area</strong> = total area / <code>nhill_implicit</code>. Lake column per rep: 10.68 km² / 533.7 ≈ 0.021 km² = 20,765 m².</li>
 <li><strong>Per-rep perimeter</strong> = total perimeter / <code>nhill_implicit</code>. Lake per rep: 48,270 m / 533.7 ≈ 90.4 m.</li>
 </ul>
 <p>Within the representative hillslope, the lake column ends up with <code>wtlunit ≈ 12.3 %</code>, calibrated to the NWI water footprint as a fraction of the production domain (~12 % open water). The land bins partition the remaining 87.7 % according to their NWI-masked, water-excluded pixel areas.</p>
 <hr />
 <h2 id="spillheight-and-the-sourcemod-retirement">SPILLHEIGHT and the SourceMod retirement<a class="headerlink" href="#spillheight-and-the-sourcemod-retirement" title="Permanent link">&para;</a></h2>
-<p>Before Phase E.5, the pipeline binned on <strong>conditioned HAND</strong> --- the depression-filled DEM's elevation above stream. Conditioned HAND is zero or positive by construction: pixels inside filled depressions sit <em>at</em> the depression's fill level, not below it. Equal-area binning on this signal produced no flood-zone columns; the lowest land bin's mean HAND landed at LIDAR noise (Q25 = 0.00027 m on earlier 4-bin runs), as documented in the <a href="#motivation">Motivation</a> section.</p>
+<p>Before Phase E.5, the pipeline binned on <strong>conditioned HAND</strong> — the depression-filled DEM's elevation above stream. Conditioned HAND is zero or positive by construction: pixels inside filled depressions sit <em>at</em> the depression's fill level, not below it. Equal-area binning on this signal produced no flood-zone columns; the lowest land bin's mean HAND landed at LIDAR noise (Q25 = 0.00027 m on earlier 4-bin runs), as documented in the <a href="#motivation">Motivation</a> section.</p>
 <p>To represent the wet, low-lying terrain visible in the NEON LIDAR, the PI installed two SourceMods:</p>
 <ul>
-<li><strong><code>HillslopeHydrologyMod.F90</code></strong> --- modified <code>InitHillslope</code> to subtract a uniform <code>SPILLHEIGHT</code> constant (originally 0.2 m, hard-coded) from every column's <code>hill_elev</code> after reading the NetCDF. This effectively lowered the whole chain at runtime.</li>
-<li><strong><code>SurfaceWaterMod.F90</code></strong> --- added runoff suppression for any column satisfying <code>hill_elev + h2osfc &lt; 0</code>. Columns lowered below the stream by the SPILLHEIGHT subtraction would pond instead of drain, producing a stratified submergence regime.</li>
+<li><strong><code>HillslopeHydrologyMod.F90</code></strong> — modified <code>InitHillslope</code> to subtract a uniform <code>SPILLHEIGHT</code> constant (originally 0.2 m, hard-coded) from every column's <code>hill_elev</code> after reading the NetCDF. This effectively lowered the whole chain at runtime.</li>
+<li><strong><code>SurfaceWaterMod.F90</code></strong> — added runoff suppression for any column satisfying <code>hill_elev + h2osfc &lt; 0</code>. Columns lowered below the stream by the SPILLHEIGHT subtraction would pond instead of drain, producing a stratified submergence regime.</li>
 </ul>
 <p>Combined, the two SourceMods turned the lowest land bins into "usually wet, sometimes dry" columns and the lake column (sitting at <code>hill_elev = −SPILLHEIGHT</code> in the input file) into the permanently submerged anchor of the chain.</p>
 <h3 id="why-raw-hand-binning-superseded-this">Why raw-HAND binning superseded this<a class="headerlink" href="#why-raw-hand-binning-superseded-this" title="Permanent link">&para;</a></h3>
@@ -1927,12 +1927,12 @@
 <li>Eleven additional flood-zone bins (chain indices 3 through 13) resolve the saturation gradient up to HAND = 0.</li>
 <li>The bin areas, per-meter density, and Darcy-relevant geometry all derive from the original LIDAR rather than from a runtime offset to the deposited input file.</li>
 </ul>
-<p>The runtime elevation shift is no longer needed because the flood zone is in the file. The SourceMod's purpose --- creating submerged columns to represent low-lying terrain --- is solved at file-construction time rather than at runtime.</p>
-<h3 id="the-2026-04-30-pi-meeting-decision">The 2026-04-30 PI meeting decision<a class="headerlink" href="#the-2026-04-30-pi-meeting-decision" title="Permanent link">&para;</a></h3>
+<p>The runtime elevation shift is no longer needed because the flood zone is in the file. The SourceMod's purpose — creating submerged columns to represent low-lying terrain — is solved at file-construction time rather than at runtime.</p>
+<h3 id="pi-decision-2026-04-30">PI decision (2026-04-30)<a class="headerlink" href="#pi-decision-2026-04-30" title="Permanent link">&para;</a></h3>
 <p>The SourceMod's runtime mechanism was retired. <code>SPILLHEIGHT = 0.0</code> set via namelist override (rather than editing the SourceMod constant) keeps the SourceMod files retained but inert:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">spillheight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
 </code></pre></div>
-<p>This lowers the maintenance burden across cases --- no Fortran rewrite, no case-by-case SourceMod synchronization --- while disabling the runtime elevation shift. The lake column's <code>hill_elev = −6.0 m</code> (chain-bookkeeping value, locked 2026-05-04; see Lake column construction below) replaces the earlier <code>−SPILLHEIGHT</code> framing as the chain anchor.</p>
+<p>This lowers the maintenance burden across cases — no Fortran rewrite, no case-by-case SourceMod synchronization — while disabling the runtime elevation shift. The lake column's <code>hill_elev = −6.0 m</code> (chain-bookkeeping value, locked 2026-05-04; see Lake column construction above) replaces the earlier <code>−SPILLHEIGHT</code> framing as the chain anchor.</p>
 <p>Both approaches produce a stratified submergence regime; the data-derived approach is more faithful to the underlying NEON LIDAR (basin depths read from the input file rather than imposed as a domain-wide uniform offset) and removes the need to keep the SourceMod's <code>SPILLHEIGHT</code> constant in sync with the pipeline.</p>
 <hr />
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
@@ -1940,8 +1940,8 @@
 <li>Phase E.5 bin redesign and outlier strategy: <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/phases/E.5-bin-redesign.md"><code>swenson/phases/E.5-bin-redesign.md</code></a></li>
 <li>Phase G lake column construction: <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/phases/G-ctsm-lake-representation.md"><code>swenson/phases/G-ctsm-lake-representation.md</code></a></li>
 <li>Lake-column CTSM source audit (canonical parameter derivation): <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/docs/lake-column-ctsm-audit.md"><code>swenson/docs/lake-column-ctsm-audit.md</code></a></li>
-<li>DOE BER (2017). <a href="https://science.osti.gov/-/media/ber/pdf/community-resources/Terrestrial-Aquatic_Interfaces_report.pdf"><em>Research Priorities to Incorporate Terrestrial-Aquatic Interfaces in Earth System Models</em></a>, DOE/SC-0187 --- TAI process-gradient framework</li>
-<li>Lee, E., Epstein, J. M., &amp; Cohen, M. J. (2023). <a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2023WR034553">Patterns of Wetland Hydrologic Connectivity Across Coastal-Plain Wetlandscapes</a>. <em>Water Resources Research</em>, 59 --- spill-stage data for chain-monotonicity sanity check</li>
+<li>DOE BER (2017). <a href="https://science.osti.gov/-/media/ber/pdf/community-resources/Terrestrial-Aquatic_Interfaces_report.pdf"><em>Research Priorities to Incorporate Terrestrial-Aquatic Interfaces in Earth System Models</em></a>, DOE/SC-0187 — TAI process-gradient framework</li>
+<li>Lee, E., Epstein, J. M., &amp; Cohen, M. J. (2023). <a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2023WR034553">Patterns of Wetland Hydrologic Connectivity Across Coastal-Plain Wetlandscapes</a>. <em>Water Resources Research</em>, 59 — spill-stage data for chain-monotonicity sanity check</li>
 </ul>
 
 

@@ -1424,7 +1424,7 @@
   <a href="#trapezoidal-width-fitting-swenson-eq-9-16" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Trapezoidal width fitting (Swenson Eq. 9--16)
+        Trapezoidal width fitting (Swenson Eq. 9-16)
       
     </span>
   </a>
@@ -2076,7 +2076,7 @@
   <a href="#trapezoidal-width-fitting-swenson-eq-9-16" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Trapezoidal width fitting (Swenson Eq. 9--16)
+        Trapezoidal width fitting (Swenson Eq. 9-16)
       
     </span>
   </a>
@@ -2223,7 +2223,7 @@
 </tbody>
 </table>
 <h3 id="production-domain">Production Domain<a class="headerlink" href="#production-domain" title="Permanent link">&para;</a></h3>
-<p>The production domain is R4C5--R12C14: a 9x10 km (90 km^2) rectangle of 90 tiles with 0% nodata --- the largest contiguous rectangle within the NEON tile coverage. This domain was selected to avoid the nodata gaps present in the full tile mosaic (233 tiles, 323 km^2, 58.5% valid data), which cause silent failures in pysheds flow routing when all domain boundary cells are nodata.</p>
+<p>The production domain is R4C5-R12C14: a 9x10 km (90 km^2) rectangle of 90 tiles with 0% nodata — the largest contiguous rectangle within the NEON tile coverage. This domain was selected to avoid the nodata gaps present in the full tile mosaic (233 tiles, 323 km^2, 58.5% valid data), which cause silent failures in pysheds flow routing when all domain boundary cells are nodata.</p>
 <p>DEM elevation ranges from 23 to 69 m with ~46 m total relief. The low total relief confirms this is a low-relief wetlandscape where meter-scale elevation differences control wetland-upland transitions.</p>
 <h3 id="tile-reference-system">Tile Reference System<a class="headerlink" href="#tile-reference-system" title="Permanent link">&para;</a></h3>
 <p><img alt="Tile grid reference showing OSBS NEON tile coverage" src="../images/tile_grid_reference.png" /></p>
@@ -2235,12 +2235,12 @@
 </ul>
 <hr />
 <h2 id="characteristic-length-scale-lc">Characteristic Length Scale (Lc)<a class="headerlink" href="#characteristic-length-scale-lc" title="Permanent link">&para;</a></h2>
-<p>The characteristic length scale Lc determines the accumulation threshold A_thresh = 0.5 * Lc^2 (Swenson Eq. 6), which controls stream network density. All downstream parameters --- HAND, DTND, catchment delineation, and all six hillslope parameters --- depend on it.</p>
+<p>The characteristic length scale Lc determines the accumulation threshold A_thresh = 0.5 * Lc^2 (Swenson Eq. 6), which controls stream network density. All downstream parameters — HAND, DTND, catchment delineation, and all six hillslope parameters — depend on it.</p>
 <h3 id="standard-method">Standard method<a class="headerlink" href="#standard-method" title="Permanent link">&para;</a></h3>
 <p>Swenson's approach applies the Laplacian operator to the DEM, computes the 2D Fourier transform, bins the spectrum radially, and fits Gaussian/lognormal models to identify the wavelength of peak amplitude. This works at 90m MERIT resolution because features below ~180m (the Nyquist limit) are already averaged away, leaving a single dominant drainage-scale peak. On MERIT, this produces Lc = 763 m.</p>
 <h3 id="the-k2-artifact-at-1m">The k^2 artifact at 1m<a class="headerlink" href="#the-k2-artifact-at-1m" title="Permanent link">&para;</a></h3>
-<p>At 1m resolution, the standard method identifies a peak at 8.1 m. This is not the drainage scale --- it is a spectral artifact. The Laplacian operator weights the spectrum by k^2, amplifying short-wavelength features relative to longer ones. The raw DEM spectrum (without the Laplacian) is monotonically increasing red noise with no peaked feature at any scale. The k^2 weighting amplifies micro-topographic features (tree-throw mounds, animal burrows, shallow rills) that are invisible at 90m by orders of magnitude relative to the drainage-scale features at 200--500 m. At 1m, the raw 8 m amplitude is ~620x weaker than the 200--500 m amplitude, but the k^2 factor (300/8)^2 ~ 1400x inverts their relative prominence in the Laplacian spectrum.</p>
-<p>Physical implausibility confirms the artifact interpretation: A_thresh = 0.5 * 8^2 = 32 m^2 would classify 20--40% of all pixels as stream --- not a meaningful drainage network.</p>
+<p>At 1m resolution, the standard method identifies a peak at 8.1 m. This is not the drainage scale — it is a spectral artifact. The Laplacian operator weights the spectrum by k^2, amplifying short-wavelength features relative to longer ones. The raw DEM spectrum (without the Laplacian) is monotonically increasing red noise with no peaked feature at any scale. The k^2 weighting amplifies micro-topographic features (tree-throw mounds, animal burrows, shallow rills) that are invisible at 90m by orders of magnitude relative to the drainage-scale features at 200-500 m. At 1m, the raw 8 m amplitude is ~620x weaker than the 200-500 m amplitude, but the k^2 factor (300/8)^2 ~ 1400x inverts their relative prominence in the Laplacian spectrum.</p>
+<p>Physical implausibility confirms the artifact interpretation: A_thresh = 0.5 * 8^2 = 32 m^2 would classify 20-40% of all pixels as stream — not a meaningful drainage network.</p>
 <h3 id="solution-restricted-wavelength-fft">Solution: restricted-wavelength FFT<a class="headerlink" href="#solution-restricted-wavelength-fft" title="Permanent link">&para;</a></h3>
 <p>Excluding wavelengths below 20 m before peak fitting reveals the drainage-scale peak. The 20 m cutoff separates micro-topography from organized drainage structure, analogous to what 90m resolution does implicitly by averaging away sub-180 m features.</p>
 <p>Restricted-wavelength sweep on the contiguous production mosaic (9000 x 10000 pixels, 0% nodata):</p>
@@ -2292,9 +2292,10 @@
 </tr>
 </tbody>
 </table>
-<p>The transition at 20 m is sharp --- the drainage-scale peak jumps from invisible to dominant when micro-topographic wavelengths are excluded. The 285--356 m range from different cutoffs and models represents uncertainty in the exact Lc value.</p>
+<p>The transition at 20 m is sharp — the drainage-scale peak jumps from invisible to dominant when micro-topographic wavelengths are excluded. The 285-356 m range from different cutoffs and models represents uncertainty in the exact Lc value.</p>
 <h3 id="result">Result<a class="headerlink" href="#result" title="Permanent link">&para;</a></h3>
 <p><strong>Lc = 356 m</strong> (lognormal fit at 20 m cutoff), <strong>A_thresh = 63,362 pixels</strong> at 1m resolution.</p>
+<p><img alt="Laplacian amplitude vs wavelength for the OSBS production domain (log-scale y-axis). The lognormal fit identifies the drainage-scale characteristic length at Lc = 356 m (red dashed line). Micro-topographic wavelengths below the 20 m cutoff are excluded before peak fitting to suppress the k² artifact discussed above." src="../images/production_lc_spectrum.png" /></p>
 <h3 id="physical-validation">Physical validation<a class="headerlink" href="#physical-validation" title="Permanent link">&para;</a></h3>
 <p>Two consistency checks from Swenson Section 2.4:</p>
 <ul>
@@ -2303,7 +2304,7 @@
 </ul>
 <p>Note on <code>max(DTND)</code>: the raw maximum DTND/Lc ratio is 3.1, but <code>max()</code> is not comparable between 90m MERIT (~12K pixels per gridcell) and 1m OSBS (25M pixels). At 90m, each pixel averages a 90x90 m area, blunting ridge extremes; at 1m, individual ridgeline pixels are preserved. The 2000x sample size difference shifts the extreme value distribution rightward. P95 is the resolution-fair comparison.</p>
 <h3 id="sensitivity">Sensitivity<a class="headerlink" href="#sensitivity" title="Permanent link">&para;</a></h3>
-<p>Lc is insensitive to all FFT parameters. A sweep of 20 configurations (blend_edges, zero_edges, NLAMBDA, MAX_HILLSLOPE_LENGTH, detrend) produced Lc variation of only 1.7 m. The spectral peak is strong enough (psharp 9--12) that preprocessing choices do not affect the result.</p>
+<p>Lc is insensitive to all FFT parameters. A sweep of 20 configurations (blend_edges, zero_edges, NLAMBDA, MAX_HILLSLOPE_LENGTH, detrend) produced Lc variation of only 1.7 m. The spectral peak is strong enough (psharp 9-12) that preprocessing choices do not affect the result.</p>
 <hr />
 <h2 id="stream-network-delineation">Stream Network Delineation<a class="headerlink" href="#stream-network-delineation" title="Permanent link">&para;</a></h2>
 <h3 id="accumulation-threshold">Accumulation threshold<a class="headerlink" href="#accumulation-threshold" title="Permanent link">&para;</a></h3>
@@ -2311,7 +2312,7 @@
 <h3 id="dem-conditioning">DEM conditioning<a class="headerlink" href="#dem-conditioning" title="Permanent link">&para;</a></h3>
 <p>The DEM is conditioned through pysheds' standard sequence: fill_pits, fill_depressions, resolve_flats (with fallback to conditioned DEM if resolve_flats fails on the full domain), D8 flow direction, and flow accumulation. Pixels exceeding A_thresh are classified as stream.</p>
 <h3 id="connected-component-extraction-and-edge-trimming">Connected-component extraction and edge trimming<a class="headerlink" href="#connected-component-extraction-and-edge-trimming" title="Permanent link">&para;</a></h3>
-<p>Two preprocessing steps are required for mosaicked NEON data that are not needed for continuous MERIT tiles. First, <code>scipy.ndimage.label</code> isolates the largest contiguous data region from the mosaic. Second, all-nodata rows and columns are trimmed from the bounding box. Both steps address a fundamental constraint of D8 flow routing: pysheds requires flow to exit the domain at boundary cells. When all boundary cells are nodata, no cell can accumulate flow from others --- max_accumulation silently equals 1 with no error raised.</p>
+<p>Two preprocessing steps are required for mosaicked NEON data that are not needed for continuous MERIT tiles. First, <code>scipy.ndimage.label</code> isolates the largest contiguous data region from the mosaic. Second, all-nodata rows and columns are trimmed from the bounding box. Both steps address a fundamental constraint of D8 flow routing: pysheds requires flow to exit the domain at boundary cells. When all boundary cells are nodata, no cell can accumulate flow from others — max_accumulation silently equals 1 with no error raised.</p>
 <h3 id="stream-network-results">Stream network results<a class="headerlink" href="#stream-network-results" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2343,15 +2344,15 @@
 </ul>
 <p>The raw NWI polygons miss interior holes that are visible in the LIDAR (small islands, sub-polygon gaps, mis-digitized edges). A <code>scipy.ndimage.binary_fill_holes</code> pass over the rasterized NWI mask closes ~400,000 pixels of these holes, bringing the masked footprint closer to what NEON LIDAR confirms is contiguous open water. The hole-fill is applied before the wide mask is used downstream.</p>
 <h3 id="known-limitation-depression-filling">Known limitation: depression filling<a class="headerlink" href="#known-limitation-depression-filling" title="Permanent link">&para;</a></h3>
-<p>DEM conditioning fills all depressions, which at 1m resolution erases real geomorphic features --- sinkholes, wetland depressions, karst dissolution features --- that are central to OSBS hydrology. Standard D8 flow routing requires a depression-free DEM. Alternative approaches (priority-flood with depression retention, depression-aware routing) exist but would require a different hydrological framework. This is a fundamental limitation of applying Swenson's D8-based methodology to high-resolution data in a landscape where closed basins are common.</p>
+<p>DEM conditioning fills all depressions, which at 1m resolution erases real geomorphic features — sinkholes, wetland depressions, karst dissolution features — that are central to OSBS hydrology. Standard D8 flow routing requires a depression-free DEM. Alternative approaches (priority-flood with depression retention, depression-aware routing) exist but would require a different hydrological framework. This is a fundamental limitation of applying Swenson's D8-based methodology to high-resolution data in a landscape where closed basins are common.</p>
 <hr />
 <h2 id="hillslope-parameter-computation">Hillslope Parameter Computation<a class="headerlink" href="#hillslope-parameter-computation" title="Permanent link">&para;</a></h2>
 <h3 id="hand-and-dtnd">HAND and DTND<a class="headerlink" href="#hand-and-dtnd" title="Permanent link">&para;</a></h3>
 <p>Computed by pysheds <code>compute_hand()</code>, which traces each pixel's D8 flow path to its drainage stream pixel and returns the elevation difference and horizontal distance. The UTM-aware fork (Phase A) uses Euclidean distance for projected CRS rather than haversine.</p>
 <p>The pipeline uses two distinct HAND quantities:</p>
 <ul>
-<li><strong>Conditioned HAND</strong> --- elevation above the drainage stream measured on the depression-filled DEM. This is the standard pysheds output and what feeds the flow-routing arithmetic, catchment delineation, and stream-network length / slope computation. Range on the production domain: 0--25.2 m, median 2.3 m.</li>
-<li><strong>Raw HAND</strong> --- elevation above the drainage stream measured on the original DEM (signed). Equivalent to conditioned HAND minus the local depression-fill depth. Pixels inside filled depressions have raw HAND &lt; 0 --- they sit physically below stream level. Range on the production domain (after Q01/Q99 trim): −6.34 m to +17.02 m.</li>
+<li><strong>Conditioned HAND</strong> — elevation above the drainage stream measured on the depression-filled DEM. This is the standard pysheds output and what feeds the flow-routing arithmetic, catchment delineation, and stream-network length / slope computation. Range on the production domain: 0-25.2 m, median 2.3 m.</li>
+<li><strong>Raw HAND</strong> — elevation above the drainage stream measured on the original DEM (signed). Equivalent to conditioned HAND minus the local depression-fill depth. Pixels inside filled depressions have raw HAND &lt; 0 — they sit physically below stream level. Range on the production domain (after Q01/Q99 trim): −6.34 m to +17.02 m.</li>
 </ul>
 <p>The split exists because D8 flow routing requires a depression-free DEM (otherwise the algorithm cannot define unambiguous downstream paths), but the physically meaningful elevation for the flood zone is the original-DEM value. Raw HAND drives bin assignment; conditioned HAND drives flow topology. The flood-zone columns in the production NetCDF (chain indices 2 through 13) come from the negative raw-HAND range and would not exist if binning used conditioned HAND. See <a href="../hand-binning-and-lake-column/">HAND Binning and Lake Column</a> for the binning consequences.</p>
 <p>DTND is unaffected by the conditioned-vs-raw distinction: it is a horizontal distance along the flow path, which is the same in either DEM. Production DTND range: 3 m (lake column, half of Bin 1's distance per the dynamic-distance rule) to 353 m (deepest upland bin).</p>
@@ -2372,7 +2373,7 @@
 <p>The bin edges, per-bin area allocation, motivation for the asymmetric flood-zone tilt, and the LIDAR error-budget derivation are documented in detail on the <a href="../hand-binning-and-lake-column/">HAND Binning and Lake Column</a> page.</p>
 <h3 id="dtnd-tail-removal">DTND tail removal<a class="headerlink" href="#dtnd-tail-removal" title="Permanent link">&para;</a></h3>
 <p>An exponential fit to the DTND distribution identifies and removes long-distance outliers before parameter computation. Applied per-catchment-side. This prevents a few pixels with anomalously long flow paths (e.g., single ridgeline pixels) from distorting the trapezoidal width fit.</p>
-<h3 id="trapezoidal-width-fitting-swenson-eq-9-16">Trapezoidal width fitting (Swenson Eq. 9--16)<a class="headerlink" href="#trapezoidal-width-fitting-swenson-eq-9-16" title="Permanent link">&para;</a></h3>
+<h3 id="trapezoidal-width-fitting-swenson-eq-9-16">Trapezoidal width fitting (Swenson Eq. 9-16)<a class="headerlink" href="#trapezoidal-width-fitting-swenson-eq-9-16" title="Permanent link">&para;</a></h3>
 <p>For each aspect bin, area is accumulated as a function of distance from stream: A_sum(d). The paper models hillslope plan form as a trapezoid: w(d) = w_base + 2<em>alpha</em>d, where w_base is the width at the stream channel and alpha is the plan form divergence parameter. The cumulative area curve A_sum(d) is fit with a degree-2 polynomial whose coefficients yield the trapezoidal parameters (Eq. 12, 14): alpha = -a_2, w_base = -a_1.</p>
 <p>Width for each HAND bin is computed from the quadratic solver on fitted trapezoidal areas (not raw pixel counts): the accumulated fitted area at each bin's lower distance boundary is solved via Eq. 16 (A = alpha * d^2 + w_base * d), and the width evaluated from the trapezoidal model at that distance (Eq. 9). This two-pass approach (first collect raw areas, then compute widths from fitted areas) ensures width varies monotonically from outlet to ridge and matches Swenson's implementation.</p>
 <hr />
@@ -2382,8 +2383,8 @@
 <p>Resolution comparison across 1m, 2m, and 4m on both a 5x5 tile block (25M pixels) and the full 90-tile domain:</p>
 <ul>
 <li><strong>Height and distance:</strong> &gt;0.999 correlation across all resolutions (resolution-insensitive). These are the parameters that drive lateral flow in CTSM.</li>
-<li><strong>Slope:</strong> Systematically underestimated at coarser resolution (~50% lower at 4m in the lowest HAND bin). This is a smoothing artifact --- coarser pixels average away local gradients.</li>
-<li><strong>Area and aspect:</strong> 0.64--0.99 correlations. More catchments (larger domain) produce more stable statistics.</li>
+<li><strong>Slope:</strong> Systematically underestimated at coarser resolution (~50% lower at 4m in the lowest HAND bin). This is a smoothing artifact — coarser pixels average away local gradients.</li>
+<li><strong>Area and aspect:</strong> 0.64-0.99 correlations. More catchments (larger domain) produce more stable statistics.</li>
 </ul>
 <p>No parameter improves with coarser resolution. Computational cost at 1m is not a barrier (17 min wall time, 58 GB peak for the full domain).</p>
 <hr />
@@ -2399,7 +2400,7 @@
 <tbody>
 <tr>
 <td><strong>Kept identical</strong></td>
-<td>Trapezoidal width model (Eq. 9--16), quadratic solver for width, circular mean aspect, DEM conditioning chain (fill pits, fill depressions, resolve flats, D8, accumulation)</td>
+<td>Trapezoidal width model (Eq. 9-16), quadratic solver for width, circular mean aspect, DEM conditioning chain (fill pits, fill depressions, resolve flats, D8, accumulation)</td>
 <td>Core methodology validated against Swenson's published data. MERIT validation: 5 of 6 parameters &gt;0.98 correlation, area fraction 0.92.</td>
 </tr>
 <tr>
@@ -2410,7 +2411,7 @@
 <tr>
 <td><strong>Resolution adaptation</strong></td>
 <td>Restricted-wavelength FFT with min_wavelength=20 m (vs direct peak from full spectrum), blend_edges=50 px (vs 4 px), full 1m processing (vs direct ~90m)</td>
-<td>1m data contains micro-topographic noise invisible at 90m. The Laplacian k² weighting creates an artifact peak at 8 m. Excluding wavelengths &lt;20 m exposes the drainage-scale peak at 285--356 m. Larger edge blending windows compensate for the different geographic footprint per pixel.</td>
+<td>1m data contains micro-topographic noise invisible at 90m. The Laplacian k² weighting creates an artifact peak at 8 m. Excluding wavelengths &lt;20 m exposes the drainage-scale peak at 285-356 m. Larger edge blending windows compensate for the different geographic footprint per pixel.</td>
 </tr>
 <tr>
 <td><strong>OSBS-specific refinements</strong></td>
@@ -2476,7 +2477,7 @@
 <tbody>
 <tr>
 <td><code>nhillcolumns</code></td>
-<td>--</td>
+<td>—</td>
 <td>Number of hillslope columns (25 for OSBS production: 1 lake + 24 land bins)</td>
 </tr>
 <tr>
@@ -2512,7 +2513,7 @@
 <tr>
 <td><code>hillslope_aspect</code></td>
 <td>radians</td>
-<td>Azimuthal orientation (0--2pi, clockwise from N)</td>
+<td>Azimuthal orientation (0-2pi, clockwise from N)</td>
 </tr>
 <tr>
 <td><code>hillslope_bedrock_depth</code></td>
@@ -2536,12 +2537,12 @@
 </tr>
 </tbody>
 </table>
-<p>Production output: <code>hillslopes_osbs_production_c260505.nc</code>. 25 columns (1 lake column + 24 HAND bins on a single aspect). NetCDF structure verified against Swenson reference (<code>hillslopes_osbs_c240416.nc</code>) --- all required variables present with identical names, dtypes, and units; dimension cardinalities differ deliberately (1 vs 4 aspects; 25 vs 16 columns) per the locked column-structure decision.</p>
-<p>Conversions applied: aspect from degrees to radians, longitude to 0--360 deg convention for CTSM.</p>
+<p>Production output: <code>hillslopes_osbs_production_c260505.nc</code>. 25 columns (1 lake column + 24 HAND bins on a single aspect). NetCDF structure verified against Swenson reference (<code>hillslopes_osbs_c240416.nc</code>) — all required variables present with identical names, dtypes, and units; dimension cardinalities differ deliberately (1 vs 4 aspects; 25 vs 16 columns) per the locked column-structure decision.</p>
+<p>Conversions applied: aspect from degrees to radians, longitude to 0-360 deg convention for CTSM.</p>
 <hr />
 <h2 id="current-limitations-and-remaining-work">Current Limitations and Remaining Work<a class="headerlink" href="#current-limitations-and-remaining-work" title="Permanent link">&para;</a></h2>
 <p><strong>Stream channel parameters</strong> are interim estimates derived from Swenson's power-law relationships applied to the computed stream network: depth 1.519 m, width 59.2 m, slope 0.00690 m/m. For comparison, Swenson's global values for this gridcell are: depth 0.269 m, width 4.41 m, slope 0.00233 m/m. The OSBS values are larger because the production domain's denser 1 m stream network sets a larger drainage-area input to the power-law relation. The values are stored in the NetCDF for completeness but are inert under the operative <code>use_hillslope_routing=.false.</code> configuration (see <a href="../lateral-flow-and-routing/">Lateral Flow and Routing</a>); if routing is later enabled, they would require field data or regional empirical relationships (e.g., Leopold curves, MERIT Hydro) to replace the power-law placeholder.</p>
-<p><strong>Bedrock depth</strong> is set to 0. Under CTSM's Uniform soil profile method (used by the osbs2 reference case), a bedrock depth of 0 tells CTSM to use its default soil profile --- it is a no-op. The Swenson reference file also has all zeros. If a non-Uniform soil profile method is used in the future, this parameter would need physical values from subsurface data.</p>
+<p><strong>Bedrock depth</strong> is set to 0. Under CTSM's Uniform soil profile method (used by the osbs2 reference case), a bedrock depth of 0 tells CTSM to use its default soil profile — it is a no-op. The Swenson reference file also has all zeros. If a non-Uniform soil profile method is used in the future, this parameter would need physical values from subsurface data.</p>
 <p><strong>DEM conditioning erases real closed basins for the flow-routing topology.</strong> At 1 m resolution, pits and depressions include real features: sinkholes, wetland depressions, karst dissolution features. Filling them enforces a continuous drainage network but destroys information about closed basins that are central to OSBS hydrology. This is inherent to D8 flow routing and is the same approach Swenson uses at 90 m (where these features are already below the resolution). The depression-fill depth is partially recovered for the column structure via raw-HAND binning, which preserves negative HAND values for pixels inside filled depressions; the flood-zone columns in the production NetCDF (chain indices 2 through 13) are populated from this recovered depth, even though the routing topology treats every filled basin as drained (see <a href="../hand-binning-and-lake-column/">HAND Binning and Lake Column</a>). Alternative approaches that recover closed-basin topology for routing as well (depression-aware routing, synthetic lake bottoms) would require a different hydrological framework and are beyond the scope of the current implementation.</p>
 <p><strong>Phase F deployment is in progress.</strong> The production hillslope file is deployed in the operative case <code>osbs.swenson.spinup</code>, a fresh startup (<code>RUN_TYPE=startup</code>) with 4-stream <code>h0/h1/h2/h3</code> history-output configuration. A 600-yr accelerated AD spinup has completed; analysis is in progress and will be documented in a subsequent pass. The namelist toggles <code>use_hillslope=.true.</code> and <code>use_hillslope_routing=.false.</code> are explained in <a href="../lateral-flow-and-routing/">Lateral Flow and Routing</a>.</p>
 

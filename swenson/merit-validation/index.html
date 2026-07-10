@@ -1933,12 +1933,12 @@
 <tr>
 <td>DEM dimensions</td>
 <td>6000 x 6000 pixels</td>
-<td>--</td>
+<td>—</td>
 </tr>
 <tr>
 <td>Elevation range</td>
 <td>-19.8 to 818.4 m</td>
-<td>--</td>
+<td>—</td>
 </tr>
 <tr>
 <td>Stream coverage</td>
@@ -2082,7 +2082,7 @@
 <td>Width</td>
 <td>0.090</td>
 <td>41.3%</td>
-<td>Poor -- requires investigation</td>
+<td>Poor — requires investigation</td>
 </tr>
 </tbody>
 </table>
@@ -2096,7 +2096,7 @@
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Width bug identified</p>
-<p>During this stage, all elevation bins within each aspect were found to have identical width values -- a clear bug since widths should decrease from outlet toward ridge.</p>
+<p>During this stage, all elevation bins within each aspect were found to have identical width values — a clear bug since widths should decrease from outlet toward ridge.</p>
 </div>
 <hr />
 <h2 id="stage-6-width-bug-fix">Stage 6: Width Bug Fix<a class="headerlink" href="#stage-6-width-bug-fix" title="Permanent link">&para;</a></h2>
@@ -2172,7 +2172,7 @@
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  South-&gt;North: 378,450 (22.4%)
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  East/West: &lt;10 pixels total
 </code></pre></div>
-<p><strong>Root cause:</strong> The custom <code>np.gradient()</code> implementation had a Y-axis sign inversion due to coordinate system convention differences -- <code>np.gradient</code> row ordering does not match geographic north. East and West aspects were unaffected because the X-axis convention was consistent.</p>
+<p><strong>Root cause:</strong> The custom <code>np.gradient()</code> implementation had a Y-axis sign inversion due to coordinate system convention differences — <code>np.gradient</code> row ordering does not match geographic north. East and West aspects were unaffected because the X-axis convention was consistent.</p>
 <p><strong>Fix:</strong> Replaced the custom gradient function with pgrid's <code>slope_aspect()</code> method, which uses the Horn (1981) 8-neighbor stencil with correct geographic coordinate conventions.</p>
 <table>
 <thead>
@@ -2215,7 +2215,7 @@
 </tr>
 </tbody>
 </table>
-<p>Area correlation improved from 0.64 to <strong>0.82</strong> -- a 28% improvement.</p>
+<p>Area correlation improved from 0.64 to <strong>0.82</strong> — a 28% improvement.</p>
 <hr />
 <h2 id="stage-9-accumulation-threshold-sensitivity">Stage 9: Accumulation Threshold Sensitivity<a class="headerlink" href="#stage-9-accumulation-threshold-sensitivity" title="Permanent link">&para;</a></h2>
 <p><strong>Goal:</strong> Determine whether a different accumulation threshold could improve the remaining area discrepancy.</p>
@@ -2295,10 +2295,10 @@
 </tr>
 </tbody>
 </table>
-<p>All six parameters achieved &gt;0.92 correlation with Swenson's published data, with five above 0.98. These values serve as the regression baseline -- the automated regression test confirms them within 0.01 tolerance on each run.</p>
+<p>All six parameters achieved &gt;0.92 correlation with Swenson's published data, with five above 0.98. These values serve as the regression baseline — the automated regression test confirms them within 0.01 tolerance on each run.</p>
 <div class="admonition note">
 <p class="admonition-title">Correlation shifts from Stage 8</p>
-<p>Some individual parameter correlations shifted slightly from the Stage 8 values (e.g., Height 0.9999 -&gt; 0.9979) because the post-audit fixes changed stream network delineation, aspect averaging, and indexing. This is not a regression -- area fraction improved from 0.82 to 0.92, which was the primary target. All other parameters remain above 0.98.</p>
+<p>Some individual parameter correlations shifted slightly from the Stage 8 values (e.g., Height 0.9999 -&gt; 0.9979) because the post-audit fixes changed stream network delineation, aspect averaging, and indexing. This is not a regression — area fraction improved from 0.82 to 0.92, which was the primary target. All other parameters remain above 0.98.</p>
 </div>
 <hr />
 <h2 id="area-discrepancy-analysis">Area Discrepancy Analysis<a class="headerlink" href="#area-discrepancy-analysis" title="Permanent link">&para;</a></h2>
@@ -2441,7 +2441,7 @@
 <tr>
 <td>Stage 8 baseline</td>
 <td>0.82</td>
-<td>--</td>
+<td>—</td>
 <td>N/S aspect fix applied</td>
 </tr>
 <tr>

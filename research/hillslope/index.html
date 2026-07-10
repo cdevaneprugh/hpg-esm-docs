@@ -1183,10 +1183,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#required-history-streams" class="md-nav__link">
+  <a href="#streams-used-at-osbs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Required History Streams
+        Streams used at OSBS
       
     </span>
   </a>
@@ -1949,10 +1949,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#required-history-streams" class="md-nav__link">
+  <a href="#streams-used-at-osbs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Required History Streams
+        Streams used at OSBS
       
     </span>
   </a>
@@ -2160,9 +2160,9 @@
 </code></pre></div>
 <p>Activates <strong>inter-column lateral subsurface flow</strong>. With this toggle on, <code>PerchedLateralFlow</code> and <code>SubsurfaceLateralFlow</code> (<code>SoilHydrologyMod.F90</code>) are dispatched unconditionally from <code>HydrologyDrainageMod.F90</code>; the Darcy gradient between adjacent columns is computed every hydrology step, and the net inflow/outflow is applied to each column's soil-water state. This is what makes a hillslope-mode case differ physically from a stack of independent 1-D soil columns.</p>
 <h3 id="use_hillslope_routing"><code>use_hillslope_routing</code><a class="headerlink" href="#use_hillslope_routing" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">use_hillslope_routing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">use_hillslope_routing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w">    </span><span class="c">! current OSBS production setting</span>
 </code></pre></div>
-<p>Additionally activates the <strong>stream-side machinery</strong>: an internal <code>stream_water_volume</code> ledger, Manning's-equation streamflow at the chain bottom, a stream-channel boundary condition that supersedes MOSART's <code>tdepth_grc</code> at the terminal column, the <code>VOLUMETRIC_STREAMFLOW</code> history field, and the land-to-runoff streamflow export. Routing-on does <strong>not</strong> activate inter-column lateral flow — that already runs under <code>use_hillslope</code> alone.</p>
+<p>When set to <code>.true.</code>, this additionally activates the <strong>stream-side machinery</strong>: an internal <code>stream_water_volume</code> ledger, Manning's-equation streamflow at the chain bottom, a stream-channel boundary condition that supersedes MOSART's <code>tdepth_grc</code> at the terminal column, the <code>VOLUMETRIC_STREAMFLOW</code> history field, and the land-to-runoff streamflow export. Routing-on does <strong>not</strong> activate inter-column lateral flow — that already runs under <code>use_hillslope</code> alone. The operative case <code>osbs.swenson.spinup</code> runs with routing off; see <a href="../../swenson/lateral-flow-and-routing/">Lateral Flow and Routing</a> for the source-code evidence.</p>
 <hr />
 <h2 id="analysis-scripts">Analysis Scripts<a class="headerlink" href="#analysis-scripts" title="Permanent link">&para;</a></h2>
 <p>Analysis scripts are available in <a href="https://github.com/cdevaneprugh/hpg-esm-tools">hpg-esm-tools</a>:</p>
@@ -2177,30 +2177,36 @@
 </code></pre></div>
 <hr />
 <h2 id="history-output">History Output<a class="headerlink" href="#history-output" title="Permanent link">&para;</a></h2>
-<h3 id="required-history-streams">Required History Streams<a class="headerlink" href="#required-history-streams" title="Permanent link">&para;</a></h3>
+<h3 id="streams-used-at-osbs">Streams used at OSBS<a class="headerlink" href="#streams-used-at-osbs" title="Permanent link">&para;</a></h3>
+<p>The OSBS production case <code>osbs.swenson.spinup</code> writes four history streams. These are configuration choices for our hillslope analysis, not a CTSM requirement — hillslope mode runs with any subset of streams.</p>
 <table>
 <thead>
 <tr>
 <th>Stream</th>
 <th>Content</th>
-<th>Use</th>
+<th>Typical use</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>h0</td>
 <td>Gridcell averages</td>
-<td>Standard CLM output</td>
+<td>Standard CLM output, BGC pools, water balance</td>
 </tr>
 <tr>
 <td>h1</td>
 <td>Column-level data</td>
-<td>Hillslope column analysis</td>
+<td>Hillslope-column water-table depth, runoff, soil moisture</td>
 </tr>
 <tr>
 <td>h2</td>
 <td>PFT-level data</td>
-<td>Vegetation analysis</td>
+<td>Vegetation dynamics</td>
+</tr>
+<tr>
+<td>h3</td>
+<td>Additional column-level variables</td>
+<td>Extended per-column spinup diagnostics</td>
 </tr>
 </tbody>
 </table>

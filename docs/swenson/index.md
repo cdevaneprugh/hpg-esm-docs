@@ -82,6 +82,7 @@ The local paths below reflect our team's HiPerGator setup, where `$BLUE = /blue/
 | Swenson's codebase | `$BLUE/Representative_Hillslopes/` | [swensosc/Representative_Hillslopes](https://github.com/swensosc/Representative_Hillslopes) | Reference implementation |
 | Processing scripts | `$BLUE/hpg-esm-tools/swenson/scripts/osbs/` | [hpg-esm-tools/swenson/scripts/osbs/](https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/scripts/osbs) | OSBS pipeline |
 | Validation scripts | `$BLUE/hpg-esm-tools/swenson/scripts/merit_validation/` | [hpg-esm-tools/swenson/scripts/merit_validation/](https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/scripts/merit_validation) | MERIT DEM regression test |
+| NEON forcing fork | `$BLUE/ncar-neon/` | [cdevaneprugh/NCAR-NEON](https://github.com/cdevaneprugh/NCAR-NEON) (branch: `uf-osbs`) | NEON→DATM atmospheric forcing generator (offline fork; AGPL-3.0) |
 
 ---
 

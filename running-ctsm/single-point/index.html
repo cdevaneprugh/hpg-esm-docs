@@ -1908,6 +1908,7 @@
 </tbody>
 </table>
 <p>The <code>default_data_*.cfg</code> files in the fork specify HiPerGator paths.</p>
+<p>For OSBS specifically, a <strong>site-native NEON DATM forcing dataset</strong> is also available (2017-02 → 2025-06), produced by an offline fork of the NCAR-NEON pipeline. It is wired in through a <code>user_nl_datm_streams</code> <code>datafiles</code> override rather than <code>--create-datm</code>. See <a href="../../swenson/neon-forcing/">NEON Atmospheric Forcing</a>; note that <strong>cycled</strong> NEON runs require <code>dtlimit = -1</code> on the stream (see <a href="../troubleshooting/#cycled-datm-forcing-crash-dtlimit">Troubleshooting</a>).</p>
 <h2 id="neon-sites">NEON Sites<a class="headerlink" href="#neon-sites" title="Permanent link">&para;</a></h2>
 <p>For NEON tower sites, CTSM provides pre-configured options:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># List available NEON sites</span>

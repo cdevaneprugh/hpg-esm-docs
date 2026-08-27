@@ -1774,7 +1774,7 @@
 
 
 <h1 id="fork-modifications">Fork Modifications<a class="headerlink" href="#fork-modifications" title="Permanent link">&para;</a></h1>
-<p>This page documents modifications made in our CTSM fork and their rationale.</p>
+<p>This page documents modifications made in our forks and their rationale.</p>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Our forks include HiPerGator-specific changes and bug fixes for building tools:</p>
 <table>
@@ -1796,8 +1796,14 @@
 <td><code>uf-hipergator</code></td>
 <td>Machine config</td>
 </tr>
+<tr>
+<td><a href="https://github.com/cdevaneprugh/NCAR-NEON">cdevaneprugh/NCAR-NEON</a></td>
+<td><code>uf-osbs</code></td>
+<td>NEON→DATM forcing generator (offline fork; AGPL-3.0)</td>
+</tr>
 </tbody>
 </table>
+<p>The first two are CTSM build/machine forks (detailed below). <strong>NCAR-NEON</strong> is a different kind of fork — the NEON atmospheric-forcing generator (<code>flow.api.clm.R</code>), modified to run fully offline on HiPerGator to <em>produce input data</em> rather than build the model. It is AGPL-3.0 (kept separate from the MIT <code>hpg-esm-tools</code> repository for that reason) and is documented in full, with the edit table, at <a href="../../swenson/neon-forcing/">NEON Atmospheric Forcing</a>.</p>
 <h2 id="ctsm-modifications">CTSM Modifications<a class="headerlink" href="#ctsm-modifications" title="Permanent link">&para;</a></h2>
 <h3 id="1-cmakeliststxt---static-vs-shared">1. CMakeLists.txt - STATIC vs SHARED<a class="headerlink" href="#1-cmakeliststxt---static-vs-shared" title="Permanent link">&para;</a></h3>
 <p><strong>File:</strong> <code>tools/mksurfdata_esmf/src/CMakeLists.txt</code></p>

@@ -997,6 +997,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cycled-datm-forcing-crash-dtlimit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cycled DATM Forcing Crash (dtlimit)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1935,6 +1946,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cycled-datm-forcing-crash-dtlimit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cycled DATM Forcing Crash (dtlimit)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2196,6 +2218,11 @@
 - Reduce domain size
 - Increase memory allocation
 - Check for array bounds issues (enable DEBUG=TRUE)</p>
+<h3 id="cycled-datm-forcing-crash-dtlimit">Cycled DATM Forcing Crash (<code>dtlimit</code>)<a class="headerlink" href="#cycled-datm-forcing-crash-dtlimit" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> The model hard-crashes at a forcing/stream boundary — often the final timestep or a cycle wrap — with an error originating in <code>dshr_strdata_mod.F90:1050</code>.</p>
+<p><strong>Cause:</strong> When a DATM stream cycles (<code>taxmode = cycle</code>) and wraps past its last record, the jump in record-time spacing trips CDEPS's default <code>dtlimit = 1.5</code>. This is stock CDEPS behavior, not a data problem — it bites any finite forcing window that is cycled (e.g. the custom NEON OSBS forcing, 2017-02 → 2025-06).</p>
+<p><strong>Solution:</strong> Set <code>dtlimit = -1</code> on the affected stream(s) in <code>user_nl_datm_streams</code> — CDEPS's own escape hatch for streams that do not cycle on January boundaries. Namelist-only, no rebuild.</p>
+<p>See <a href="../../swenson/neon-forcing/">NEON Atmospheric Forcing</a> for the concrete OSBS case.</p>
 <h2 id="debugging-mode">Debugging Mode<a class="headerlink" href="#debugging-mode" title="Permanent link">&para;</a></h2>
 <h3 id="runtime-diagnostics-no-rebuild">Runtime Diagnostics (No Rebuild)<a class="headerlink" href="#runtime-diagnostics-no-rebuild" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>./xmlchange<span class="w"> </span><span class="nv">INFO_DBUG</span><span class="o">=</span><span class="m">2</span>

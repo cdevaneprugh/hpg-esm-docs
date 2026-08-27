@@ -1997,29 +1997,18 @@
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>└── .../
 </code></pre></div>
 <h3 id="current-data-strategy">Current Data Strategy<a class="headerlink" href="#current-data-strategy" title="Permanent link">&para;</a></h3>
-<p>OSBS production cases use globally-subset atmospheric forcing and surface data extracted via CTSM's <code>subset_data</code> script (in <code>tools/site_and_regional/</code>). NEON-native atmospheric forcing is a future direction, not the current path — the pre-built <code>run_tower</code> NEON forcing was tested and found insufficient (per PI, a manual NCAR-NEON pipeline is required; see <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/docs/neon-data-products.md"><code>neon-data-products.md</code></a> in the hpg-esm-tools repo). <code>run_tower</code> remains useful for basic NEON site tests but does not drive OSBS production.</p>
+<p>OSBS production cases currently use globally-subset <strong>CRUNCEPv7</strong> atmospheric forcing and surface data extracted via CTSM's <code>subset_data</code> script (in <code>tools/site_and_regional/</code>). A <strong>site-native NEON forcing dataset</strong> has since been produced (Phase I): a fork of the NCAR-NEON pipeline, run fully offline on HiPerGator, generates the OSBS tower record as 101 monthly DATM files spanning 2017-02 → 2025-06. It is engineering-complete, validated against the pre-built NCAR-NEON v4 product, and available for adoption in production. See <a href="../../swenson/neon-forcing/">NEON Atmospheric Forcing</a> for the full methodology and the <code>dtlimit = -1</code> requirement for cycled runs.</p>
+<p>An earlier report that the pre-built <code>run_tower</code> NEON forcing was "insufficient" was traced to a namelist year-cap, not a data limit — the pre-built product reaches 2024-12. <code>run_tower</code> remains useful for basic NEON site tests, but for OSBS production forcing it is superseded by the offline pipeline above.</p>
 <hr />
 <h2 id="custom-hillslope-data-for-osbs">Custom Hillslope Data for OSBS<a class="headerlink" href="#custom-hillslope-data-for-osbs" title="Permanent link">&para;</a></h2>
-<p>The global Swenson hillslope dataset (~90m source resolution) is too coarse for OSBS. Custom data from 1m NEON LIDAR will provide:</p>
+<p>The global Swenson hillslope dataset (~90 m source resolution) is too coarse for OSBS. Custom hillslope parameters were generated from 1 m NEON LIDAR (DP3.30024.001) using the Swenson &amp; Lawrence (2025) methodology, resolving:</p>
 <ul>
 <li>Actual wetland basin morphology</li>
 <li>Fine-scale drainage network identification</li>
 <li>TAI transition zone resolution</li>
 </ul>
-<p><strong>Expected differences from global data:</strong></p>
-<ul>
-<li>Smaller characteristic length scale (Lc)</li>
-<li>Lower HAND values (meters, not tens of meters)</li>
-<li>Different aspect distribution (may not have 4 distinct hillslopes if flat)</li>
-<li>More accurate TAI representation</li>
-</ul>
-<p><strong>Workflow:</strong></p>
-<ol>
-<li>Download 1m LIDAR DEM from NEON (DP3.30024.001)</li>
-<li>Apply Swenson 2025 methodology using pysheds</li>
-<li>Generate custom hillslope surface data</li>
-<li>Run comparison: global vs custom hillslope parameters</li>
-</ol>
+<p>The finished parameters bear out the contrasts anticipated against the global data: a much smaller characteristic length scale (<strong>Lc = 356 m</strong>), low HAND values (meters, not tens of meters), and a single-aspect structure rather than four distinct hillslopes. The production file <code>hillslopes_osbs_production_c260505.nc</code> (25 columns: 1 lake + 24 land bins) is deployed in the operative spinup case.</p>
+<p>This work is documented in full in the <strong>Swenson Implementation</strong> section — see <a href="../../swenson/">Overview</a>, <a href="../../swenson/osbs-implementation/">Methodology</a>, and <a href="../../swenson/hand-binning-and-lake-column/">HAND Binning and Lake Column</a>.</p>
 <hr />
 <h2 id="reference-cases">Reference Cases<a class="headerlink" href="#reference-cases" title="Permanent link">&para;</a></h2>
 <table>

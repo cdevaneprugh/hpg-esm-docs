@@ -1296,6 +1296,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="neon-forcing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NEON Atmospheric Forcing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1633,10 +1661,10 @@
 <h2 id="phases">Phases<a class="headerlink" href="#phases" title="Permanent link">&para;</a></h2>
 <p>The pipeline was built up incrementally. Early work (December 2025 to January 2026) focused on porting Swenson's <code>pgrid.py</code> to the pysheds fork and reproducing his published MERIT results as a methodology validation, before the phase scheme was introduced. As the OSBS implementation revealed problems that couldn't be solved in a single pass, remaining work was split into discrete phases (A–H) — each addressing a specific blocker. The phases cluster into five groups matching the roadmap in <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/STATUS.md"><code>swenson/STATUS.md</code></a>.</p>
 <p><strong>Pre-phase (2025-12 to 2026-01) — Methodology validation.</strong> Ported Swenson's <code>pgrid.py</code> to the pysheds fork; nine-stage MERIT regression achieved &gt;0.95 correlation on five of six parameters (area fraction later improved from 0.82 to 0.92 in a 2026-02 post-audit).</p>
-<p><strong>Phases A–D (2026-02 to 2026-03) — Pipeline foundations.</strong> A added UTM CRS support to the pysheds fork so it could process OSBS NEON tiles (EPSG:32617) in projected coordinates; 82 unit tests, 0 failures. B confirmed the full 1 m LIDAR could be processed at 64 GB without subsampling (29 GB peak, 6 min for 90 M pixels). C established <strong>Lc = 356 m</strong> via a restricted-wavelength FFT (20 m cutoff), circumventing the k² Laplacian artifact that surfaces at high-resolution DEMs. D rebuilt the pipeline with the A/B/C fixes; three independent audits (equation verification, full pipeline audit, line-by-line divergence audit against Swenson's original code) all cleared.</p>
+<p><strong>Phases A–D (2026-02 to 2026-03) — Pipeline foundations.</strong> A added UTM CRS support to the pysheds fork so it could process OSBS NEON tiles (EPSG:32617) in projected coordinates; 82 unit tests, 0 failures. B confirmed the full 1 m LIDAR could be processed at 64 GB without subsampling (29 GB peak for 90 M pixels). C established <strong>Lc = 356 m</strong> via a restricted-wavelength FFT (20 m cutoff), circumventing the k² Laplacian artifact that surfaces at high-resolution DEMs. D rebuilt the pipeline with the A/B/C fixes; three independent audits (equation verification, full pipeline audit, line-by-line divergence audit against Swenson's original code) all cleared.</p>
 <p><strong>Phases E.5 + E.6 (2026-04 to 2026-05) — Parameter set.</strong> E.5 replaced Swenson's 4-bin equal-area scheme with the 24-bin TAI-focused scheme (12 flood-zone + 12 upland, 0.25 m floor) and locked raw-HAND binning with Q01/Q99 outlier discard; lake column placement at chain index 1 with <code>hill_elev = −6.0 m</code>. E.6 closed ~400 K interior polygon gaps in the rasterized NWI water mask via <code>scipy.ndimage.binary_fill_holes</code>.</p>
-<p><strong>Phases F + G (2026-05 → in progress) — Validate and deploy.</strong> G Stage 1 completed the submerged lake column and released the production NetCDF <code>hillslopes_osbs_production_c260505.nc</code> on 2026-05-05. Phase F consumed that file: a 600-yr accelerated AD spinup with the operative case <code>osbs.swenson.spinup</code> completed 2026-05-14 and was analyzed 2026-05-19. Three verdicts: convergence PASS (<code>drift_50yr = 0.48 %</code>), TAI signal absent (<code>O_SCALAR ≈ 1.0</code>), lake column stable. PI is investigating the O_SCALAR anoxia absence and a bridge-zone water-table anomaly at chain indices 3–6 (see Current Status below).</p>
-<p><strong>Phase H (2026-05 → contingent) — Stream-side coupling.</strong> Track A completed the mesh-mode workaround for CTSM Issue #1432 (see <a href="lateral-flow-and-routing/">Lateral Flow and Routing</a>). Tracks B and C — enabling <code>use_hillslope_routing = .true.</code> — are contingent on the Phase F outcome and may not be pursued; the 2026-05-19 routing-gate source audit established that inter-column lateral flow already runs under <code>use_hillslope = .true.</code> regardless.</p>
+<p><strong>Phases F + G (2026-05, complete) — Validate and deploy.</strong> G Stage 1 completed the submerged lake column and released the production NetCDF <code>hillslopes_osbs_production_c260505.nc</code> on 2026-05-05. Phase F consumed that file: a 600-yr accelerated AD spinup with the operative case <code>osbs.swenson.spinup</code> completed 2026-05-14 and was analyzed 2026-05-19. Three verdicts: convergence PASS (<code>drift_50yr = 0.48 %</code>), TAI signal absent (<code>O_SCALAR ≈ 1.0</code>), lake column stable. The bridge-zone water-table anomaly at chain indices 3–6 was resolved by the PI (2026-08-19); the PI continues to investigate the O_SCALAR anoxia absence (see Current Status below).</p>
+<p><strong>Phase H (2026-05) — Stream-side coupling.</strong> Track A completed the mesh-mode workaround for CTSM Issue #1432 (see <a href="lateral-flow-and-routing/">Lateral Flow and Routing</a>) and remains complete and available. Tracks B and C — enabling <code>use_hillslope_routing = .true.</code> — were retired 2026-08-19 (the PI has the routing/drainage situation handled); the 2026-05-19 routing-gate source audit established that inter-column lateral flow already runs under <code>use_hillslope = .true.</code> regardless.</p>
 <p>Detailed phase records: <a href="https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/phases"><code>swenson/phases/</code></a> in the hpg-esm-tools repo.</p>
 <hr />
 <h2 id="current-status">Current Status<a class="headerlink" href="#current-status" title="Permanent link">&para;</a></h2>
@@ -1647,12 +1675,12 @@
 <li><strong>TAI signal absent</strong> — <code>O_SCALAR ≈ 1.0</code> across the full 25-column × 600-yr array; the expected anoxia depression in decomposition output does not emerge.</li>
 <li><strong>Lake column stable</strong> — max 5.78 m at year 107, drained to 2.5 m by year 600. No runaway accumulation; the Darcy-drain mitigation contemplated in Phase H is not required.</li>
 </ul>
-<p><strong>Production hillslope file is frozen</strong> pending PI investigation of two open scientific questions:</p>
+<p><strong>Production hillslope file was un-frozen 2026-07-15</strong>; the PI is proceeding via soil-value adjustments. Of the two scientific questions Phase F surfaced:</p>
 <ol>
-<li><strong>O_SCALAR anoxia absence</strong> — the TAI carbon-side signature the column structure was designed to resolve is not visible in the current output. Headline issue for the project's central scientific question.</li>
-<li><strong>Bridge-zone anomaly</strong> at chain indices 3–6 (HAND −3 to −1.5 m) — the deepest water tables of any lower-hillslope column, caused by steep Darcy gradients over short distances.</li>
+<li><strong>O_SCALAR anoxia absence</strong> — the TAI carbon-side signature the column structure was designed to resolve is not visible in the current output. Headline issue for the project's central scientific question; still under PI investigation.</li>
+<li><strong>Bridge-zone anomaly</strong> at chain indices 3–6 (HAND −3 to −1.5 m) — the deepest water tables of any lower-hillslope column. <strong>Resolved by the PI (2026-08-19)</strong>; the hillslope drains properly now (the specific fix is not recorded on our side).</li>
 </ol>
-<p>Post-AD continuation <code>osbs.swenson.post-ad</code> (200 yr, completed 2026-05-21) is idle pending the PI investigation. Phase H Tracks B/C (enable <code>use_hillslope_routing</code> for the CTSM-internal stream-water ledger) remain contingent on the Phase F outcome.</p>
+<p>Post-AD continuation <code>osbs.swenson.post-ad</code> (200 yr, completed 2026-05-21) is idle pending the PI investigation. Phase H Tracks B/C (enable <code>use_hillslope_routing</code> for the CTSM-internal stream-water ledger) were retired 2026-08-19.</p>
 <hr />
 <h2 id="tools-and-repositories">Tools and Repositories<a class="headerlink" href="#tools-and-repositories" title="Permanent link">&para;</a></h2>
 <p>The local paths below reflect our team's HiPerGator setup, where <code>$BLUE = /blue/gerber/cdevaneprugh/</code>. They are provided for internal reference — external readers should clone the repositories at right into whatever workspace they prefer.</p>

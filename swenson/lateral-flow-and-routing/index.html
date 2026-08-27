@@ -1380,6 +1380,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../neon-forcing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NEON Atmospheric Forcing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1877,8 +1905,8 @@
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">use_hillslope_routing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
 </code></pre></div>
 <p>with the 2026-05-05 production hillslope file (25 columns: 1 lake + 24 land bins on a single aspect). In this configuration, inter-column lateral subsurface flow is active between all 25 columns of the chain: Darcy gradients redistribute water from upland bins through the flood-zone bins to the lake column, and the terminal-column boundary condition at the lake is supplied by MOSART's <code>tdepth_grc</code> (which under the current DATM + MOSART setup defaults to 0, in effect treating the chain-bottom boundary as an empty stream channel).</p>
-<p>A 600-yr accelerated AD spinup using this configuration has completed (2026-05-14). Analysis is in progress; findings will be documented in a subsequent pass.</p>
-<p>Phase H Tracks B and C would enable <code>use_hillslope_routing = .true.</code> and switch the terminal-column boundary to the internal <code>stream_water_volume</code> ledger. Whether to pursue them depends on what the Phase F analysis shows; the routing-on machinery is built and validated (Track A, below) but is not deployed by default.</p>
+<p>A 600-yr accelerated AD spinup using this configuration completed 2026-05-14 and was analyzed 2026-05-19. Three verdicts: convergence PASS (<code>drift_50yr = 0.48 %</code>), TAI signal absent (<code>O_SCALAR ≈ 1.0</code>), lake column stable.</p>
+<p>Phase H Tracks B and C would enable <code>use_hillslope_routing = .true.</code> and switch the terminal-column boundary to the internal <code>stream_water_volume</code> ledger. They were retired 2026-08-19 — the PI has the routing/drainage situation handled. The routing-on machinery is built and validated (Track A, below) but is not deployed.</p>
 <hr />
 <h2 id="ctsm-issue-1432-and-the-mesh-mode-workaround">CTSM Issue #1432 and the mesh-mode workaround<a class="headerlink" href="#ctsm-issue-1432-and-the-mesh-mode-workaround" title="Permanent link">&para;</a></h2>
 <div class="admonition note">

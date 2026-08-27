@@ -1601,6 +1601,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../neon-forcing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NEON Atmospheric Forcing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2324,15 +2352,15 @@
 <tbody>
 <tr>
 <td>Stream cells</td>
-<td>207,832 (0.23% of domain)</td>
+<td>136,237 (0.15% of domain)</td>
 </tr>
 <tr>
 <td>Network length</td>
-<td>256,519 m</td>
+<td>168,763 m</td>
 </tr>
 <tr>
 <td>Network slope</td>
-<td>0.004755 m/m</td>
+<td>0.006896 m/m</td>
 </tr>
 </tbody>
 </table>
@@ -2352,7 +2380,7 @@
 <p>The pipeline uses two distinct HAND quantities:</p>
 <ul>
 <li><strong>Conditioned HAND</strong> — elevation above the drainage stream measured on the depression-filled DEM. This is the standard pysheds output and what feeds the flow-routing arithmetic, catchment delineation, and stream-network length / slope computation. Range on the production domain: 0-25.2 m, median 2.3 m.</li>
-<li><strong>Raw HAND</strong> — elevation above the drainage stream measured on the original DEM (signed). Equivalent to conditioned HAND minus the local depression-fill depth. Pixels inside filled depressions have raw HAND &lt; 0 — they sit physically below stream level. Range on the production domain (after Q01/Q99 trim): −6.34 m to +17.02 m.</li>
+<li><strong>Raw HAND</strong> — elevation above the drainage stream measured on the original DEM (signed). Equivalent to conditioned HAND minus the local depression-fill depth. Pixels inside filled depressions have raw HAND &lt; 0 — they sit physically below stream level. Range on the production domain (after Q01/Q99 trim): −6.35 m to +17.02 m.</li>
 </ul>
 <p>The split exists because D8 flow routing requires a depression-free DEM (otherwise the algorithm cannot define unambiguous downstream paths), but the physically meaningful elevation for the flood zone is the original-DEM value. Raw HAND drives bin assignment; conditioned HAND drives flow topology. The flood-zone columns in the production NetCDF (chain indices 2 through 13) come from the negative raw-HAND range and would not exist if binning used conditioned HAND. See <a href="../hand-binning-and-lake-column/">HAND Binning and Lake Column</a> for the binning consequences.</p>
 <p>DTND is unaffected by the conditioned-vs-raw distinction: it is a horizontal distance along the flow path, which is the same in either DEM. Production DTND range: 3 m (lake column, half of Bin 1's distance per the dynamic-distance rule) to 353 m (deepest upland bin).</p>
@@ -2366,7 +2394,7 @@
 <h3 id="hand-binning-24-bin-tai-focused-scheme">HAND binning (24-bin TAI-focused scheme)<a class="headerlink" href="#hand-binning-24-bin-tai-focused-scheme" title="Permanent link">&para;</a></h3>
 <p>Equal-area binning on flat terrain crushes the lowest bin to near-zero height (Q25 = 0.00027 m in earlier 4-bin OSBS output), erasing the saturation gradient that defines the terrestrial-aquatic interface. The production OSBS file uses a 24-bin scheme tilted toward the TAI:</p>
 <ul>
-<li>12 flood-zone bins covering HAND from −6.34 m (Q01 of raw HAND) to 0 m, plus 12 upland bins from 0 m to +17.46 m (Q99). Pixels outside the Q01–Q99 envelope are discarded, not clipped — both tails are real terrain (negligible singleton mass), and clipping into sentinel bins would over-weight the deepest pits and ridge extrema in gridcell aggregation.</li>
+<li>12 flood-zone bins covering HAND from −6.35 m (Q01 of raw HAND) to 0 m, plus 12 upland bins from 0 m to +17.02 m (Q99). Pixels outside the Q01–Q99 envelope are discarded, not clipped — both tails are real terrain (negligible singleton mass), and clipping into sentinel bins would over-weight the deepest pits and ridge extrema in gridcell aggregation.</li>
 <li>A 0.25 m floor on bin width, set by the LIDAR 2σ vertical noise budget (NEON DP3.30024.001 stated accuracy 0.10 m; OSBS empirical residual standard deviation 0.058 m; 2σ ≈ 0.116 m, rounded up for headroom). Bins narrower than 0.25 m would partition pixels into adjacent classes by noise, not by terrain.</li>
 <li>Geometric width progression outward from the TAI core: 0.25 m → 0.5 m → 1.0 m → 2.0 m → ~7 m (ridge sentinel). The smoothness criterion is per-meter pixel density, not per-bin area — the density curve is monotonic toward the peak from each side, which is the physically meaningful aggregation invariant.</li>
 </ul>
@@ -2378,15 +2406,15 @@
 <p>Width for each HAND bin is computed from the quadratic solver on fitted trapezoidal areas (not raw pixel counts): the accumulated fitted area at each bin's lower distance boundary is solved via Eq. 16 (A = alpha * d^2 + w_base * d), and the width evaluated from the trapezoidal model at that distance (Eq. 9). This two-pass approach (first collect raw areas, then compute widths from fitted areas) ensures width varies monotonically from outlet to ridge and matches Swenson's implementation.</p>
 <hr />
 <h2 id="processing-resolution">Processing Resolution<a class="headerlink" href="#processing-resolution" title="Permanent link">&para;</a></h2>
-<p>Full 1m resolution, no subsampling. The production domain (90M pixels) processes in 22.6 minutes at ~29 GB peak memory on a single HPC node with 64 GB allocation.</p>
-<p>Earlier work subsampled to 4m after an OOM failure at 64 GB. Phase B testing demonstrated this was unnecessary: the OOM occurred on a nodata-contaminated mosaic (189M pixels, 37.5% nodata) where tile gap fill created artificial flat regions that inflated <code>resolve_flats</code> memory. The contiguous production domain (90M pixels, 0% nodata) completes at 29 GB peak.</p>
+<p>Full 1m resolution, no subsampling. The production run that built <code>hillslopes_osbs_production_c260505.nc</code> completed in ~13 minutes (<code>production_summary.txt</code>, 803 s) on a single HPC node with a 64 GB allocation. Phase B benchmarking put the full-domain peak memory at ~29 GB — comfortably under the 64 GB ceiling — so full-resolution processing is feasible on a standard node and does not require subsampling.</p>
+<p>Earlier work subsampled to 4m after an OOM failure at 64 GB. Phase B testing demonstrated this was unnecessary: the OOM occurred on a nodata-contaminated mosaic (189M pixels, 37.5% nodata) where tile gap fill created artificial flat regions that inflated <code>resolve_flats</code> memory. The contiguous production domain (90M pixels, 0% nodata) processes within the 64 GB allocation without incident.</p>
 <p>Resolution comparison across 1m, 2m, and 4m on both a 5x5 tile block (25M pixels) and the full 90-tile domain:</p>
 <ul>
 <li><strong>Height and distance:</strong> &gt;0.999 correlation across all resolutions (resolution-insensitive). These are the parameters that drive lateral flow in CTSM.</li>
 <li><strong>Slope:</strong> Systematically underestimated at coarser resolution (~50% lower at 4m in the lowest HAND bin). This is a smoothing artifact — coarser pixels average away local gradients.</li>
 <li><strong>Area and aspect:</strong> 0.64-0.99 correlations. More catchments (larger domain) produce more stable statistics.</li>
 </ul>
-<p>No parameter improves with coarser resolution. Computational cost at 1m is not a barrier (17 min wall time, 58 GB peak for the full domain).</p>
+<p>No parameter improves with coarser resolution, so full 1m resolution is retained for production.</p>
 <hr />
 <h2 id="adaptations-from-swenson">Adaptations from Swenson<a class="headerlink" href="#adaptations-from-swenson" title="Permanent link">&para;</a></h2>
 <table>
@@ -2425,7 +2453,7 @@
 </tr>
 <tr>
 <td><strong>Known limitations</strong></td>
-<td>Stream depth (0.141 m) and width (1.7 m) from interim power law, bedrock depth set to 0, depression filling erases real closed basins</td>
+<td>Stream depth (1.519 m) and width (59.2 m) from interim power law, bedrock depth set to 0, depression filling erases real closed basins</td>
 <td>Stream parameters are inert under the operative routing-off configuration; if <code>use_hillslope_routing</code> is later enabled, they would require field data or regional empirical relationships. Bedrock depth of 0 is a no-op under CTSM's Uniform soil profile method. Depression filling is inherent to D8 routing.</td>
 </tr>
 </tbody>
@@ -2544,7 +2572,7 @@
 <p><strong>Stream channel parameters</strong> are interim estimates derived from Swenson's power-law relationships applied to the computed stream network: depth 1.519 m, width 59.2 m, slope 0.00690 m/m. For comparison, Swenson's global values for this gridcell are: depth 0.269 m, width 4.41 m, slope 0.00233 m/m. The OSBS values are larger because the production domain's denser 1 m stream network sets a larger drainage-area input to the power-law relation. The values are stored in the NetCDF for completeness but are inert under the operative <code>use_hillslope_routing=.false.</code> configuration (see <a href="../lateral-flow-and-routing/">Lateral Flow and Routing</a>); if routing is later enabled, they would require field data or regional empirical relationships (e.g., Leopold curves, MERIT Hydro) to replace the power-law placeholder.</p>
 <p><strong>Bedrock depth</strong> is set to 0. Under CTSM's Uniform soil profile method (used by the osbs2 reference case), a bedrock depth of 0 tells CTSM to use its default soil profile — it is a no-op. The Swenson reference file also has all zeros. If a non-Uniform soil profile method is used in the future, this parameter would need physical values from subsurface data.</p>
 <p><strong>DEM conditioning erases real closed basins for the flow-routing topology.</strong> At 1 m resolution, pits and depressions include real features: sinkholes, wetland depressions, karst dissolution features. Filling them enforces a continuous drainage network but destroys information about closed basins that are central to OSBS hydrology. This is inherent to D8 flow routing and is the same approach Swenson uses at 90 m (where these features are already below the resolution). The depression-fill depth is partially recovered for the column structure via raw-HAND binning, which preserves negative HAND values for pixels inside filled depressions; the flood-zone columns in the production NetCDF (chain indices 2 through 13) are populated from this recovered depth, even though the routing topology treats every filled basin as drained (see <a href="../hand-binning-and-lake-column/">HAND Binning and Lake Column</a>). Alternative approaches that recover closed-basin topology for routing as well (depression-aware routing, synthetic lake bottoms) would require a different hydrological framework and are beyond the scope of the current implementation.</p>
-<p><strong>Phase F deployment is in progress.</strong> The production hillslope file is deployed in the operative case <code>osbs.swenson.spinup</code>, a fresh startup (<code>RUN_TYPE=startup</code>) with 4-stream <code>h0/h1/h2/h3</code> history-output configuration. A 600-yr accelerated AD spinup has completed; analysis is in progress and will be documented in a subsequent pass. The namelist toggles <code>use_hillslope=.true.</code> and <code>use_hillslope_routing=.false.</code> are explained in <a href="../lateral-flow-and-routing/">Lateral Flow and Routing</a>.</p>
+<p><strong>Phase F is complete.</strong> The production hillslope file is deployed in the operative case <code>osbs.swenson.spinup</code>, a fresh startup (<code>RUN_TYPE=startup</code>) with 4-stream <code>h0/h1/h2/h3</code> history-output configuration. The 600-yr accelerated AD spinup completed 2026-05-14 and was analyzed 2026-05-19: convergence PASS (<code>drift_50yr = 0.48 %</code>), TAI signal absent (<code>O_SCALAR ≈ 1.0</code>), lake column stable. The namelist toggles <code>use_hillslope=.true.</code> and <code>use_hillslope_routing=.false.</code> are explained in <a href="../lateral-flow-and-routing/">Lateral Flow and Routing</a>.</p>
 
 
 

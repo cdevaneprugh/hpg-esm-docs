@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://cdevaneprugh.github.io/hpg-esm-docs/swenson/hand-binning-and-lake-column/">
+        <link rel="canonical" href="https://cdevaneprugh.github.io/hpg-esm-docs/swenson/neon-forcing/">
       
       
-        <link rel="prev" href="../osbs-implementation/">
+        <link rel="prev" href="../dataset-comparison/">
       
       
-        <link rel="next" href="../lateral-flow-and-routing/">
+        <link rel="next" href="../../reference/modifications/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>HAND Binning and Lake Column - CTSM on HiPerGator</title>
+        <title>NEON Atmospheric Forcing - CTSM on HiPerGator</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#hand-binning-and-lake-column" class="md-skip">
+        <a href="#neon-atmospheric-forcing" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HAND Binning and Lake Column
+              NEON Atmospheric Forcing
             
           </span>
         </div>
@@ -1092,37 +1092,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    HAND Binning and Lake Column
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../hand-binning-and-lake-column/" class="md-nav__link">
         
   
   
@@ -1138,187 +1111,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#motivation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Motivation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#24-bin-tai-focused-scheme" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        24-bin TAI-focused scheme
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="24-bin TAI-focused scheme">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-025-m-as-the-bin-width-floor" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why 0.25 m as the bin-width floor
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#why-we-accept-non-monotonic-bin-areas" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why we accept non-monotonic bin areas
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#outlier-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Outlier handling
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#water-masking-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Water masking strategy
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Water masking strategy">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nwi-mask-hole-fill" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        NWI mask hole-fill
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lake-column-construction" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Lake column construction
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#per-rep-rescaling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Per-rep rescaling
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#spillheight-and-the-sourcemod-retirement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SPILLHEIGHT and the SourceMod retirement
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="SPILLHEIGHT and the SourceMod retirement">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-raw-hand-binning-superseded-this" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why raw-HAND binning superseded this
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pi-decision-2026-04-30" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PI decision (2026-04-30)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        References
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1384,10 +1176,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../neon-forcing/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NEON Atmospheric Forcing
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1403,6 +1222,159 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#motivation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motivation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#forcing-generator-a-fork-of-ncar-neon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forcing generator: a fork of NCAR-NEON
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Forcing generator: a fork of NCAR-NEON">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-offline-conversion-edits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The offline-conversion edits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#computational-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Computational environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#forcing-generation-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forcing-generation procedure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Forcing-generation procedure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-2017-precipitation-remediation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 2017 precipitation remediation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output dataset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reproducibility-and-availability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reproducibility and availability
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1597,33 +1569,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#24-bin-tai-focused-scheme" class="md-nav__link">
+  <a href="#source-data" class="md-nav__link">
     <span class="md-ellipsis">
       
-        24-bin TAI-focused scheme
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="24-bin TAI-focused scheme">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-025-m-as-the-bin-width-floor" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why 0.25 m as the bin-width floor
+        Source data
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#why-we-accept-non-monotonic-bin-areas" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#forcing-generator-a-fork-of-ncar-neon" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why we accept non-monotonic bin areas
+        Forcing generator: a fork of NCAR-NEON
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Forcing generator: a fork of NCAR-NEON">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-offline-conversion-edits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The offline-conversion edits
       
     </span>
   </a>
@@ -1636,10 +1608,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#outlier-handling" class="md-nav__link">
+  <a href="#computational-environment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Outlier handling
+        Computational environment
       
     </span>
   </a>
@@ -1647,22 +1619,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#water-masking-strategy" class="md-nav__link">
+  <a href="#forcing-generation-procedure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Water masking strategy
+        Forcing-generation procedure
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Water masking strategy">
+    <nav class="md-nav" aria-label="Forcing-generation procedure">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#nwi-mask-hole-fill" class="md-nav__link">
+  <a href="#the-2017-precipitation-remediation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        NWI mask hole-fill
+        The 2017 precipitation remediation
       
     </span>
   </a>
@@ -1675,10 +1647,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#lake-column-construction" class="md-nav__link">
+  <a href="#output-dataset" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lake column construction
+        Output dataset
       
     </span>
   </a>
@@ -1686,10 +1658,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#per-rep-rescaling" class="md-nav__link">
+  <a href="#validation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Per-rep rescaling
+        Validation
       
     </span>
   </a>
@@ -1697,49 +1669,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#spillheight-and-the-sourcemod-retirement" class="md-nav__link">
+  <a href="#reproducibility-and-availability" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SPILLHEIGHT and the SourceMod retirement
+        Reproducibility and availability
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="SPILLHEIGHT and the SourceMod retirement">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-raw-hand-binning-superseded-this" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why raw-HAND binning superseded this
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pi-decision-2026-04-30" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PI decision (2026-04-30)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
+  <a href="#cross-references" class="md-nav__link">
     <span class="md-ellipsis">
       
-        References
+        Cross-References
       
     </span>
   </a>
@@ -1763,213 +1707,300 @@
 
 
 
-<h1 id="hand-binning-and-lake-column">HAND Binning and Lake Column<a class="headerlink" href="#hand-binning-and-lake-column" title="Permanent link">&para;</a></h1>
-<p><em>The OSBS production hillslope file departs from the Swenson default 4-aspect × 4-elevation-bin structure in two coupled ways: a 24-bin TAI-focused HAND scheme replaces the 4-bin equal-area partition, and a dedicated lake column at chain index 1 represents aggregated NWI open water. The two changes are documented together because the bin scheme and the lake column are co-designed — the lake anchors the bottom of the chain and the lowest land bin sits just above it.</em></p>
+<h1 id="neon-atmospheric-forcing">NEON Atmospheric Forcing<a class="headerlink" href="#neon-atmospheric-forcing" title="Permanent link">&para;</a></h1>
+<p><em>Site-native NEON flux-tower meteorology for OSBS, generated offline on HiPerGator to replace CRUNCEPv7 in the CTSM atmospheric forcing stream.</em></p>
 <hr />
 <h2 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h2>
-<p>The Swenson global methodology bins HAND so each elevation bin holds approximately the same number of pixels per aspect, with a mandatory 2 m upper bound on the lowest bin. On flat terrain this produces near-zero lowest-bin mean HAND — earlier OSBS runs at 4 bins × 4 aspects gave Q25 = 0.00027 m for the lowest bin, because 25 % of the production-domain pixels have HAND below LIDAR noise. A bin whose mean elevation sits at the LIDAR noise floor cannot resolve the saturation gradient that defines the terrestrial-aquatic interface.</p>
-<p>The 24-bin scheme addresses this by tilting bin resolution toward the TAI and lifting the bin-width floor to the LIDAR vertical noise budget.</p>
-<p><img alt="HAND map of the production domain (R4C5-R12C14, 9 × 10 km, 1 m). Dark purple is low HAND (near streams and flood-zone interiors); bright yellow is upland ridge; white pixels are NWI open water excluded from land bins. The TAI is the colour band where the saturation gradient is steepest — the 24-bin scheme concentrates bin resolution there." src="../images/production_hand_map.png" /></p>
-<hr />
-<h2 id="24-bin-tai-focused-scheme">24-bin TAI-focused scheme<a class="headerlink" href="#24-bin-tai-focused-scheme" title="Permanent link">&para;</a></h2>
-<p>The production scheme uses 24 bins total: 12 flood-zone bins (HAND &lt; 0 m, set by the depression-filled reference DEM) plus 12 upland bins (HAND ≥ 0 m). The width allocation tilts toward the TAI core:</p>
+<p>The operative OSBS case (<code>osbs.swenson.spinup</code>) is driven by <strong>CRUNCEPv7</strong> — a 0.5° global reanalysis interpolated to the OSBS point. It does not reflect site meteorology and discards the on-site NEON flux-tower record, including the tower's <em>measured</em> incident longwave (which CRUNCEP supplies by parameterization). Because the terrestrial-aquatic-interface hydrology this project targets is sensitive to the local water and energy balance, site-native forcing is a meaningful input-quality upgrade — independent of any hillslope-parameter change.</p>
+<p>Two NEON-derived forcing products exist for OSBS:</p>
 <table>
 <thead>
 <tr>
-<th>Bin range</th>
-<th>Width</th>
-<th>Count</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Deep tail sentinel</td>
-<td>2.35 m</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Deeper flood zone</td>
-<td>1.0 m</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Deep flood-zone TAI</td>
-<td>0.5 m</td>
-<td>2</td>
-</tr>
-<tr>
-<td><strong>TAI core (flood-zone + stream margin)</strong></td>
-<td><strong>0.25 m</strong></td>
-<td><strong>10</strong></td>
-</tr>
-<tr>
-<td>Inner upland TAI</td>
-<td>0.5 m</td>
-<td>3</td>
-</tr>
-<tr>
-<td>Mid upland</td>
-<td>1.0 m</td>
-<td>4</td>
-</tr>
-<tr>
-<td>Mid-to-ridge</td>
-<td>2.0 m</td>
-<td>2</td>
-</tr>
-<tr>
-<td>Ridge sentinel</td>
-<td>~7 m</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<p>The geometric width progression outward from the TAI core (0.25 m → 0.5 m → 1.0 m → 2.0 m → ~7 m) tracks the attenuation of TAI process gradients into the terrestrial realm: saturation, biogeochemistry, and vegetation transitions are sharpest near the wet/dry boundary and smooth into nominal upland tens of meters away.</p>
-<h3 id="why-025-m-as-the-bin-width-floor">Why 0.25 m as the bin-width floor<a class="headerlink" href="#why-025-m-as-the-bin-width-floor" title="Permanent link">&para;</a></h3>
-<p>NEON DP3.30024.001 (1 m raster LIDAR) has a stated vertical accuracy of 0.10 m. The empirical residual standard deviation at OSBS, measured against benchmark check points, is 0.058 m. Taking 2σ as the threshold below which two HAND values are not reliably distinguishable: 2σ ≈ 0.116 m, rounded to 0.25 m for headroom (accounts for systematic spatial trends in the residuals). Bins narrower than 0.25 m would partition pixels into adjacent classes by LIDAR noise rather than by terrain.</p>
-<h3 id="why-we-accept-non-monotonic-bin-areas">Why we accept non-monotonic bin areas<a class="headerlink" href="#why-we-accept-non-monotonic-bin-areas" title="Permanent link">&para;</a></h3>
-<p>Swenson's bin algorithm targets approximately equal per-bin areas; CTSM imposes no monotonicity requirement on <code>hill_area</code>. The 24-bin scheme allows bin areas to vary with terrain heterogeneity. The smoothness criterion used instead is <strong>per-meter pixel density</strong> (area ÷ bin width): the density curve rises smoothly to a peak and tapers, tracking the underlying HAND distribution. The production scheme's per-meter density rises from 0.62 km²/m at the deepest sentinel to a peak of 13.9 km²/m at bin 13 (just above stream level, where OSBS pixel density peaks) and tapers smoothly to 0.92 km²/m at the ridge sentinel. The density curve is monotonic toward the peak from each side — the physically meaningful invariant for gridcell aggregation.</p>
-<hr />
-<h2 id="outlier-handling">Outlier handling<a class="headerlink" href="#outlier-handling" title="Permanent link">&para;</a></h2>
-<p>Q01 (raw HAND) = −6.35 m and Q99 = +17.02 m define the binning envelope for the production domain. Pixels outside this envelope are <strong>discarded</strong>, not clipped into sentinel bins, for two reasons:</p>
-<ol>
-<li>Both tails are real terrain. Outlier diagnostic on the production domain (2026-05-01) shows the sharpest density breaks at Q01 (33.5× density step) and Q99 (34.8×), with negligible singleton mass beyond. The tails are not isolated noise pixels; they are continuous topography that would inflate sentinel-bin weights if retained.</li>
-<li>Clipping into sentinel bins would force the deepest pit and ridge extrema to share a bin with a much larger area of moderately deep / high terrain, distorting both the mean HAND and the gridcell-aggregated mass-and-energy balance for those bins.</li>
-</ol>
-<p>The discard removes ~1.5 M pixels (~2 % of the production-domain land area).</p>
-<p>Binning is performed on <strong>raw HAND</strong> (elevation minus pit-filled DEM, signed) rather than conditioned HAND (clipped to ≥ 0). Raw HAND preserves the depth of pixels in filled depressions, which is the physically relevant quantity for the flood-zone bins; conditioned HAND would force every below-stream pixel to HAND = 0, collapsing the FZ side of the chain.</p>
-<hr />
-<h2 id="water-masking-strategy">Water masking strategy<a class="headerlink" href="#water-masking-strategy" title="Permanent link">&para;</a></h2>
-<p>Two water masks are computed and used at different stages:</p>
-<table>
-<thead>
-<tr>
-<th>Mask</th>
+<th>Product</th>
 <th>Coverage</th>
-<th>Used for</th>
+<th>Provenance</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Narrow stream mask</strong></td>
-<td>Pixels above the accumulation threshold (<code>A_thresh = 0.5 × Lc² = 63,362</code> cells at 1 m)</td>
-<td>Catchment delineation, flow-accumulation arithmetic, network density</td>
+<td><strong>Pre-built NCAR-NEON v4</strong></td>
+<td>2018-01 → 2024-12 (84 files)</td>
+<td>Generated on NEON's cloud by the standard NCAR-NEON pipeline; adopted here as the <strong>reference</strong> the custom set is validated against</td>
 </tr>
 <tr>
-<td><strong>Wide water mask</strong></td>
-<td>Stream mask ∪ NWI open-water polygons (Lacustrine + Palustrine Unconsolidated Bottom)</td>
-<td>Exclusion from HAND binning and DTND statistics; aggregated into the lake column</td>
+<td><strong>Custom full-record set</strong></td>
+<td>2017-02 → 2025-06 (101 files)</td>
+<td>Generated <strong>offline on HiPerGator</strong> by a fork of the NCAR-NEON pipeline (this page); a strict <strong>superset of v4</strong></td>
 </tr>
 </tbody>
 </table>
-<p>The wide mask ensures that lake-surface pixels do not contaminate land-bin HAND statistics: an NWI-identified lake has water-surface elevation that, in HAND terms, is whatever the depression-fill algorithm filled the lake to (usually a uniform fill level). Counting those pixels into land bins would skew the lowest land bins toward zero HAND, undoing the TAI signal the 24-bin scheme is designed to resolve.</p>
-<h3 id="nwi-mask-hole-fill">NWI mask hole-fill<a class="headerlink" href="#nwi-mask-hole-fill" title="Permanent link">&para;</a></h3>
-<p>Raw NWI polygons (downloaded from the NWI v3.2 OSBS subset) miss interior holes that the 1 m LIDAR confirms are contiguous open water: small islands inside larger features, sub-polygon gaps where the digitizer missed thin shore strips, and mis-aligned edges. A <code>scipy.ndimage.binary_fill_holes</code> pass over the rasterized NWI mask closes approximately 400,000 pixels of these holes. The hole-fill is applied before the mask is used downstream (wide-mask construction, lake-area aggregation, perimeter computation).</p>
+<div class="admonition note">
+<p class="admonition-title">Adoption status</p>
+<p>The custom forcing is <strong>engineering-complete and validated</strong>, and is <em>offered</em> for the production respin. That adoption is a PI-gated decision; until it is made, the operative case remains CRUNCEP-driven. This page documents how the forcing was produced, not a change to the running configuration.</p>
+</div>
 <hr />
-<h2 id="lake-column-construction">Lake column construction<a class="headerlink" href="#lake-column-construction" title="Permanent link">&para;</a></h2>
-<p>The OSBS production file places a dedicated lake column at chain index 1, shifting land columns to indices 2-25. The lake column represents the aggregate of all NWI open water in the production domain as a single submerged element.</p>
+<h2 id="source-data">Source data<a class="headerlink" href="#source-data" title="Permanent link">&para;</a></h2>
+<p>Forcing is built from the OSBS NEON tower (D03) instrument products, <strong>RELEASE-2026</strong> (the released cut ends 2025-06). CTSM's DATM requires seven meteorological drivers; the NCAR-NEON pipeline draws each from a specific NEON data product, plus two radiation products used only as gap-fill/partitioning inputs:</p>
 <table>
 <thead>
 <tr>
-<th>Field</th>
-<th>Value</th>
+<th>DATM variable</th>
+<th>NEON product</th>
+<th>OSBS start</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Air temperature (TBOT)</td>
+<td>DP1.00003.001 — Triple Aspirated Air Temperature (tower top)</td>
+<td>2014-08</td>
+</tr>
+<tr>
+<td>Precipitation (PRECTmms)</td>
+<td>DP1.00044.001 — Weighing Gauge (primary)</td>
+<td>2016-09</td>
+</tr>
+<tr>
+<td>Precipitation, secondary</td>
+<td>DP1.00045.001 — Tipping Bucket</td>
+<td>2016-08</td>
+</tr>
+<tr>
+<td>Shortwave + longwave (FSDS, FLDS)</td>
+<td>DP1.00023.001 — Net Radiometer</td>
+<td>2014-08</td>
+</tr>
+<tr>
+<td>Pressure (PSRF)</td>
+<td>DP1.00004.001 — Barometric Pressure</td>
+<td>2014-08</td>
+</tr>
+<tr>
+<td>Wind (WIND)</td>
+<td>DP1.00001.001 — 2D Wind Speed &amp; Direction</td>
+<td>2014-08</td>
+</tr>
+<tr>
+<td>Relative humidity (RH)</td>
+<td>DP1.00098.001 — Relative Humidity</td>
+<td>2015-06</td>
+</tr>
+<tr>
+<td><em>(gap-fill inputs)</em></td>
+<td>DP1.00024.001 (PAR), DP1.00014.001 (direct/diffuse SW)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Carbon dioxide is <strong>not</strong> a forcing-file variable — CTSM supplies CO₂ through a separate mechanism (<code>CCSM_CO2_PPMV</code> or a <code>co2tseries</code> stream). NEON's bundled eddy-covariance product (DP4.00200.001, from 2017-02) is a validation target, not an input; its role here is discussed under <a href="#the-offline-conversion-edits">the CO₂-partition edit</a> and <a href="#validation">Validation</a>.</p>
+<p>The underlying pipeline is NCAR-NEON (Wieder et al., 2023, <em>Geosci. Model Dev.</em> 16, 5979–6000; DOI <a href="https://doi.org/10.5194/gmd-16-5979-2023">10.5194/gmd-16-5979-2023</a>), which pulls raw tower data through the NEON API, gap-fills by marginal distribution sampling (Reichstein et al., 2005) as implemented in <strong>REddyProc</strong> (Wutzler et al., 2018, <em>Biogeosciences</em>), and writes CTSM-DATM NetCDF.</p>
+<hr />
+<h2 id="forcing-generator-a-fork-of-ncar-neon">Forcing generator: a fork of NCAR-NEON<a class="headerlink" href="#forcing-generator-a-fork-of-ncar-neon" title="Permanent link">&para;</a></h2>
+<p>The forcing is produced by NCAR-NEON's <code>flow.api.clm.R</code>, <strong>modified to run fully offline on HiPerGator against a pre-staged raw archive</strong>. The modifications live in a fork rather than a vendored copy for a licensing reason: NCAR-NEON (and its <code>NEON.gf</code> gap-filling package) are licensed <strong>AGPL-3.0</strong>, while <code>hpg-esm-tools</code> is MIT. Copyleft is one-directional, so the modified generator is kept in a separate AGPL fork and referenced, not copied into the MIT repository.</p>
+<ul>
+<li><strong>Fork:</strong> <a href="https://github.com/cdevaneprugh/NCAR-NEON"><code>cdevaneprugh/NCAR-NEON</code></a>, branch <code>uf-osbs</code></li>
+<li><strong>Base:</strong> two commits ahead of upstream <code>NEONScience/NCAR-NEON</code> at merge-base <code>43a0cf4</code> (<code>2d30ebb</code> mechanical offline plumbing; <code>07786dd</code> offline data path, tested)</li>
+<li><strong>Change footprint:</strong> <code>TowerTools_ForcingData/flow.api.clm.R</code>, +77 / −31 lines</li>
+</ul>
+<p>Upstream, the script assumes an interactive, live-network run on the author's workstation that uploads its output to a Google Cloud Storage bucket. Four properties had to change for an unattended HiPerGator run: it had to (a) read from a <strong>read-only shared archive</strong> of pre-downloaded products, (b) write <strong>locally</strong>, (c) generate <strong>sub-year windows</strong> so a multi-year record could be built in chunks, and (d) survive OSBS's <strong>missing eddy-covariance CO₂ flux</strong>.</p>
+<h3 id="the-offline-conversion-edits">The offline-conversion edits<a class="headerlink" href="#the-offline-conversion-edits" title="Permanent link">&para;</a></h3>
+<p>Every modification, as a reproducibility record:</p>
+<table>
+<thead>
+<tr>
+<th>Edit</th>
+<th>Change</th>
 <th>Rationale</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>column_index</code></td>
-<td>1</td>
-<td>Lake at chain bottom. Preserves the PI's SourceMod loop structure (terminal-column gate at <code>cold == ispval</code>) by keeping the lake first in the SurfaceWaterMod iteration.</td>
+<td>Fail-fast deps</td>
+<td><code>packReq</code> auto-install loop → <code>requireNamespace()</code>-or-<code>stop()</code></td>
+<td>The <code>neon-forcing</code> environment is complete; never trigger a live-CRAN install mid-run</td>
 </tr>
 <tr>
-<td><code>downhill_column_index</code></td>
-<td>-9999</td>
-<td>Terminal column (drains to stream channel under routing-on; bounded by <code>tdepth_grc</code> under routing-off).</td>
+<td>Local output (<strong>M</strong>)</td>
+<td><code>MethOut</code> default <code>[2]</code> (GCS) → <code>[1]</code> (local)</td>
+<td>Upstream uploads to a Google Cloud Storage bucket needing a credential we lack; write to disk instead</td>
 </tr>
 <tr>
-<td><code>hillslope_index</code></td>
-<td>1</td>
-<td>Same single aspect as the 24 land bins.</td>
+<td>Offline switch</td>
+<td>added <code>doDnld &lt;- FALSE</code></td>
+<td>Master gate — every network fetch and cleanup below is guarded by this flag</td>
 </tr>
 <tr>
-<td><code>hill_elev</code></td>
-<td>−6.0 m</td>
-<td>Chain-bookkeeping value. Set 0.87 m below the deepest land bin's mean (−5.13 m, bin 1 of the production output) to keep the column chain monotonic in elevation. <strong>Does not represent a physical lake bottom</strong> — empirical lake bathymetry from NWI digitizing and Lee 2023 spill-stage data is far shallower (NWI mean ~−2.5 m, Lee/pipeline spill 2.6-3.3 m), but the deepest land bin's HAND (−5.13 m) is the binding constraint on monotonicity. PI direction (2026-05-04): tuning the lake elevation toward a physical lake depth is deferred to model-output review; the chain-integrity constraint comes first.</td>
+<td>Archive path (<strong>D</strong>)</td>
+<td><code>DirDnld</code> <code>/home/ddurden/…</code> → <code>/blue/gerber/earth_models/neon/raw</code></td>
+<td>Repoint from the author's home directory to the shared OSBS raw archive</td>
 </tr>
 <tr>
-<td><code>hill_distance</code></td>
-<td>0.5 × Bin 1 distance, computed dynamically per rep</td>
-<td>The inter-column Darcy gradient computation in <code>SoilHydrologyMod.F90</code> divides by <code>col%hill_distance</code>. The denominator <code>d(Bin1) − d(Lake)</code> must stay positive. Bin 1's trap-fit DTND at OSBS is small (~3 m), so a static lake distance of ~5 m would invert the gradient sign for some reps. Setting the lake distance to half of Bin 1's distance per rep guarantees positivity by construction.</td>
+<td>Working-copy isolation (<strong>C</strong>)</td>
+<td>copy staged zips to a per-session <code>tempdir()</code>, repoint <code>DirDnld</code> there</td>
+<td><code>stackByTable</code>/<code>stackEddy</code> mutate — and delete — their input zips; the read-only shared archive must never be stacked in place</td>
 </tr>
 <tr>
-<td><code>hill_area</code></td>
-<td>Σ(water_mask × pixel_area) ≈ 11.08 km² (11,082,394 px; rescaled per rep to ≈ 0.021 km²)</td>
-<td>Total NWI-masked water area in the production domain after hole-fill. The <code>binary_fill_holes</code> step adds ~400,000 interior pixels to the 10.68 km² pre-fill mask, giving 11.08 km². Production domain has 103 NWI water features.</td>
+<td>Guarded EC download (<strong>G</strong>)</td>
+<td>wrap the EC-bundle <code>zipsByProduct</code> in <code>if(doDnld)</code></td>
+<td>Bundle is pre-staged; skip the network fetch offline</td>
 </tr>
 <tr>
-<td><code>hill_width</code></td>
-<td>0.5 × NWI total perimeter ≈ 48,270 m (rescaled per rep to ≈ 90 m)</td>
-<td>PI direction (2026-04-25). Half the perimeter approximates the effective lateral exchange surface between the lake and its land-facing margin. Inert under the operative routing-off configuration.</td>
+<td>Window clip (<strong>T</strong>)</td>
+<td>clip the regularized flux frame to <code>DATEBGN</code>/<code>DATEEND</code> (REddyProc period-end convention)</td>
+<td>Lets a sub-year window run against a full archive → chunked (annual) generation. REddyProc requires ≥ 90 days of flux, so windows are annual, not monthly</td>
 </tr>
 <tr>
-<td><code>hill_slope</code></td>
-<td>0</td>
-<td>Water surface is horizontal.</td>
+<td>Guarded wipes (<strong>W</strong>)</td>
+<td>wrap both end-of-run <code>file.remove</code> calls in <code>if(doDnld)</code></td>
+<td>Offline, <code>DirDnld</code> <em>is</em> the shared archive — an unguarded wipe would delete it</td>
 </tr>
 <tr>
-<td><code>hill_aspect</code></td>
-<td>0</td>
-<td>Inconsequential for the flat lake column.</td>
+<td>Secondary-precip product</td>
+<td><code>PRECTmms_MDS</code>: DP1.00006.001 → DP1.00045.001</td>
+<td>The stock secondary-precip product has zero months at OSBS; OSBS's secondary gauge is the tipping bucket DP1.00045.001</td>
 </tr>
 <tr>
-<td><code>hill_bedrock_depth</code></td>
-<td>0</td>
-<td>Matches the hillslope convention; inert under CTSM's Uniform soil profile method.</td>
+<td>Offline met stacking (<strong>S</strong>)</td>
+<td>met <code>loadByProduct</code> (online) → <code>stackByTable</code> of pre-staged zips, fresh <code>tempdir()</code> per call</td>
+<td>The core online→offline swap; per-call isolation because <code>FLDS_MDS</code> and <code>Rg</code> both map to DP1.00023.001 and stacking deletes its inputs</td>
+</tr>
+<tr>
+<td>Drop live metadata call</td>
+<td><code>getProductInfo("DP1.00044.001")$siteCodes</code> → <code>sitePrecip &lt;- "OSBS"</code> + offline primary-precip stack</td>
+<td>Removes the last live-network call; OSBS is verified to carry primary precip</td>
+</tr>
+<tr>
+<td>CO₂-partition resilience (<strong>P2</strong>)</td>
+<td><code>sMRFluxPartition</code>/<code>sGLFluxPartition</code> → non-fatal <code>try()</code>; NaN-fill missing CO₂-derived evaluation columns</td>
+<td>OSBS eddy-covariance CO₂ flux (NEE/FC) is <strong>absent at the NEON source</strong> (raw flux all-NA, its own QC flag all-bad), so flux partitioning cannot run. The atmospheric forcing uses no CO₂ variable; this only lets the co-written evaluation file finalize</td>
 </tr>
 </tbody>
 </table>
-<p><img alt="Four hillslope parameters across the 25 columns of the production NetCDF: mean raw HAND (top-left), mean DTND (top-right), per-rep hillslope element area (bottom-left), and lower-edge width (bottom-right). The chain is ordered lake → deepest flood-zone bin (1) → ridge bin (24). Colour-coded: lake (light blue), flood zone with raw HAND &lt; 0 (dark red), upland with raw HAND ≥ 0 (green). The HAND chain rises monotonically from −6.0 m at the lake to +12.5 m at the ridge bin. DTND grows smoothly from ~1 m at the lake to ~350 m at the ridge. Area is small in the flood zone (narrow bins resolve the TAI core) and largest in mid-upland (where bin widths broaden). Width is set by the trapezoidal plan-form fit and is largest near the stream-margin bins." src="../images/production_hillslope_params.png" /></p>
+<div class="admonition warning">
+<p class="admonition-title">The wipe guard (edit W) is load-bearing</p>
+<p>Upstream, <code>DirDnld</code> is a scratch download directory that the script deletes on exit. Offline, <code>DirDnld</code> is repointed at the shared raw archive (edit D). Without edit W, a normal run would erase <code>/blue/gerber/earth_models/neon/raw</code>. Edit C (per-session working copies) is the primary safeguard; edit W is the backstop.</p>
+</div>
+<p>The <strong>absent OSBS CO₂ flux</strong> (edit P2) is a genuine NEON data gap, not an artifact of the offline conversion — the energy fluxes are intact, and the pre-built v4 product, which exists for OSBS, can only have been generated the same way. The consequence is that <strong>no CO₂-flux validation is possible for OSBS</strong>; it does not affect the meteorological forcing.</p>
 <hr />
-<h2 id="per-rep-rescaling">Per-rep rescaling<a class="headerlink" href="#per-rep-rescaling" title="Permanent link">&para;</a></h2>
-<p>The lake-column area (11.08 km²) is far larger than any single representative hillslope's footprint, because OSBS open water is the aggregate of 103 NWI features distributed across the 90 km² production domain. To fit the column inside a representative-hillslope shape, the pipeline computes:</p>
+<h2 id="computational-environment">Computational environment<a class="headerlink" href="#computational-environment" title="Permanent link">&para;</a></h2>
+<p>NCAR-NEON is interpreted R with a large, version-sensitive dependency tree (originally R 4.0.5, a 195-package <code>renv.lock</code> including Bioconductor <code>rhdf5</code> and GitHub-only <code>eddy4R</code>). Rather than restore that lockfile, the stack was <strong>reconstructed as a conda environment</strong> (<code>neon-forcing</code>) with a conda base and a thin source-built layer for the packages on no conda channel:</p>
 <ul>
-<li><strong><code>nhill_implicit</code></strong> — the implicit number of representative-hillslope copies that tile the gridcell. For the 2026-05-05 production: <code>nhill_implicit ≈ 533.7</code>.</li>
-<li><strong>Per-rep area</strong> = total area / <code>nhill_implicit</code>. Lake column per rep: 11.08 km² / 533.7 ≈ 0.021 km² = 20,765 m².</li>
-<li><strong>Per-rep width</strong> = <code>hill_width</code> / <code>nhill_implicit</code>. Lake per rep: 48,270 m / 533.7 ≈ 90.4 m. (<code>hill_width</code> = 48,270 m is half the total NWI perimeter of 96,540 m.)</li>
+<li><strong>R 4.2</strong> (pinned, not 4.4): the archived <code>ffbase</code> — a hard <code>eddy4R.base</code> dependency — will not build against modern R, and conda ships no <code>r44</code> <code>ffbase</code>. conda <em>does</em> provide a precompiled <code>r42</code> <code>ff</code>/<code>ffbase</code> binary pair, so pinning R 4.2 sidesteps the compile entirely.</li>
+<li><strong>conda-forge toolchain</strong> (<code>gcc</code>/<code>gxx</code>/<code>gfortran</code>), <em>not</em> the cluster's lmod compilers, ABI-matched to conda's R; strict channel priority so bioconda never shadows a conda-forge build.</li>
+<li><strong>Source layer</strong> (<code>remotes</code>, <code>upgrade="never"</code> so conda binaries are never rebuilt): <code>neonUtilities</code> (~2.4.x, matching the <code>getProductInfo</code>/<code>loadByProduct</code> API the script uses), <code>REddyProc</code> 1.3.2 (with <code>solartime</code>, <code>bigleaf</code>), <code>eddy4R.base</code> and <code>eddy4R.qaqc</code> at <code>NEONScience/eddy4R</code> commit <code>898a72d</code> (the v4 <code>renv.lock</code> pin), and <code>NEON.gf</code> (installed from the fork).</li>
+<li><strong>Pinned package sources:</strong> the source layer resolves against four dated <strong>Posit CRAN snapshots</strong> (2022-02-28 … 2023-10-22) that match the v4 era and predate CRAN's archiving of several <code>eddy4R</code> dependencies (e.g. <code>DataCombine</code>). A project <code>Makevars</code> (<code>-std=gnu17</code>) lets those older sources compile under conda's modern gcc.</li>
 </ul>
-<p>Within the representative hillslope, the lake column ends up with <code>wtlunit ≈ 12.3 %</code>, calibrated to the NWI water footprint as a fraction of the production domain (~12 % open water). The land bins partition the remaining 87.7 % according to their NWI-masked, water-excluded pixel areas.</p>
+<p>The whole environment builds from one script (<code>setup/build_env.sh</code>: solve → source-install → smoke-test).</p>
+<div class="admonition note">
+<p class="admonition-title">Team reference — HiPerGator</p>
+<p>Build on a node with outbound internet and CPU/time headroom (an interactive <code>hpg-dev</code> session), not a login node — long compiles trip login-node process limits. <code>build_env.sh</code> runs <code>module purge</code> first so no lmod compiler leaks into the solve. Specification files: <code>scripts/neon_forcing/setup/{environment.yml, install_source_pkgs.R, Makevars.conda, build_env.sh}</code>.</p>
+</div>
 <hr />
-<h2 id="spillheight-and-the-sourcemod-retirement">SPILLHEIGHT and the SourceMod retirement<a class="headerlink" href="#spillheight-and-the-sourcemod-retirement" title="Permanent link">&para;</a></h2>
-<p>Before Phase E.5, the pipeline binned on <strong>conditioned HAND</strong> — the depression-filled DEM's elevation above stream. Conditioned HAND is zero or positive by construction: pixels inside filled depressions sit <em>at</em> the depression's fill level, not below it. Equal-area binning on this signal produced no flood-zone columns; the lowest land bin's mean HAND landed at LIDAR noise (Q25 = 0.00027 m on earlier 4-bin runs), as documented in the <a href="#motivation">Motivation</a> section.</p>
-<p>To represent the wet, low-lying terrain visible in the NEON LIDAR, the PI installed two SourceMods:</p>
+<h2 id="forcing-generation-procedure">Forcing-generation procedure<a class="headerlink" href="#forcing-generation-procedure" title="Permanent link">&para;</a></h2>
+<p>Generation is a two-step pipeline: an authenticated raw download, then a fully offline conversion.</p>
+<p><strong>Step 1 — raw download (authenticated).</strong> NEON's <code>/data/</code> endpoint returns 403 to anonymous requests from HPC address ranges; a free NEON API token (scope <code>rate:public</code>) lifts that block, so the raw pull runs on a compute node. <code>download_raw.R</code> (via <code>run_download.sh</code>) fetches the ten source products for the requested span and stages them, integrity-checked, into a shared archive.</p>
+<p><strong>Step 2 — offline conversion (no network).</strong> The forked <code>flow.api.clm.R</code> (<code>doDnld = FALSE</code>, via <code>run_forcing.sh</code>) copies the staged zips into a per-session working directory, stacks and gap-fills them with REddyProc, and writes one combined CTSM-DATM NetCDF per month. The full record was produced in <strong>annual chunks</strong> under a 64 GB allocation (each chunk covers one year; REddyProc's ≥ 90-day flux minimum precludes monthly chunks).</p>
+<div class="admonition note">
+<p class="admonition-title">Team reference — HiPerGator</p>
+<p>Raw archive: <code>/blue/gerber/earth_models/neon/raw/OSBS</code> — the full 2016-08 → 2025-06 span, ten products, ~11 GB (1063 zips). The token is read from <code>~/.neon_token</code> (mode 600, never committed). Generation scope is set by <code>NEON_START</code>/<code>NEON_END</code> in the wrapper.</p>
+</div>
+<h3 id="the-2017-precipitation-remediation">The 2017 precipitation remediation<a class="headerlink" href="#the-2017-precipitation-remediation" title="Permanent link">&para;</a></h3>
+<p>NEON's <strong>primary weighing gauge (DP1.00044.001) was physically offline at OSBS from July through December 2017</strong> (raw values all-NA, final QC flag set), so the generator wrote gap-fill for those six months. The record was repaired from the <strong>secondary tipping bucket (DP1.00045.001)</strong> as a post-processing step (<code>splice_2017_precip.py</code>) — <strong>no source edit</strong>: the substituted precipitation is written back with its quality flag set to <code>PRECTmms_fqc = 5</code>, and a backup is written first.</p>
+<p>The substitution was validated three ways:</p>
 <ul>
-<li><strong><code>HillslopeHydrologyMod.F90</code></strong> — modified <code>InitHillslope</code> to subtract a uniform <code>SPILLHEIGHT</code> constant (originally 0.2 m, hard-coded) from every column's <code>hill_elev</code> after reading the NetCDF. This effectively lowered the whole chain at runtime.</li>
-<li><strong><code>SurfaceWaterMod.F90</code></strong> — added runoff suppression for any column satisfying <code>hill_elev + h2osfc &lt; 0</code>. Columns lowered below the stream by the SPILLHEIGHT subtraction would pond instead of drain, producing a stratified submergence regime.</li>
+<li>The two gauges agree to <strong>r = 0.96 / ~2 % on monthly totals</strong> across their 35 overlapping months.</li>
+<li>The spliced values <strong>bit-match</strong> the raw tipping-bucket record at each UTC timestamp.</li>
+<li>The heaviest September-2017 rainfall lands on <strong>2017-09-10</strong>, coincident with <strong>Hurricane Irma</strong>'s passage over north-central Florida — an independent temporal-alignment check.</li>
 </ul>
-<p>Combined, the two SourceMods turned the lowest land bins into "usually wet, sometimes dry" columns and the lake column (sitting at <code>hill_elev = −SPILLHEIGHT</code> in the input file) into the permanently submerged anchor of the chain.</p>
-<h3 id="why-raw-hand-binning-superseded-this">Why raw-HAND binning superseded this<a class="headerlink" href="#why-raw-hand-binning-superseded-this" title="Permanent link">&para;</a></h3>
-<p>Phase E.5 switched the pipeline's binning input from conditioned HAND to <strong>raw HAND</strong> (elevation above stream measured on the original DEM, signed). Raw HAND preserves the depression-fill depth as a negative HAND value, so flood-zone columns emerge from the data:</p>
-<ul>
-<li>The deepest land bin (chain index 2 in the production NetCDF) has a mean HAND of −5.13 m.</li>
-<li>Eleven additional flood-zone bins (chain indices 3 through 13) resolve the saturation gradient up to HAND = 0.</li>
-<li>The bin areas, per-meter density, and Darcy-relevant geometry all derive from the original LIDAR rather than from a runtime offset to the deposited input file.</li>
-</ul>
-<p>The runtime elevation shift is no longer needed because the flood zone is in the file. The SourceMod's purpose — creating submerged columns to represent low-lying terrain — is solved at file-construction time rather than at runtime.</p>
-<h3 id="pi-decision-2026-04-30">PI decision (2026-04-30)<a class="headerlink" href="#pi-decision-2026-04-30" title="Permanent link">&para;</a></h3>
-<p>The SourceMod's runtime mechanism was retired. <code>SPILLHEIGHT = 0.0</code> set via namelist override (rather than editing the SourceMod constant) keeps the SourceMod files retained but inert:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">spillheight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
-</code></pre></div>
-<p>This lowers the maintenance burden across cases — no Fortran rewrite, no case-by-case SourceMod synchronization — while disabling the runtime elevation shift. The lake column's <code>hill_elev = −6.0 m</code> (chain-bookkeeping value, locked 2026-05-04; see Lake column construction above) replaces the earlier <code>−SPILLHEIGHT</code> framing as the chain anchor.</p>
-<p>Both approaches produce a stratified submergence regime; the data-derived approach is more faithful to the underlying NEON LIDAR (basin depths read from the input file rather than imposed as a domain-wide uniform offset) and removes the need to keep the SourceMod's <code>SPILLHEIGHT</code> constant in sync with the pipeline.</p>
+<p>The likely reason the pre-built v4 set begins in 2018 is this same 2017 gauge outage; recovering it is one of the ways the custom record extends v4.</p>
 <hr />
-<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<h2 id="output-dataset">Output dataset<a class="headerlink" href="#output-dataset" title="Permanent link">&para;</a></h2>
+<p><strong>101 monthly NetCDF files, <code>OSBS_atm_2017-02.nc</code> … <code>OSBS_atm_2025-06.nc</code></strong>, at <code>data/datm/neon_OSBS/custom/OSBS/atm/</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cadence</td>
+<td>one combined file per calendar month</td>
+</tr>
+<tr>
+<td>Grid</td>
+<td>single point — <code>lat = 1</code>, <code>lon = 1</code> (with <code>LATIXY</code>/<code>LONGXY</code>)</td>
+</tr>
+<tr>
+<td>Time axis</td>
+<td>half-hourly, <code>gregorian</code> calendar (48 records/day; e.g. 1344 for February)</td>
+</tr>
+<tr>
+<td>Fill value</td>
+<td><code>-9999</code></td>
+</tr>
+<tr>
+<td>Meteorology</td>
+<td><code>FLDS</code>, <code>FSDS</code>, <code>PRECTmms</code>, <code>RH</code>, <code>PSRF</code>, <code>TBOT</code>, <code>WIND</code>, and reference height <code>ZBOT</code></td>
+</tr>
+<tr>
+<td>Quality flags</td>
+<td>a <code>&lt;var&gt;_fqc</code> gap-fill flag on each of the seven measured variables (not on <code>ZBOT</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Humidity is carried as <strong>relative humidity (<code>RH</code>, %)</strong>; CDEPS converts RH → specific humidity internally, so no <code>QBOT</code> is stored. The record is a <strong>strict superset of pre-built v4</strong> (2018-01 → 2024-12): it adds the 11 months from 2017-02 (the eddy-covariance bundle's start) and the 6 months through 2025-06 (the RELEASE-2026 cut), RELEASE-2026 throughout.</p>
+<hr />
+<h2 id="validation">Validation<a class="headerlink" href="#validation" title="Permanent link">&para;</a></h2>
+<p>The custom dataset was validated mechanically and scientifically before hand-off.</p>
+<p><strong>Reproduce-v4 (fidelity).</strong> Run over 2018 and compared to pre-built v4 timestep-by-timestep: at every step where both records carry a real measurement (<code>fqc = 0</code>), the two are <strong>bit-identical for all seven measured variables</strong>. All divergence is confined to gap-filled timesteps (differing RELEASE and gap-fill-window). Precipitation annual total differs by +2.9 %. Where the pipeline carries a real measurement, it reproduces v4 to machine precision. <em>(<code>neon_v4_regression.py</code> — the forcing analog of the MERIT regression test.)</em></p>
+<p><strong>Whole-record QC.</strong> Structural checks (record count = days × 48, monotonic time, quality flags present), gap-fill fractions, and physical-range/climatology sniff tests across all 101 files — <strong>0 NaN</strong>. <em>(<code>neon_forcing_qc.py</code>.)</em></p>
+<p><strong>CTSM ingestion.</strong> The full 101-file stream drove a cold-start single-point + hillslope case end-to-end; forcing-driven fields matched the v4-driven run to <strong>≤ 0.03 %</strong> over the overlap. This surfaced one production requirement — see the callout below.</p>
+<p><strong>AD spinup.</strong> A cold-start accelerated-decomposition spinup on the custom forcing <strong>converged</strong>: ~195 simulated years, 20-year block-mean drift <strong>&lt; 1 %</strong> on all carbon pools.</p>
+<div class="admonition warning">
+<p class="admonition-title">Production requirement: <code>dtlimit = -1</code> on both NEON streams</p>
+<p>A cycled forcing stream (<code>taxmode = cycle</code>) that wraps past its last record trips CDEPS's default <code>dtlimit = 1.5</code> and hard-crashes the model (<code>dshr_strdata_mod.F90:1050</code>). This is a stock CDEPS behavior, not a data problem. Setting <strong><code>dtlimit = -1</code></strong> on both NEON streams in <code>user_nl_datm_streams</code> (CDEPS's own escape hatch for streams not cycling on January boundaries) resolves it — namelist-only, no rebuild. It is required for any cycled spinup on this forcing.</p>
+</div>
+<hr />
+<h2 id="reproducibility-and-availability">Reproducibility and availability<a class="headerlink" href="#reproducibility-and-availability" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forcing generator (fork)</td>
+<td><a href="https://github.com/cdevaneprugh/NCAR-NEON"><code>cdevaneprugh/NCAR-NEON</code></a> <code>uf-osbs</code> @ <code>07786dd</code></td>
+</tr>
+<tr>
+<td>Environment build</td>
+<td><a href="https://github.com/cdevaneprugh/hpg-esm-tools"><code>hpg-esm-tools</code></a> <code>swenson/scripts/neon_forcing/setup/</code></td>
+</tr>
+<tr>
+<td>Driver + QC scripts</td>
+<td><code>swenson/scripts/neon_forcing/</code> (<code>download_raw.R</code>, <code>run_download.sh</code>, <code>run_forcing.sh</code>, <code>splice_2017_precip.py</code>, <code>neon_v4_regression.py</code>, <code>neon_forcing_qc.py</code>)</td>
+</tr>
+<tr>
+<td>Phase record</td>
+<td><code>swenson/phases/I-neon-forcing.md</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Team reference — HiPerGator paths</p>
+<p>Raw archive <code>/blue/gerber/earth_models/neon/raw/OSBS</code>; custom output <code>swenson/data/datm/neon_OSBS/custom/OSBS/atm/</code> (the <code>*.nc</code> are gitignored; provenance in the directory README). External readers can regenerate from the fork + environment specification above against their own NEON download.</p>
+</div>
+<p>To drive a CTSM case with this forcing (compset, coordinates, stream settings, and the <code>dtlimit = -1</code> requirement), see the drop-in case recipe: <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/docs/neon-forcing-case-recipe.md"><code>docs/neon-forcing-case-recipe.md</code></a> in the hpg-esm-tools repo.</p>
+<hr />
+<h2 id="cross-references">Cross-References<a class="headerlink" href="#cross-references" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Phase E.5 bin redesign and outlier strategy: <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/phases/E.5-bin-redesign.md"><code>swenson/phases/E.5-bin-redesign.md</code></a></li>
-<li>Phase G lake column construction: <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/phases/G-ctsm-lake-representation.md"><code>swenson/phases/G-ctsm-lake-representation.md</code></a></li>
-<li>Lake-column CTSM source audit (canonical parameter derivation): <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/docs/lake-column-ctsm-audit.md"><code>swenson/docs/lake-column-ctsm-audit.md</code></a></li>
-<li>DOE BER (2017). <a href="https://science.osti.gov/-/media/ber/pdf/community-resources/Terrestrial-Aquatic_Interfaces_report.pdf"><em>Research Priorities to Incorporate Terrestrial-Aquatic Interfaces in Earth System Models</em></a>, DOE/SC-0187 — TAI process-gradient framework</li>
-<li>Lee, E., Epstein, J. M., &amp; Cohen, M. J. (2023). <a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2023WR034553">Patterns of Wetland Hydrologic Connectivity Across Coastal-Plain Wetlandscapes</a>. <em>Water Resources Research</em>, 59 — spill-stage data for chain-monotonicity sanity check</li>
+<li><a href="../../research/neon-sites/">NEON Sites</a> — site background and the OSBS reference cases</li>
+<li><a href="../">Swenson Implementation Overview</a> — the hillslope-parameter track this forcing work runs alongside</li>
+<li>NCAR-NEON pipeline — Wieder et al. (2023), <em>Geosci. Model Dev.</em> 16, 5979–6000, DOI <a href="https://doi.org/10.5194/gmd-16-5979-2023">10.5194/gmd-16-5979-2023</a></li>
 </ul>
 
 
@@ -2006,7 +2037,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../osbs-implementation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Methodology">
+          <a href="../dataset-comparison/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Dataset Comparison">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2016,20 +2047,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Methodology
+                Dataset Comparison
               </div>
             </div>
           </a>
         
         
           
-          <a href="../lateral-flow-and-routing/" class="md-footer__link md-footer__link--next" aria-label="Next: Lateral Flow and Routing">
+          <a href="../../reference/modifications/" class="md-footer__link md-footer__link--next" aria-label="Next: Fork Modifications">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Lateral Flow and Routing
+                Fork Modifications
               </div>
             </div>
             <div class="md-footer__button md-icon">

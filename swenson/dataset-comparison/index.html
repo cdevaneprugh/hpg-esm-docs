@@ -16,7 +16,7 @@
         <link rel="prev" href="../lateral-flow-and-routing/">
       
       
-        <link rel="next" href="../../reference/modifications/">
+        <link rel="next" href="../neon-forcing/">
       
       
         
@@ -1380,6 +1380,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../neon-forcing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NEON Atmospheric Forcing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1876,7 +1904,7 @@
 <tr>
 <td>Lake column</td>
 <td>None</td>
-<td>Chain index 1, <code>hill_elev = −6.0 m</code>, <code>hill_area ≈ 10.68 km²</code> (NWI aggregate)</td>
+<td>Chain index 1, <code>hill_elev = −6.0 m</code>, <code>hill_area ≈ 11.08 km²</code> (NWI aggregate)</td>
 </tr>
 <tr>
 <td>Hillslope-element HAND range (m)</td>
@@ -1911,7 +1939,7 @@
 <p><strong>1. Distance scales differ by ~1.5-2×.</strong> Swenson distances range 67-541 m; OSBS land-bin distances range 3-353 m. This is much closer than previous (pre-fix) runs showed (5-25× difference) because the current pipeline uses hydrological DTND (distance to the drainage-linked stream pixel) rather than EDT (distance to the geographically nearest stream pixel). The remaining ~1.5× difference reflects the denser stream network from higher-resolution data: Lc = 356 m at 1 m vs Lc = 763 m at 90 m, producing more stream pixels per unit area.</p>
 <p><strong>2. Land-bin slopes are systematically higher at 1 m than 90 m.</strong> Full 1 m resolution captures local topographic variability that 90 m MERIT averages away. This is expected — slope is the most resolution-sensitive of the six parameters (Phase B confirmed systematic underestimation at coarser resolution, ~50 % reduction at 4 m vs 1 m in the lowest HAND bin).</p>
 <p><strong>3. Negative HAND values appear in the OSBS file.</strong> Swenson's MERIT-derived file has only positive HANDs (0.17-8.14 m). The OSBS production file has 12 flood-zone bins covering −5.13-0 m HAND because the 1 m LIDAR resolves real terrain below the depression-filled drainage network (depressions, swales, lake margins). These bins are physically meaningful at OSBS — the saturation gradient through the flood zone is the TAI signal the column structure is designed to resolve.</p>
-<p><strong>4. The OSBS file has a dedicated lake column.</strong> The Swenson global file has no lake representation; lake area is implicit in the gridcell-aggregated parameters. The OSBS file places all NWI open water (≈ 10.68 km², ~12 % of the production domain) in a separate column at chain index 1, so that two-way water exchange between the lake and adjacent land bins is explicit in the CTSM column chain.</p>
+<p><strong>4. The OSBS file has a dedicated lake column.</strong> The Swenson global file has no lake representation; lake area is implicit in the gridcell-aggregated parameters. The OSBS file places all NWI open water (≈ 11.08 km², ~12 % of the production domain) in a separate column at chain index 1, so that two-way water exchange between the lake and adjacent land bins is explicit in the CTSM column chain.</p>
 <p><strong>5. The aspect partition is collapsed at OSBS.</strong> Swenson's 4-aspect default expresses the difference between sun-facing and shaded hillslopes. At OSBS, with slopes universally below 0.06 m/m, aspect-dependent insolation has negligible physical impact (&lt;6 % correction to solar incidence angle), so the same 24 HAND bins serve every direction and the aspect dimension is collapsed to 1.</p>
 <hr />
 <h2 id="elevation-and-width-profiles">Elevation and Width Profiles<a class="headerlink" href="#elevation-and-width-profiles" title="Permanent link">&para;</a></h2>
@@ -1931,7 +1959,7 @@
 <h2 id="implications-for-ctsm-simulations">Implications for CTSM Simulations<a class="headerlink" href="#implications-for-ctsm-simulations" title="Permanent link">&para;</a></h2>
 <p><strong>1. Lateral flow dynamics.</strong> Shorter hillslope distances (3-353 m vs 67-541 m) mean faster lateral water redistribution between columns. The shorter flow paths reduce the response time of the inter-column Darcy gradient (<code>SoilHydrologyMod.F90</code>), which runs whenever <code>use_hillslope=.true.</code> independent of the routing toggle (<a href="../lateral-flow-and-routing/">Lateral Flow and Routing</a>).</p>
 <p><strong>2. Hydraulic gradients.</strong> The 24-bin scheme is denser in HAND space near the stream channel and lake margin than the 4-bin equal-area default; adjacent-bin elevation differences are sub-meter through the TAI core (0.25 m bin width × terrain-driven HAND increments). Combined with the dedicated lake column at chain index 1, the column chain captures the wet-to-dry gradient at the LIDAR noise floor.</p>
-<p><strong>3. TAI representation.</strong> Phase F deploys this file in <code>osbs.swenson.spinup</code> under <code>use_hillslope=.true., use_hillslope_routing=.false.</code>. Inter-column lateral flow between flood-zone bins and adjacent land bins is active in this configuration; Phase H Tracks B/C would add the CTSM-internal stream-channel boundary condition at the chain terminus.</p>
+<p><strong>3. TAI representation.</strong> Phase F deploys this file in <code>osbs.swenson.spinup</code> under <code>use_hillslope=.true., use_hillslope_routing=.false.</code>. Inter-column lateral flow between flood-zone bins and adjacent land bins is active in this configuration; Phase H Tracks B/C (which would have added the CTSM-internal stream-channel boundary condition at the chain terminus) were retired 2026-08-19.</p>
 <p><strong>4. Column weighting.</strong> OSBS column weights are calibrated by the per-rep rescaling: <code>nhill_implicit ≈ 533</code> rep-hillslope copies per landunit, with the lake column at <code>wtlunit ≈ 12.3 %</code>. The land bins partition the remainder according to their NWI-masked, water-excluded pixel areas. See <a href="../hand-binning-and-lake-column/">HAND Binning and Lake Column</a> for the rescaling derivation.</p>
 
 
@@ -1985,13 +2013,13 @@
         
         
           
-          <a href="../../reference/modifications/" class="md-footer__link md-footer__link--next" aria-label="Next: Fork Modifications">
+          <a href="../neon-forcing/" class="md-footer__link md-footer__link--next" aria-label="Next: NEON Atmospheric Forcing">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Fork Modifications
+                NEON Atmospheric Forcing
               </div>
             </div>
             <div class="md-footer__button md-icon">

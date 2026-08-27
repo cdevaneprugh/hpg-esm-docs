@@ -50,7 +50,7 @@ The two datasets have different column structures and cannot be compared aspect-
 | Parameter | Swenson (Global) | OSBS (Current) |
 |-----------|------------------|----------------|
 | Aspects × HAND bins | 4 × 4 | 1 × 24 |
-| Lake column | None | Chain index 1, `hill_elev = −6.0 m`, `hill_area ≈ 10.68 km²` (NWI aggregate) |
+| Lake column | None | Chain index 1, `hill_elev = −6.0 m`, `hill_area ≈ 11.08 km²` (NWI aggregate) |
 | Hillslope-element HAND range (m) | 0.17 — 8.14 | −5.13 — 12.46 (land bins; lake at −6.0) |
 | Hillslope-element DTND range (m) | 67 — 541 | 3 — 353 |
 | Stream-network slope (m/m) | 0.00233 | 0.00690 |
@@ -69,7 +69,7 @@ The OSBS file's negative HAND values are real terrain — pixels in filled depre
 
 **3. Negative HAND values appear in the OSBS file.** Swenson's MERIT-derived file has only positive HANDs (0.17-8.14 m). The OSBS production file has 12 flood-zone bins covering −5.13-0 m HAND because the 1 m LIDAR resolves real terrain below the depression-filled drainage network (depressions, swales, lake margins). These bins are physically meaningful at OSBS — the saturation gradient through the flood zone is the TAI signal the column structure is designed to resolve.
 
-**4. The OSBS file has a dedicated lake column.** The Swenson global file has no lake representation; lake area is implicit in the gridcell-aggregated parameters. The OSBS file places all NWI open water (≈ 10.68 km², ~12 % of the production domain) in a separate column at chain index 1, so that two-way water exchange between the lake and adjacent land bins is explicit in the CTSM column chain.
+**4. The OSBS file has a dedicated lake column.** The Swenson global file has no lake representation; lake area is implicit in the gridcell-aggregated parameters. The OSBS file places all NWI open water (≈ 11.08 km², ~12 % of the production domain) in a separate column at chain index 1, so that two-way water exchange between the lake and adjacent land bins is explicit in the CTSM column chain.
 
 **5. The aspect partition is collapsed at OSBS.** Swenson's 4-aspect default expresses the difference between sun-facing and shaded hillslopes. At OSBS, with slopes universally below 0.06 m/m, aspect-dependent insolation has negligible physical impact (<6 % correction to solar incidence angle), so the same 24 HAND bins serve every direction and the aspect dimension is collapsed to 1.
 
@@ -109,6 +109,6 @@ The distribution is heavily non-uniform: the lake column alone holds 12.3 % of p
 
 **2. Hydraulic gradients.** The 24-bin scheme is denser in HAND space near the stream channel and lake margin than the 4-bin equal-area default; adjacent-bin elevation differences are sub-meter through the TAI core (0.25 m bin width × terrain-driven HAND increments). Combined with the dedicated lake column at chain index 1, the column chain captures the wet-to-dry gradient at the LIDAR noise floor.
 
-**3. TAI representation.** Phase F deploys this file in `osbs.swenson.spinup` under `use_hillslope=.true., use_hillslope_routing=.false.`. Inter-column lateral flow between flood-zone bins and adjacent land bins is active in this configuration; Phase H Tracks B/C would add the CTSM-internal stream-channel boundary condition at the chain terminus.
+**3. TAI representation.** Phase F deploys this file in `osbs.swenson.spinup` under `use_hillslope=.true., use_hillslope_routing=.false.`. Inter-column lateral flow between flood-zone bins and adjacent land bins is active in this configuration; Phase H Tracks B/C (which would have added the CTSM-internal stream-channel boundary condition at the chain terminus) were retired 2026-08-19.
 
 **4. Column weighting.** OSBS column weights are calibrated by the per-rep rescaling: `nhill_implicit ≈ 533` rep-hillslope copies per landunit, with the lake column at `wtlunit ≈ 12.3 %`. The land bins partition the remainder according to their NWI-masked, water-excluded pixel areas. See [HAND Binning and Lake Column](hand-binning-and-lake-column.md) for the rescaling derivation.

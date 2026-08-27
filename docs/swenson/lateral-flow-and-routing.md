@@ -138,9 +138,9 @@ use_hillslope_routing = .false.
 
 with the 2026-05-05 production hillslope file (25 columns: 1 lake + 24 land bins on a single aspect). In this configuration, inter-column lateral subsurface flow is active between all 25 columns of the chain: Darcy gradients redistribute water from upland bins through the flood-zone bins to the lake column, and the terminal-column boundary condition at the lake is supplied by MOSART's `tdepth_grc` (which under the current DATM + MOSART setup defaults to 0, in effect treating the chain-bottom boundary as an empty stream channel).
 
-A 600-yr accelerated AD spinup using this configuration has completed (2026-05-14). Analysis is in progress; findings will be documented in a subsequent pass.
+A 600-yr accelerated AD spinup using this configuration completed 2026-05-14 and was analyzed 2026-05-19. Three verdicts: convergence PASS (`drift_50yr = 0.48 %`), TAI signal absent (`O_SCALAR ≈ 1.0`), lake column stable.
 
-Phase H Tracks B and C would enable `use_hillslope_routing = .true.` and switch the terminal-column boundary to the internal `stream_water_volume` ledger. Whether to pursue them depends on what the Phase F analysis shows; the routing-on machinery is built and validated (Track A, below) but is not deployed by default.
+Phase H Tracks B and C would enable `use_hillslope_routing = .true.` and switch the terminal-column boundary to the internal `stream_water_volume` ledger. They were retired 2026-08-19 — the PI has the routing/drainage situation handled. The routing-on machinery is built and validated (Track A, below) but is not deployed.
 
 ---
 

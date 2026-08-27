@@ -82,7 +82,7 @@ The OSBS production file places a dedicated lake column at chain index 1, shifti
 | `hillslope_index` | 1 | Same single aspect as the 24 land bins. |
 | `hill_elev` | −6.0 m | Chain-bookkeeping value. Set 0.87 m below the deepest land bin's mean (−5.13 m, bin 1 of the production output) to keep the column chain monotonic in elevation. **Does not represent a physical lake bottom** — empirical lake bathymetry from NWI digitizing and Lee 2023 spill-stage data is far shallower (NWI mean ~−2.5 m, Lee/pipeline spill 2.6-3.3 m), but the deepest land bin's HAND (−5.13 m) is the binding constraint on monotonicity. PI direction (2026-05-04): tuning the lake elevation toward a physical lake depth is deferred to model-output review; the chain-integrity constraint comes first. |
 | `hill_distance` | 0.5 × Bin 1 distance, computed dynamically per rep | The inter-column Darcy gradient computation in `SoilHydrologyMod.F90` divides by `col%hill_distance`. The denominator `d(Bin1) − d(Lake)` must stay positive. Bin 1's trap-fit DTND at OSBS is small (~3 m), so a static lake distance of ~5 m would invert the gradient sign for some reps. Setting the lake distance to half of Bin 1's distance per rep guarantees positivity by construction. |
-| `hill_area` | Σ(water_mask × pixel_area) ≈ 10.68 km² (rescaled per rep to ≈ 0.021 km²) | Total NWI-masked water area in the production domain after hole-fill: 11.08 km² raw, 10.68 km² after edge trim. Production domain has 103 NWI water features. |
+| `hill_area` | Σ(water_mask × pixel_area) ≈ 11.08 km² (11,082,394 px; rescaled per rep to ≈ 0.021 km²) | Total NWI-masked water area in the production domain after hole-fill. The `binary_fill_holes` step adds ~400,000 interior pixels to the 10.68 km² pre-fill mask, giving 11.08 km². Production domain has 103 NWI water features. |
 | `hill_width` | 0.5 × NWI total perimeter ≈ 48,270 m (rescaled per rep to ≈ 90 m) | PI direction (2026-04-25). Half the perimeter approximates the effective lateral exchange surface between the lake and its land-facing margin. Inert under the operative routing-off configuration. |
 | `hill_slope` | 0 | Water surface is horizontal. |
 | `hill_aspect` | 0 | Inconsequential for the flat lake column. |
@@ -94,11 +94,11 @@ The OSBS production file places a dedicated lake column at chain index 1, shifti
 
 ## Per-rep rescaling
 
-The lake-column raw area (10.68 km²) is far larger than any single representative hillslope's footprint, because OSBS open water is the aggregate of 103 NWI features distributed across the 90 km² production domain. To fit the column inside a representative-hillslope shape, the pipeline computes:
+The lake-column area (11.08 km²) is far larger than any single representative hillslope's footprint, because OSBS open water is the aggregate of 103 NWI features distributed across the 90 km² production domain. To fit the column inside a representative-hillslope shape, the pipeline computes:
 
 - **`nhill_implicit`** — the implicit number of representative-hillslope copies that tile the gridcell. For the 2026-05-05 production: `nhill_implicit ≈ 533.7`.
-- **Per-rep area** = total area / `nhill_implicit`. Lake column per rep: 10.68 km² / 533.7 ≈ 0.021 km² = 20,765 m².
-- **Per-rep perimeter** = total perimeter / `nhill_implicit`. Lake per rep: 48,270 m / 533.7 ≈ 90.4 m.
+- **Per-rep area** = total area / `nhill_implicit`. Lake column per rep: 11.08 km² / 533.7 ≈ 0.021 km² = 20,765 m².
+- **Per-rep width** = `hill_width` / `nhill_implicit`. Lake per rep: 48,270 m / 533.7 ≈ 90.4 m. (`hill_width` = 48,270 m is half the total NWI perimeter of 96,540 m.)
 
 Within the representative hillslope, the lake column ends up with `wtlunit ≈ 12.3 %`, calibrated to the NWI water footprint as a fraction of the production domain (~12 % open water). The land bins partition the remaining 87.7 % according to their NWI-masked, water-excluded pixel areas.
 

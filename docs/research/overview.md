@@ -100,9 +100,9 @@ OSBS represents a **low-relief wetlandscape** where lateral drainage improves so
 
 ## Current Status
 
-**Phase:** Analysis and investigation. The 600-yr accelerated AD spinup with the custom OSBS hillslope file completed 2026-05-19. PI is investigating two open questions surfaced by the analysis: the absence of the anoxia-based TAI signal in decomposition output, and a bridge-zone water-table anomaly at flood-zone chain indices 3–6.
+**Phase:** Analysis and investigation. The 600-yr accelerated AD spinup with the custom OSBS hillslope file completed 2026-05-14 and was analyzed 2026-05-19. The bridge-zone water-table anomaly at flood-zone chain indices 3–6 was resolved by the PI (2026-08-19); the PI continues to investigate the remaining open question — the absence of the anoxia-based TAI signal in decomposition output.
 
-**Hillslope Data:** Custom NetCDF `hillslopes_osbs_production_c260505.nc` deployed 2026-05-05 (25 columns: 1 lake + 24 HAND bins on a single aspect). File is frozen during the PI investigation. Methodology on the [Swenson Implementation](../swenson/index.md) page.
+**Hillslope Data:** Custom NetCDF `hillslopes_osbs_production_c260505.nc` deployed 2026-05-05 (25 columns: 1 lake + 24 HAND bins on a single aspect). The file was un-frozen 2026-07-15; the PI is proceeding via soil-value adjustments. Methodology on the [Swenson Implementation](../swenson/index.md) page.
 
 **Reference Cases:** See [NEON Sites → Reference Cases](neon-sites.md#reference-cases).
 

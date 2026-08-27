@@ -69,6 +69,7 @@ nav:
     - HAND Binning and Lake Column: swenson/hand-binning-and-lake-column.md
     - Lateral Flow and Routing: swenson/lateral-flow-and-routing.md
     - Dataset Comparison: swenson/dataset-comparison.md
+    - NEON Atmospheric Forcing: swenson/neon-forcing.md
   - Reference:
     - Fork Modifications: reference/modifications.md
     - External Resources: reference/resources.md

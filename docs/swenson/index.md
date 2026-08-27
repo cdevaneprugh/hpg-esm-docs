@@ -47,6 +47,8 @@ The pipeline was built up incrementally. Early work (December 2025 to January 20
 
 **Phase H (2026-05) — Stream-side coupling.** Track A completed the mesh-mode workaround for CTSM Issue #1432 (see [Lateral Flow and Routing](lateral-flow-and-routing.md)) and remains complete and available. Tracks B and C — enabling `use_hillslope_routing = .true.` — were retired 2026-08-19 (the PI has the routing/drainage situation handled); the 2026-05-19 routing-gate source audit established that inter-column lateral flow already runs under `use_hillslope = .true.` regardless.
 
+**Phase I (2026-07 to 2026-08) — NEON atmospheric forcing.** An input-quality upgrade independent of the hillslope parameters: the operative case is driven by 0.5° CRUNCEPv7 reanalysis, which discards the on-site NEON flux-tower record (including measured incident longwave). A fork of the NCAR-NEON pipeline, run offline on HiPerGator, produced a site-native OSBS forcing dataset — 101 monthly DATM files spanning 2017-02 → 2025-06, validated against the pre-built NCAR-NEON v4 product and through a converged AD spinup. It is engineering-complete and handed to the PI for adoption. See [NEON Atmospheric Forcing](neon-forcing.md).
+
 Detailed phase records: [`swenson/phases/`](https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/phases) in the hpg-esm-tools repo.
 
 ---

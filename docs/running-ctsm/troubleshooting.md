@@ -138,6 +138,16 @@ ls $INPUT_DATA/path/to/file
 - Increase memory allocation
 - Check for array bounds issues (enable DEBUG=TRUE)
 
+### Cycled DATM Forcing Crash (`dtlimit`)
+
+**Symptom:** The model hard-crashes at a forcing/stream boundary — often the final timestep or a cycle wrap — with an error originating in `dshr_strdata_mod.F90:1050`.
+
+**Cause:** When a DATM stream cycles (`taxmode = cycle`) and wraps past its last record, the jump in record-time spacing trips CDEPS's default `dtlimit = 1.5`. This is stock CDEPS behavior, not a data problem — it bites any finite forcing window that is cycled (e.g. the custom NEON OSBS forcing, 2017-02 → 2025-06).
+
+**Solution:** Set `dtlimit = -1` on the affected stream(s) in `user_nl_datm_streams` — CDEPS's own escape hatch for streams that do not cycle on January boundaries. Namelist-only, no rebuild.
+
+See [NEON Atmospheric Forcing](../swenson/neon-forcing.md) for the concrete OSBS case.
+
 ## Debugging Mode
 
 ### Runtime Diagnostics (No Rebuild)

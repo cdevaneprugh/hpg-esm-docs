@@ -57,8 +57,11 @@ Default paths in some tools point to NCAR systems. Our fork updates paths to wor
 |------------|--------|---------|
 | [cdevaneprugh/CTSM](https://github.com/cdevaneprugh/CTSM) | `uf-ctsm5.3.085` | CTSM with tool fixes |
 | [cdevaneprugh/ccs_config_cesm](https://github.com/cdevaneprugh/ccs_config_cesm) | `uf-hipergator` | Machine configuration |
+| [cdevaneprugh/NCAR-NEON](https://github.com/cdevaneprugh/NCAR-NEON) | `uf-osbs` | NEON→DATM forcing generator (offline fork; AGPL-3.0) |
 
 The ccs_config fork is included as a submodule of the CTSM fork.
+
+The **NCAR-NEON** fork is separate from the CTSM/ccs_config build forks: it is the NEON atmospheric-forcing generator, modified to run offline on HiPerGator, and is used to *produce input data*, not to build the model. It is documented at [NEON Atmospheric Forcing](../swenson/neon-forcing.md); the "Using This Fork" and "Updating the Fork" sections below concern the CTSM fork only.
 
 !!! note "Version Notice"
     These forks are based on CTSM 5.3.085. Other versions may have different issues or may have fixed some of these bugs upstream.

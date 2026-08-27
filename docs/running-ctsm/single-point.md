@@ -122,6 +122,8 @@ Our fork is configured for CRUNCEP forcing:
 
 The `default_data_*.cfg` files in the fork specify HiPerGator paths.
 
+For OSBS specifically, a **site-native NEON DATM forcing dataset** is also available (2017-02 → 2025-06), produced by an offline fork of the NCAR-NEON pipeline. It is wired in through a `user_nl_datm_streams` `datafiles` override rather than `--create-datm`. See [NEON Atmospheric Forcing](../swenson/neon-forcing.md); note that **cycled** NEON runs require `dtlimit = -1` on the stream (see [Troubleshooting](troubleshooting.md#cycled-datm-forcing-crash-dtlimit)).
+
 ## NEON Sites
 
 For NEON tower sites, CTSM provides pre-configured options:

@@ -1,6 +1,6 @@
 # Fork Modifications
 
-This page documents modifications made in our CTSM fork and their rationale.
+This page documents modifications made in our forks and their rationale.
 
 ## Overview
 
@@ -10,6 +10,9 @@ Our forks include HiPerGator-specific changes and bug fixes for building tools:
 |------------|--------|---------|
 | [cdevaneprugh/CTSM](https://github.com/cdevaneprugh/CTSM) | `uf-ctsm5.3.085` | Tool fixes, paths |
 | [cdevaneprugh/ccs_config_cesm](https://github.com/cdevaneprugh/ccs_config_cesm) | `uf-hipergator` | Machine config |
+| [cdevaneprugh/NCAR-NEON](https://github.com/cdevaneprugh/NCAR-NEON) | `uf-osbs` | NEON→DATM forcing generator (offline fork; AGPL-3.0) |
+
+The first two are CTSM build/machine forks (detailed below). **NCAR-NEON** is a different kind of fork — the NEON atmospheric-forcing generator (`flow.api.clm.R`), modified to run fully offline on HiPerGator to *produce input data* rather than build the model. It is AGPL-3.0 (kept separate from the MIT `hpg-esm-tools` repository for that reason) and is documented in full, with the edit table, at [NEON Atmospheric Forcing](../swenson/neon-forcing.md).
 
 ## CTSM Modifications
 

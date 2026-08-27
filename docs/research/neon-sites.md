@@ -130,31 +130,23 @@ Pre-generated subset data structure:
 
 ### Current Data Strategy
 
-OSBS production cases use globally-subset atmospheric forcing and surface data extracted via CTSM's `subset_data` script (in `tools/site_and_regional/`). NEON-native atmospheric forcing is a future direction, not the current path — the pre-built `run_tower` NEON forcing was tested and found insufficient (per PI, a manual NCAR-NEON pipeline is required; see [`neon-data-products.md`](https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/docs/neon-data-products.md) in the hpg-esm-tools repo). `run_tower` remains useful for basic NEON site tests but does not drive OSBS production.
+OSBS production cases currently use globally-subset **CRUNCEPv7** atmospheric forcing and surface data extracted via CTSM's `subset_data` script (in `tools/site_and_regional/`). A **site-native NEON forcing dataset** has since been produced (Phase I): a fork of the NCAR-NEON pipeline, run fully offline on HiPerGator, generates the OSBS tower record as 101 monthly DATM files spanning 2017-02 → 2025-06. It is engineering-complete, validated against the pre-built NCAR-NEON v4 product, and available for adoption in production. See [NEON Atmospheric Forcing](../swenson/neon-forcing.md) for the full methodology and the `dtlimit = -1` requirement for cycled runs.
+
+An earlier report that the pre-built `run_tower` NEON forcing was "insufficient" was traced to a namelist year-cap, not a data limit — the pre-built product reaches 2024-12. `run_tower` remains useful for basic NEON site tests, but for OSBS production forcing it is superseded by the offline pipeline above.
 
 ---
 
 ## Custom Hillslope Data for OSBS
 
-The global Swenson hillslope dataset (~90m source resolution) is too coarse for OSBS. Custom data from 1m NEON LIDAR will provide:
+The global Swenson hillslope dataset (~90 m source resolution) is too coarse for OSBS. Custom hillslope parameters were generated from 1 m NEON LIDAR (DP3.30024.001) using the Swenson & Lawrence (2025) methodology, resolving:
 
 - Actual wetland basin morphology
 - Fine-scale drainage network identification
 - TAI transition zone resolution
 
-**Expected differences from global data:**
+The finished parameters bear out the contrasts anticipated against the global data: a much smaller characteristic length scale (**Lc = 356 m**), low HAND values (meters, not tens of meters), and a single-aspect structure rather than four distinct hillslopes. The production file `hillslopes_osbs_production_c260505.nc` (25 columns: 1 lake + 24 land bins) is deployed in the operative spinup case.
 
-- Smaller characteristic length scale (Lc)
-- Lower HAND values (meters, not tens of meters)
-- Different aspect distribution (may not have 4 distinct hillslopes if flat)
-- More accurate TAI representation
-
-**Workflow:**
-
-1. Download 1m LIDAR DEM from NEON (DP3.30024.001)
-2. Apply Swenson 2025 methodology using pysheds
-3. Generate custom hillslope surface data
-4. Run comparison: global vs custom hillslope parameters
+This work is documented in full in the **Swenson Implementation** section — see [Overview](../swenson/index.md), [Methodology](../swenson/osbs-implementation.md), and [HAND Binning and Lake Column](../swenson/hand-binning-and-lake-column.md).
 
 ---
 

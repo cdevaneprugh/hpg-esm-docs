@@ -1890,10 +1890,10 @@
 <li><strong>Source layer</strong> (<code>remotes</code>, <code>upgrade="never"</code> so conda binaries are never rebuilt): <code>neonUtilities</code> (~2.4.x, matching the <code>getProductInfo</code>/<code>loadByProduct</code> API the script uses), <code>REddyProc</code> 1.3.2 (with <code>solartime</code>, <code>bigleaf</code>), <code>eddy4R.base</code> and <code>eddy4R.qaqc</code> at <code>NEONScience/eddy4R</code> commit <code>898a72d</code> (the v4 <code>renv.lock</code> pin), and <code>NEON.gf</code> (installed from the fork).</li>
 <li><strong>Pinned package sources:</strong> the source layer resolves against four dated <strong>Posit CRAN snapshots</strong> (2022-02-28 … 2023-10-22) that match the v4 era and predate CRAN's archiving of several <code>eddy4R</code> dependencies (e.g. <code>DataCombine</code>). A project <code>Makevars</code> (<code>-std=gnu17</code>) lets those older sources compile under conda's modern gcc.</li>
 </ul>
-<p>The whole environment builds from one script (<code>setup/build_env.sh</code>: solve → source-install → smoke-test).</p>
+<p>The whole environment builds from one script (<a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/scripts/neon_forcing/setup/build_env.sh"><code>build_env.sh</code></a>: solve → source-install → smoke-test).</p>
 <div class="admonition note">
 <p class="admonition-title">Team reference — HiPerGator</p>
-<p>Build on a node with outbound internet and CPU/time headroom (an interactive <code>hpg-dev</code> session), not a login node — long compiles trip login-node process limits. <code>build_env.sh</code> runs <code>module purge</code> first so no lmod compiler leaks into the solve. Specification files: <code>scripts/neon_forcing/setup/{environment.yml, install_source_pkgs.R, Makevars.conda, build_env.sh}</code>.</p>
+<p>Build on a node with outbound internet and CPU/time headroom (an interactive <code>hpg-dev</code> session), not a login node — long compiles trip login-node process limits. <code>build_env.sh</code> runs <code>module purge</code> first so no lmod compiler leaks into the solve. Specification files: <a href="https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/scripts/neon_forcing/setup"><code>scripts/neon_forcing/setup/</code></a> (<code>environment.yml</code>, <code>install_source_pkgs.R</code>, <code>Makevars.conda</code>, <code>build_env.sh</code>).</p>
 </div>
 <hr />
 <h2 id="forcing-generation-procedure">Forcing-generation procedure<a class="headerlink" href="#forcing-generation-procedure" title="Permanent link">&para;</a></h2>
@@ -1915,7 +1915,7 @@
 <p>The likely reason the pre-built v4 set begins in 2018 is this same 2017 gauge outage; recovering it is one of the ways the custom record extends v4.</p>
 <hr />
 <h2 id="output-dataset">Output dataset<a class="headerlink" href="#output-dataset" title="Permanent link">&para;</a></h2>
-<p><strong>101 monthly NetCDF files, <code>OSBS_atm_2017-02.nc</code> … <code>OSBS_atm_2025-06.nc</code></strong>, at <code>data/datm/neon_OSBS/custom/OSBS/atm/</code>.</p>
+<p><strong>101 monthly NetCDF files, <code>OSBS_atm_2017-02.nc</code> … <code>OSBS_atm_2025-06.nc</code></strong> — generated on HiPerGator; the <code>*.nc</code> are gitignored and not distributed in the repository (regenerate from the fork and environment specification below).</p>
 <table>
 <thead>
 <tr>
@@ -1968,25 +1968,25 @@
 <thead>
 <tr>
 <th>Component</th>
-<th>Location</th>
+<th>Location (GitHub)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Forcing generator (fork)</td>
-<td><a href="https://github.com/cdevaneprugh/NCAR-NEON"><code>cdevaneprugh/NCAR-NEON</code></a> <code>uf-osbs</code> @ <code>07786dd</code></td>
+<td><a href="https://github.com/cdevaneprugh/NCAR-NEON"><code>cdevaneprugh/NCAR-NEON</code></a> <code>uf-osbs</code> @ <code>07786dd</code> — fork of <a href="https://github.com/NEONScience/NCAR-NEON"><code>NEONScience/NCAR-NEON</code></a> (AGPL-3.0)</td>
 </tr>
 <tr>
 <td>Environment build</td>
-<td><a href="https://github.com/cdevaneprugh/hpg-esm-tools"><code>hpg-esm-tools</code></a> <code>swenson/scripts/neon_forcing/setup/</code></td>
+<td><a href="https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/scripts/neon_forcing/setup"><code>scripts/neon_forcing/setup/</code></a> — conda reconstruction of upstream <a href="https://github.com/NEONScience/NCAR-NEON/blob/main/renv.lock"><code>renv.lock</code></a></td>
 </tr>
 <tr>
 <td>Driver + QC scripts</td>
-<td><code>swenson/scripts/neon_forcing/</code> (<code>download_raw.R</code>, <code>run_download.sh</code>, <code>run_forcing.sh</code>, <code>splice_2017_precip.py</code>, <code>neon_v4_regression.py</code>, <code>neon_forcing_qc.py</code>)</td>
+<td><a href="https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/scripts/neon_forcing"><code>scripts/neon_forcing/</code></a> — <code>download_raw.R</code>, <code>run_download.sh</code>, <code>run_forcing.sh</code>, <code>splice_2017_precip.py</code>, <code>neon_v4_regression.py</code>, <code>neon_forcing_qc.py</code></td>
 </tr>
 <tr>
 <td>Phase record</td>
-<td><code>swenson/phases/I-neon-forcing.md</code></td>
+<td><a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/phases/I-neon-forcing.md"><code>phases/I-neon-forcing.md</code></a></td>
 </tr>
 </tbody>
 </table>

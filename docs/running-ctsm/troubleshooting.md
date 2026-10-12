@@ -63,7 +63,7 @@ Or reduce run length with `STOP_N`.
 
 ```bash
 # Query run directory
-./xmlquery RUNDIR
+RUNDIR=$(./xmlquery --value RUNDIR)
 
 # List logs by modification time (most recent first)
 ls -t $RUNDIR/*.log.*
@@ -75,7 +75,8 @@ ls -t $RUNDIR/*.log.*
 |-----|----------|
 | `cesm.log.*` | Top-level model output |
 | `lnd.log.*` | Land (CLM) component messages |
-| `cpl.log.*` | Coupler output, timing info |
+| `med.log.*` | Mediator (CMEPS) output, timing info |
+| `drv.log.*` | Driver output, run summary |
 | `atm.log.*` | Atmosphere (DATM) messages |
 
 ### Searching for Errors
@@ -157,7 +158,7 @@ See [NEON Atmospheric Forcing](../swenson/neon-forcing.md) for the concrete OSBS
 ./case.submit
 ```
 
-Adds diagnostic output to `cpl.log`.
+Adds diagnostic output from the driver and mediator (`drv.log`, `med.log`).
 
 ### Full Debug Mode (Requires Rebuild)
 
@@ -194,19 +195,22 @@ If you modify source code or build settings:
 
 ## Timing Analysis
 
-Check simulation performance in `cpl.log`:
+Check simulation performance in `med.log`:
 
 ```bash
-grep tStamp cpl.log.* | tail -20
+grep "Model Date" med.log.* | tail -20
 ```
 
 Output shows time per model day:
 ```
-tStamp_write: model date = 10120 0 wall clock = 2024-01-15 09:10:46 avg dt = 58.58 dt = 58.18
+Model Date: 2018-01-03T00:00:00 wall clock = 2026-07-20T11:38:18 avg dt =     1.07 s/day, dt =     1.09 s/day, rate =   216.87 ypd
 ```
 
-- `avg dt` = average seconds per model day
+- `avg dt` = average wall-clock seconds per model day
 - `dt` = seconds for this specific day
+- `rate` = simulated years per wall-clock day (ypd)
+
+The end of `drv.log` also reports overall throughput (`# simulated years / cmp-day`).
 
 Large variations in `dt` suggest system performance issues.
 

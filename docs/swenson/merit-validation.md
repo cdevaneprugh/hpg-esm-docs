@@ -1,12 +1,12 @@
 # MERIT DEM Validation
 
-*Validating the ported pysheds implementation against Swenson's published hillslope dataset using MERIT DEM data.*
+*Verifying the ported pysheds implementation by reproducing Swenson's published hillslope dataset from MERIT DEM data.*
 
 ---
 
 ## Introduction
 
-Before applying the pipeline to OSBS LIDAR data, it was validated against Swenson's published global hillslope dataset (`hillslopes_0.9x1.25_c240416.nc`). The validation used a MERIT DEM tile (`n30w095_dem.tif`, 6000x6000 pixels, ~90m resolution) covering the same region as a published gridcell, allowing direct comparison of all six geomorphic parameters.
+Before applying the pipeline to OSBS LIDAR data, it was checked by reproducing Swenson's published global hillslope dataset (`hillslopes_0.9x1.25_c240416.nc`). This is a code-verification exercise: the reference is Swenson's published product, not independent field observations. The comparison used a MERIT DEM tile (`n30w095_dem.tif`, 6000x6000 pixels, ~90m resolution) covering a published gridcell in northern Louisiana (centered near 32.5° N, 92.5° W), allowing direct comparison of all six geomorphic parameters. Each comparison is over the 16 hillslope elements (4 aspects × 4 HAND bins) of that gridcell, so correlations are computed from n ≤ 16 values (non-finite values, and non-positive values for height, distance, slope and width, are dropped).
 
 The validation proceeded through nine stages, each building on the previous and addressing specific problems as they were discovered.
 
@@ -22,11 +22,11 @@ A full MERIT tile was loaded and processed through flow direction, accumulation,
 |--------|--------|-----------|
 | DEM dimensions | 6000 x 6000 pixels | — |
 | Elevation range | -19.8 to 818.4 m | — |
-| Stream coverage | 2.17% | 1-5% |
-| HAND range | -54 to 619 m | 0-500 m |
-| DTND range | 0 to 22.9 km | 0-50 km |
+| Stream coverage | 2.17% | 0.5-10% |
+| HAND range | -54.05 to 619.06 m | max < 1000 m |
+| DTND range | 0 to 22.9 km | max < 100 km |
 
-All validation criteria passed. Processing completed in 3.4 minutes.
+The criteria column shows what the Stage 1 script actually tested. These are loose plausibility checks (no lower bound on HAND was tested), and all three passed. The negative HAND values came from computing flow directions on the conditioned (inflated) DEM while computing HAND on the raw DEM, so pixels inside filled depressions sat below their drainage cell. Later stages and the regression test compute HAND on the inflated DEM, as Swenson's code does. Processing took 3.4 minutes.
 
 ---
 
@@ -42,7 +42,7 @@ FFT analysis of the DEM Laplacian was performed at multiple region sizes to conf
 | 1000 x 1000 | 8.2 | 760 |
 | 2000 x 2000 | 8.2 | 758 |
 
-The characteristic length scale was consistent across region sizes: **Lc = 8.2 pixels (763 m)**. The best-fit spectral model was lognormal in all cases. The derived accumulation threshold was **34 cells** (via Swenson's formula: A_thresh = 0.5 * Lc^2).
+The characteristic length scale was consistent across region sizes: **Lc = 8.2 pixels (763 m)**. (The current regression test uses 500, 1000 and 3000 pixel regions plus the full tile, Lc = 766, 760, 754 and 2,679 m; the median is still 763 m.) The best-fit spectral model was lognormal in all cases. The derived accumulation threshold was **34 cells** (via Swenson's formula: A_thresh = 0.5 * Lc^2).
 
 ---
 
@@ -72,20 +72,20 @@ All 16 elements were populated with physically reasonable values.
 | Height | 0.999 | 6.7% | Excellent |
 | Slope | 0.987 | 8.2% | Excellent |
 | Distance | 0.986 | 34.1% | Good correlation, systematic offset |
-| Area | 0.730 | Large | Unit mismatch |
-| Aspect | 0.650 | Large | Degrees vs radians |
+| Area | 0.730 | Large | Large relative error from units/normalization; low correlation not explained by units |
+| Aspect | 0.650 | Large | Degrees vs radians (relative error); linear correlation used on circular data |
 | Width | 0.090 | 41.3% | Poor — requires investigation |
 
-Height and slope showed excellent agreement, confirming that the HAND and flow routing implementation was correct. Three problems were identified: a degrees-vs-radians mismatch for aspect, an area unit discrepancy, and a systematic width calculation bug.
+Height and slope showed excellent agreement, confirming that the HAND and flow routing implementation was correct. Note that Stage 4 compared against published values averaged over every gridcell in the processed region, not a single gridcell. Three problems were identified: aspect was compared in different units and with a linear correlation, area was compared in different units, and the width calculation had a systematic bug.
 
 ---
 
 ## Stage 5: Unit Conversion Fix
 
-**Goal:** Fix aspect and area unit mismatches.
+**Goal:** Fix aspect and area comparison problems.
 
-- **Aspect:** Converting from degrees to radians improved circular correlation from 0.65 to **0.9996**.
-- **Area:** The relative distribution (fraction per bin) correlated at 0.73 despite an absolute scale difference of ~26,000x between m^2 and published units.
+- **Aspect:** Aspect is a circular variable (0° and 360° are the same direction), so a linear Pearson correlation is the wrong statistic, and converting degrees to radians alone cannot change Pearson r. Converting to radians and switching to a circular (sin/cos) correlation raised the aspect correlation from 0.65 to **0.9996**.
+- **Area:** Normalizing to fractions per bin left the correlation unchanged, because Pearson r ignores linear scale. The ~26,000x absolute scale difference (units/normalization) only affected the relative error. The low area correlation was resolved later by region alignment, the mandatory 2 m bin, and the N/S aspect fix (Stages 7-8).
 
 !!! note "Width bug identified"
     During this stage, all elevation bins within each aspect were found to have identical width values — a clear bug since widths should decrease from outlet toward ridge.
@@ -198,7 +198,7 @@ Five thresholds were tested:
 | 100 | -0.01 |
 | 200 | -0.44 |
 
-The best correlation (0.83 at threshold=20) was only marginally better than the baseline. Higher thresholds degraded rapidly. The remaining ~17% unexplained variance was attributed to differences in DEM preprocessing, edge effects from spatial extent differences, and undocumented methodology differences in the published data.
+The best correlation (0.83 at threshold=20) was only marginally better than the baseline. Higher thresholds degraded rapidly. (The 34-cell baseline here, 0.80, differs from Stage 8's 0.82; both are the values the logs report.) At r = 0.83, r² ≈ 0.69, so ~31% of the area-fraction variance remained unexplained. It was attributed to differences in DEM preprocessing, edge effects from spatial extent differences, and undocumented methodology differences in the published data.
 
 ---
 
@@ -208,12 +208,12 @@ After the nine validation stages and subsequent post-audit improvements (see bel
 
 | Parameter | Correlation | Assessment |
 |-----------|-------------|------------|
-| Height | 0.9979 | Excellent |
-| Distance | 0.9992 | Excellent |
-| Slope | 0.9839 | Excellent |
-| Aspect | 1.0000 | Excellent |
-| Width | 0.9919 | Excellent |
-| Area | 0.9244 | Excellent |
+| Height | 0.9979 | Excellent (r ≥ 0.98) |
+| Distance | 0.9992 | Excellent (r ≥ 0.98) |
+| Slope | 0.9839 | Excellent (r ≥ 0.98) |
+| Aspect (circular) | 1.0000 | Excellent (r ≥ 0.98) |
+| Width | 0.9919 | Excellent (r ≥ 0.98) |
+| Area fraction | 0.9244 | Good |
 
 All six parameters achieved >0.92 correlation with Swenson's published data, with five above 0.98. These values serve as the regression baseline — the automated regression test confirms them within 0.01 tolerance on each run.
 
@@ -232,7 +232,7 @@ The area fraction gap (0.92 vs 1.0) was investigated through 15 hypotheses durin
 | Accumulation threshold sensitivity | Secondary | ~2% sensitivity per 3x threshold change |
 | Per-aspect bin boundary variation | Minor | Small HAND differences push the Q25 statistic across the mandatory 2m threshold differently per aspect |
 
-The 0.92 correlation represents the practical ceiling for this validation approach. Height, distance, slope, aspect, and width are all *means within bins* and are insensitive to small changes in bin boundaries. Area fraction is the *total per bin*, making it inherently more sensitive to bin boundary choices and stream network differences.
+The 0.92 correlation is the best achieved so far with this approach; no test established it as a hard ceiling. Height, distance, slope, aspect, and width are all *means within bins* and are insensitive to small changes in bin boundaries. Area fraction is the *total per bin*, making it inherently more sensitive to bin boundary choices and stream network differences.
 
 ---
 
@@ -242,7 +242,7 @@ The 0.92 correlation represents the practical ceiling for this validation approa
 
 | Stage | Bug | Root Cause | Fix |
 |-------|-----|-----------|-----|
-| 5 | Aspect correlation 0.65 | Degrees vs radians | Convert to radians for comparison |
+| 5 | Aspect correlation 0.65 | Linear correlation used on circular data (plus degrees vs radians) | Convert to radians and use a circular (sin/cos) correlation |
 | 6 | Width identical across bins | Raw pixel areas instead of fitted trapezoidal areas | Two-pass width calculation with `quadratic()` solver |
 | 7 | Area 42% spatial overlap | Region not aligned to published gridcell | Explicit gridcell boundary extraction |
 | 7 | Bin1 constraint ignored | Optional vs mandatory 2m threshold | Rewrote `compute_hand_bins()` per Swenson's algorithm |
@@ -284,11 +284,11 @@ Catchment-level aspect averaging was the single largest improvement (+0.08). Swe
 The nine stage scripts were consolidated into a single regression script (`merit_regression.py`) that serves as an automated regression test for the pysheds fork. Run after any changes to `pgrid.py`:
 
 ```bash
-cd $TOOLS/swenson
+cd /path/to/hpg-esm-tools/swenson
 sbatch scripts/merit_validation/merit_regression.sh
 ```
 
-The script computes Lc via multi-region FFT and all six hillslope parameters for the published MERIT gridcell, then asserts:
+The script computes Lc via multi-region FFT and all six hillslope parameters for the published MERIT gridcell, then asserts the following. The tolerance compares the code against its own earlier baseline, not against new data:
 
 - **Lc**: Within 5% of 763m
 - **All 6 parameter correlations**: Within 0.01 of expected baselines

@@ -28,7 +28,7 @@ Key terms for CTSM development on HiPerGator.
 
 **CLM_USRDAT** - Resolution setting for user-provided datasets. Used with subset data for single-point runs.
 
-**Compset** - Component set. A predefined combination of model components and configurations. Format: `YYYYA_B_C_D_E_F` where letters represent different components. Example: `I1850Clm60BgcCrop` = Pre-industrial (1850), CLM 6.0 with BGC and crops.
+**Compset** - Component set. A predefined combination of model components and configurations. Each compset has a short alias and a long name of the form `TIME_ATM_LND_ICE_OCN_ROF_GLC_WAV[_BGC]`, where each component may carry a `%` modifier. Example: the alias `I1850Clm60BgcCrop` has the long name `1850_DATM%GSWP3v1_CLM60%BGC-CROP_SICE_SOCN_MOSART_SGLC_SWAV` (pre-industrial 1850, data atmosphere, CLM 6.0 with BGC and crops).
 
 **Namelist** - Fortran configuration file format. Key files: `user_nl_clm`, `user_nl_datm_streams`.
 
@@ -38,7 +38,7 @@ Key terms for CTSM development on HiPerGator.
 
 ## Output Files
 
-**History files** - Model output files containing time-varying data (`.h0.nc`, `.h1.nc`, etc.). Configured via `hist_*` namelist variables. Use for analysis and plotting.
+**History files** - Model output files containing time-varying data (`.clm2.h0a.*.nc`, `.clm2.h1a.*.nc`, etc.; since ctsm5.3.062 averaged and instantaneous fields go to separate `hXa` and `hXi` files). Configured via `hist_*` namelist variables. Use for analysis and plotting.
 
 **Restart files** - Checkpoint files (`.r.nc`) that capture the complete model state. Used to continue simulations from a specific point. Required for branch runs and spinup continuation.
 
@@ -62,7 +62,7 @@ Key terms for CTSM development on HiPerGator.
 
 ## Spinup
 
-**AD spinup** - Accelerated Decomposition spinup. First phase (~200 years) with accelerated soil carbon turnover.
+**AD spinup** - Accelerated Decomposition spinup. First phase (~200 years is the NCAR guideline; site runs may differ) with accelerated soil carbon turnover.
 
 **Post-AD spinup** - Second phase (several hundred years) with normal turnover rates to reach equilibrium.
 

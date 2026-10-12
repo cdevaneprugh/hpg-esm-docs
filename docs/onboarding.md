@@ -19,8 +19,8 @@ HiPerGator is UF's supercomputer - a cluster of connected nodes that share resou
 
 | Path | Purpose | Notes |
 |------|---------|-------|
-| `/home/$USER/` | Config files, small files | 40GB quota, backed up |
-| `/blue/<group>/$USER/` | Active projects, code, data | Group allocation, fast NVME |
+| `/home/$USER/` | Config files, small files | 40GB quota, not backed up; daily and weekly snapshots in `~/.snapshot` |
+| `/blue/<group>/$USER/` | Active projects, code, data | Group allocation, Lustre parallel filesystem, not backed up |
 | `/orange/<group>/` | Archival storage | Slow - don't use for active work |
 
 Replace `<group>` with your research group's allocation (e.g., `gerber`, `biology`, etc.).
@@ -54,6 +54,14 @@ export CIME_SCRIPTS="$CTSMROOT/cime/scripts"
 
 # Your group's input data location
 export INPUT_DATA="/blue/<group>/earth_models/inputdata"
+
+# Shared single-point subset data (used on the Running CTSM pages)
+export SUBSET_DATA="/blue/<group>/earth_models/shared.subset.data"
+
+# Analysis scripts and the pysheds fork (used on the hillslope pages)
+export TOOLS="$BLUE/hpg-esm-tools"
+export PYSHEDS_FORK="$BLUE/pysheds_fork"
+alias pysheds-env='export PYTHONPATH="$PYSHEDS_FORK:$PYTHONPATH"'
 ```
 
 After editing, reload: `source ~/.bashrc`
@@ -84,7 +92,7 @@ scontrol show job <job_id>
 Each group has its own resource limits. Check your group's QoS:
 
 ```bash
-showQos -A <group>
+showQos <group>
 ```
 
 This shows your group's CPU, memory, and GPU limits. CTSM cases will fail if they request more resources than your QoS allows.
@@ -105,10 +113,11 @@ du -sh /blue/<group>/$USER/
 ## Learning Resources
 
 ### HiPerGator Documentation
-- [Getting Started](https://help.rc.ufl.edu/doc/Getting_Started)
-- [Training Videos](https://help.rc.ufl.edu/doc/Training_Videos)
-- [SLURM Scheduling](https://help.rc.ufl.edu/doc/HPG_Scheduling)
-- [Module System](https://help.rc.ufl.edu/doc/Modules)
+- [Getting Started](https://docs.rc.ufl.edu/quickstart/)
+- [Training](https://docs.rc.ufl.edu/training/)
+- [SLURM Scheduling](https://docs.rc.ufl.edu/scheduler/)
+- [Module System](https://docs.rc.ufl.edu/software/modules_basics/)
+- [Storage](https://docs.rc.ufl.edu/quickstart/practical_storage/)
 
 ### Linux Command Line
 - [Linux Journey](https://linuxjourney.com/) - Comprehensive tutorials

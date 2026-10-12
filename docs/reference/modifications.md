@@ -39,49 +39,52 @@ add_library(piof SHARED IMPORTED)
 
 **Why it works at NCAR:** Their systems likely have PIO as static libraries, or use different CMake handling.
 
-**Contribution candidate:** Yes - genuine bug affecting anyone using shared PIO.
+**Upstream status:** Merged as [ESCOMP/CTSM #3700](https://github.com/ESCOMP/CTSM/pull/3700) (2026-02-18), first released in `ctsm5.4.021`.
 
 ### 2. mksurfdata.F90 - Format Specifiers
 
 **File:** `tools/mksurfdata_esmf/src/mksurfdata.F90`
 
-**Problem:** GCC 10+ requires explicit width in Fortran format specifiers. The `I` format without width is a legacy extension:
+**Problem:** gfortran requires an explicit width in Fortran `I` edit descriptors. The `I` format without a width is a legacy extension:
 
 ```fortran
 ! Buggy - no width specified
 write(ndiag,'(2(a,I))') ' npes = ', npes, ' grid size = ', grid_size
+read(nfpio, '(i)', iostat=ier) pio_iotype
 ```
 
-**Fix:** Add explicit widths:
+**Fix:** Use `I0` (minimal width) for the two writes and an explicit width for the read:
 
 ```fortran
-write(ndiag,'(2(a,I12))') ' npes = ', npes, ' grid size = ', grid_size
+write(ndiag,'(2(a,I0))') ' npes = ', npes, ' grid size = ', grid_size              ! line 271
+read(nfpio, '(I6)', iostat=ier) pio_iotype                                        ! line 295
+write (ndiag,'(a, I0, a, I0)') ' node_count = ', node_count, ' grid_size = ', grid_size  ! line 328
 ```
 
-**Lines modified:** 271, 295, 328
+**Lines modified:** 271 and 328 (writes), 295 (read)
 
-**Why it works at NCAR:** They likely use Intel compilers or older GCC versions.
+**Why it works at NCAR:** They likely use Intel compilers, which accept the width-less form.
 
-**Contribution candidate:** Yes - portability fix for modern GCC.
+**Upstream status:** Merged as [ESCOMP/CTSM #3701](https://github.com/ESCOMP/CTSM/pull/3701) (2026-03-12), first released in `ctsm5.4.025`. The upstream lines are identical to the fork's.
 
-### 3. gen_mksurfdata_build - GCC 14 Flags
+### 3. gen_mksurfdata_build - GCC Compatibility Flags
 
 **File:** `tools/mksurfdata_esmf/gen_mksurfdata_build`
 
-**Problem:** GCC 14 is stricter about legacy Fortran code patterns.
+**Problem:** Since GCC 10, gfortran treats two legacy patterns as hard errors rather than warnings: mismatched argument types between calls to the same procedure (for example MPI calls through `mpif.h`), and BOZ literal constants used outside `DATA` statements. CIME case builds already receive the relevant flags from the stock `ccs_config/machines/cmake_macros/gnu.cmake` (for GCC 10 and later), but mksurfdata has its own CMake build that does not use those macros. HiPerGator builds with GCC 14.2.0.
 
-**Fix:** Add compatibility flags:
+**Fix:** Pass the compatibility flags to the mksurfdata CMake configure step (line 170):
 
 ```bash
 -DCMAKE_Fortran_FLAGS=" -fallow-argument-mismatch -fallow-invalid-boz -ffree-line-length-none"
 ```
 
 **Flags explained:**
-- `-fallow-argument-mismatch`: Allow type mismatches in procedure calls
-- `-fallow-invalid-boz`: Allow invalid BOZ literal constants
-- `-ffree-line-length-none`: No line length limit
+- `-fallow-argument-mismatch`: Downgrade argument type mismatches from errors to warnings
+- `-fallow-invalid-boz`: Downgrade invalid BOZ literal constants from errors to warnings
+- `-ffree-line-length-none`: Remove the 132-column free-form line limit
 
-**Contribution candidate:** Maybe - these are workarounds, not fixes for underlying issues.
+**Upstream status:** Not upstreamed. These are workarounds, not fixes for the underlying code patterns.
 
 ### 4. single_point_case.py - MPILIB
 
@@ -110,7 +113,7 @@ write(ndiag,'(2(a,I12))') ' npes = ', npes, ' grid size = ', grid_size
 
 **Why it doesn't work with modern CTSM:**
 
-CTSM 5.3+ uses CDEPS/CMEPS (Community Data Models for Earth Prediction Systems) for atmospheric data coupling, replacing the older data model. CDEPS requires **ESMF** (Earth System Modeling Framework).
+CTSM 5.3+ uses CDEPS (Community Data models for Earth Prediction Systems) for atmospheric data and CMEPS (the NUOPC-based Community Mediator for Earth Prediction Systems) for coupling, replacing the MCT-based data models and CPL7 coupler. CDEPS requires **ESMF** (Earth System Modeling Framework).
 
 On HiPerGator, ESMF is built with OpenMPI. When you try to build CTSM with `MPILIB=mpi-serial`:
 
@@ -207,9 +210,9 @@ Forking gives a single source of truth.
 
 | Modification | Status | Notes |
 |--------------|--------|-------|
-| CMakeLists STATIC/SHARED | Planned | Clear bug |
-| Format specifiers | Planned | Portability fix |
-| GCC 14 flags | Under review | Workarounds vs fixes |
+| CMakeLists STATIC/SHARED | Merged ([#3700](https://github.com/ESCOMP/CTSM/pull/3700), `ctsm5.4.021`) | Still needed on 5.3.x |
+| Format specifiers | Merged ([#3701](https://github.com/ESCOMP/CTSM/pull/3701), `ctsm5.4.025`) | Still needed on 5.3.x |
+| GCC compatibility flags | Not upstreamed | Local workaround |
 | HiPerGator paths | Not applicable | Site-specific |
 | ccs_config | Not applicable | Site-specific |
 

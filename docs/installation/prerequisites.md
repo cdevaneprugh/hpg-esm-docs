@@ -70,7 +70,7 @@ If you're familiar with conda, you might wonder if you can manage CTSM dependenc
 
 ### ESMF Requires Real MPI
 
-Modern CTSM (5.3+) uses CDEPS/CMEPS for atmospheric data coupling. This component **requires ESMF** (Earth System Modeling Framework), which in turn requires a real MPI implementation.
+Modern CTSM (5.3+) uses CDEPS (data models) and CMEPS (the NUOPC mediator) for atmospheric data coupling. These components **require ESMF** (Earth System Modeling Framework), which in turn requires a real MPI implementation.
 
 On HiPerGator, ESMF is built with OpenMPI and configured for SLURM. Conda's MPI packages often lack:
 
@@ -148,8 +148,8 @@ module restore ctsm-modules
 
 git clone https://github.com/NCAR/ParallelIO.git parallelio
 cd parallelio
-mkdir bld
 
+# In-source configure: run from parallelio/, install into parallelio/bld
 cmake \
   -DNetCDF_C_PATH=/apps/gcc/14.2.0/openmpi/5.0.7/netcdf-c/4.9.3 \
   -DNetCDF_Fortran_PATH=/apps/gcc/14.2.0/openmpi/5.0.7/netcdf-f/4.6.2 \
@@ -158,7 +158,7 @@ cmake \
   -DCMAKE_INSTALL_PREFIX=`pwd`/bld \
   -DCMAKE_INSTALL_RPATH=`pwd`/src/gptl \
   -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=TRUE \
-  ../
+  .
 
 make
 make install

@@ -44,6 +44,7 @@ conda activate ctsm_pylib
     --site OSBS \
     --create-surface \
     --create-datm \
+    --create-user-mods \
     --datm-syr 2000 \
     --datm-eyr 2020 \
     --outdir $SUBSET_DATA/OSBS
@@ -57,7 +58,8 @@ conda activate ctsm_pylib
 | `--site` | Site name (used in filenames) |
 | `--create-surface` | Generate surface data |
 | `--create-datm` | Generate atmospheric forcing |
-| `--datm-syr`, `--datm-eyr` | Forcing data year range |
+| `--create-user-mods` | Generate the `user_mods/` directory used by `create_newcase` (not created without this flag) |
+| `--datm-syr`, `--datm-eyr` | Forcing data year range (defaults 1901 and 2014) |
 | `--outdir` | Output directory |
 
 ### Subset Data Output
@@ -114,13 +116,15 @@ cd $CASES/OSBS.I1850Clm60BgcCrop
 
 ## Available Forcing Data
 
-Our fork is configured for CRUNCEP forcing:
+The fork's `default_data_*.cfg` files keep upstream's default forcing and change only the input data root (`clmforcingindir`) to the HiPerGator path:
 
-| Dataset | Years | Description |
-|---------|-------|-------------|
-| CRUNCEPv7 | 1901-2016 | 6-hourly reanalysis |
+| Dataset | Years | Used by |
+|---------|-------|---------|
+| CRUJRA v2.5 (`atm_forcing.datm7.CRUJRA.0.5d.c20241231`) | 1901-2023 | `subset_data --create-datm` default |
+| CRUNCEPv7 (`atm_forcing.datm7.cruncep_qianFill.0.5d.v7.c160715`) | 1901-2016 | Our shared OSBS subset data (generated with a custom cfg) |
 
-The `default_data_*.cfg` files in the fork specify HiPerGator paths.
+!!! warning "CRUJRA is not in the shared input data"
+    The CRUJRA directory is not currently present under `/blue/<group>/earth_models/inputdata/atm/datm7/`, so `--create-datm` with the default cfg fails until it is downloaded. Our existing OSBS subset data was generated from CRUNCEPv7, which is present.
 
 For OSBS specifically, a **site-native NEON DATM forcing dataset** is also available (2017-02 → 2025-06), produced by an offline fork of the NCAR-NEON pipeline. It is wired in through a `user_nl_datm_streams` `datafiles` override rather than `--create-datm`. See [NEON Atmospheric Forcing](../swenson/neon-forcing.md); note that **cycled** NEON runs require `dtlimit = -1` on the stream (see [Troubleshooting](troubleshooting.md#cycled-datm-forcing-crash-dtlimit)).
 

@@ -33,7 +33,7 @@ cd $CIME_SCRIPTS
 | `--compset` | Component set (model configuration) |
 | `--res` | Resolution (grid) |
 | `--machine` | Target machine |
-| `--run-unsupported` | Required for non-NCAR machines |
+| `--run-unsupported` | Allows a compset/grid combination that CESM has not tested or scientifically supported (needed for `CLM_USRDAT` single-point grids; unrelated to the machine) |
 
 ### 2. Configure the Case
 
@@ -196,10 +196,11 @@ cd $CASES/my_branch_case
 ./xmlchange RUN_TYPE=branch
 ./xmlchange RUN_REFCASE=source_case_name
 ./xmlchange RUN_REFDATE=0005-01-01
-./xmlchange RUN_REFDIR=/path/to/source/case/run
+./xmlchange RUN_REFDIR=/path/to/source/case/rest/0005-01-01-00000
 
-# Copy restart files (if not in RUN_REFDIR)
-./xmlchange GET_REFCASE=FALSE
+# TRUE: case.submit stages the restart and rpointer files from RUN_REFDIR into RUNDIR
+# FALSE: you must copy them into RUNDIR yourself
+./xmlchange GET_REFCASE=TRUE
 
 ./case.setup
 ./case.build
@@ -217,7 +218,8 @@ Hybrid runs initialize from restart files but allow configuration changes:
 ./xmlchange RUN_TYPE=hybrid
 ./xmlchange RUN_REFCASE=source_case_name
 ./xmlchange RUN_REFDATE=0005-01-01
-./xmlchange GET_REFCASE=FALSE
+./xmlchange RUN_REFDIR=/path/to/source/case/rest/0005-01-01-00000
+./xmlchange GET_REFCASE=TRUE   # FALSE means you stage restart files into RUNDIR yourself
 ```
 
 Use hybrid runs when you need to:

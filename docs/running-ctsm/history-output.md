@@ -168,9 +168,12 @@ Or check the CTSM documentation: [History Fields](https://escomp.github.io/CTSM/
 History files follow this naming convention:
 
 ```
-<case_name>.clm2.h0.YYYY-MM.nc    # Monthly h0 stream
-<case_name>.clm2.h1.YYYY-MM-DD.nc # Daily h1 stream
+<case_name>.clm2.h0a.YYYY-MM.nc          # Monthly h0 stream, averaged fields
+<case_name>.clm2.h0i.YYYY-MM.nc          # Monthly h0 stream, instantaneous fields
+<case_name>.clm2.h1a.YYYY-MM-DD-SSSSS.nc # h1 stream with multiple samples per file
 ```
+
+Since ctsm5.3.062, each stream writes averaged (`hXa`) and instantaneous (`hXi`) fields to separate files; an `hXi` file only appears when the stream has instantaneous fields. The date stamp is the time of the file's first sample: `YYYY-MM` for monthly files with one sample, otherwise `YYYY-MM-DD-SSSSS`.
 
 ## Tips
 

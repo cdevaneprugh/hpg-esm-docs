@@ -12,11 +12,11 @@ Two NEON-derived forcing products exist for OSBS:
 
 | Product | Coverage | Provenance |
 |---|---|---|
-| **Pre-built NCAR-NEON v4** | 2018-01 → 2024-12 (84 files) | Generated on NEON's cloud by the standard NCAR-NEON pipeline; adopted here as the **reference** the custom set is validated against |
+| **Pre-built NCAR-NEON v4** | 2018-01 → 2024-12 (84 files) | Generated on NEON's cloud by the standard NCAR-NEON pipeline; adopted here as the **reference** the custom set is checked against |
 | **Custom full-record set** | 2017-02 → 2025-06 (101 files) | Generated **offline on HiPerGator** by a fork of the NCAR-NEON pipeline (this page); a strict **superset of v4** |
 
 !!! note "Adoption status"
-    The custom forcing is **engineering-complete and validated**, and is *offered* for the production respin. That adoption is a PI-gated decision; until it is made, the operative case remains CRUNCEP-driven. This page documents how the forcing was produced, not a change to the running configuration.
+    The custom forcing is **engineering-complete and verified**, and is *offered* for the production respin. That adoption is a PI-gated decision; until it is made, the operative case remains CRUNCEP-driven. This page documents how the forcing was produced, not a change to the running configuration.
 
 ---
 
@@ -35,9 +35,9 @@ Forcing is built from the OSBS NEON tower (D03) instrument products, **RELEASE-2
 | Relative humidity (RH) | DP1.00098.001 — Relative Humidity | 2015-06 |
 | *(gap-fill inputs)* | DP1.00024.001 (PAR), DP1.00014.001 (direct/diffuse SW) | — |
 
-Carbon dioxide is **not** a forcing-file variable — CTSM supplies CO₂ through a separate mechanism (`CCSM_CO2_PPMV` or a `co2tseries` stream). NEON's bundled eddy-covariance product (DP4.00200.001, from 2017-02) is a validation target, not an input; its role here is discussed under [the CO₂-partition edit](#the-offline-conversion-edits) and [Validation](#validation).
+Carbon dioxide is **not** a forcing-file variable — CTSM supplies CO₂ through a separate mechanism (`CCSM_CO2_PPMV` or a `co2tseries` stream). NEON's bundled eddy-covariance product (DP4.00200.001, from 2017-02) is a validation target, not an input; its role here is discussed under [the CO₂-partition edit](#the-offline-conversion-edits) and [Verification](#verification).
 
-The underlying pipeline is NCAR-NEON (Wieder et al., 2023, *Geosci. Model Dev.* 16, 5979–6000; DOI [10.5194/gmd-16-5979-2023](https://doi.org/10.5194/gmd-16-5979-2023)), which pulls raw tower data through the NEON API, gap-fills by marginal distribution sampling (Reichstein et al., 2005) as implemented in **REddyProc** (Wutzler et al., 2018, *Biogeosciences*), and writes CTSM-DATM NetCDF.
+The underlying pipeline is NCAR-NEON (Lombardozzi et al., 2023, *Geosci. Model Dev.* 16, 5979–6000; DOI [10.5194/gmd-16-5979-2023](https://doi.org/10.5194/gmd-16-5979-2023)), which pulls raw tower data through the NEON API, gap-fills by marginal distribution sampling (Reichstein et al., 2005) as implemented in **REddyProc** (Wutzler et al., 2018, *Biogeosciences*), and writes CTSM-DATM NetCDF.
 
 ---
 
@@ -60,7 +60,7 @@ Every modification, as a reproducibility record:
 | Fail-fast deps | `packReq` auto-install loop → `requireNamespace()`-or-`stop()` | The `neon-forcing` environment is complete; never trigger a live-CRAN install mid-run |
 | Local output (**M**) | `MethOut` default `[2]` (GCS) → `[1]` (local) | Upstream uploads to a Google Cloud Storage bucket needing a credential we lack; write to disk instead |
 | Offline switch | added `doDnld <- FALSE` | Master gate — every network fetch and cleanup below is guarded by this flag |
-| Archive path (**D**) | `DirDnld` `/home/ddurden/…` → `/blue/gerber/earth_models/neon/raw` | Repoint from the author's home directory to the shared OSBS raw archive |
+| Archive path (**D**) | `DirDnld` upstream default (a path in the upstream developer's home directory) → `/blue/gerber/earth_models/neon/raw` | Repoint from the upstream default path to the shared OSBS raw archive |
 | Working-copy isolation (**C**) | copy staged zips to a per-session `tempdir()`, repoint `DirDnld` there | `stackByTable`/`stackEddy` mutate — and delete — their input zips; the read-only shared archive must never be stacked in place |
 | Guarded EC download (**G**) | wrap the EC-bundle `zipsByProduct` in `if(doDnld)` | Bundle is pre-staged; skip the network fetch offline |
 | Window clip (**T**) | clip the regularized flux frame to `DATEBGN`/`DATEEND` (REddyProc period-end convention) | Lets a sub-year window run against a full archive → chunked (annual) generation. REddyProc requires ≥ 90 days of flux, so windows are annual, not monthly |
@@ -68,12 +68,12 @@ Every modification, as a reproducibility record:
 | Secondary-precip product | `PRECTmms_MDS`: DP1.00006.001 → DP1.00045.001 | The stock secondary-precip product has zero months at OSBS; OSBS's secondary gauge is the tipping bucket DP1.00045.001 |
 | Offline met stacking (**S**) | met `loadByProduct` (online) → `stackByTable` of pre-staged zips, fresh `tempdir()` per call | The core online→offline swap; per-call isolation because `FLDS_MDS` and `Rg` both map to DP1.00023.001 and stacking deletes its inputs |
 | Drop live metadata call | `getProductInfo("DP1.00044.001")$siteCodes` → `sitePrecip <- "OSBS"` + offline primary-precip stack | Removes the last live-network call; OSBS is verified to carry primary precip |
-| CO₂-partition resilience (**P2**) | `sMRFluxPartition`/`sGLFluxPartition` → non-fatal `try()`; NaN-fill missing CO₂-derived evaluation columns | OSBS eddy-covariance CO₂ flux (NEE/FC) is **absent at the NEON source** (raw flux all-NA, its own QC flag all-bad), so flux partitioning cannot run. The atmospheric forcing uses no CO₂ variable; this only lets the co-written evaluation file finalize |
+| CO₂-partition resilience (**P2**) | `sMRFluxPartition`/`sGLFluxPartition` → non-fatal `try()`; NaN-fill missing CO₂-derived evaluation columns (their `_fqc` flags set to 0) | OSBS eddy-covariance CO₂ flux (NEE/FC) is **absent at the NEON source** (raw flux all-NA, its own QC flag all-bad), so flux partitioning cannot run. The atmospheric forcing uses no CO₂ variable; this only lets the co-written evaluation file finalize |
 
 !!! warning "The wipe guard (edit W) is load-bearing"
     Upstream, `DirDnld` is a scratch download directory that the script deletes on exit. Offline, `DirDnld` is repointed at the shared raw archive (edit D). Without edit W, a normal run would erase `/blue/gerber/earth_models/neon/raw`. Edit C (per-session working copies) is the primary safeguard; edit W is the backstop.
 
-The **absent OSBS CO₂ flux** (edit P2) is a genuine NEON data gap, not an artifact of the offline conversion — the energy fluxes are intact, and the pre-built v4 product, which exists for OSBS, can only have been generated the same way. The consequence is that **no CO₂-flux validation is possible for OSBS**; it does not affect the meteorological forcing.
+The **absent OSBS CO₂ flux** (edit P2) is a genuine NEON data gap, not an artifact of the offline conversion — the energy fluxes are intact, and the pre-built v4 product, which exists for OSBS, was presumably generated the same way (inferred, not confirmed). The consequence is that **no CO₂-flux validation was possible for OSBS 2018**, the year inspected; whether other years carry usable CO₂ flux was not checked. It does not affect the meteorological forcing.
 
 ---
 
@@ -108,11 +108,11 @@ Generation is a two-step pipeline: an authenticated raw download, then a fully o
 
 NEON's **primary weighing gauge (DP1.00044.001) was physically offline at OSBS from July through December 2017** (raw values all-NA, final QC flag set), so the generator wrote gap-fill for those six months. The record was repaired from the **secondary tipping bucket (DP1.00045.001)** as a post-processing step (`splice_2017_precip.py`) — **no source edit**: the substituted precipitation is written back with its quality flag set to `PRECTmms_fqc = 5`, and a backup is written first.
 
-The substitution was validated three ways:
+The substitution was checked three ways:
 
-- The two gauges agree to **r = 0.96 / ~2 % on monthly totals** across their 35 overlapping months.
+- The two gauges correlate at **r = 0.96** and their totals agree within **~2 %** (both ~1330–1350 mm/yr) over 35 mutually complete months (2018–2021).
 - The spliced values **bit-match** the raw tipping-bucket record at each UTC timestamp.
-- The heaviest September-2017 rainfall lands on **2017-09-10**, coincident with **Hurricane Irma**'s passage over north-central Florida — an independent temporal-alignment check.
+- The heaviest September-2017 rainfall (163 mm on the UTC day) lands on **2017-09-10**, the date of **Hurricane Irma**'s Florida landfall, which serves as a temporal-alignment check.
 
 The likely reason the pre-built v4 set begins in 2018 is this same 2017 gauge outage; recovering it is one of the ways the custom record extends v4.
 
@@ -135,11 +135,11 @@ Humidity is carried as **relative humidity (`RH`, %)**; CDEPS converts RH → sp
 
 ---
 
-## Validation
+## Verification
 
-The custom dataset was validated mechanically and scientifically before hand-off.
+The custom dataset was checked mechanically and for plausibility before hand-off. These are reproduction and consistency checks against an existing product and the model, not comparisons against independent observations.
 
-**Reproduce-v4 (fidelity).** Run over 2018 and compared to pre-built v4 timestep-by-timestep: at every step where both records carry a real measurement (`fqc = 0`), the two are **bit-identical for all seven measured variables**. All divergence is confined to gap-filled timesteps (differing RELEASE and gap-fill-window). Precipitation annual total differs by +2.9 %. Where the pipeline carries a real measurement, it reproduces v4 to machine precision. *(`neon_v4_regression.py` — the forcing analog of the MERIT regression test.)*
+**Reproduce-v4 (fidelity).** Run over 2018 and compared to pre-built v4 timestep-by-timestep: at every step where both records carry a real measurement (`fqc = 0`), `FLDS`, `FSDS`, `RH`, `PSRF`, and `TBOT` are **bit-identical** (RMS = max |Δ| = 0). `PRECTmms` and `WIND` are near-identical: both-measured RMS 4.0×10⁻⁷ mm/s and 4.6×10⁻⁶ m/s, max |Δ| 3.1×10⁻⁵ mm/s and 2.6×10⁻⁴ m/s, r ≥ 0.9999995. All substantive divergence is in gap-filled timesteps (differing RELEASE and gap-fill window). Precipitation annual total differs by +2.9 %. *(`neon_v4_regression.py` — the forcing analog of the MERIT regression test.)*
 
 **Whole-record QC.** Structural checks (record count = days × 48, monotonic time, quality flags present), gap-fill fractions, and physical-range/climatology sniff tests across all 101 files — **0 NaN**. *(`neon_forcing_qc.py`.)*
 
@@ -172,4 +172,4 @@ To drive a CTSM case with this forcing (compset, coordinates, stream settings, a
 
 - [NEON Sites](../research/neon-sites.md) — site background and the OSBS reference cases
 - [Swenson Implementation Overview](index.md) — the hillslope-parameter track this forcing work runs alongside
-- NCAR-NEON pipeline — Wieder et al. (2023), *Geosci. Model Dev.* 16, 5979–6000, DOI [10.5194/gmd-16-5979-2023](https://doi.org/10.5194/gmd-16-5979-2023)
+- NCAR-NEON pipeline — Lombardozzi, D. L., Wieder, W. R., et al. (2023), Overcoming barriers to enable convergence research by integrating ecological and climate sciences: the NCAR–NEON system Version 1, *Geosci. Model Dev.* 16, 5979–6000, DOI [10.5194/gmd-16-5979-2023](https://doi.org/10.5194/gmd-16-5979-2023)

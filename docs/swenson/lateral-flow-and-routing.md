@@ -13,7 +13,7 @@ use_hillslope         = .true.    ! activates hillslope-mode column structure
 use_hillslope_routing = .true.    ! activates stream-side machinery (optional)
 ```
 
-A 2026-05-19 audit of CTSM 5.3.085 (`git rev dc3aa5ddc`) traced every source-code site gated by `use_hillslope_routing` and cross-checked the conclusions against empirical output from two cases: a 5-yr paired test/control smoke test (mesh-mode workaround validation, Phase H Track A) and the 600-yr accelerated AD spinup of the operative case. The audit established that **inter-column lateral subsurface flow runs under `use_hillslope = .true.` and does not require routing to be on**. Routing-on activates only the stream-side coupling at the chain terminus.
+A 2026-05-19 audit of CTSM 5.3.085 (tag `ctsm5.3.085`, `fde1fc622`; `src/` is identical in our fork revision `dc3aa5ddc`) traced every source-code site gated by `use_hillslope_routing` and cross-checked the conclusions against empirical output from two cases: a 5-yr paired test/control smoke test (mesh-mode workaround validation, Phase H Track A) and the 600-yr accelerated AD spinup of the operative case. The audit established that **inter-column lateral subsurface flow runs under `use_hillslope = .true.` and does not require routing to be on**. Routing-on activates only the stream-side coupling at the chain terminus.
 
 ---
 
@@ -48,14 +48,16 @@ The OSBS case takes the `else` branch (`lower_boundary_condition=2` → `bc_zero
 ! Darcy head gradient at :2261-2263
 head_gradient = (col%hill_elev(c) - zwt(c)) &
               - (col%hill_elev(col%cold(c)) - zwt(col%cold(c)))
-head_gradient = head_gradient / col%hill_distance(c)
+head_gradient = head_gradient / (col%hill_distance(c) - col%hill_distance(col%cold(c)))
 ```
+
+The denominator is the distance between the column and its downhill neighbor, so `hill_distance` must increase monotonically up the chain.
 
 The outflow volume at `:2358` is `qflx_latflow_out_vol = transmissivity × col%hill_width(c) × head_gradient`. The downhill column accumulates the inflow at `:2386-2388`. No routing gate anywhere in this path.
 
-**Terminal column** (the chain bottom, `col%cold(c) == ispval`): the same Darcy machinery, but the "downhill neighbor" is the stream channel. Routing matters here for the stream-depth source — see the next section.
+**Terminal column** (the chain bottom, `col%cold(c) == ispval`): the same Darcy machinery, but the "downhill neighbor" is the stream channel, and the head difference is divided by the column's own distance, `col%hill_distance(c)` (`:2280`). Routing matters here for the stream-depth source — see the next section.
 
-`PerchedLateralFlow` (`:1703+`) is structurally identical for the perched water table; the same column-to-column Darcy gradient runs at `:1817-1820`.
+`PerchedLateralFlow` (`:1703+`) is structurally identical for the perched water table, using `zwt_perched`: the interior gradient at `:1817-1820` divides by the same distance difference, and the terminal branch at `:1838` divides by `col%hill_distance(c)`.
 
 ### Where the flow is applied to soil water
 
@@ -119,11 +121,11 @@ Routing-on uses an internal stream-water ledger updated each step by `HillslopeU
 
 ## Empirical confirmation
 
-Two independent observations confirm inter-column flow is active under `use_hillslope_routing = .false.`:
+Two observations from our own runs are consistent with active inter-column flow under `use_hillslope_routing = .false.`. Negative column drainage (QDRAI) is the direct signature: in CTSM 5.3 hillslope columns, drainage equals net lateral outflow (`qflx_latflow_out − qflx_latflow_in`), so a negative value means net lateral inflow.
 
 1. **Routing.test vs routing.control 5-yr smoke test (2026-05-12).** QDRAI has negative values at hillslope columns in both the routing-on (`osbs.routing.test`) and routing-off (`osbs.routing.control`) cases. Min/max range is essentially identical: test = −4.32×10⁻⁵ / 1.47×10⁻⁵ mm/s; control = −4.15×10⁻⁵ / 1.43×10⁻⁵ mm/s. The lateral-flow signature is present whether routing is on or off; the values differ only at the ~10⁻⁶ scale (the boundary-condition delta).
 
-2. **`osbs.swenson.spinup` h1a (600-yr AD, routing-off).** Column-level QRUNOFF min/max = −1.156×10⁻⁴ / 1.992×10⁻⁴ mm/s. ZWT spans 0.011 → 8.6 m across the column chain. If hillslope columns were hydrologically isolated 1-D soil columns receiving the same atmospheric forcing, there would be no negative column-level QRUNOFF and far less ZWT variation. Negative column QRUNOFF is the unambiguous fingerprint of inter-column lateral redistribution exceeding outflow at the receiving column.
+2. **`osbs.swenson.spinup` h1a (600-yr AD, routing-off).** Column-level QRUNOFF min/max = −1.156×10⁻⁴ / 1.992×10⁻⁴ mm/s. ZWT spans 0.011 → 8.6 m across the column chain. If hillslope columns were hydrologically isolated 1-D soil columns receiving the same atmospheric forcing, there would be no negative column-level QRUNOFF and far less ZWT variation. Negative column QRUNOFF is consistent with lateral inflow exceeding outflow at the receiving column, though QRUNOFF also includes other terms, so QDRAI (item 1) is the cleaner signal. The ZWT spread is suggestive only, since columns also differ in elevation-downscaled forcing.
 
 ---
 
@@ -174,7 +176,7 @@ This is canonical [CTSM Issue #1432](https://github.com/ESCOMP/CTSM/issues/1432)
 
 Replace the `PTS_LAT` / `PTS_LON` single-column shortcut with an explicit single-cell ESMF mesh (`LND_DOMAIN_MESH`). CTSM's mode-decision logic then routes through `lnd_set_decomp_and_domain_from_readmesh` instead of `lnd_set_decomp_and_domain_for_single_column`, and `ldomain%area` is populated from the mesh via `ESMF_FieldRegridGetArea()` — a real number, not `spval`.
 
-Swenson recommends this workaround to single-point users. CTSM's shipped `tools/site_and_regional/mesh_maker.py` aborts on 1×1 input (`mesh_maker.py:214`), so Phase H Track A wrote [`make_osbs_scrip.py`](https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/scripts/osbs/make_osbs_scrip.py) (`swenson/scripts/osbs/`) to produce a single-cell SCRIP-format NetCDF; the prebuilt `ESMF_Scrip2Unstruct` binary then converts it to the ESMF mesh CTSM reads.
+Swenson recommends this workaround to single-point users. CTSM's shipped `mesh_maker` tool (`python/ctsm/mesh_maker.py`, wrapped by `tools/site_and_regional/mesh_maker`) aborts on 1×1 input (`mesh_maker.py:214-216`), so Phase H Track A wrote [`make_osbs_scrip.py`](https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/scripts/osbs/make_osbs_scrip.py) (`swenson/scripts/osbs/`) to produce a single-cell SCRIP-format NetCDF; the prebuilt `ESMF_Scrip2Unstruct` binary then converts it to the ESMF mesh CTSM reads.
 
 Phase H Track A (2026-05-11 to 2026-05-12) built the single-cell ESMF mesh for the production domain, the supporting input file conversions (surface dataset reformat, domain mesh), and a paired test/control case configuration. The 2026-05-12 smoke test confirmed `grc%area = 90.006 km²` (matching the production domain area, not `spval`) under mesh mode; gridcell aggregates are bit-identical between the mesh-mode test and the production-mode control. The workaround is OSBS-side; no upstream CTSM PR is planned.
 
@@ -186,4 +188,4 @@ Phase H Track A (2026-05-11 to 2026-05-12) built the single-cell ESMF mesh for t
 - CTSM Issue #1432: [Area is not set for NUOPC single point cases](https://github.com/ESCOMP/CTSM/issues/1432) (open since 2021-07-20)
 - Swenson, S. C., & Lawrence, D. M. (2025), [Development of a Global Representative Hillslope Data Set for Use in Earth System Models](https://doi.org/10.1029/2024MS004410), *Journal of Advances in Modeling Earth Systems*, 17 — hillslope-mode methodology (gridded-only validation; no single-point routing case)
 - DiscussCESM thread, Johanna Teresa, Feb 2025: [Point-scale simulation with CTSM 5.3.11](https://bb.cgd.ucar.edu/cesm/threads/point-scale-simulation-with-ctsm5-3.11125/) — only public reference to Swenson's mesh-mode recommendation
-- CTSM source: `git rev dc3aa5ddc` (audit target, CTSM 5.3.085)
+- CTSM source: tag `ctsm5.3.085` (`fde1fc622`); audit performed on fork revision `dc3aa5ddc`, whose `src/` is identical to the tag

@@ -12,7 +12,7 @@
 
 **Wetlandscapes** are low-relief mosaics of wetlands embedded in terrestrial uplands. The **Terrestrial-Aquatic Interface (TAI)** - the dynamic boundary between wet and dry areas - drives the bulk of carbon exchange, but current Earth System Models treat wetland extent as static.
 
-Current ESM limitations (Fan et al. 2019):
+Fan et al. (2019) identify these limitations of generic ESM land hydrology (not all apply to CTSM, which already has a prognostic water table, `ZWT`):
 
 - **1-D vertical hydrology** - no lateral flow between landscape positions
 - **2-3m shallow soil** - misses deep moisture storage and Critical Zone processes
@@ -91,8 +91,8 @@ Detailed summaries are available in `hpg-esm-tools/docs/papers/`:
 | Ecosystem | Sandhills with wetland depressions |
 | Connectivity | Primarily groundwater, rarely surface connected |
 | Topography | 1m resolution LIDAR available |
-| Climate | R ~1450 mm/yr, PET ~1300 mm/yr |
-| Wetland Coverage | ~19% |
+| Climate | R ~1450 mm/yr, PET ~1300 mm/yr (DOE proposal); NEON tower forcing averages ~1385 mm/yr (2018-2024) |
+| Wetland Coverage | ~19% (DOE proposal); NWI open water is 12.3% of the 90 km² hillslope domain |
 
 OSBS represents a **low-relief wetlandscape** where lateral drainage improves soil aeration on slightly elevated mounds (position 3 in Fan 2019 Figure 6a).
 

@@ -42,10 +42,10 @@ Several CTSM build tools have issues with newer GCC versions:
 | Issue | Symptom | Fix |
 |-------|---------|-----|
 | PIO linking | mksurfdata fails to link | Change `STATIC` to `SHARED` in CMakeLists.txt |
-| Format specifiers | GCC 10+ compilation errors | Add explicit width to Fortran format specs (`I` → `I12`) |
-| GCC 14 flags | Compilation warnings as errors | Add `-fallow-argument-mismatch` flag |
+| Format specifiers | gfortran compilation errors | Explicit widths in Fortran format specs (`I` → `I0` for writes, `(i)` → `(I6)` for the read) |
+| GCC compatibility flags | gfortran errors on argument mismatches and BOZ literals (GCC 10+) | Add `-fallow-argument-mismatch` and `-fallow-invalid-boz` to the mksurfdata build |
 
-These are bugs that should be fixed upstream, but until they are, our fork includes the fixes.
+The PIO linking and format-specifier fixes were merged upstream ([#3700](https://github.com/ESCOMP/CTSM/pull/3700) in `ctsm5.4.021`, [#3701](https://github.com/ESCOMP/CTSM/pull/3701) in `ctsm5.4.025`). The `ctsm5.3.x` tags our fork is based on still need them. The GCC flags remain fork-only. See [Fork Modifications](../reference/modifications.md#upstream-contribution-status).
 
 ### 4. HiPerGator-Specific Paths
 
@@ -73,8 +73,8 @@ The **NCAR-NEON** fork is separate from the CTSM/ccs_config build forks: it is t
 | File | Change | Reason |
 |------|--------|--------|
 | `tools/mksurfdata_esmf/src/CMakeLists.txt` | `STATIC` → `SHARED` | Fix for shared PIO libraries |
-| `tools/mksurfdata_esmf/src/mksurfdata.F90` | Format specifiers `I` → `I12` | GCC 10+ requires explicit widths |
-| `tools/mksurfdata_esmf/gen_mksurfdata_build` | Added GCC 14 flags | Compatibility workarounds |
+| `tools/mksurfdata_esmf/src/mksurfdata.F90` | Format specifiers `I` → `I0` (writes), `(i)` → `(I6)` (read) | gfortran requires explicit widths |
+| `tools/mksurfdata_esmf/gen_mksurfdata_build` | Added GCC compatibility flags | Compatibility workarounds |
 | `python/ctsm/site_and_regional/single_point_case.py` | `MPILIB=openmpi` | HiPerGator uses OpenMPI |
 | `tools/site_and_regional/default_data_*.cfg` | Input paths | HiPerGator data locations |
 
@@ -129,8 +129,8 @@ git remote add upstream https://github.com/ESCOMP/CTSM.git
 # Fetch new tags
 git fetch upstream --tags
 
-# Create new branch from new tag
-git checkout -b uf-ctsm5.3.090 ctsm5.3.090
+# Create new branch from new tag (replace <new-tag>, e.g. a ctsm5.4.x tag)
+git checkout -b uf-<new-tag> <new-tag>
 
 # Cherry-pick modifications from old branch
 git cherry-pick <commit-hash>...
@@ -139,8 +139,8 @@ git cherry-pick <commit-hash>...
 ./bin/git-fleximod update
 
 # Test and push
-git push -u origin uf-ctsm5.3.090
+git push -u origin uf-<new-tag>
 ```
 
 !!! tip "Check if fixes are still needed"
-    Before cherry-picking, check if upstream has fixed the issues. You may not need all the modifications for newer versions.
+    Before cherry-picking, check if upstream has fixed the issues. The PIO linking and format-specifier fixes are already upstream from `ctsm5.4.025` onward, so those two do not need to be carried forward.

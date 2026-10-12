@@ -80,19 +80,20 @@ You should see: `config_machines.xml`, `config_batch.xml`, `gnu_hipergator.cmake
 
 ## Step 5: Customize for Your Group
 
-The HiPerGator config includes QoS limits that need to match your group's allocation. Check your group's limits:
+The HiPerGator batch config names the SLURM QoS queues jobs are submitted to. These must match your group's QoS. Check your group's QoS names and limits:
 
 ```bash
-showQos -A <group>
+showQos <group>
+showQos <group>-b
 ```
 
-Then edit the config file to match (see [CIME Configuration](cime-config.md) for details):
+Then edit the `<queues>` block of the batch config to use your QoS names (see [CIME Configuration](cime-config.md) for details):
 
 ```bash
-vim ccs_config/machines/hipergator/config_machines.xml
+vim ccs_config/machines/hipergator/config_batch.xml
 ```
 
-Look for the `MAX_TASKS_PER_NODE` and `MAX_MPITASKS_PER_NODE` settings.
+The `jobmax` value on each queue is the task count CIME uses to choose a queue. It is not enforced by SLURM, so keep it at or below the QoS `cpu` limit reported by `showQos`. The `MAX_TASKS_PER_NODE` and `MAX_MPITASKS_PER_NODE` settings in `config_machines.xml` describe node hardware (128 cores), not QoS, and normally should not be changed.
 
 ## Step 6: Create a Test Case
 
@@ -156,7 +157,7 @@ ls $(./xmlquery --value RUNDIR)/*.nc
 : Check that modules are loaded: `module list`
 
 **Job stays pending**
-: Check QoS limits match your config: `showQos -A <group>`
+: Check QoS limits match your config: `showQos <group>`
 
 **Missing machine config**
 : Verify submodules initialized: `./bin/git-fleximod status`

@@ -18,7 +18,7 @@ Artificially accelerates soil carbon turnover to reach approximate equilibrium f
 ./xmlchange CLM_ACCELERATED_SPINUP=on
 ```
 
-**Duration:** ~200 years (can vary by site)
+**Duration:** ~200 years is the NCAR guideline (can vary by site). Our OSBS single-point AD spinups ran 600 years (CRUNCEP forcing) and ~195 years (NEON forcing, converged by ~year 180).
 
 ### Phase 2: Post-AD Spinup
 
@@ -66,8 +66,12 @@ Check that carbon pools are trending toward equilibrium:
 
 ```bash
 # Look at TOTSOMC (soil organic carbon) over time
-ncdump -v TOTSOMC $RUNDIR/*.clm2.h0.*.nc | tail
+# (run from the case directory; history files are archived to DOUT_S_ROOT/lnd/hist)
+HIST=$(./xmlquery --value DOUT_S_ROOT)/lnd/hist
+ncdump -v TOTSOMC $(ls $HIST/*.clm2.h0a.*.nc | tail -1) | tail
 ```
+
+Since ctsm5.3.062, history files are split into averaged (`h0a`, `h1a`, ...) and instantaneous (`h0i`, ...) streams, so look for `*.clm2.h0a.*.nc` rather than `*.clm2.h0.*.nc`.
 
 ### 3. Create Post-AD Case
 
@@ -84,18 +88,13 @@ cd $CIME_SCRIPTS
 
 cd $CASES/my_site.postAD_spinup
 
-# Hybrid start from AD spinup
-./xmlchange RUN_TYPE=hybrid
-./xmlchange RUN_REFCASE=my_site.AD_spinup
-./xmlchange RUN_REFDATE=0201-01-01  # End of AD spinup
-./xmlchange GET_REFCASE=FALSE
-
-# Copy restart files
-cp $AD_RUNDIR/*.rpointer* $RUNDIR/
-cp $AD_RUNDIR/*.r.*.nc $RUNDIR/
-
-# Normal decomposition
+# Startup run initialized from the final AD restart
+./xmlchange RUN_TYPE=startup
 ./xmlchange CLM_ACCELERATED_SPINUP=off
+
+# Point finidat at the AD case's last land restart
+AD_REST=$(cd $CASES/my_site.AD_spinup && ./xmlquery --value DOUT_S_ROOT)/rest/0201-01-01-00000
+echo "finidat = '$AD_REST/my_site.AD_spinup.clm2.r.0201-01-01-00000.nc'" >> user_nl_clm
 
 # Run several hundred years
 ./xmlchange STOP_OPTION=nyears
@@ -107,11 +106,16 @@ cp $AD_RUNDIR/*.r.*.nc $RUNDIR/
 ./case.submit
 ```
 
+!!! note "Why startup + finidat, not branch"
+    The AD to post-AD transition rescales the soil carbon and nitrogen pools, and that code path only runs when `nstep < 2` (`SoilBiogeochemCarbonStateType.F90`, `SoilBiogeochemNitrogenStateType.F90`). A branch run keeps the prior case's `nstep` and fails with "Error in entering/exiting spinup - should occur only when nstep = 1". A startup run with `finidat` set starts at `nstep` 1. Our `osbs.swenson.post-ad` case uses this setup.
+
 ### 4. Check Equilibrium
 
 Spinup is complete when:
-- Less than ~3% of land surface shows carbon disequilibrium
+
 - TOTSOMC, TOTVEGC, TOTECOSYSC are stable year-to-year
+- For global grids, NCAR's criterion is that less than ~3% of the land surface shows carbon disequilibrium. This does not apply to a single-point run.
+- For our single-point site runs we use a block-mean drift test: the change between consecutive 20-year means of TOTECOSYSC, TOTSOMC, and TOTVEGC is below 1%
 
 ## Variables to Monitor
 
@@ -136,7 +140,7 @@ hist_mfilt = 12  ! 12 months per file
 The model reaches equilibrium when carbon fluxes balance:
 
 - NEE ≈ 0 (net ecosystem exchange)
-- Year-to-year changes in carbon pools < 0.1%
+- Carbon pool drift below the thresholds in [Check Equilibrium](#4-check-equilibrium)
 
 Arctic and boreal regions take longest (~1000 years).
 

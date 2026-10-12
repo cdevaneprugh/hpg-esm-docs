@@ -4,7 +4,7 @@
 
 ---
 
-This page describes the methods used to produce the hillslope parameter file for OSBS. The methodology follows Swenson & Lawrence (2025) with adaptations for UTM CRS and 1m resolution. The pipeline was validated against Swenson's published data (see [MERIT Validation](merit-validation.md)) and verified through three independent audits: equation verification, full pipeline audit, and line-by-line divergence audit against Swenson's original code.
+This page describes the methods used to produce the hillslope parameter file for OSBS. The methodology follows Swenson & Lawrence (2025) with adaptations for UTM CRS and 1m resolution. The pipeline was verified by reproducing Swenson's published data (see [MERIT Validation](merit-validation.md)) and reviewed in two internal audit reports: a full pipeline audit with equation-by-equation verification (2026-03-10) and a line-by-line divergence audit against Swenson's original code (2026-03-16). Both are in [`swenson/audit/260310-osbs_pipeline_and_docs/`](https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/audit/260310-osbs_pipeline_and_docs).
 
 ---
 
@@ -26,7 +26,7 @@ This page describes the methods used to produce the hillslope parameter file for
 
 The production domain is R4C5-R12C14: a 9x10 km (90 km^2) rectangle of 90 tiles with 0% nodata — the largest contiguous rectangle within the NEON tile coverage. This domain was selected to avoid the nodata gaps present in the full tile mosaic (233 tiles, 323 km^2, 58.5% valid data), which cause silent failures in pysheds flow routing when all domain boundary cells are nodata.
 
-DEM elevation ranges from 23 to 69 m with ~46 m total relief. The low total relief confirms this is a low-relief wetlandscape where meter-scale elevation differences control wetland-upland transitions.
+Production-domain DTM elevation ranges from 23.5 to 55.5 m (~32 m total relief; 1st-99th percentile 25.0-51.1 m). The low total relief confirms this is a low-relief wetlandscape where meter-scale elevation differences control wetland-upland transitions.
 
 ### Tile Reference System
 
@@ -45,7 +45,7 @@ The characteristic length scale Lc determines the accumulation threshold A_thres
 
 ### Standard method
 
-Swenson's approach applies the Laplacian operator to the DEM, computes the 2D Fourier transform, bins the spectrum radially, and fits Gaussian/lognormal models to identify the wavelength of peak amplitude. This works at 90m MERIT resolution because features below ~180m (the Nyquist limit) are already averaged away, leaving a single dominant drainage-scale peak. On MERIT, this produces Lc = 763 m.
+Swenson's approach applies the Laplacian operator to the DEM, computes the 2D Fourier transform, bins the spectrum radially, and fits Gaussian/lognormal models to identify the wavelength of peak amplitude. This works at 90m MERIT resolution because features below ~180m (the Nyquist limit) are already averaged away, leaving a single dominant drainage-scale peak. On the MERIT reproduction gridcell (northern Louisiana), this produces Lc = 763 m.
 
 ### The k^2 artifact at 1m
 
@@ -72,13 +72,13 @@ The transition at 20 m is sharp — the drainage-scale peak jumps from invisible
 
 ### Result
 
-**Lc = 356 m** (lognormal fit at 20 m cutoff), **A_thresh = 63,362 pixels** at 1m resolution.
+**Lc = 356 m** (355.98 m; lognormal fit at 20 m cutoff), **A_thresh = 63,362 pixels** at 1m resolution.
 
 ![Laplacian amplitude vs wavelength for the OSBS production domain (log-scale y-axis). The lognormal fit identifies the drainage-scale characteristic length at Lc = 356 m (red dashed line). Micro-topographic wavelengths below the 20 m cutoff are excluded before peak fitting to suppress the k² artifact discussed above.](images/production_lc_spectrum.png)
 
-### Physical validation
+### Physical plausibility checks
 
-Two consistency checks from Swenson Section 2.4:
+Two consistency checks against Swenson's calibration statements (Section 2.4). These are plausibility checks, not comparisons against observations:
 
 - **P95 DTND / Lc = 1.17.** Swenson's criterion: the largest values of DTND should be "of similar magnitude" to Lc. P95 is the appropriate comparison statistic at 1m (see below). **PASS.**
 - **Mean catchment area / Lc^2 = 0.876.** Swenson's calibration: 0.94 for low-relief terrain. Close agreement. **PASS.**
@@ -95,7 +95,7 @@ Lc is insensitive to all FFT parameters. A sweep of 20 configurations (blend_edg
 
 ### Accumulation threshold
 
-A_thresh = 0.5 * 356^2 = 63,362 pixels at 1m resolution. This is the same order of magnitude as MERIT (275,400 m^2 at 90m), scaled for the finer drainage structure visible at 1m.
+A_thresh = int(0.5 * Lc_px^2) = 63,362 pixels at 1m resolution (Lc = 355.98 m; at 1 m pixels this is 63,362 m^2). For comparison, the MERIT reproduction used 34 cells (0.5 * 8.25^2 px at ~90 m), roughly 0.25 km^2.
 
 ### DEM conditioning
 
@@ -132,16 +132,16 @@ DEM conditioning fills all depressions, which at 1m resolution erases real geomo
 
 ### HAND and DTND
 
-Computed by pysheds `compute_hand()`, which traces each pixel's D8 flow path to its drainage stream pixel and returns the elevation difference and horizontal distance. The UTM-aware fork (Phase A) uses Euclidean distance for projected CRS rather than haversine.
+Computed by pysheds `compute_hand()`, which follows each pixel's D8 flow path to the drainage cell it reaches (a stream pixel or NWI open water) and returns the elevation difference and the straight-line horizontal distance to that cell. The UTM-aware fork (Phase A) uses Euclidean distance for projected CRS rather than haversine.
 
 The pipeline uses two distinct HAND quantities:
 
 - **Conditioned HAND** — elevation above the drainage stream measured on the depression-filled DEM. This is the standard pysheds output and what feeds the flow-routing arithmetic, catchment delineation, and stream-network length / slope computation. Range on the production domain: 0-25.2 m, median 2.3 m.
-- **Raw HAND** — elevation above the drainage stream measured on the original DEM (signed). Equivalent to conditioned HAND minus the local depression-fill depth. Pixels inside filled depressions have raw HAND < 0 — they sit physically below stream level. Range on the production domain (after Q01/Q99 trim): −6.35 m to +17.02 m.
+- **Raw HAND** — conditioned HAND minus the local depression-fill depth, `hand − (flooded_orig − pit_filled)` (signed). In effect, the pixel's pit-filled elevation (before depression filling) minus the elevation of the drainage cell it reaches. Pixels inside filled depressions have raw HAND < 0 — they sit physically below stream level. Range on the production domain (after Q01/Q99 trim): −6.35 m to +17.02 m.
 
-The split exists because D8 flow routing requires a depression-free DEM (otherwise the algorithm cannot define unambiguous downstream paths), but the physically meaningful elevation for the flood zone is the original-DEM value. Raw HAND drives bin assignment; conditioned HAND drives flow topology. The flood-zone columns in the production NetCDF (chain indices 2 through 13) come from the negative raw-HAND range and would not exist if binning used conditioned HAND. See [HAND Binning and Lake Column](hand-binning-and-lake-column.md) for the binning consequences.
+The split exists because D8 flow routing requires a depression-free DEM (otherwise the algorithm cannot define unambiguous downstream paths), but the physically meaningful elevation for the flood zone is the value before depression filling. Raw HAND drives bin assignment; conditioned HAND drives flow topology. The flood-zone columns in the production NetCDF (chain indices 2 through 13) come from the negative raw-HAND range and would not exist if binning used conditioned HAND. See [HAND Binning and Lake Column](hand-binning-and-lake-column.md) for the binning consequences.
 
-DTND is unaffected by the conditioned-vs-raw distinction: it is a horizontal distance along the flow path, which is the same in either DEM. Production DTND range: 3 m (lake column, half of Bin 1's distance per the dynamic-distance rule) to 353 m (deepest upland bin).
+DTND is unaffected by the conditioned-vs-raw distinction: it is the straight-line horizontal distance to the D8-linked drainage cell, which does not depend on elevations. Each bin's `hillslope_distance` is the area-midpoint distance on the fitted trapezoidal plan form (see below), not a pixel mean. Production `hillslope_distance` range: 1.30 m (lake column, half of Bin 1's 2.59 m) to 352.6 m (Bin 24, the ridge bin).
 
 ### Slope and aspect
 
@@ -162,7 +162,7 @@ The production configuration uses a single aspect (omnidirectional). At OSBS slo
 Equal-area binning on flat terrain crushes the lowest bin to near-zero height (Q25 = 0.00027 m in earlier 4-bin OSBS output), erasing the saturation gradient that defines the terrestrial-aquatic interface. The production OSBS file uses a 24-bin scheme tilted toward the TAI:
 
 - 12 flood-zone bins covering HAND from −6.35 m (Q01 of raw HAND) to 0 m, plus 12 upland bins from 0 m to +17.02 m (Q99). Pixels outside the Q01–Q99 envelope are discarded, not clipped — both tails are real terrain (negligible singleton mass), and clipping into sentinel bins would over-weight the deepest pits and ridge extrema in gridcell aggregation.
-- A 0.25 m floor on bin width, set by the LIDAR 2σ vertical noise budget (NEON DP3.30024.001 stated accuracy 0.10 m; OSBS empirical residual standard deviation 0.058 m; 2σ ≈ 0.116 m, rounded up for headroom). Bins narrower than 0.25 m would partition pixels into adjacent classes by noise, not by terrain.
+- A 0.25 m floor on bin width, set by an estimated LIDAR noise budget: NEON's ≤ 0.15 m absolute vertical RMSE propagates to an estimated σ(raw HAND) ≈ 0.12 m, so 2σ ≈ 0.24 m, rounded to 0.25 m. Bins narrower than this would assign pixels near bin edges by noise, not by terrain.
 - Geometric width progression outward from the TAI core: 0.25 m → 0.5 m → 1.0 m → 2.0 m → ~7 m (ridge sentinel). The smoothness criterion is per-meter pixel density, not per-bin area — the density curve is monotonic toward the peak from each side, which is the physically meaningful aggregation invariant.
 
 The bin edges, per-bin area allocation, motivation for the asymmetric flood-zone tilt, and the LIDAR error-budget derivation are documented in detail on the [HAND Binning and Lake Column](hand-binning-and-lake-column.md) page.
@@ -176,6 +176,8 @@ An exponential fit to the DTND distribution identifies and removes long-distance
 For each aspect bin, area is accumulated as a function of distance from stream: A_sum(d). The paper models hillslope plan form as a trapezoid: w(d) = w_base + 2*alpha*d, where w_base is the width at the stream channel and alpha is the plan form divergence parameter. The cumulative area curve A_sum(d) is fit with a degree-2 polynomial whose coefficients yield the trapezoidal parameters (Eq. 12, 14): alpha = -a_2, w_base = -a_1.
 
 Width for each HAND bin is computed from the quadratic solver on fitted trapezoidal areas (not raw pixel counts): the accumulated fitted area at each bin's lower distance boundary is solved via Eq. 16 (A = alpha * d^2 + w_base * d), and the width evaluated from the trapezoidal model at that distance (Eq. 9). This two-pass approach (first collect raw areas, then compute widths from fitted areas) ensures width varies monotonically from outlet to ridge and matches Swenson's implementation.
+
+Each bin's distance comes from the same fitted model: it is the root of alpha * d^2 + w_base * d = A_below + A_bin / 2, i.e. the distance at which the fitted plan form encloses half the bin's area. The bin's median pixel DTND is used only as a fallback if the fit fails, which did not occur for any of the 24 production bins. Swenson's code computes distance the same way (its comments call the result "median distances").
 
 ---
 
@@ -199,7 +201,7 @@ No parameter improves with coarser resolution, so full 1m resolution is retained
 
 | Category | What | Why |
 |----------|------|-----|
-| **Kept identical** | Trapezoidal width model (Eq. 9-16), quadratic solver for width, circular mean aspect, DEM conditioning chain (fill pits, fill depressions, resolve flats, D8, accumulation) | Core methodology validated against Swenson's published data. MERIT validation: 5 of 6 parameters >0.98 correlation, area fraction 0.92. |
+| **Kept identical** | Trapezoidal width model (Eq. 9-16), quadratic solver for width, circular mean aspect, DEM conditioning chain (fill pits, fill depressions, resolve flats, D8, accumulation) | Core methodology verified by reproducing Swenson's published data. MERIT reproduction: 5 of 6 parameters >0.98 correlation, area fraction 0.92. |
 | **CRS adaptation** | Euclidean DTND in `compute_hand()` (vs haversine), Horn 1981 stencil with uniform pixel spacing in `_gradient_horn_1981()` (vs haversine + cos(lat) spacing), planar arctan2 for AZND (vs spherical bearing), Euclidean segment length in `river_network_length_and_slope()` | UTM coordinates are in meters. Haversine formulas applied to UTM easting/northing produce incorrect distances (treating 404000 m as 404000 deg). All CRS-dependent functions detect the grid's CRS automatically via `_crs_is_geographic()` and branch appropriately. |
 | **Resolution adaptation** | Restricted-wavelength FFT with min_wavelength=20 m (vs direct peak from full spectrum), blend_edges=50 px (vs 4 px), full 1m processing (vs direct ~90m) | 1m data contains micro-topographic noise invisible at 90m. The Laplacian k² weighting creates an artifact peak at 8 m. Excluding wavelengths <20 m exposes the drainage-scale peak at 285-356 m. Larger edge blending windows compensate for the different geographic footprint per pixel. |
 | **OSBS-specific refinements** | 24-bin TAI-focused HAND scheme (12 FZ + 12 upland, 0.25 m floor) replacing Swenson's 4-bin equal-area `SpecifyHandBounds()`; single aspect replacing 4-aspect partition; raw-HAND binning with Q01/Q99 outlier discard; dual water-mask strategy (narrow stream mask for delineation, wide mask including NWI open water for HAND statistics); dedicated lake column at chain index 1 | Equal-area binning on flat terrain crushes the lowest bin's mean HAND to LIDAR noise (Q25 = 0.0003 m), erasing the saturation gradient that defines the terrestrial-aquatic interface. The 24-bin scheme resolves the wet-to-dry gradient at the LIDAR 2σ vertical noise floor. The lake column gives aggregated NWI open water a dedicated column for two-way exchange with adjacent land bins. See [HAND Binning and Lake Column](hand-binning-and-lake-column.md). |
@@ -246,10 +248,10 @@ Conversions applied: aspect from degrees to radians, longitude to 0-360 deg conv
 
 ## Current Limitations and Remaining Work
 
-**Stream channel parameters** are interim estimates derived from Swenson's power-law relationships applied to the computed stream network: depth 1.519 m, width 59.2 m, slope 0.00690 m/m. For comparison, Swenson's global values for this gridcell are: depth 0.269 m, width 4.41 m, slope 0.00233 m/m. The OSBS values are larger because the production domain's denser 1 m stream network sets a larger drainage-area input to the power-law relation. The values are stored in the NetCDF for completeness but are inert under the operative `use_hillslope_routing=.false.` configuration (see [Lateral Flow and Routing](lateral-flow-and-routing.md)); if routing is later enabled, they would require field data or regional empirical relationships (e.g., Leopold curves, MERIT Hydro) to replace the power-law placeholder.
+**Stream channel parameters** are interim estimates. Depth and width come from Swenson's power laws, depth = 0.001·A^0.4 = 1.519 m and width = 0.001·A^0.6 = 59.2 m, with A = the full 90 km² production-domain area. Slope (0.006896 m/m) is the mean slope of the LIDAR-derived stream network. For comparison, Swenson's global values for this gridcell are: depth 0.269 m, width 4.41 m, slope 0.00233 m/m. The OSBS depth and width are larger mainly because of the area input: Swenson's code applies the power laws to the summed area of the representative hillslope elements, while our pipeline uses the whole gridcell area. The values are stored in the NetCDF for completeness but are inert under the operative `use_hillslope_routing=.false.` configuration (see [Lateral Flow and Routing](lateral-flow-and-routing.md)); if routing is later enabled, they would require field data or regional empirical relationships (e.g., Leopold curves, MERIT Hydro) to replace the power-law placeholder.
 
 **Bedrock depth** is set to 0. Under CTSM's Uniform soil profile method (used by the osbs2 reference case), a bedrock depth of 0 tells CTSM to use its default soil profile — it is a no-op. The Swenson reference file also has all zeros. If a non-Uniform soil profile method is used in the future, this parameter would need physical values from subsurface data.
 
 **DEM conditioning erases real closed basins for the flow-routing topology.** At 1 m resolution, pits and depressions include real features: sinkholes, wetland depressions, karst dissolution features. Filling them enforces a continuous drainage network but destroys information about closed basins that are central to OSBS hydrology. This is inherent to D8 flow routing and is the same approach Swenson uses at 90 m (where these features are already below the resolution). The depression-fill depth is partially recovered for the column structure via raw-HAND binning, which preserves negative HAND values for pixels inside filled depressions; the flood-zone columns in the production NetCDF (chain indices 2 through 13) are populated from this recovered depth, even though the routing topology treats every filled basin as drained (see [HAND Binning and Lake Column](hand-binning-and-lake-column.md)). Alternative approaches that recover closed-basin topology for routing as well (depression-aware routing, synthetic lake bottoms) would require a different hydrological framework and are beyond the scope of the current implementation.
 
-**Phase F is complete.** The production hillslope file is deployed in the operative case `osbs.swenson.spinup`, a fresh startup (`RUN_TYPE=startup`) with 4-stream `h0/h1/h2/h3` history-output configuration. The 600-yr accelerated AD spinup completed 2026-05-14 and was analyzed 2026-05-19: convergence PASS (`drift_50yr = 0.48 %`), TAI signal absent (`O_SCALAR ≈ 1.0`), lake column stable. The namelist toggles `use_hillslope=.true.` and `use_hillslope_routing=.false.` are explained in [Lateral Flow and Routing](lateral-flow-and-routing.md).
+**Phase F is complete.** The production hillslope file is deployed in the operative case `osbs.swenson.spinup`, a fresh startup (`RUN_TYPE=startup`) with 4-stream `h0/h1/h2/h3` history-output configuration. The 600-yr accelerated AD spinup completed 2026-05-14 and was analyzed 2026-05-19: convergence PASS (`drift_50yr` = −0.48 %, the relative change in mean TOTECOSYSC between years 501-550 and 551-600), TAI signal absent (`O_SCALAR ≈ 1.0` with `use_lch4 = .true.`, so anoxia was active), lake column stable. The namelist toggles `use_hillslope=.true.` and `use_hillslope_routing=.false.` are explained in [Lateral Flow and Routing](lateral-flow-and-routing.md).

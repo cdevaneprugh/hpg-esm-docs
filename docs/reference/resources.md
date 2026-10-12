@@ -74,9 +74,9 @@ Curated links to official CTSM documentation and community resources.
 
 | Resource | Description |
 |----------|-------------|
-| [HiPerGator Docs](https://help.rc.ufl.edu/doc/) | UF HPC documentation |
-| [SLURM Guide](https://help.rc.ufl.edu/doc/HPG_Scheduling) | Job scheduling on HiPerGator |
-| [Training Videos](https://help.rc.ufl.edu/doc/Training_Videos) | HiPerGator training materials |
+| [HiPerGator Docs](https://docs.rc.ufl.edu/) | UF HPC documentation |
+| [SLURM Guide](https://docs.rc.ufl.edu/scheduler/) | Job scheduling on HiPerGator |
+| [Training](https://docs.rc.ufl.edu/training/) | HiPerGator training materials |
 
 ## Reference Priority
 

@@ -157,7 +157,7 @@ SLURM job submission settings:
 
 Check your group's QoS:
 ```bash
-showQos -A <your_group>
+showQos <your_group>
 ```
 
 The `jobmin` and `jobmax` values limit task counts for each queue.

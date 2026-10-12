@@ -45,9 +45,9 @@ See [Single-Point Runs](../running-ctsm/single-point.md) for creating site simul
 
 | Attribute | Value |
 |-----------|-------|
-| **Mean Precipitation** | ~1450 mm/yr |
-| **PET** | ~1300 mm/yr |
-| **Wetland Coverage** | ~19% |
+| **Mean Precipitation** | ~1450 mm/yr (DOE proposal); our NEON tower forcing averages ~1385 mm/yr over 2018-2024 (range 955-1810) |
+| **PET** | ~1300 mm/yr (DOE proposal) |
+| **Wetland Coverage** | ~19% (DOE proposal; all wetland types). NWI open water alone is 12.3% of the 90 km² hillslope domain |
 | **Connectivity** | Primarily groundwater |
 | **Surface Connection** | Rare |
 
@@ -78,7 +78,7 @@ OSBS fits "Position 3" in Fan 2019 Figure 6a (ever-wet, low relief) where hillsl
 | **Wetland Type** | Isolated depressions | Cypress wetlands |
 | **Connectivity** | Groundwater | Surface streams |
 | **Surface Flow** | Rare | Flashy blackwater |
-| **Wetland Coverage** | ~19% | ~25% |
+| **Wetland Coverage** (DOE proposal) | ~19% | ~25% |
 
 BEF has higher surface connectivity and may be addressed in future work after OSBS hillslope representation is validated.
 
@@ -102,12 +102,11 @@ Key data products for CTSM:
 ### Built-in CTSM Scripts
 
 ```bash
-# NEON-specific automation
-$CTSMROOT/tools/site_and_regional/run_neon
-
-# General tower site script
+# Tower site script (NEON and PLUMBER sites: --neon-sites, --plumber-sites)
 $CTSMROOT/tools/site_and_regional/run_tower
 ```
+
+`run_tower` replaced the older `run_neon` script, which is not present in ctsm5.3.085.
 
 ---
 
@@ -130,7 +129,7 @@ Pre-generated subset data structure:
 
 ### Current Data Strategy
 
-OSBS production cases currently use globally-subset **CRUNCEPv7** atmospheric forcing and surface data extracted via CTSM's `subset_data` script (in `tools/site_and_regional/`). A **site-native NEON forcing dataset** has since been produced (Phase I): a fork of the NCAR-NEON pipeline, run fully offline on HiPerGator, generates the OSBS tower record as 101 monthly DATM files spanning 2017-02 → 2025-06. It is engineering-complete, validated against the pre-built NCAR-NEON v4 product, and available for adoption in production. See [NEON Atmospheric Forcing](../swenson/neon-forcing.md) for the full methodology and the `dtlimit = -1` requirement for cycled runs.
+The original OSBS hillslope spinup (`osbs.swenson.spinup`) uses globally-subset **CRUNCEPv7** atmospheric forcing and surface data extracted via CTSM's `subset_data` script (in `tools/site_and_regional/`). A **site-native NEON forcing dataset** has since been produced (Phase I): a fork of the NCAR-NEON pipeline, run fully offline on HiPerGator, generates the OSBS tower record as 101 monthly DATM files spanning 2017-02 → 2025-06. It reproduces the pre-built NCAR-NEON v4 product where both carry measured data, has driven a converged AD spinup (`osbs.swenson.neon.spinup`), and has been handed to the PI for adoption. See [NEON Atmospheric Forcing](../swenson/neon-forcing.md) for the full methodology and the `dtlimit = -1` requirement for cycled runs.
 
 An earlier report that the pre-built `run_tower` NEON forcing was "insufficient" was traced to a namelist year-cap, not a data limit — the pre-built product reaches 2024-12. `run_tower` remains useful for basic NEON site tests, but for OSBS production forcing it is superseded by the offline pipeline above.
 

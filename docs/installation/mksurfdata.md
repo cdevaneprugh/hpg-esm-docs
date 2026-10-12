@@ -69,7 +69,7 @@ If the build fails:
 
 ## Fixes Applied in Our Fork
 
-The upstream mksurfdata has bugs that prevent building on HiPerGator. Our fork includes these fixes:
+Upstream mksurfdata in `ctsm5.3.x` has bugs that prevent building on HiPerGator. Our fork includes these fixes. Fixes 1 and 2 were merged upstream and are included from `ctsm5.4.025` onward; fix 3 is fork-only.
 
 ### 1. CMakeLists.txt - STATIC vs SHARED
 
@@ -87,29 +87,31 @@ add_library(pioc SHARED IMPORTED)
 add_library(piof SHARED IMPORTED)
 ```
 
-**File:** `tools/mksurfdata_esmf/src/CMakeLists.txt` lines 51-52
+**File:** `tools/mksurfdata_esmf/src/CMakeLists.txt` lines 51-52 (upstream: [#3700](https://github.com/ESCOMP/CTSM/pull/3700), `ctsm5.4.021`)
 
 ### 2. mksurfdata.F90 - Format Specifiers
 
-**Problem:** GCC 10+ requires explicit width in format specifiers. The `I` format without width is a legacy extension.
+**Problem:** gfortran requires an explicit width in `I` edit descriptors. The `I` format without width is a legacy extension.
 
-**Fix:** Add explicit widths:
+**Fix:** Use `I0` (minimal width) for the writes and an explicit width for the read:
 
 ```fortran
 ! Before (buggy)
 write(ndiag,'(2(a,I))') ' npes = ', npes, ' grid size = ', grid_size
+read(nfpio, '(i)', iostat=ier) pio_iotype
 
 ! After (fixed)
-write(ndiag,'(2(a,I12))') ' npes = ', npes, ' grid size = ', grid_size
+write(ndiag,'(2(a,I0))') ' npes = ', npes, ' grid size = ', grid_size
+read(nfpio, '(I6)', iostat=ier) pio_iotype
 ```
 
-**File:** `tools/mksurfdata_esmf/src/mksurfdata.F90` lines 271, 295, 328
+**File:** `tools/mksurfdata_esmf/src/mksurfdata.F90` lines 271 and 328 (writes), 295 (read) (upstream: [#3701](https://github.com/ESCOMP/CTSM/pull/3701), `ctsm5.4.025`)
 
-### 3. gen_mksurfdata_build - GCC 14 Flags
+### 3. gen_mksurfdata_build - GCC Compatibility Flags
 
-**Problem:** GCC 14 is stricter about legacy Fortran code.
+**Problem:** Since GCC 10, gfortran treats argument type mismatches and BOZ literals outside `DATA` statements as errors. CIME case builds get compatibility flags from the stock `gnu.cmake` macros, but mksurfdata's own CMake build does not.
 
-**Fix:** Add compatibility flags:
+**Fix:** Add compatibility flags, which downgrade those errors to warnings:
 
 ```bash
 -DCMAKE_Fortran_FLAGS=" -fallow-argument-mismatch -fallow-invalid-boz -ffree-line-length-none"

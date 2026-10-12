@@ -33,7 +33,16 @@ The geometric width progression outward from the TAI core (0.25 m → 0.5 m → 
 
 ### Why 0.25 m as the bin-width floor
 
-NEON DP3.30024.001 (1 m raster LIDAR) has a stated vertical accuracy of 0.10 m. The empirical residual standard deviation at OSBS, measured against benchmark check points, is 0.058 m. Taking 2σ as the threshold below which two HAND values are not reliably distinguishable: 2σ ≈ 0.116 m, rounded to 0.25 m for headroom (accounts for systematic spatial trends in the residuals). Bins narrower than 0.25 m would partition pixels into adjacent classes by LIDAR noise rather than by terrain.
+NEON specifies an absolute vertical accuracy of ≤ 0.15 m RMSE for its bare-earth LIDAR DTM ([NEON Lidar collection](https://www.neonscience.org/data-collection/lidar)). Raw HAND is a difference between nearby pixels, so what matters is relative noise, which an estimated error budget puts at:
+
+| Step | Estimate |
+|---|---|
+| Absolute → relative pixel noise (shared biases cancel; ~0.6 × 0.15 m) | 0.09 m |
+| Bare-earth gridding noise, typical mixed pine/sandhill pixel (in quadrature) | ~0.07 m → 0.11 m per pixel |
+| HAND differencing (√2, partly offset by shared flight-line errors) | ~0.12 m |
+| DEM conditioning (`fill_pits`, `resolve_flats`; in quadrature) | ~0.03 m → σ(raw HAND) ≈ 0.12 m |
+
+σ(raw HAND) ranges from ~0.08 m (open sandhill) to ~0.15-0.18 m (wetland edges); these factors are estimates, not measurements. Using the standard 2σ rule for distinguishing two populations, 2σ ≈ 0.24 m, rounded to a 0.25 m floor. The concern is pixel membership: with bins narrower than this, noise rather than terrain would decide which side of a bin edge a pixel falls on. The large pixel counts per bin make bin means precise, but they do not fix misassignment near edges. 0.25 m also sits at the low end of the OSBS capillary-fringe range (30-60 cm), so adjacent bins represent roughly distinct hydrologic regimes. The floor is implemented as hard-coded bin edges in `compute_hand_bins_tai_focused` (`hillslope_params.py`). Full derivation: [Phase E.5](https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/phases/E.5-bin-redesign.md).
 
 ### Why we accept non-monotonic bin areas
 
@@ -50,7 +59,7 @@ Q01 (raw HAND) = −6.35 m and Q99 = +17.02 m define the binning envelope for th
 
 The discard removes ~1.5 M pixels (~2 % of the production-domain land area).
 
-Binning is performed on **raw HAND** (elevation minus pit-filled DEM, signed) rather than conditioned HAND (clipped to ≥ 0). Raw HAND preserves the depth of pixels in filled depressions, which is the physically relevant quantity for the flood-zone bins; conditioned HAND would force every below-stream pixel to HAND = 0, collapsing the FZ side of the chain.
+Binning is performed on **raw HAND** rather than conditioned HAND (which is ≥ 0 by construction). Raw HAND is conditioned HAND minus the depression-fill depth, `hand − (flooded_orig − pit_filled)`: in effect, a pixel's pit-filled elevation minus the elevation of the stream or open-water cell it drains to, negative inside filled depressions. Raw HAND preserves the depth of pixels in filled depressions, which is the physically relevant quantity for the flood-zone bins; conditioned HAND would force every below-stream pixel to HAND = 0, collapsing the FZ side of the chain.
 
 ---
 
@@ -60,7 +69,7 @@ Two water masks are computed and used at different stages:
 
 | Mask | Coverage | Used for |
 |---|---|---|
-| **Narrow stream mask** | Pixels above the accumulation threshold (`A_thresh = 0.5 × Lc² = 63,362` cells at 1 m) | Catchment delineation, flow-accumulation arithmetic, network density |
+| **Narrow stream mask** | Pixels above the accumulation threshold (`A_thresh = int(0.5 × Lc²) = 63,362` pixels at 1 m, with Lc = 355.98 m) | Catchment delineation, flow-accumulation arithmetic, network density |
 | **Wide water mask** | Stream mask ∪ NWI open-water polygons (Lacustrine + Palustrine Unconsolidated Bottom) | Exclusion from HAND binning and DTND statistics; aggregated into the lake column |
 
 The wide mask ensures that lake-surface pixels do not contaminate land-bin HAND statistics: an NWI-identified lake has water-surface elevation that, in HAND terms, is whatever the depression-fill algorithm filled the lake to (usually a uniform fill level). Counting those pixels into land bins would skew the lowest land bins toward zero HAND, undoing the TAI signal the 24-bin scheme is designed to resolve.
@@ -81,14 +90,14 @@ The OSBS production file places a dedicated lake column at chain index 1, shifti
 | `downhill_column_index` | -9999 | Terminal column (drains to stream channel under routing-on; bounded by `tdepth_grc` under routing-off). |
 | `hillslope_index` | 1 | Same single aspect as the 24 land bins. |
 | `hill_elev` | −6.0 m | Chain-bookkeeping value. Set 0.87 m below the deepest land bin's mean (−5.13 m, bin 1 of the production output) to keep the column chain monotonic in elevation. **Does not represent a physical lake bottom** — empirical lake bathymetry from NWI digitizing and Lee 2023 spill-stage data is far shallower (NWI mean ~−2.5 m, Lee/pipeline spill 2.6-3.3 m), but the deepest land bin's HAND (−5.13 m) is the binding constraint on monotonicity. PI direction (2026-05-04): tuning the lake elevation toward a physical lake depth is deferred to model-output review; the chain-integrity constraint comes first. |
-| `hill_distance` | 0.5 × Bin 1 distance, computed dynamically per rep | The inter-column Darcy gradient computation in `SoilHydrologyMod.F90` divides by `col%hill_distance`. The denominator `d(Bin1) − d(Lake)` must stay positive. Bin 1's trap-fit DTND at OSBS is small (~3 m), so a static lake distance of ~5 m would invert the gradient sign for some reps. Setting the lake distance to half of Bin 1's distance per rep guarantees positivity by construction. |
+| `hill_distance` | 0.5 × Bin 1 distance = 1.30 m (Bin 1 = 2.59 m) | The inter-column Darcy gradient in `SoilHydrologyMod.F90` divides by the distance difference `hill_distance(c) − hill_distance(cold(c))` for interior columns (Bin 1 → lake: 2.59 − 1.30 = 1.30 m) and by `hill_distance(c)` for the terminal lake column. The difference must stay positive. Bin 1's trapezoid-fit distance at OSBS is small, so a static lake distance of ~5 m would invert the gradient sign. Deriving the lake distance as half of Bin 1's guarantees positivity by construction. |
 | `hill_area` | Σ(water_mask × pixel_area) ≈ 11.08 km² (11,082,394 px; rescaled per rep to ≈ 0.021 km²) | Total NWI-masked water area in the production domain after hole-fill. The `binary_fill_holes` step adds ~400,000 interior pixels to the 10.68 km² pre-fill mask, giving 11.08 km². Production domain has 103 NWI water features. |
 | `hill_width` | 0.5 × NWI total perimeter ≈ 48,270 m (rescaled per rep to ≈ 90 m) | PI direction (2026-04-25). Half the perimeter approximates the effective lateral exchange surface between the lake and its land-facing margin. Inert under the operative routing-off configuration. |
 | `hill_slope` | 0 | Water surface is horizontal. |
 | `hill_aspect` | 0 | Inconsequential for the flat lake column. |
 | `hill_bedrock_depth` | 0 | Matches the hillslope convention; inert under CTSM's Uniform soil profile method. |
 
-![Four hillslope parameters across the 25 columns of the production NetCDF: mean raw HAND (top-left), mean DTND (top-right), per-rep hillslope element area (bottom-left), and lower-edge width (bottom-right). The chain is ordered lake → deepest flood-zone bin (1) → ridge bin (24). Colour-coded: lake (light blue), flood zone with raw HAND < 0 (dark red), upland with raw HAND ≥ 0 (green). The HAND chain rises monotonically from −6.0 m at the lake to +12.5 m at the ridge bin. DTND grows smoothly from ~1 m at the lake to ~350 m at the ridge. Area is small in the flood zone (narrow bins resolve the TAI core) and largest in mid-upland (where bin widths broaden). Width is set by the trapezoidal plan-form fit and is largest near the stream-margin bins.](images/production_hillslope_params.png)
+![Four hillslope parameters across the 25 columns of the production NetCDF: mean raw HAND (top-left), mean DTND (top-right), per-rep hillslope element area (bottom-left), and lower-edge width (bottom-right). The chain is ordered lake → deepest flood-zone bin (1) → ridge bin (24). Colour-coded: lake (light blue), flood zone with raw HAND < 0 (dark red), upland with raw HAND ≥ 0 (green). The HAND chain rises monotonically from −6.0 m at the lake to +12.5 m at the ridge bin. DTND grows smoothly from ~1.3 m at the lake to ~353 m at the ridge. Area is small in the flood zone (narrow bins resolve the TAI core) and largest in mid-upland (where bin widths broaden). Width is set by the trapezoidal plan-form fit and is largest near the stream-margin bins.](images/production_hillslope_params.png)
 
 ---
 
@@ -117,7 +126,7 @@ Combined, the two SourceMods turned the lowest land bins into "usually wet, some
 
 ### Why raw-HAND binning superseded this
 
-Phase E.5 switched the pipeline's binning input from conditioned HAND to **raw HAND** (elevation above stream measured on the original DEM, signed). Raw HAND preserves the depression-fill depth as a negative HAND value, so flood-zone columns emerge from the data:
+Phase E.5 switched the pipeline's binning input from conditioned HAND to **raw HAND** (conditioned HAND minus the depression-fill depth, signed; see [Outlier handling](#outlier-handling)). Raw HAND preserves the depression-fill depth as a negative HAND value, so flood-zone columns emerge from the data:
 
 - The deepest land bin (chain index 2 in the production NetCDF) has a mean HAND of −5.13 m.
 - Eleven additional flood-zone bins (chain indices 3 through 13) resolve the saturation gradient up to HAND = 0.

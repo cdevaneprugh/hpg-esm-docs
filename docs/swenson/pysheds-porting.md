@@ -16,7 +16,7 @@ A fork of [pysheds](https://github.com/mdbartos/pysheds) was created at [cdevane
 Verification:
 
 ```bash
-pysheds-env
+export PYTHONPATH="/path/to/pysheds_fork:$PYTHONPATH"   # our shells alias this as pysheds-env
 python -c "from pysheds.pgrid import Grid; print('OK')"
 ```
 
@@ -24,16 +24,16 @@ python -c "from pysheds.pgrid import Grid; print('OK')"
 
 ## What Swenson Added
 
-Swenson created `pgrid.py` (~4,200 lines) — a pure-Python Grid class containing all hillslope-specific methods not present in upstream pysheds. This file was the core dependency for the entire hillslope parameter calculation pipeline.
+`pgrid.py` is upstream pysheds' pure-Python Grid module (added by Matt Bartos in the 2021-12-06 refactor, `695d8b2`; removed from upstream on 2025-08-14, `e3c511d`). Swenson's `Representative_Hillslopes` repository bundles a modified copy (4,209 lines) that extends `compute_hand()` and adds the hillslope-specific methods below. That modified `pgrid.py` was the core dependency for the entire hillslope parameter calculation pipeline.
 
 ### Core Hillslope Methods
 
 | Method | Purpose |
 |--------|---------|
-| `compute_hand()` | Extended HAND + DTND + AZND + drainage ID assignment |
+| `compute_hand()` | Upstream HAND, extended with DTND + AZND + drainage ID assignment |
 | `compute_hillslope()` | Classify pixels as headwater, left bank, right bank, or channel |
 | `slope_aspect()` | Calculate slope and aspect from DEM using Horn (1981) 8-neighbor stencil |
-| `extract_profiles()` | Delineate river segments with connectivity information |
+| `extract_profiles()` | Delineate river segments with connectivity information (already in upstream `pgrid.py`) |
 | `river_network_length_and_slope()` | Calculate network length and mean slope |
 | `create_channel_mask()` | Create channel mask, IDs, and bank classification masks |
 
@@ -57,13 +57,13 @@ Swenson created `pgrid.py` (~4,200 lines) — a pure-Python Grid class containin
 | Channel mask with IDs | Not implemented |
 | River network length/slope | Not implemented |
 
-Upstream provides flow direction, flow accumulation, catchment delineation, and basic HAND (height only), but none of the hillslope-specific processing needed for Swenson's methodology.
+Upstream provides flow direction, flow accumulation, catchment delineation, river profile extraction, and basic HAND (height only), but none of the hillslope-specific processing needed for Swenson's methodology.
 
 ---
 
 ## Implementation Strategy
 
-The approach was to copy the entire `pgrid.py` from Swenson's fork rather than surgically porting individual methods. This preserved internal dependencies and ensured API compatibility with Swenson's `Representative_Hillslopes` processing pipeline.
+The approach was to copy the entire `pgrid.py` from Swenson's fork (commit `7b20e8e`, 2026-01-22) rather than surgically porting individual methods. With the UTM additions it is now 4,365 lines. This preserved internal dependencies and ensured API compatibility with Swenson's `Representative_Hillslopes` processing pipeline.
 
 Key decisions:
 
@@ -71,7 +71,7 @@ Key decisions:
 - **Pure Python** — no numba optimization (Swenson's code uses numba optionally)
 - **Match API signatures** — maintain compatibility with `Representative_Hillslopes` scripts
 
-The `grid.py` entry point was updated to fall back to `pgrid` when numba is unavailable, matching Swenson's import pattern.
+Because upstream had already removed `pgrid.py`, the `grid.py` entry point was also restored to fall back to `pgrid` when numba is unavailable, matching Swenson's import pattern.
 
 ---
 
@@ -107,7 +107,7 @@ The UTM tests use a synthetic V-valley DEM (1000x1000, 5m pixel spacing, UTM CRS
 ================== 82 passed, 0 warnings ==================
 ```
 
-Mutation testing: 30 mutations applied to CRS-dependent code paths, 100% effective score (all mutations caught or functionally equivalent).
+Mutation testing (manual, run with plain `pytest`): 30 hand-applied mutants across 8 `pgrid` methods (HAND/DTND/AZND, Horn gradient, slope/aspect, river length, hillslope classification), 8 of them CRS-branch flips. 29 were killed. The one survivor (`rbank > 0` → `>= 0`) was judged equivalent, so the raw score is 96.7% and 100% after excluding it. One mutant was killed only after a new test was added.
 
 ---
 
@@ -151,15 +151,15 @@ A `_crs_is_geographic()` helper detects the CRS from the grid's pyproj metadata.
 | `river_network_length_and_slope()` | Haversine segment length | Euclidean segment length |
 | `flow_direction()` D8 gradient | Haversine + cos(lat) spacing | Uniform dx, dy from affine transform |
 
-### Validation
+### Verification
 
-Three-level validation confirms correctness of both code paths:
+Three levels of checks cover both code paths:
 
 1. **Synthetic V-valley DEM** (1000x1000, 5m pixel, UTM CRS): Analytically known slope, aspect, HAND, and DTND. 22 tests catch CRS math errors directly against known solutions.
 
-2. **MERIT geographic regression**: Confirms UTM additions did not perturb the geographic code path. All 6 hillslope parameters match baseline correlations within 0.01 tolerance.
+2. **MERIT geographic regression**: Confirms UTM additions did not perturb the geographic code path. All 6 hillslope parameters match the stored baseline correlations (themselves computed against Swenson's published data) within 0.01 tolerance.
 
-3. **R6C10 single-tile smoke test**: Real 1m NEON LIDAR with lake, swamp, and upland terrain. 14 validation checks pass (stream coverage, HAND range, DTND range, slope statistics, aspect distribution, etc.).
+3. **R6C10 single-tile smoke test**: Real 1m NEON LIDAR with lake, swamp, and upland terrain. 14 plausibility checks pass (stream coverage, HAND range, DTND range, slope statistics, aspect distribution, etc.).
 
 ---
 

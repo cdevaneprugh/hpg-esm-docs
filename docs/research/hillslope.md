@@ -47,7 +47,7 @@ Each hillslope element is defined by six parameters (Swenson & Lawrence 2025):
 |-----------|--------|-------------|
 | **Area** | A | Horizontally projected surface area |
 | **Height** | h | Mean height above stream channel (HAND) |
-| **Distance** | d | Mean distance from channel (DTND) |
+| **Distance** | d | Distance from channel to the element's area midpoint on the fitted trapezoidal plan form (median DTND as fallback) |
 | **Width** | w | Width at downslope interface |
 | **Slope** | α | Mean topographic slope |
 | **Aspect** | β | Azimuthal orientation (from North) |
@@ -94,7 +94,7 @@ Rivers can both gain and lose water:
 
 ## Current Data
 
-### Global Hillslope Dataset (Swenson 2025)
+### Global Hillslope Dataset (Swenson & Lawrence 2025)
 
 The default global dataset was created from MERIT DEM (~90m resolution):
 
@@ -176,13 +176,19 @@ Analysis scripts are available in [hpg-esm-tools](https://github.com/cdevaneprug
 
 ```
 scripts/hillslope.analysis/
+├── generate_case_plots.sh             # SLURM driver: all plots for a case
+├── generate_all_plots.py              # Runs the plot modules over binned data
 ├── bin_temporal.sh                    # Temporal binning (N-year averages)
-├── plot_timeseries_*.py               # Time series plots
+├── plot_timeseries_full.py            # Full-run time series
+├── plot_timeseries_last20.py          # Last-20-year time series
+├── plot_col_timeseries.py             # Per-column spinup time series
 ├── plot_zwt_hillslope_profile.py      # Water table vs elevation
-├── plot_elevation_width_overlay.py    # Hillslope geometry
-├── plot_col_areas.py                  # Column area bar charts
-├── plot_pft_distribution.py           # PFT distribution
-└── plot_vr_profile.py                 # Vertical profiles
+├── plot_hillslope_cross_section.py    # Hillslope cross-section
+├── plot_tai_heatmap.py                # TAI / HAND-zone heatmap
+├── plot_carbon_water_coupling.py      # Carbon-water coupling
+├── plot_vr_profile.py                 # Vertical profiles
+├── get_gridcell.py                    # OSBS gridcell locator
+└── archive/                           # Superseded 4-aspect-era plotters
 ```
 
 ---
@@ -195,10 +201,10 @@ The OSBS production case `osbs.swenson.spinup` writes four history streams. Thes
 
 | Stream | Content | Typical use |
 |--------|---------|-------------|
-| h0 | Gridcell averages | Standard CLM output, BGC pools, water balance |
-| h1 | Column-level data | Hillslope-column water-table depth, runoff, soil moisture |
-| h2 | PFT-level data | Vegetation dynamics |
-| h3 | Additional column-level variables | Extended per-column spinup diagnostics |
+| h0 | Gridcell averages (default field list) | Standard CLM output, BGC pools, water balance |
+| h1 | Column-level carbon and water fields | Per-column carbon pools, water-table depth, runoff |
+| h2 | Gridcell averages of soil-profile fields | Vertically resolved soil C/N, moisture, temperature, scalars |
+| h3 | Column-level soil-profile fields (same list as h2) | Per-column soil profiles and decomposition scalars |
 
 ### Key Variables for Hillslope Analysis
 
@@ -209,7 +215,7 @@ The OSBS production case `osbs.swenson.spinup` writes four history streams. Thes
 | QOVER | Surface runoff |
 | QDRAI | Subsurface drainage |
 | QCHARGE | Aquifer recharge |
-| QFLX_LAT_AQU | Lateral aquifer flux |
+| QLATFLOWOUT | Hillslope column lateral outflow (mm/s; registered only when `use_hillslope = .true.`) |
 | TWS | Total water storage |
 | TSOI | Soil temperature profile |
 | H2OSOI | Soil moisture profile |

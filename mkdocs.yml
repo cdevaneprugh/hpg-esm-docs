@@ -2,6 +2,10 @@ site_name: CTSM on HiPerGator
 site_description: Running CTSM at University of Florida
 site_url: https://cdevaneprugh.github.io/hpg-esm-docs/
 
+# Historical notes kept in git but not published
+exclude_docs: |
+  archive/
+
 theme:
   name: material
   features:
@@ -73,4 +77,3 @@ nav:
   - Reference:
     - Fork Modifications: reference/modifications.md
     - External Resources: reference/resources.md
-  - Archive: archive/README.md

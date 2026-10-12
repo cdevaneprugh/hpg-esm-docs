@@ -43,7 +43,6 @@ We maintain forks of CTSM with HiPerGator-specific modifications. You can use th
 | **Running CTSM** | Case workflow, single-point runs, output configuration |
 | **Research** | Group-specific research context (placeholders) |
 | **Reference** | Fork modifications, external resources |
-| **Archive** | Historical CESM documentation |
 
 ## Key Resources
 

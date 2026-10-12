@@ -74,7 +74,7 @@ Post-AD continuation `osbs.swenson.post-ad` (200 yr, completed 2026-05-21) is id
 
 ## Tools and Repositories
 
-The local paths below reflect our team's HiPerGator setup, where `$BLUE = /blue/gerber/cdevaneprugh/`. They are provided for internal reference — external readers should clone the repositories at right into whatever workspace they prefer.
+The local paths below reflect our team's HiPerGator setup, where `$BLUE = /blue/<group>/<user>/`. They are provided for internal reference — external readers should clone the repositories at right into whatever workspace they prefer.
 
 | Resource | Team local path | Repository | Purpose |
 |----------|-----------------|------------|---------|

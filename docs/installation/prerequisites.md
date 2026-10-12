@@ -6,7 +6,7 @@ Required modules, libraries, and paths for running CTSM on HiPerGator.
 
 Each research group should set up a directory structure for CTSM resources. Here's a recommended layout:
 
-```
+```text
 /blue/<group>/earth_models/
 ├── ctsm5.3/              # CTSM installation (your fork or clone)
 ├── inputdata/            # Global input data (downloaded from NCAR)

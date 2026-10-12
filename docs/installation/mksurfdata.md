@@ -27,7 +27,7 @@ cd $CTSMROOT/tools/mksurfdata_esmf
 ```
 
 Expected output:
-```
+```text
 Successfully created mksurfdata_esmf executable for: hipergator_gnu for openmpi library
 ```
 
@@ -41,7 +41,7 @@ ldd mksurfdata | grep libpio
 ```
 
 Expected output (paths will match your PIO location):
-```
+```text
 libpiof.so => /blue/<group>/earth_models/shared/parallelio/bld/lib/libpiof.so
 libpioc.so => /blue/<group>/earth_models/shared/parallelio/bld/lib/libpioc.so
 ```

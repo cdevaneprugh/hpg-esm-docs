@@ -6,11 +6,14 @@
 
 ## Motivation
 
-The Swenson global methodology bins HAND so each elevation bin holds approximately the same number of pixels per aspect, with a mandatory 2 m upper bound on the lowest bin. On flat terrain this produces near-zero lowest-bin mean HAND — earlier OSBS runs at 4 bins × 4 aspects gave Q25 = 0.00027 m for the lowest bin, because 25 % of the production-domain pixels have HAND below LIDAR noise. A bin whose mean elevation sits at the LIDAR noise floor cannot resolve the saturation gradient that defines the terrestrial-aquatic interface.
+The Swenson global methodology bins HAND so each elevation bin holds approximately the same number of pixels per aspect, with a mandatory 2 m upper bound on the lowest bin. On flat terrain this produces near-zero lowest-bin mean HAND — earlier OSBS runs at 4 bins × 4 aspects gave Q25 = 0.00027 m for the lowest bin, because 25% of the production-domain pixels have HAND below LIDAR noise. A bin whose mean elevation sits at the LIDAR noise floor cannot resolve the saturation gradient that defines the terrestrial-aquatic interface.
 
 The 24-bin scheme addresses this by tilting bin resolution toward the TAI and lifting the bin-width floor to the LIDAR vertical noise budget.
 
-![HAND map of the production domain (R4C5-R12C14, 9 × 10 km, 1 m). Dark purple is low HAND (near streams and flood-zone interiors); bright yellow is upland ridge; white pixels are NWI open water excluded from land bins. The TAI is the colour band where the saturation gradient is steepest — the 24-bin scheme concentrates bin resolution there.](images/production_hand_map.png)
+<figure markdown="span">
+  ![HAND map of the OSBS production domain](images/production_hand_map.png)
+  <figcaption>HAND map of the production domain (R4C5-R12C14, 9 × 10 km, 1 m). Dark purple is low HAND (near streams and flood-zone interiors); bright yellow is upland ridge; white pixels are NWI open water excluded from land bins. The TAI is the color band where the saturation gradient is steepest — the 24-bin scheme concentrates bin resolution there.</figcaption>
+</figure>
 
 ---
 
@@ -57,7 +60,7 @@ Q01 (raw HAND) = −6.35 m and Q99 = +17.02 m define the binning envelope for th
 1. Both tails are real terrain. Outlier diagnostic on the production domain (2026-05-01) shows the sharpest density breaks at Q01 (33.5× density step) and Q99 (34.8×), with negligible singleton mass beyond. The tails are not isolated noise pixels; they are continuous topography that would inflate sentinel-bin weights if retained.
 2. Clipping into sentinel bins would force the deepest pit and ridge extrema to share a bin with a much larger area of moderately deep / high terrain, distorting both the mean HAND and the gridcell-aggregated mass-and-energy balance for those bins.
 
-The discard removes ~1.5 M pixels (~2 % of the production-domain land area).
+The discard removes ~1.5 M pixels (~2% of the production-domain land area).
 
 Binning is performed on **raw HAND** rather than conditioned HAND (which is ≥ 0 by construction). Raw HAND is conditioned HAND minus the depression-fill depth, `hand − (flooded_orig − pit_filled)`: in effect, a pixel's pit-filled elevation minus the elevation of the stream or open-water cell it drains to, negative inside filled depressions. Raw HAND preserves the depth of pixels in filled depressions, which is the physically relevant quantity for the flood-zone bins; conditioned HAND would force every below-stream pixel to HAND = 0, collapsing the FZ side of the chain.
 
@@ -101,7 +104,10 @@ The OSBS production file places a dedicated lake column at chain index 1, shifti
 
 **Lake `hill_distance`.** The inter-column Darcy gradient in `SoilHydrologyMod.F90` divides by the distance difference `hill_distance(c) − hill_distance(cold(c))` for interior columns (Bin 1 → lake: 2.59 − 1.30 = 1.30 m) and by `hill_distance(c)` for the terminal lake column. The difference must stay positive. Bin 1's trapezoid-fit distance at OSBS is small, so a static lake distance of ~5 m would invert the gradient sign. Deriving the lake distance as half of Bin 1's guarantees positivity.
 
-![Four hillslope parameters across the 25 columns of the production NetCDF: mean raw HAND (top-left), mean DTND (top-right), per-rep hillslope element area (bottom-left), and lower-edge width (bottom-right). The chain is ordered lake → deepest flood-zone bin (1) → ridge bin (24). Colour-coded: lake (light blue), flood zone with raw HAND < 0 (dark red), upland with raw HAND ≥ 0 (green). The HAND chain rises monotonically from −6.0 m at the lake to +12.5 m at the ridge bin. DTND grows smoothly from ~1.3 m at the lake to ~353 m at the ridge. Area is small in the flood zone (narrow bins resolve the TAI core) and largest in mid-upland (where bin widths broaden). Width is set by the trapezoidal plan-form fit and is largest near the stream-margin bins.](images/production_hillslope_params.png)
+<figure markdown="span">
+  ![Production hillslope parameters by column](images/production_hillslope_params.png)
+  <figcaption>Four hillslope parameters across the 25 columns of the production NetCDF: mean raw HAND (top-left), mean DTND (top-right), per-rep hillslope element area (bottom-left), and lower-edge width (bottom-right). The chain is ordered lake → deepest flood-zone bin (1) → ridge bin (24). Color-coded: lake (light blue), flood zone with raw HAND < 0 (dark red), upland with raw HAND ≥ 0 (green). The HAND chain rises monotonically from −6.0 m at the lake to +12.5 m at the ridge bin. DTND grows smoothly from ~1.3 m at the lake to ~353 m at the ridge. Area is small in the flood zone (narrow bins resolve the TAI core) and largest in mid-upland (where bin widths broaden). Width is set by the trapezoidal plan-form fit and is largest near the stream-margin bins.</figcaption>
+</figure>
 
 ---
 
@@ -113,7 +119,7 @@ The lake-column area (11.08 km²) is far larger than any single representative h
 - **Per-rep area** = total area / `nhill_implicit`. Lake column per rep: 11.08 km² / 533.7 ≈ 0.021 km² = 20,765 m².
 - **Per-rep width** = `hill_width` / `nhill_implicit`. Lake per rep: 48,270 m / 533.7 ≈ 90.4 m. (`hill_width` = 48,270 m is half the total NWI perimeter of 96,540 m.)
 
-Within the representative hillslope, the lake column ends up with `wtlunit ≈ 12.3 %`, calibrated to the NWI water footprint as a fraction of the production domain (~12 % open water). The land bins partition the remaining 87.7 % according to their NWI-masked, water-excluded pixel areas.
+Within the representative hillslope, the lake column ends up with `wtlunit ≈ 12.3%`, calibrated to the NWI water footprint as a fraction of the production domain (~12% open water). The land bins partition the remaining 87.7% according to their NWI-masked, water-excluded pixel areas.
 
 ---
 

@@ -57,7 +57,7 @@ The two datasets have different column structures and cannot be compared aspect-
 | Hillslope-element distance range (m) | 67 — 541 | 2.6 — 353 (land bins; lake at 1.3) |
 | Stream-network slope (m/m) | 0.00233 | 0.00690 |
 | Lc (m) | not stored in file | 356 |
-| Stream cells, fraction of domain | n/a (gridcell aggregate) | 0.15 % (1m resolution) |
+| Stream cells, fraction of domain | n/a (gridcell aggregate) | 0.15% (1m resolution) |
 
 The OSBS file's negative HAND values are real terrain — pixels in filled depressions where raw HAND (conditioned HAND minus the depression-fill depth) is below zero. The 24-bin scheme bins on raw HAND so that flood-zone columns retain their submerged character rather than being clipped to zero by the depression fill. See [HAND Binning and Lake Column](hand-binning-and-lake-column.md) for the Q01/Q99 outlier-trim derivation and per-bin area allocation.
 
@@ -67,13 +67,13 @@ The OSBS file's negative HAND values are real terrain — pixels in filled depre
 
 **1. Distance scales differ by ~1.5-2×.** Swenson distances range 67-541 m; OSBS land-bin distances range 2.6-353 m. This is much closer than previous (pre-fix) runs showed (5-25× difference) because the current pipeline uses hydrological DTND (distance to the drainage-linked stream pixel) rather than EDT (distance to the geographically nearest stream pixel). The remaining difference is consistent with the denser stream network resolved at 1 m (Lc = 356 m), which produces more stream pixels per unit area. Swenson's file does not record the Lc used for this gridcell, so the two Lc values cannot be compared directly.
 
-**2. Land-bin slopes are systematically higher at 1 m than 90 m.** Full 1 m resolution captures local topographic variability that 90 m MERIT averages away. This is expected — slope is the most resolution-sensitive of the six parameters (Phase B confirmed systematic underestimation at coarser resolution, ~50 % reduction at 4 m vs 1 m in the lowest HAND bin).
+**2. Land-bin slopes are systematically higher at 1 m than 90 m.** Full 1 m resolution captures local topographic variability that 90 m MERIT averages away. This is expected — slope is the most resolution-sensitive of the six parameters (Phase B confirmed systematic underestimation at coarser resolution, ~50% reduction at 4 m vs 1 m in the lowest HAND bin).
 
 **3. Negative HAND values appear in the OSBS file.** Swenson's MERIT-derived file has only positive HANDs (0.17-8.14 m). The OSBS production file has 12 flood-zone bins covering −5.13-0 m HAND because the 1 m LIDAR resolves real terrain below the depression-filled drainage network (depressions, swales, lake margins). These bins are physically meaningful at OSBS — the saturation gradient through the flood zone is the TAI signal the column structure is designed to resolve.
 
-**4. The OSBS file has a dedicated lake column.** The Swenson global file has no lake representation; lake area is implicit in the gridcell-aggregated parameters. The OSBS file places all NWI open water (≈ 11.08 km², ~12 % of the production domain) in a separate column at chain index 1, so that two-way water exchange between the lake and adjacent land bins is explicit in the CTSM column chain.
+**4. The OSBS file has a dedicated lake column.** The Swenson global file has no lake representation; lake area is implicit in the gridcell-aggregated parameters. The OSBS file places all NWI open water (≈ 11.08 km², ~12% of the production domain) in a separate column at chain index 1, so that two-way water exchange between the lake and adjacent land bins is explicit in the CTSM column chain.
 
-**5. The aspect partition is collapsed at OSBS.** Swenson's 4-aspect default expresses the difference between sun-facing and shaded hillslopes. At OSBS, with slopes universally below 0.06 m/m, aspect-dependent insolation has negligible physical impact (<6 % correction to solar incidence angle), so the same 24 HAND bins serve every direction and the aspect dimension is collapsed to 1.
+**5. The aspect partition is collapsed at OSBS.** Swenson's 4-aspect default expresses the difference between sun-facing and shaded hillslopes. At OSBS, with slopes universally below 0.06 m/m, aspect-dependent insolation has negligible physical impact (<6% correction to solar incidence angle), so the same 24 HAND bins serve every direction and the aspect dimension is collapsed to 1.
 
 ---
 
@@ -85,7 +85,10 @@ The OSBS file's negative HAND values are real terrain — pixels in filled depre
 
 ### OSBS (Current — 1m NEON LIDAR)
 
-![OSBS elevation and width profiles across 25 columns (1 lake at chain index 1 + 24 land bins) on a single aspect. Lake column marked with a blue star; flood-zone bins (raw HAND < 0) in dark red; upland bins in green.](images/production_elevation_width.png)
+<figure markdown="span">
+  ![OSBS elevation and width profiles](images/production_elevation_width.png)
+  <figcaption>OSBS elevation and width profiles across 25 columns (1 lake at chain index 1 + 24 land bins) on a single aspect. Lake column marked with a blue star; flood-zone bins (raw HAND < 0) in dark red; upland bins in green.</figcaption>
+</figure>
 
 The elevation curve is smooth from the lake column (HAND = −6.0 m at ~1.3 m from the stream) through the 12 flood-zone bins, crossing zero between ~50 and ~62 m, and rising to the ridge (+12.5 m at ~353 m). The width curve tapers from ~555 m near the stream to ~270 m at the ridge, following the trapezoidal plan-form fit. Contrast with Swenson's four-aspect profiles above, which lack the flood-zone segment — MERIT 90 m data cannot resolve HAND below the depression-filled drainage network.
 
@@ -99,9 +102,12 @@ The elevation curve is smooth from the lake column (HAND = −6.0 m at ~1.3 m fr
 
 ### OSBS (Current — 1m NEON LIDAR)
 
-![OSBS per-representative column areas across 25 columns. Lake (light blue), flood zone (dark red), upland (green).](images/production_col_areas.png)
+<figure markdown="span">
+  ![OSBS column areas](images/production_col_areas.png)
+  <figcaption>OSBS per-representative column areas across 25 columns. Lake (light blue), flood zone (dark red), upland (green).</figcaption>
+</figure>
 
-The distribution is heavily non-uniform: the lake column alone holds 12.3 % of per-rep area (matching the `wtlunit ≈ 12.3 %` design derived from the NWI footprint), the 12 flood-zone bins take small slices (0.7–2.9 %) because the TAI-focused fine binning concentrates resolution where terrain area is scarce, and the 12 upland bins are broader (3.6–8.0 %). Contrast with Swenson's global 4 × 4 partition above, where the equal-area algorithm smooths the distribution across all 16 columns.
+The distribution is heavily non-uniform: the lake column alone holds 12.3% of per-rep area (matching the `wtlunit ≈ 12.3%` design derived from the NWI footprint), the 12 flood-zone bins take small slices (0.7–2.9%) because the TAI-focused fine binning concentrates resolution where terrain area is scarce, and the 12 upland bins are broader (3.6–8.0%). Contrast with Swenson's global 4 × 4 partition above, where the equal-area algorithm smooths the distribution across all 16 columns.
 
 ---
 
@@ -113,4 +119,4 @@ The distribution is heavily non-uniform: the lake column alone holds 12.3 % of p
 
 **3. TAI representation.** Phase F deploys this file in `osbs.swenson.spinup` under `use_hillslope=.true., use_hillslope_routing=.false.`. Inter-column lateral flow between flood-zone bins and adjacent land bins is active in this configuration; Phase H Tracks B/C (which would have added the CTSM-internal stream-channel boundary condition at the chain terminus) were retired 2026-08-19.
 
-**4. Column weighting.** OSBS column weights are calibrated by the per-rep rescaling: `nhill_implicit ≈ 533` rep-hillslope copies per landunit, with the lake column at `wtlunit ≈ 12.3 %`. The land bins partition the remainder according to their NWI-masked, water-excluded pixel areas. See [HAND Binning and Lake Column](hand-binning-and-lake-column.md) for the rescaling derivation.
+**4. Column weighting.** OSBS column weights are calibrated by the per-rep rescaling: `nhill_implicit ≈ 533` rep-hillslope copies per landunit, with the lake column at `wtlunit ≈ 12.3%`. The land bins partition the remainder according to their NWI-masked, water-excluded pixel areas. See [HAND Binning and Lake Column](hand-binning-and-lake-column.md) for the rescaling derivation.

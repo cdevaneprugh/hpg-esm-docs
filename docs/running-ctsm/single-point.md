@@ -19,7 +19,7 @@ CTSM provides the `subset_data` tool to extract site-level data from global data
 
 ### Overview
 
-```
+```text
 subset_data → creates site data → create_newcase with CLM_USRDAT
 ```
 
@@ -66,7 +66,7 @@ conda activate ctsm_pylib
 
 The tool creates a directory structure:
 
-```
+```text
 $SUBSET_DATA/OSBS/
 ├── surfdata_*.nc           # Surface dataset
 ├── datmdata/               # Atmospheric forcing

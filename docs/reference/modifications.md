@@ -117,7 +117,7 @@ CTSM 5.3+ uses CDEPS (Community Data models for Earth Prediction Systems) for at
 
 On HiPerGator, ESMF is built with OpenMPI. When you try to build CTSM with `MPILIB=mpi-serial`:
 
-```
+```text
 # Build fails at link stage:
 /apps/.../libesmf.a: undefined reference to symbol 'ompi_mpi_unsigned_short'
 /apps/.../libmpi.so.40: error adding symbols: DSO missing from command line
@@ -178,7 +178,7 @@ The fork configures CTSM to use a pre-built PIO library instead of rebuilding it
 
 **How CIME decides whether to use external PIO:**
 
-```
+```text
 if PIO_VERSION_MAJOR is set AND matches case PIO_VERSION:
     → use external PIO from PIO_LIBDIR
     → build log shows "Using installed PIO library"

@@ -25,7 +25,7 @@ Hillslope mode partitions each gridcell into an arbitrary number of columns at d
 
 The Swenson global default uses 4 aspects × 4 elevation bins = 16 columns:
 
-```
+```text
 Gridcell (Swenson default)
 ├── North-facing hillslope (4 columns: Outlet → Lower → Upper → Ridge)
 ├── East-facing hillslope (4 columns)
@@ -174,7 +174,7 @@ When set to `.true.`, this additionally activates the **stream-side machinery**:
 
 Analysis scripts are available in [hpg-esm-tools](https://github.com/cdevaneprugh/hpg-esm-tools):
 
-```
+```text
 scripts/hillslope.analysis/
 ├── generate_case_plots.sh             # SLURM driver: all plots for a case
 ├── generate_all_plots.py              # Runs the plot modules over binned data

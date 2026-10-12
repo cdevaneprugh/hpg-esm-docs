@@ -87,7 +87,7 @@ Detailed summaries are available in `hpg-esm-tools/docs/papers/`:
 
 | Attribute | Value |
 |-----------|-------|
-| Network | NEON/Ameriflux |
+| Network | NEON/AmeriFlux |
 | Ecosystem | Sandhills with wetland depressions |
 | Connectivity | Primarily groundwater, rarely surface connected |
 | Topography | 1m resolution LIDAR available |

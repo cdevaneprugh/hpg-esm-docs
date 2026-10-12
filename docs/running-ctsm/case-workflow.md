@@ -4,7 +4,7 @@ CTSM uses a case-based workflow where each simulation is configured, built, and 
 
 ## Overview
 
-```
+```text
 create_newcase → case.setup → case.build → case.submit
 ```
 

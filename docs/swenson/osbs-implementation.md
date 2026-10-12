@@ -74,7 +74,10 @@ The transition at 20 m is sharp — the drainage-scale peak jumps from invisible
 
 **Lc = 356 m** (355.98 m; lognormal fit at 20 m cutoff), **A_thresh = 63,362 pixels** at 1m resolution.
 
-![Laplacian amplitude vs wavelength for the OSBS production domain (log-scale y-axis). The lognormal fit identifies the drainage-scale characteristic length at Lc = 356 m (red dashed line). Micro-topographic wavelengths below the 20 m cutoff are excluded before peak fitting to suppress the k² artifact discussed above.](images/production_lc_spectrum.png)
+<figure markdown="span">
+  ![Laplacian spectrum and Lc fit for OSBS](images/production_lc_spectrum.png)
+  <figcaption>Laplacian amplitude vs wavelength for the OSBS production domain (log-scale y-axis). The lognormal fit identifies the drainage-scale characteristic length at Lc = 356 m (red dashed line). Micro-topographic wavelengths below the 20 m cutoff are excluded before peak fitting to suppress the k² artifact discussed above.</figcaption>
+</figure>
 
 ### Physical plausibility checks
 
@@ -155,7 +158,7 @@ Before aspect binning, per-pixel aspects are replaced with the circular mean asp
 
 ### Aspect binning
 
-The production configuration uses a single aspect (omnidirectional). At OSBS slopes (median ~0.05 m/m, all bins below 0.06 m/m), the aspect-dependent insolation correction is at most ~6 % of incident solar — small enough that aspect partitioning carries no physical signal worth resolving, and the same 24 HAND bins serve every direction. The four-aspect Swenson default (Table 1 of the paper) is preserved as an implementation option but is not used for OSBS production.
+The production configuration uses a single aspect (omnidirectional). At OSBS slopes (median ~0.05 m/m, all bins below 0.06 m/m), the aspect-dependent insolation correction is at most ~6% of incident solar — small enough that aspect partitioning carries no physical signal worth resolving, and the same 24 HAND bins serve every direction. The four-aspect Swenson default (Table 1 of the paper) is preserved as an implementation option but is not used for OSBS production.
 
 ### HAND binning (24-bin TAI-focused scheme)
 
@@ -298,4 +301,4 @@ Conversions applied: aspect from degrees to radians, longitude to 0-360 deg conv
 
 **DEM conditioning erases real closed basins for the flow-routing topology.** At 1 m resolution, pits and depressions include real features: sinkholes, wetland depressions, karst dissolution features. Filling them enforces a continuous drainage network but destroys information about closed basins that are central to OSBS hydrology. This is inherent to D8 flow routing and is the same approach Swenson uses at 90 m (where these features are already below the resolution). The depression-fill depth is partially recovered for the column structure via raw-HAND binning, which preserves negative HAND values for pixels inside filled depressions; the flood-zone columns in the production NetCDF (chain indices 2 through 13) are populated from this recovered depth, even though the routing topology treats every filled basin as drained (see [HAND Binning and Lake Column](hand-binning-and-lake-column.md)). Alternative approaches that recover closed-basin topology for routing as well (depression-aware routing, synthetic lake bottoms) would require a different hydrological framework and are beyond the scope of the current implementation.
 
-**Phase F is complete.** The production hillslope file is deployed in the operative case `osbs.swenson.spinup`, a fresh startup (`RUN_TYPE=startup`) with 4-stream `h0/h1/h2/h3` history-output configuration. The 600-yr accelerated AD spinup completed 2026-05-14 and was analyzed 2026-05-19: convergence PASS (`drift_50yr` = −0.48 %, the relative change in mean TOTECOSYSC between years 501-550 and 551-600), TAI signal absent (`O_SCALAR ≈ 1.0` with `use_lch4 = .true.`, so anoxia was active), lake column stable. The namelist toggles `use_hillslope=.true.` and `use_hillslope_routing=.false.` are explained in [Lateral Flow and Routing](lateral-flow-and-routing.md).
+**Phase F is complete.** The production hillslope file is deployed in the operative case `osbs.swenson.spinup`, a fresh startup (`RUN_TYPE=startup`) with 4-stream `h0/h1/h2/h3` history-output configuration. The 600-yr accelerated AD spinup completed 2026-05-14 and was analyzed 2026-05-19: convergence PASS (`drift_50yr` = −0.48%, the relative change in mean TOTECOSYSC between years 501-550 and 551-600), TAI signal absent (`O_SCALAR ≈ 1.0` with `use_lch4 = .true.`, so anoxia was active), lake column stable. The namelist toggles `use_hillslope=.true.` and `use_hillslope_routing=.false.` are explained in [Lateral Flow and Routing](lateral-flow-and-routing.md).

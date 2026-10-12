@@ -202,7 +202,7 @@ grep "Model Date" med.log.* | tail -20
 ```
 
 Output shows time per model day:
-```
+```text
 Model Date: 2018-01-03T00:00:00 wall clock = 2026-07-20T11:38:18 avg dt =     1.07 s/day, dt =     1.09 s/day, rate =   216.87 ypd
 ```
 

@@ -11,7 +11,7 @@ CIME looks for machine configurations in this order:
 3. `$CTSMROOT/ccs_config/machines/` (defaults)
 
 Our fork includes HiPerGator configs at:
-```
+```text
 ccs_config/machines/hipergator/
 ├── config_machines.xml    # Machine definition
 ├── config_batch.xml       # SLURM settings

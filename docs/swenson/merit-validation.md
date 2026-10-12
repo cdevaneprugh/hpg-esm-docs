@@ -146,7 +146,7 @@ The initial implementation treated the lowest HAND bin upper bound (2m) as optio
 
 The original pixel area calculation used a single cosine-weighted approximation. Swenson's method uses per-pixel spherical coordinates:
 
-```
+```text
 A_pixel = R^2 * d_theta * d_phi * sin(theta)
 ```
 
@@ -160,7 +160,7 @@ where theta is colatitude (90deg - lat). After the fix, the total gridcell area 
 
 Comparison of gradient methods revealed a **North-South aspect swap** affecting ~46% of pixels:
 
-```
+```text
 Classification transitions (our -> pgrid):
   North->South: 407,465 (24.1%)
   South->North: 378,450 (22.4%)

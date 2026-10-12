@@ -43,7 +43,7 @@ The pipeline was built up incrementally. Early work (December 2025 to January 20
 
 **Phases E.5 + E.6 (2026-04 to 2026-05) — Parameter set.** E.5 replaced Swenson's 4-bin equal-area scheme with the 24-bin TAI-focused scheme (12 flood-zone + 12 upland, 0.25 m floor) and locked raw-HAND binning with Q01/Q99 outlier discard; lake column placement at chain index 1 with `hill_elev = −6.0 m`. E.6 closed ~400 K interior polygon gaps in the rasterized NWI water mask via `scipy.ndimage.binary_fill_holes`.
 
-**Phases F + G (2026-05, complete) — Validate and deploy.** G Stage 1 completed the submerged lake column and released the production NetCDF `hillslopes_osbs_production_c260505.nc` on 2026-05-05. Phase F consumed that file: a 600-yr accelerated AD spinup with the operative case `osbs.swenson.spinup` completed 2026-05-14 and was analyzed 2026-05-19. Three verdicts: convergence PASS (`drift_50yr = 0.48 %`), TAI signal absent (`O_SCALAR ≈ 1.0` with anoxia active), lake column stable. The bridge-zone water-table anomaly at chain indices 3–6 was resolved by the PI (2026-08-19); the PI continues to investigate the O_SCALAR anoxia absence (see Current Status below).
+**Phases F + G (2026-05, complete) — Validate and deploy.** G Stage 1 completed the submerged lake column and released the production NetCDF `hillslopes_osbs_production_c260505.nc` on 2026-05-05. Phase F consumed that file: a 600-yr accelerated AD spinup with the operative case `osbs.swenson.spinup` completed 2026-05-14 and was analyzed 2026-05-19. Three verdicts: convergence PASS (`drift_50yr = −0.48%`), TAI signal absent (`O_SCALAR ≈ 1.0` with anoxia active), lake column stable. The bridge-zone water-table anomaly at chain indices 3–6 was resolved by the PI (2026-08-19); the PI continues to investigate the O_SCALAR anoxia absence (see Current Status below).
 
 **Phase H (2026-05) — Stream-side coupling.** Track A completed the mesh-mode workaround for CTSM Issue #1432 (see [Lateral Flow and Routing](lateral-flow-and-routing.md)) and remains complete and available. Tracks B and C — enabling `use_hillslope_routing = .true.` — were retired 2026-08-19 (the PI has the routing/drainage situation handled); the 2026-05-19 routing-gate source audit established that inter-column lateral flow already runs under `use_hillslope = .true.` regardless.
 
@@ -55,11 +55,11 @@ Detailed phase records: [`swenson/phases/`](https://github.com/cdevaneprugh/hpg-
 
 ## Current Status
 
-The pipeline produces the OSBS production hillslope file `hillslopes_osbs_production_c260505.nc` — 25 columns (1 lake at chain index 1 + 24 land bins) on a single aspect, computed over the R4C5–R12C14 production domain (90 tiles, 9 × 10 km, 0 % nodata, 1 m resolution). Deployed in the operative case `osbs.swenson.spinup`.
+The pipeline produces the OSBS production hillslope file `hillslopes_osbs_production_c260505.nc` — 25 columns (1 lake at chain index 1 + 24 land bins) on a single aspect, computed over the R4C5–R12C14 production domain (90 tiles, 9 × 10 km, 0% nodata, 1 m resolution). Deployed in the operative case `osbs.swenson.spinup`.
 
 **Phase F results (2026-05-19 closeout):**
 
-- **Convergence PASS** — `drift_50yr = 0.48 %` on TOTECOSYSC, under the 3 % criterion used in the Phase F record. `drift_50yr` is the relative change between the last two 50-year means: (mean of years 551–600 − mean of years 501–550) / mean of years 551–600 (−0.48 %, a slow decline).
+- **Convergence PASS** — `drift_50yr = −0.48%` on TOTECOSYSC, under the 3% criterion used in the Phase F record. `drift_50yr` is the relative change between the last two 50-year means: (mean of years 551–600 − mean of years 501–550) / mean of years 551–600; the negative sign means a slow decline.
 - **TAI signal absent** — `O_SCALAR ≈ 1.0` across the full 25-column × 600-yr array; the expected anoxia depression in decomposition output does not emerge. This is not a configuration artifact: the case runs with `use_lch4 = .true.`, which turns `anoxia` on (`controlMod.F90`).
 - **Lake column stable** — max 5.78 m at year 107, drained to 2.5 m by year 600. No runaway accumulation; the Darcy-drain mitigation contemplated in Phase H is not required.
 

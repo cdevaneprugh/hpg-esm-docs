@@ -37,7 +37,7 @@ See [Single-Point Runs](../running-ctsm/single-point.md) for creating site simul
 | **NEON Site ID** | OSBS |
 | **Location** | Putnam County, North-central Florida |
 | **Coordinates** | 29.69°N, 82.00°W |
-| **Network** | NEON Domain 3 (Southeast), Ameriflux |
+| **Network** | NEON Domain 3 (Southeast), AmeriFlux |
 | **Ecosystem** | Sandhills with wetland depressions |
 | **Dominant Vegetation** | Longleaf pine, wiregrass, oak scrub |
 
@@ -114,7 +114,7 @@ $CTSMROOT/tools/site_and_regional/run_tower
 
 Pre-generated subset data structure:
 
-```
+```text
 /blue/<group>/earth_models/shared.subset.data/
 ├── OSBS/
 │   ├── surfdata_*.nc           # Surface dataset

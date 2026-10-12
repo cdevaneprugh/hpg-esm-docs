@@ -110,7 +110,7 @@ NEON's **primary weighing gauge (DP1.00044.001) was physically offline at OSBS f
 
 The substitution was checked three ways:
 
-- The two gauges correlate at **r = 0.96** and their totals agree within **~2 %** (both ~1330–1350 mm/yr) over 35 mutually complete months (2018–2021).
+- The two gauges correlate at **r = 0.96** and their totals agree within **~2%** (both ~1330–1350 mm/yr) over 35 mutually complete months (2018–2021).
 - The spliced values **bit-match** the raw tipping-bucket record at each UTC timestamp.
 - The heaviest September-2017 rainfall (163 mm on the UTC day) lands on **2017-09-10**, the date of **Hurricane Irma**'s Florida landfall, which serves as a temporal-alignment check.
 
@@ -139,13 +139,13 @@ Humidity is carried as **relative humidity (`RH`, %)**; CDEPS converts RH → sp
 
 The custom dataset was checked mechanically and for plausibility before hand-off. These are reproduction and consistency checks against an existing product and the model, not comparisons against independent observations.
 
-**Reproduce-v4 (fidelity).** Run over 2018 and compared to pre-built v4 timestep-by-timestep: at every step where both records carry a real measurement (`fqc = 0`), `FLDS`, `FSDS`, `RH`, `PSRF`, and `TBOT` are **bit-identical** (RMS = max |Δ| = 0). `PRECTmms` and `WIND` are near-identical: both-measured RMS 4.0×10⁻⁷ mm/s and 4.6×10⁻⁶ m/s, max |Δ| 3.1×10⁻⁵ mm/s and 2.6×10⁻⁴ m/s, r ≥ 0.9999995. All substantive divergence is in gap-filled timesteps (differing RELEASE and gap-fill window). Precipitation annual total differs by +2.9 %. *(`neon_v4_regression.py` — the forcing analog of the MERIT regression test.)*
+**Reproduce-v4 (fidelity).** Run over 2018 and compared to pre-built v4 timestep-by-timestep: at every step where both records carry a real measurement (`fqc = 0`), `FLDS`, `FSDS`, `RH`, `PSRF`, and `TBOT` are **bit-identical** (RMS = max |Δ| = 0). `PRECTmms` and `WIND` are near-identical: both-measured RMS 4.0×10⁻⁷ mm/s and 4.6×10⁻⁶ m/s, max |Δ| 3.1×10⁻⁵ mm/s and 2.6×10⁻⁴ m/s, r ≥ 0.9999995. All substantive divergence is in gap-filled timesteps (differing RELEASE and gap-fill window). Precipitation annual total differs by +2.9%. *(`neon_v4_regression.py` — the forcing analog of the MERIT regression test.)*
 
 **Whole-record QC.** Structural checks (record count = days × 48, monotonic time, quality flags present), gap-fill fractions, and physical-range/climatology sniff tests across all 101 files — **0 NaN**. *(`neon_forcing_qc.py`.)*
 
-**CTSM ingestion.** The full 101-file stream drove a cold-start single-point + hillslope case end-to-end; forcing-driven fields matched the v4-driven run to **≤ 0.03 %** over the overlap. This surfaced one production requirement — see the callout below.
+**CTSM ingestion.** The full 101-file stream drove a cold-start single-point + hillslope case end-to-end; forcing-driven fields matched the v4-driven run to **≤ 0.03%** over the overlap. This surfaced one production requirement — see the callout below.
 
-**AD spinup.** A cold-start accelerated-decomposition spinup on the custom forcing **converged**: ~195 simulated years, 20-year block-mean drift **< 1 %** on all carbon pools.
+**AD spinup.** A cold-start accelerated-decomposition spinup on the custom forcing **converged**: ~195 simulated years, 20-year block-mean drift **< 1%** on all carbon pools.
 
 !!! warning "Production requirement: `dtlimit = -1` on both NEON streams"
     A cycled forcing stream (`taxmode = cycle`) that wraps past its last record trips CDEPS's default `dtlimit = 1.5` and hard-crashes the model (`dshr_strdata_mod.F90:1050`). This is a stock CDEPS behavior, not a data problem. Setting **`dtlimit = -1`** on both NEON streams in `user_nl_datm_streams` (CDEPS's own escape hatch for streams not cycling on January boundaries) resolves it — namelist-only, no rebuild. It is required for any cycled spinup on this forcing.

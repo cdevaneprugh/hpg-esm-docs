@@ -167,7 +167,7 @@ Or check the CTSM documentation: [History Fields](https://escomp.github.io/CTSM/
 
 History files follow this naming convention:
 
-```
+```text
 <case_name>.clm2.h0a.YYYY-MM.nc          # Monthly h0 stream, averaged fields
 <case_name>.clm2.h0i.YYYY-MM.nc          # Monthly h0 stream, instantaneous fields
 <case_name>.clm2.h1a.YYYY-MM-DD-SSSSS.nc # h1 stream with multiple samples per file

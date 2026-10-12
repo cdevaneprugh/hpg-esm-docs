@@ -103,7 +103,7 @@ The UTM tests use a synthetic V-valley DEM (1000x1000, 5m pixel spacing, UTM CRS
 
 ### Results
 
-```
+```text
 ================== 82 passed, 0 warnings ==================
 ```
 

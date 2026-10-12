@@ -145,7 +145,7 @@ The global Swenson hillslope dataset (~90 m source resolution) is too coarse for
 
 The finished parameters bear out the contrasts anticipated against the global data: a much smaller characteristic length scale (**Lc = 356 m**), low HAND values (meters, not tens of meters), and a single-aspect structure rather than four distinct hillslopes. The production file `hillslopes_osbs_production_c260505.nc` (25 columns: 1 lake + 24 land bins) is deployed in the operative spinup case.
 
-This work is documented in full in the **Swenson Implementation** section — see [Overview](../swenson/index.md), [Methodology](../swenson/osbs-implementation.md), and [HAND Binning and Lake Column](../swenson/hand-binning-and-lake-column.md).
+This work is documented in full in the **Swenson Implementation** section — see [Overview](../swenson/index.md), [OSBS Hillslope Methodology](../swenson/osbs-implementation.md), and [HAND Binning and Lake Column](../swenson/hand-binning-and-lake-column.md).
 
 ---
 

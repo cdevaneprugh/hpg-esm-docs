@@ -1,4 +1,4 @@
-# Methodology
+# OSBS Hillslope Methodology
 
 *Representative hillslope parameters for OSBS from 1m NEON LIDAR following Swenson & Lawrence (2025).*
 
@@ -199,14 +199,58 @@ No parameter improves with coarser resolution, so full 1m resolution is retained
 
 ## Adaptations from Swenson
 
-| Category | What | Why |
-|----------|------|-----|
-| **Kept identical** | Trapezoidal width model (Eq. 9-16), quadratic solver for width, circular mean aspect, DEM conditioning chain (fill pits, fill depressions, resolve flats, D8, accumulation) | Core methodology verified by reproducing Swenson's published data. MERIT reproduction: 5 of 6 parameters >0.98 correlation, area fraction 0.92. |
-| **CRS adaptation** | Euclidean DTND in `compute_hand()` (vs haversine), Horn 1981 stencil with uniform pixel spacing in `_gradient_horn_1981()` (vs haversine + cos(lat) spacing), planar arctan2 for AZND (vs spherical bearing), Euclidean segment length in `river_network_length_and_slope()` | UTM coordinates are in meters. Haversine formulas applied to UTM easting/northing produce incorrect distances (treating 404000 m as 404000 deg). All CRS-dependent functions detect the grid's CRS automatically via `_crs_is_geographic()` and branch appropriately. |
-| **Resolution adaptation** | Restricted-wavelength FFT with min_wavelength=20 m (vs direct peak from full spectrum), blend_edges=50 px (vs 4 px), full 1m processing (vs direct ~90m) | 1m data contains micro-topographic noise invisible at 90m. The Laplacian k² weighting creates an artifact peak at 8 m. Excluding wavelengths <20 m exposes the drainage-scale peak at 285-356 m. Larger edge blending windows compensate for the different geographic footprint per pixel. |
-| **OSBS-specific refinements** | 24-bin TAI-focused HAND scheme (12 FZ + 12 upland, 0.25 m floor) replacing Swenson's 4-bin equal-area `SpecifyHandBounds()`; single aspect replacing 4-aspect partition; raw-HAND binning with Q01/Q99 outlier discard; dual water-mask strategy (narrow stream mask for delineation, wide mask including NWI open water for HAND statistics); dedicated lake column at chain index 1 | Equal-area binning on flat terrain crushes the lowest bin's mean HAND to LIDAR noise (Q25 = 0.0003 m), erasing the saturation gradient that defines the terrestrial-aquatic interface. The 24-bin scheme resolves the wet-to-dry gradient at the LIDAR 2σ vertical noise floor. The lake column gives aggregated NWI open water a dedicated column for two-way exchange with adjacent land bins. See [HAND Binning and Lake Column](hand-binning-and-lake-column.md). |
-| **Improved during MERIT validation** | Catchment-level aspect averaging before binning, binary basin mask (vs DEM-difference threshold), corrected n_hillslopes indexing (extract drainage_id to gridcell before indexing), DTND tail removal (exponential fit), polynomial fit weighting matching Swenson's normal equations | Found and fixed during systematic line-by-line audit of the MERIT validation pipeline against Swenson's original code. Collectively improved area fraction correlation from 0.82 to 0.92. |
-| **Known limitations** | Stream depth (1.519 m) and width (59.2 m) from interim power law, bedrock depth set to 0, depression filling erases real closed basins | Stream parameters are inert under the operative routing-off configuration; if `use_hillslope_routing` is later enabled, they would require field data or regional empirical relationships. Bedrock depth of 0 is a no-op under CTSM's Uniform soil profile method. Depression filling is inherent to D8 routing. |
+### Kept identical
+
+- Trapezoidal width model (Eq. 9-16) and quadratic solver for width
+- Circular mean aspect
+- DEM conditioning chain: fill pits, fill depressions, resolve flats, D8, accumulation
+
+Core methodology verified by reproducing Swenson's published data. MERIT reproduction: 5 of 6 parameters >0.98 correlation, area fraction 0.92.
+
+### CRS adaptation
+
+- Euclidean DTND in `compute_hand()` (vs haversine)
+- Horn 1981 stencil with uniform pixel spacing in `_gradient_horn_1981()` (vs haversine + cos(lat) spacing)
+- Planar arctan2 for AZND (vs spherical bearing)
+- Euclidean segment length in `river_network_length_and_slope()`
+
+UTM coordinates are in meters. Haversine formulas applied to UTM easting/northing produce incorrect distances (treating 404000 m as 404000 deg). All CRS-dependent functions detect the grid's CRS automatically via `_crs_is_geographic()` and branch appropriately.
+
+### Resolution adaptation
+
+- Restricted-wavelength FFT with min_wavelength=20 m (vs direct peak from full spectrum)
+- blend_edges=50 px (vs 4 px)
+- Full 1m processing (vs direct ~90m)
+
+1m data contains micro-topographic noise invisible at 90m. The Laplacian k² weighting creates an artifact peak at 8 m. Excluding wavelengths <20 m exposes the drainage-scale peak at 285-356 m. Larger edge blending windows compensate for the different geographic footprint per pixel.
+
+### OSBS-specific refinements
+
+- 24-bin TAI-focused HAND scheme (12 FZ + 12 upland, 0.25 m floor) replacing Swenson's 4-bin equal-area `SpecifyHandBounds()`
+- Single aspect replacing the 4-aspect partition
+- Raw-HAND binning with Q01/Q99 outlier discard
+- Dual water-mask strategy: narrow stream mask for delineation, wide mask including NWI open water for HAND statistics
+- Dedicated lake column at chain index 1
+
+Equal-area binning on flat terrain crushes the lowest bin's mean HAND to LIDAR noise (Q25 = 0.0003 m), erasing the saturation gradient that defines the terrestrial-aquatic interface. The 24-bin scheme resolves the wet-to-dry gradient at the LIDAR 2σ vertical noise floor. The lake column gives aggregated NWI open water a dedicated column for two-way exchange with adjacent land bins. See [HAND Binning and Lake Column](hand-binning-and-lake-column.md).
+
+### Improved during the MERIT reproduction
+
+- Catchment-level aspect averaging before binning
+- Binary basin mask (vs DEM-difference threshold)
+- Corrected n_hillslopes indexing (extract drainage_id to gridcell before indexing)
+- DTND tail removal (exponential fit)
+- Polynomial fit weighting matching Swenson's normal equations
+
+Found and fixed during a line-by-line audit of the MERIT pipeline against Swenson's original code. Collectively improved area fraction correlation from 0.82 to 0.92.
+
+### Known limitations
+
+- Stream depth (1.519 m) and width (59.2 m) from an interim power law
+- Bedrock depth set to 0
+- Depression filling erases real closed basins
+
+Stream parameters are inert under the operative routing-off configuration; if `use_hillslope_routing` is later enabled, they would require field data or regional empirical relationships. Bedrock depth of 0 is a no-op under CTSM's Uniform soil profile method. Depression filling is inherent to D8 routing.
 
 ---
 

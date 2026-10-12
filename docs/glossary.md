@@ -85,3 +85,41 @@ Key terms for CTSM development on HiPerGator.
 **SLURM** - Job scheduler for submitting work to compute nodes.
 
 **QOS** - Quality of Service. Defines resource limits for job queues.
+
+## Hillslope and OSBS Project Terms
+
+Terms used in the [Swenson Implementation](swenson/index.md) and [Research](research/overview.md) pages.
+
+**A_thresh** - Flow-accumulation threshold (in pixels) above which a cell is treated as stream. Set to `int(0.5 × Lc²)`; 63,362 pixels for OSBS.
+
+**Chain index** - A hillslope column's 1-based position in the downhill chain (`column_index`). In the OSBS file, index 1 is the lake column (terminal, drains out of the hillslope), indices 2-25 are land Bins 1-24, and each column drains to the one below it.
+
+**CDEPS** - Community Data models for Earth Prediction Systems. The NUOPC-based data components (including DATM) and their stream-reading code.
+
+**DATM** - Data atmosphere component. Reads prescribed atmospheric forcing (e.g., CRUNCEP, NEON tower data) from stream files instead of running an atmosphere model.
+
+**DTND** - Distance To Nearest Drainage. Straight-line horizontal distance from a pixel to the stream or open-water cell it drains to.
+
+**FZ** - Flood zone. The 12 OSBS hillslope bins with raw HAND below 0 (below the level of the drainage cell); the other 12 are upland bins.
+
+**HAND** - Height Above Nearest Drainage. Elevation of a pixel relative to the stream or open-water cell it drains to. Conditioned HAND is computed on the pit-filled, flat-resolved DEM and is ≥ 0. Raw HAND subtracts the depression-fill depth, so it is negative inside filled depressions.
+
+**Lc** - Characteristic length scale of the terrain, from the peak of the Laplacian-of-elevation spectrum. 356 m (355.98 m) for the OSBS production domain.
+
+**MERIT** - MERIT DEM, a ~90 m global elevation model. Swenson & Lawrence (2025) built the global hillslope dataset from it; this project reproduces that dataset to verify the pipeline.
+
+**NWI** - National Wetlands Inventory (US Fish & Wildlife Service). Source of the OSBS open-water mask used for the lake column.
+
+**O_SCALAR** - CTSM history field: the fraction by which soil decomposition is reduced due to anoxia (1 = no reduction). Only active when `use_lch4 = .true.`.
+
+**OSBS** - Ordway-Swisher Biological Station, the NEON site in north-central Florida used as the test site.
+
+**Phase (A-I)** - Work phases of the OSBS hillslope project, recorded in [`swenson/phases/`](https://github.com/cdevaneprugh/hpg-esm-tools/tree/main/swenson/phases) in hpg-esm-tools. Phase H Track A is the single-cell mesh workaround for CTSM Issue #1432 (see [Lateral Flow and Routing](swenson/lateral-flow-and-routing.md)).
+
+**Q01 / Q99** - 1st and 99th percentiles of raw HAND over the domain (-6.35 m and +17.02 m in production). Pixels outside this range are discarded before binning.
+
+**R4C5-R12C14** - The production domain: NEON 1 km DTM tile rows 4-12 and columns 5-14 (90 tiles, 9 × 10 km, no missing data).
+
+**SourceMod** - A modified copy of a CTSM source file placed in a case's `SourceMods/src.clm/`, compiled in place of the original for that case only.
+
+**TAI** - Terrestrial-aquatic interface. The shifting boundary between wet and dry ground in low-relief wetland landscapes; the project's central scientific target.

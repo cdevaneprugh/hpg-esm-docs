@@ -39,9 +39,11 @@ We maintain forks of CTSM with HiPerGator-specific modifications. You can use th
 
 | Section | Content |
 |---------|---------|
+| **Getting Started** | HiPerGator onboarding, glossary |
 | **Installation** | Prerequisites, fork setup, building tools |
-| **Running CTSM** | Case workflow, single-point runs, output configuration |
-| **Research** | Group-specific research context (placeholders) |
+| **Running CTSM** | Case workflow, single-point runs, output configuration, spinup, troubleshooting |
+| **Research** | Project context: DOE wetlandscape study, hillslope hydrology, NEON sites |
+| **Swenson Implementation** | OSBS representative-hillslope dataset from 1 m LIDAR: methods, verification, NEON forcing |
 | **Reference** | Fork modifications, external resources |
 
 ## Key Resources

@@ -112,20 +112,24 @@ $CTSMROOT/tools/site_and_regional/run_tower
 
 ## Subset Data
 
-Pre-generated subset data structure:
+Pre-generated subset data (`subset_data` output; one directory per configuration):
 
 ```text
 /blue/<group>/earth_models/shared.subset.data/
-├── OSBS/
-│   ├── surfdata_*.nc           # Surface dataset
-│   ├── datmdata/               # Atmospheric forcing
-│   │   └── atm_forcing.datm.CRUNCEP.*/
-│   └── user_mods/              # Namelist modifications
+├── osbs-cfg.78pfts.hist.no-dompft.1901-1921/
+│   ├── surfdata_OSBS_hist_1850_78pfts_c250925.nc   # Surface dataset (78 PFTs)
+│   ├── datmdata/                                  # CRUNCEPv7 single-point forcing, 1901-1921
+│   │   ├── clmforc.cruncep.V7.c2016.0.5d.{Prec,Solr,TPQWL}.OSBS.YYYY-MM.nc
+│   │   └── domain.lnd.360x720_cruncep_OSBS_c250925.nc
+│   └── user_mods/                                 # Namelist modifications
 │       ├── shell_commands
 │       ├── user_nl_clm
 │       └── user_nl_datm_streams
-└── .../
+├── osbs-cfg.16pfts.PtVeg.no-dompft.1901-1921/     # Same layout; 16-PFT potential-vegetation surface dataset
+└── subset_data_test/                              # Same layout; surfdata c251002
 ```
+
+The operative Swenson cases do not read this directory: their `CLM_USRDAT_DIR` points at the PI's `subset_input/` directory, which holds the `c251002` surface dataset, the same CRUNCEPv7 `datmdata/`, and the global Swenson hillslope file (`hillslopes_osbs_c240416.nc`); the production hillslope file is referenced by absolute path.
 
 ### Current Data Strategy
 

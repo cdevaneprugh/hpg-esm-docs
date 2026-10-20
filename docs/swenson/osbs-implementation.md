@@ -83,16 +83,16 @@ The transition at 20 m is sharp — the drainage-scale peak jumps from invisible
 
 ### Physical plausibility checks
 
-Two consistency checks against Swenson's calibration statements (Section 2.4). These are plausibility checks, not comparisons against observations:
+Two consistency checks against Swenson's calibration statements (Section 2.4), run in Phase C on the 5x5 tile block R6-R10, C7-C11 (5000 x 5000 pixels) at the three candidate values Lc = 285, 300 and 356 m before Lc was finalized (`output/osbs/smoke_tests/lc_physical_validation/`). These are plausibility checks, not comparisons against observations. At the production value Lc = 356 m:
 
-- **P95 DTND / Lc = 1.17.** Swenson's criterion: the largest values of DTND should be "of similar magnitude" to Lc. P95 is the appropriate comparison statistic at 1m (see below). **PASS.**
-- **Mean catchment area / Lc^2 = 0.876.** Swenson's calibration: 0.94 for low-relief terrain. Close agreement. **PASS.**
+- **P95 DTND / Lc = 1.09.** Swenson's criterion: the largest values of DTND should be "of similar magnitude" to Lc. P95 is the appropriate comparison statistic at 1m (see below). **PASS.** (1.17 at the 300 m working value.)
+- **Mean catchment area / Lc^2 = 0.877.** Swenson's calibration: 0.94 for low-relief terrain. Close agreement. **PASS.** (0.876 at 300 m, 0.851 at 285 m.)
 
-Note on `max(DTND)`: the raw maximum DTND/Lc ratio is 3.1, but `max()` is not comparable between 90m MERIT (~12K pixels per gridcell) and 1m OSBS (25M pixels). At 90m, each pixel averages a 90x90 m area, blunting ridge extremes; at 1m, individual ridgeline pixels are preserved. The 2000x sample size difference shifts the extreme value distribution rightward. P95 is the resolution-fair comparison.
+Note on `max(DTND)`: the raw maximum DTND/Lc ratio is 2.6 at Lc = 356 m (3.1 at 300 m; the same 931 m ridge pixel sets the maximum at every Lc), but `max()` is not comparable between 90m MERIT (~12K pixels per gridcell) and 1m OSBS (25M pixels). At 90m, each pixel averages a 90x90 m area, blunting ridge extremes; at 1m, individual ridgeline pixels are preserved. The 2000x sample size difference shifts the extreme value distribution rightward. P95 is the resolution-fair comparison.
 
 ### Sensitivity
 
-Lc is insensitive to all FFT parameters. A sweep of 20 configurations (blend_edges, zero_edges, NLAMBDA, MAX_HILLSLOPE_LENGTH, detrend) produced Lc variation of only 1.7 m. The spectral peak is strong enough (psharp 9-12) that preprocessing choices do not affect the result.
+The Phase C parameter sweep (20 configurations: blend_edges, zero_edges, NLAMBDA, MAX_HILLSLOPE_LENGTH, detrend) was run on the full-spectrum Laplacian before the restricted-wavelength method was introduced, so it characterizes the 8 m micro-topographic peak, not the production value: that peak moved by at most 1.7 m across all 20 runs (psharp 9-12), which established that the artifact is a property of the data rather than of the preprocessing. The drainage-scale peak was not swept over the same parameters. Its robustness evidence is the cutoff sweep above — 356 m at both the 20 m and 50 m cutoffs, 285 m with the Gaussian model at 100 m, psharp 3-4 — together with the two plausibility checks; the 285-356 m spread is the uncertainty on Lc.
 
 ---
 
@@ -176,7 +176,7 @@ The bin edges, per-bin area allocation, motivation for the asymmetric flood-zone
 
 ### DTND tail removal
 
-An exponential fit to the DTND distribution identifies and removes long-distance outliers before parameter computation. Applied per-catchment-side. This prevents a few pixels with anomalously long flow paths (e.g., single ridgeline pixels) from distorting the trapezoidal width fit.
+An exponential fit to the DTND distribution identifies and removes long-distance outliers before parameter computation. It is applied once to the whole land-pixel population (NWI water pixels are excluded first so their zero DTND does not skew the fit), as in Swenson's code. This prevents a few pixels with anomalously long flow paths (e.g., single ridgeline pixels) from distorting the trapezoidal width fit.
 
 ### Trapezoidal width fitting (Swenson Eq. 9-16)
 
@@ -190,7 +190,7 @@ Each bin's distance comes from the same fitted model: it is the root of alpha * 
 
 ## Processing Resolution
 
-Full 1m resolution, no subsampling. The production run that built `hillslopes_osbs_production_c260505.nc` completed in ~13 minutes (`production_summary.txt`, 803 s) on a single HPC node with a 64 GB allocation. Phase B benchmarking put the full-domain peak memory at ~29 GB — comfortably under the 64 GB ceiling — so full-resolution processing is feasible on a standard node and does not require subsampling.
+Full 1m resolution, no subsampling. The production run that built `hillslopes_osbs_production_c260505.nc` completed in ~13 minutes (`production_summary.txt`, 803 s; SLURM job 31931926, 13 min 57 s wall) on a single HPC node with a 64 GB allocation and peaked at 24 GiB resident memory (SLURM MaxRSS). The 64 GB request comes from Phase B, whose full-pipeline benchmark on the same 90-tile domain peaked at 58 GB (that script also computed slope/aspect with pgrid and kept more intermediate arrays); Phase B's conditioning-and-routing-only scalability test peaked at 29 GB. Full-resolution processing is therefore feasible on a standard node and does not require subsampling.
 
 Earlier work subsampled to 4m after an OOM failure at 64 GB. Phase B testing demonstrated this was unnecessary: the OOM occurred on a nodata-contaminated mosaic (189M pixels, 37.5% nodata) where tile gap fill created artificial flat regions that inflated `resolve_flats` memory. The contiguous production domain (90M pixels, 0% nodata) processes within the 64 GB allocation without incident.
 

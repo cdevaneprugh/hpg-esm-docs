@@ -138,7 +138,7 @@ use_hillslope         = .true.
 use_hillslope_routing = .false.
 ```
 
-with the 2026-05-05 production hillslope file (25 columns: 1 lake + 24 land bins on a single aspect). In this configuration, inter-column lateral subsurface flow is active between all 25 columns of the chain: Darcy gradients redistribute water from upland bins through the flood-zone bins to the lake column, and the terminal-column boundary condition at the lake is supplied by MOSART's `tdepth_grc` (which under the current DATM + MOSART setup defaults to 0, in effect treating the chain-bottom boundary as an empty stream channel).
+with the 2026-05-05 production hillslope file (25 columns: 1 lake + 24 land bins on a single aspect). In this configuration, inter-column lateral subsurface flow is active between all 25 columns of the chain: Darcy gradients redistribute water from upland bins through the flood-zone bins to the lake column, and the terminal-column boundary condition at the lake is supplied by MOSART's `tdepth_grc`. In this case that value is zero by configuration, not by assumption: the driver flag `flds_r2l_stream_channel_depths` is `.false.` in `nuopc.runconfig`, so MOSART never exports the channel-depth fields and CTSM takes the `tdepth_grc = 0` fallback (`lnd_import_export.F90:623`); MOSART itself runs in NULL mode (`MOSART_MODE = NULL`) in this single-point case and performs no routing. The chain-bottom boundary is therefore an empty stream channel.
 
 A 600-yr accelerated AD spinup using this configuration completed 2026-05-14 and was analyzed 2026-05-19. Three verdicts: convergence PASS (`drift_50yr = −0.48%`), TAI signal absent (`O_SCALAR ≈ 1.0`), lake column stable.
 

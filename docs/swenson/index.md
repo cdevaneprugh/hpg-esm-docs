@@ -21,7 +21,7 @@ The goal of this work was to implement Swenson's methodology using 1m NEON LIDAR
 | pysheds version | Swenson's fork | Our fork (`uf-development`) with UTM CRS support |
 | Processing scope | Global tiles | Single site (OSBS, 90 km^2) |
 | Resolution | Direct processing at ~90m | Full 1m resolution (no subsampling) |
-| Edge handling | Not needed (continuous global data) | Connected-component extraction + edge trimming |
+| Edge handling | Not needed (continuous global data) | Not needed by construction: domain restricted to the largest 0%-nodata tile rectangle (R4C5-R12C14); the pipeline rejects mosaics containing nodata |
 | DTND calculation | Hydrological, haversine distance | Hydrological, Euclidean distance (UTM-aware pysheds) |
 | Lc determination | FFT natural peak | Restricted-wavelength FFT (min 20m cutoff) |
 

@@ -123,38 +123,38 @@ Within the representative hillslope, the lake column ends up with `wtlunit ≈ 1
 
 ---
 
-## SPILLHEIGHT and the SourceMod retirement
+## SPILLHEIGHT: the retired runtime offset
+
+### First approach: a runtime elevation offset (November 2025 to April 2026)
 
 Before Phase E.5, the pipeline binned on **conditioned HAND** — the depression-filled DEM's elevation above stream. Conditioned HAND is zero or positive by construction: pixels inside filled depressions sit *at* the depression's fill level, not below it. Equal-area binning on this signal produced no flood-zone columns; the lowest land bin's mean HAND landed at LIDAR noise (Q25 = 0.00027 m on earlier 4-bin runs), as documented in the [Motivation](#motivation) section.
 
-To represent the wet, low-lying terrain visible in the NEON LIDAR, the PI installed two SourceMods:
+To represent the wet, low-lying terrain visible in the NEON LIDAR, the PI's CTSM SourceMods instead created wetland columns at run time. A `spillheight` parameter in the `HillslopeHydrologyMod.F90` SourceMod (default 0.2 m; `osbs2.branch.spillheight` used 0.5 m) was subtracted from every column's `hill_elev` as the hillslope file was read, lowering the whole chain so that the lowest land bins fell below the stream reference, and a companion rule in the `SurfaceWaterMod.F90` SourceMod let columns with a negative elevation pond rather than drain. The lake column was placed in the file at `hill_elev = −spillheight` so that it became the permanently submerged anchor of the chain. The CTSM fork added `spillheight` to the hillslope namelist group (`namelist_definition_ctsm.xml`, 2026-01-12) so that the offset could be set from `user_nl_clm` instead of by editing the SourceMod.
 
-- **`HillslopeHydrologyMod.F90`** — modified `InitHillslope` to subtract a uniform `SPILLHEIGHT` constant (originally 0.2 m, hard-coded) from every column's `hill_elev` after reading the NetCDF. This effectively lowered the whole chain at runtime.
-- **`SurfaceWaterMod.F90`** — added runoff suppression for any column satisfying `hill_elev + h2osfc < 0`. Columns lowered below the stream by the SPILLHEIGHT subtraction would pond instead of drain, producing a stratified submergence regime.
-
-Combined, the two SourceMods turned the lowest land bins into "usually wet, sometimes dry" columns and the lake column (sitting at `hill_elev = −SPILLHEIGHT` in the input file) into the permanently submerged anchor of the chain.
-
-### Why raw-HAND binning superseded this
+### Why raw-HAND binning superseded it (PI decision, 2026-04-30)
 
 Phase E.5 switched the pipeline's binning input from conditioned HAND to **raw HAND** (conditioned HAND minus the depression-fill depth, signed; see [Outlier handling](#outlier-handling)). Raw HAND preserves the depression-fill depth as a negative HAND value, so flood-zone columns emerge from the data:
 
 - The deepest land bin (chain index 2 in the production NetCDF) has a mean HAND of −5.13 m.
 - Eleven additional flood-zone bins (chain indices 3 through 13) resolve the saturation gradient up to HAND = 0.
-- The bin areas, per-meter density, and Darcy-relevant geometry all derive from the original LIDAR rather than from a runtime offset to the deposited input file.
+- The lake column carries its own chain-bookkeeping elevation, `hill_elev = −6.0 m` (locked 2026-05-04; see Lake column construction above), in place of the earlier `−spillheight` convention.
+- The bin areas, per-meter density, and Darcy-relevant geometry all derive from the original LIDAR rather than from a runtime offset applied to the file.
 
-The runtime elevation shift is no longer needed because the flood zone is in the file. The SourceMod's purpose — creating submerged columns to represent low-lying terrain — is solved at file-construction time rather than at runtime.
+A uniform offset cannot do this: it lowers every column by the same amount, whereas raw-HAND binning gives each column the depth the LIDAR actually shows below its drainage reference. The 2026-04-30 PI meeting therefore retired the offset; the depths it was meant to impose at run time are now in the file.
 
-### PI decision (2026-04-30)
+### Status: the parameter is dead
 
-The SourceMod's runtime mechanism was retired. `SPILLHEIGHT = 0.0` set via namelist override (rather than editing the SourceMod constant) keeps the SourceMod files retained but inert:
+The offset is disabled in every production case through the namelist:
 
 ```fortran
 spillheight = 0.0
 ```
 
-This lowers the maintenance burden across cases — no Fortran rewrite, no case-by-case SourceMod synchronization — while disabling the runtime elevation shift. The lake column's `hill_elev = −6.0 m` (chain-bookkeeping value, locked 2026-05-04; see Lake column construction above) replaces the earlier `−SPILLHEIGHT` framing as the chain anchor.
+This line is present in `osbs5.swenson.spinup`, `osbs.swenson.spinup`, `osbs.swenson.post-ad`, and `osbs.swenson.neon.spinup`, and at zero the subtraction is an identity. The PI subsequently removed the `spillheight` parameter from his own SourceMods altogether (first in `osbs5-1`, 2026-05-19); his CTSM tree never carried the fork's namelist entry. The parameter therefore no longer exists outside the fork's namelist definition and the `user_nl_clm` override that keeps it at zero.
 
-Both approaches produce a stratified submergence regime; the data-derived approach is more faithful to the underlying NEON LIDAR (basin depths read from the input file rather than imposed as a domain-wide uniform offset) and removes the need to keep the SourceMod's `SPILLHEIGHT` constant in sync with the pipeline.
+### What the runtime reads from the file
+
+The SourceMods are run-time modifications to CTSM; they never touch the pipeline, the bin edges, or the NetCDF, and the pipeline reads nothing from CTSM. The one interface between the two is the sign of `hill_elev`: the hillslope physics identifies wetland columns as those with `hill_elev < 0`, so the twelve negative-HAND flood-zone bins and the −6.0 m lake column are what the model treats as wetland. The binning determines which columns are wetland; the runtime does not alter the binning.
 
 ---
 

@@ -4,11 +4,11 @@ This page documents modifications made in our forks and their rationale.
 
 ## Overview
 
-Our forks include HiPerGator-specific changes and bug fixes for building tools:
+Our forks include HiPerGator-specific changes, bug fixes for building tools, and one research namelist parameter:
 
 | Repository | Branch | Purpose |
 |------------|--------|---------|
-| [cdevaneprugh/CTSM](https://github.com/cdevaneprugh/CTSM) | `uf-ctsm5.3.085` | Tool fixes, paths |
+| [cdevaneprugh/CTSM](https://github.com/cdevaneprugh/CTSM) | `uf-ctsm5.3.085` | Tool fixes, paths, `spillheight` namelist parameter (retired) |
 | [cdevaneprugh/ccs_config_cesm](https://github.com/cdevaneprugh/ccs_config_cesm) | `uf-hipergator` | Machine config |
 | [cdevaneprugh/NCAR-NEON](https://github.com/cdevaneprugh/NCAR-NEON) | `uf-osbs` | NEON→DATM forcing generator (offline fork; AGPL-3.0) |
 
@@ -150,6 +150,26 @@ clmforcingindir = /blue/<group>/earth_models/inputdata
 
 **Contribution candidate:** No - site-specific.
 
+### 6. namelist_definition_ctsm.xml - spillheight (research parameter, retired)
+
+**File:** `bld/namelist_files/namelist_definition_ctsm.xml`
+
+**Change:** A new namelist entry `spillheight` (type `real`, group `hillslope_properties_inparm`, no default in the definition), added 2026-01-12 (commit `4a0319fee`):
+
+```xml
+<entry id="spillheight" type="real" category="physics"
+        group="hillslope_properties_inparm">
+Height threshold (m) for water to accumulate before draining to stream.
+Subtracts from hillslope_elevation to create a bank effect.
+</entry>
+```
+
+**Reason:** Stock CTSM has no such parameter. It exists only in the PI's `HillslopeHydrologyMod.F90` SourceMod, which reads it from the `hillslope_properties_inparm` group and subtracts it from every hillslope column's `hill_elev` at initialization (default 0.2 m in the SourceMod). The fork entry lets the value be set from `user_nl_clm` instead of by editing the SourceMod; without it, CTSM's namelist validation rejects the variable. It is only meaningful in a case that also carries that SourceMod.
+
+**Status:** Retired. The offset was superseded by raw-HAND binning on 2026-04-30 and every production case sets `spillheight = 0.0`; the PI later removed the parameter from his SourceMods (2026-05-19). The entry is kept so that existing cases' `user_nl_clm` files remain valid. See [SPILLHEIGHT: the retired runtime offset](../swenson/hand-binning-and-lake-column.md#spillheight-the-retired-runtime-offset).
+
+**Contribution candidate:** No - research-specific and retired.
+
 ## ccs_config Modifications
 
 ### Machine Configuration
@@ -214,6 +234,7 @@ Forking gives a single source of truth.
 | Format specifiers | Merged ([#3701](https://github.com/ESCOMP/CTSM/pull/3701), `ctsm5.4.025`) | Still needed on 5.3.x |
 | GCC compatibility flags | Not upstreamed | Local workaround |
 | HiPerGator paths | Not applicable | Site-specific |
+| `spillheight` namelist entry | Not applicable | Research-specific; retired, set to 0.0 in all production cases |
 | ccs_config | Not applicable | Site-specific |
 
 ## Reference

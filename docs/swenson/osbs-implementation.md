@@ -22,6 +22,8 @@ This page describes the methods used to produce the hillslope parameter file for
 | CRS | EPSG:32617 (UTM Zone 17N) |
 | Tile size | 1000 x 1000 pixels (1 km^2) |
 
+Slope and aspect are taken from NEON's companion product DP3.30025.001 (same 2023-05 collection, 1 m, EPSG:32617; 231 tiles, with all 90 production tiles covered) rather than computed from the DTM. See [Slope and aspect](#slope-and-aspect) below.
+
 ### Production Domain
 
 The production domain is R4C5-R12C14: a 9x10 km (90 km^2) rectangle of 90 tiles with 0% nodata — the largest contiguous rectangle within the NEON tile coverage. This domain was selected to avoid the nodata gaps present in the full tile mosaic (233 tiles, 323 km^2, 58.5% valid data), which cause silent failures in pysheds flow routing when all domain boundary cells are nodata.
@@ -104,9 +106,11 @@ A_thresh = int(0.5 * Lc_px^2) = 63,362 pixels at 1m resolution (Lc = 355.98 m; a
 
 The DEM is conditioned through pysheds' standard sequence: fill_pits, fill_depressions, resolve_flats (with fallback to conditioned DEM if resolve_flats fails on the full domain), D8 flow direction, and flow accumulation. Pixels exceeding A_thresh are classified as stream.
 
-### Connected-component extraction and edge trimming
+### Domain contiguity requirement
 
-Two preprocessing steps are required for mosaicked NEON data that are not needed for continuous MERIT tiles. First, `scipy.ndimage.label` isolates the largest contiguous data region from the mosaic. Second, all-nodata rows and columns are trimmed from the bounding box. Both steps address a fundamental constraint of D8 flow routing: pysheds requires flow to exit the domain at boundary cells. When all boundary cells are nodata, no cell can accumulate flow from others — max_accumulation silently equals 1 with no error raised.
+D8 flow routing requires flow to exit the domain at valid boundary cells. When the boundary cells are nodata, no cell can accumulate flow from others — max_accumulation silently equals 1, zero stream cells are found, and no error is raised. This was discovered in January 2026 when the first pipeline attempted to process the full tile canvas (233 tiles with roughly 40% nodata gaps): the extracted region had all four edges entirely nodata and produced an empty stream network.
+
+The production pipeline does not handle gaps at run time. Instead, the input must be gap-free: Step 3a checks the DTM mosaic for nodata pixels and aborts with "Pipeline requires a contiguous mosaic with no nodata" if any are present. The requirement is satisfied by construction through domain selection — the production domain R4C5-R12C14 is the largest rectangle of tiles with 0% nodata (see [Production Domain](#production-domain)), so every boundary cell is valid and the whole 9000 x 10000 pixel mosaic is routed as-is. The same holds for the single-tile smoke test (R6C10, 0% nodata). An interim approach used from January to March 2026 — extracting the largest connected component with `scipy.ndimage.label` and trimming nodata-only edge rows and columns — was removed on 2026-03-23 once the fixed, gap-free domain made it unnecessary; the PI confirmed the domain as final on 2026-03-30.
 
 ### Stream network results
 
@@ -148,9 +152,9 @@ DTND is unaffected by the conditioned-vs-raw distinction: it is the straight-lin
 
 ### Slope and aspect
 
-Computed from the original DEM (not the pysheds-conditioned DEM) using pgrid's Horn (1981) 8-neighbor stencil. The conditioned DEM replaces nodata values with max_elevation + 1 to prevent flow through gaps, creating massive false gradients at every nodata boundary. The original DEM preserves nodata as NaN, which propagates correctly through the gradient computation, preventing false gradients at boundaries.
+The pipeline does not compute slope or aspect. The production file takes both from NEON's slope and aspect product (DP3.30025.001, the companion to the DTM, same 2023-05 collection), mosaicked over the production domain alongside the DTM and loaded in Step 1. NEON derives both with the Horn (1981) 8-neighbor stencil, but applies it to a 3×3-averaged DTM, which suppresses TIN-interpolation noise on flat terrain, and computes with a 20 m buffer beyond each tile edge, so there are no seam artifacts (NEON ATBD NEON.DOC.003791vB). The pipeline converts NEON slope from degrees to m/m (`tan(deg2rad(slope))`) and uses NEON aspect (degrees clockwise from north) directly; catchment-level aspect averaging (next section) is then applied to the NEON aspect before binning.
 
-The Horn stencil uses the UTM-aware code path (Phase A) with uniform pixel spacing from the affine transform rather than haversine-based variable spacing. This produces correct slope and aspect values on projected coordinates.
+This replaced the pipeline's earlier in-house computation — pgrid's UTM-aware Horn stencil (Phase A) run on the original DEM — on 2026-03-23, with PI approval, after a per-tile comparison across the 90 production tiles: slope Pearson r = 0.91 (0.78–0.98 per tile), with NEON slopes ~0.008 m/m lower on average because of the pre-smoothing; aspect circular r = 0.84, mean angular difference ~22°. Height, distance, width and area were bit-identical between the two runs, since slope and aspect do not enter flow routing or HAND; only the per-bin `hillslope_slope` and `hillslope_aspect` values changed. The fork's Horn stencil remains the slope/aspect method for the MERIT regression (see [pysheds Fork](pysheds-porting.md)) but is not used for the OSBS production file.
 
 ### Catchment-level aspect averaging
 
@@ -158,7 +162,7 @@ Before aspect binning, per-pixel aspects are replaced with the circular mean asp
 
 ### Aspect binning
 
-The production configuration uses a single aspect (omnidirectional). At OSBS slopes (median ~0.05 m/m, all bins below 0.06 m/m), the aspect-dependent insolation correction is at most ~6% of incident solar — small enough that aspect partitioning carries no physical signal worth resolving, and the same 24 HAND bins serve every direction. The four-aspect Swenson default (Table 1 of the paper) is preserved as an implementation option but is not used for OSBS production.
+The production configuration uses a single aspect (omnidirectional). At OSBS, with NEON-derived bin slopes (median ~0.05 m/m, all bins below 0.06 m/m), the aspect-dependent insolation correction is at most ~6% of incident solar — small enough that aspect partitioning carries no physical signal worth resolving, and the same 24 HAND bins serve every direction. The four-aspect Swenson default (Table 1 of the paper) is preserved as an implementation option but is not used for OSBS production.
 
 ### HAND binning (24-bin TAI-focused scheme)
 
@@ -213,7 +217,7 @@ Core methodology verified by reproducing Swenson's published data. MERIT reprodu
 ### CRS adaptation
 
 - Euclidean DTND in `compute_hand()` (vs haversine)
-- Horn 1981 stencil with uniform pixel spacing in `_gradient_horn_1981()` (vs haversine + cos(lat) spacing)
+- Horn 1981 stencil with uniform pixel spacing in `_gradient_horn_1981()` (vs haversine + cos(lat) spacing) — a fork capability exercised by the MERIT regression and the fork tests; the OSBS production file takes slope and aspect from the NEON product instead (see [Slope and aspect](#slope-and-aspect))
 - Planar arctan2 for AZND (vs spherical bearing)
 - Euclidean segment length in `river_network_length_and_slope()`
 
@@ -229,6 +233,7 @@ UTM coordinates are in meters. Haversine formulas applied to UTM easting/northin
 
 ### OSBS-specific refinements
 
+- NEON DP3.30025.001 slope and aspect products in place of the Horn-stencil computation from the DEM (Swenson computes both from the DEM gradient)
 - 24-bin TAI-focused HAND scheme (12 FZ + 12 upland, 0.25 m floor) replacing Swenson's 4-bin equal-area `SpecifyHandBounds()`
 - Single aspect replacing the 4-aspect partition
 - Raw-HAND binning with Q01/Q99 outlier discard

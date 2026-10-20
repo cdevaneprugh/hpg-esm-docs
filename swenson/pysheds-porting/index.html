@@ -1980,7 +1980,7 @@
 <tbody>
 <tr>
 <td><code>_2d_geographic_coordinates()</code></td>
-<td>Generate 2D lon/lat arrays from affine transform</td>
+<td>Generate 2D lon/lat arrays from affine transform (renamed <code>_2d_crs_coordinates()</code> in our fork; see CRS-Neutral Naming below)</td>
 </tr>
 <tr>
 <td><code>_gradient_horn_1981()</code></td>
@@ -2034,7 +2034,7 @@
 <p>Upstream provides flow direction, flow accumulation, catchment delineation, river profile extraction, and basic HAND (height only), but none of the hillslope-specific processing needed for Swenson's methodology.</p>
 <hr />
 <h2 id="implementation-strategy">Implementation Strategy<a class="headerlink" href="#implementation-strategy" title="Permanent link">&para;</a></h2>
-<p>The approach was to copy the entire <code>pgrid.py</code> from Swenson's fork (commit <code>7b20e8e</code>, 2026-01-22) rather than surgically porting individual methods. With the UTM additions it is now 4,365 lines. This preserved internal dependencies and ensured API compatibility with Swenson's <code>Representative_Hillslopes</code> processing pipeline.</p>
+<p>The approach was to copy the entire <code>pgrid.py</code> from Swenson's repository into our fork (our commit <code>7b20e8e</code>, 2026-01-22; 4,220 lines as committed, 11 more than Swenson's 4,209) rather than surgically porting individual methods. With the UTM additions it is now 4,365 lines. This preserved internal dependencies and ensured API compatibility with Swenson's <code>Representative_Hillslopes</code> processing pipeline.</p>
 <p>Key decisions:</p>
 <ul>
 <li><strong>Copy entire <code>pgrid.py</code></strong> — not surgical porting of individual methods</li>
@@ -2078,7 +2078,7 @@
 </table>
 <hr />
 <h2 id="test-suite">Test Suite<a class="headerlink" href="#test-suite" title="Permanent link">&para;</a></h2>
-<p>The test suite covers both the original hillslope methods and the UTM CRS additions across four test files:</p>
+<p>The test suite covers both the original hillslope methods and the UTM CRS additions across five test files (counts as of fork commit <code>ed72724</code>, 2026-02-23):</p>
 <table>
 <thead>
 <tr>
@@ -2090,30 +2090,37 @@
 <tbody>
 <tr>
 <td><code>test_hillslope.py</code></td>
-<td>15</td>
-<td>Hillslope methods on geographic DEM (slope/aspect, channel mask, HAND, hillslope classification, river network, integration)</td>
+<td>11</td>
+<td>Hillslope methods on a geographic DEM (slope/aspect, channel mask, HAND, hillslope classification, profile extraction, river network, integration)</td>
 </tr>
 <tr>
 <td><code>test_utm.py</code></td>
-<td>22</td>
-<td>UTM CRS: slope, aspect, HAND, DTND, AZND, river network, classification on synthetic V-valley DEM</td>
+<td>38</td>
+<td>UTM CRS on the synthetic V-valley DEM: CRS detection, slope, aspect, HAND, DTND, AZND, river network length/slope, hillslope classification, profile extraction, channel mask, end-to-end run, geographic regression, and tests that fail if the haversine path is used on UTM data</td>
+</tr>
+<tr>
+<td><code>test_split_valley.py</code></td>
+<td>16</td>
+<td>Two side-by-side V-valleys with offset channels: flow-path DTND vs. nearest-stream (EDT) distance across a drainage divide; HAND/DTND relationship</td>
+</tr>
+<tr>
+<td><code>test_depression_basin.py</code></td>
+<td>18</td>
+<td>Parabolic bowl on a tilted plane: the full conditioning chain (<code>fill_depressions</code>, <code>resolve_flats</code>, flow direction, accumulation, HAND, DTND)</td>
 </tr>
 <tr>
 <td><code>test_grid.py</code></td>
-<td>~40</td>
-<td>Core pysheds functionality (pre-existing)</td>
-</tr>
-<tr>
-<td><code>test_dem.py</code></td>
-<td>~5</td>
-<td>DEM I/O and conditioning (pre-existing)</td>
+<td>33</td>
+<td>Upstream pysheds tests, written for the <code>sgrid</code> API; skipped as a module because the fork uses the <code>pgrid</code> API</td>
 </tr>
 </tbody>
 </table>
-<p>The UTM tests use a synthetic V-valley DEM (1000x1000, 5m pixel spacing, UTM CRS) with analytically known slope, aspect, HAND, and DTND values. The 5m pixel size prevents tests from silently passing at unit pixel spacing.</p>
+<p>The UTM tests use an in-memory synthetic V-valley DEM (200 x 200 pixels at 5 m spacing, UTM CRS) with analytically known slope, aspect, HAND, and DTND values; the generator script in <code>data/synthetic_valley/</code> produces the larger 1000 x 1000 version used for manual inspection. The 5 m pixel size prevents tests from silently passing at unit pixel spacing.</p>
 <h3 id="results">Results<a class="headerlink" href="#results" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>================== 82 passed, 0 warnings ==================
+<p>Run on 2026-10-20 (<code>pytest tests/</code> with the fork on <code>PYTHONPATH</code>, <code>ctsm</code> conda environment):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>83 passed, 33 skipped, 12 warnings in 36.47s
 </code></pre></div>
+<p>The 33 skipped tests are the whole of <code>test_grid.py</code>; the 83 passing tests are the four fork-written files. The 12 warnings are all one NumPy <code>RuntimeWarning: invalid value encountered in cast</code>, raised while building the synthetic DEMs in the V-valley, split-valley and depression-basin suites; no test fails on it. (The Phase A record of 2026-02-18 reported 82 passed, 0 warnings, with the same test files; the count differs by one test and the warning first appears with the current NumPy.)</p>
 <p>Mutation testing (manual, run with plain <code>pytest</code>): 30 hand-applied mutants across 8 <code>pgrid</code> methods (HAND/DTND/AZND, Horn gradient, slope/aspect, river length, hillslope classification), 8 of them CRS-branch flips. 29 were killed. The one survivor (<code>rbank &gt; 0</code> → <code>&gt;= 0</code>) was judged equivalent, so the raw score is 96.7% and 100% after excluding it. One mutant was killed only after a new test was added.</p>
 <hr />
 <h2 id="api-notes">API Notes<a class="headerlink" href="#api-notes" title="Permanent link">&para;</a></h2>
@@ -2176,7 +2183,7 @@
 <p>Three levels of checks cover both code paths:</p>
 <ol>
 <li>
-<p><strong>Synthetic V-valley DEM</strong> (1000x1000, 5m pixel, UTM CRS): Analytically known slope, aspect, HAND, and DTND. 22 tests catch CRS math errors directly against known solutions.</p>
+<p><strong>Synthetic DEMs</strong> (V-valley at 200 x 200 pixels, 5 m, UTM CRS; plus the split-valley and depression-basin DEMs): Analytically known slope, aspect, HAND, and DTND. 38 UTM tests catch CRS math errors directly against known solutions; the split-valley and depression-basin suites (34 tests) cover flow-path DTND across a drainage divide and the depression-filling chain.</p>
 </li>
 <li>
 <p><strong>MERIT geographic regression</strong>: Confirms UTM additions did not perturb the geographic code path. All 6 hillslope parameters match the stored baseline correlations (themselves computed against Swenson's published data) within 0.01 tolerance.</p>

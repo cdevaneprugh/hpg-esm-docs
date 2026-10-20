@@ -1318,10 +1318,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#connected-component-extraction-and-edge-trimming" class="md-nav__link">
+  <a href="#domain-contiguity-requirement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Connected-component extraction and edge trimming
+        Domain contiguity requirement
       
     </span>
   </a>
@@ -2043,10 +2043,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#connected-component-extraction-and-edge-trimming" class="md-nav__link">
+  <a href="#domain-contiguity-requirement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Connected-component extraction and edge trimming
+        Domain contiguity requirement
       
     </span>
   </a>
@@ -2391,8 +2391,9 @@
 </tr>
 </tbody>
 </table>
+<p>Slope and aspect are taken from NEON's companion product DP3.30025.001 (same 2023-05 collection, 1 m, EPSG:32617; 231 tiles, with all 90 production tiles covered) rather than computed from the DTM. See <a href="#slope-and-aspect">Slope and aspect</a> below.</p>
 <h3 id="production-domain">Production Domain<a class="headerlink" href="#production-domain" title="Permanent link">&para;</a></h3>
-<p>The production domain is R4C5-R12C14: a 9x10 km (90 km^2) rectangle of 90 tiles with 0% nodata — the largest contiguous rectangle within the NEON tile coverage. This domain was selected to avoid the nodata gaps present in the full tile mosaic (233 tiles, 323 km^2, 58.5% valid data), which cause silent failures in pysheds flow routing when all domain boundary cells are nodata.</p>
+<p>The production domain is R4C5-R12C14: a 9x10 km (90 km^2) rectangle of 90 tiles with 0% nodata — the largest contiguous rectangle within the NEON tile coverage. This domain was selected to avoid the nodata gaps present in the full tile canvas (17 x 19 = 323 tile positions, 233 of them with data; the largest contiguous valid region covered only 58.5% of the canvas), which cause silent failures in pysheds flow routing when all domain boundary cells are nodata.</p>
 <p>Production-domain DTM elevation ranges from 23.5 to 55.5 m (~32 m total relief; 1st-99th percentile 25.0-51.1 m). The low total relief confirms this is a low-relief wetlandscape where meter-scale elevation differences control wetland-upland transitions.</p>
 <h3 id="tile-reference-system">Tile Reference System<a class="headerlink" href="#tile-reference-system" title="Permanent link">&para;</a></h3>
 <p><img alt="Tile grid reference showing OSBS NEON tile coverage" src="../images/tile_grid_reference.png" /></p>
@@ -2425,9 +2426,9 @@
 <tbody>
 <tr>
 <td>None (full)</td>
-<td>8.1</td>
+<td>7.7</td>
 <td>lognormal</td>
-<td>Micro-topographic artifact</td>
+<td>Micro-topographic artifact (8.1 m on the earlier nodata-filled interior mosaic)</td>
 </tr>
 <tr>
 <td>10 m</td>
@@ -2470,22 +2471,23 @@
 <figcaption>Laplacian amplitude vs wavelength for the OSBS production domain (log-scale y-axis). The lognormal fit identifies the drainage-scale characteristic length at Lc = 356 m (red dashed line). Micro-topographic wavelengths below the 20 m cutoff are excluded before peak fitting to suppress the k² artifact discussed above.</figcaption>
 </figure>
 <h3 id="physical-plausibility-checks">Physical plausibility checks<a class="headerlink" href="#physical-plausibility-checks" title="Permanent link">&para;</a></h3>
-<p>Two consistency checks against Swenson's calibration statements (Section 2.4). These are plausibility checks, not comparisons against observations:</p>
+<p>Two consistency checks against Swenson's calibration statements (Section 2.4), run in Phase C on the 5x5 tile block R6-R10, C7-C11 (5000 x 5000 pixels) at the three candidate values Lc = 285, 300 and 356 m before Lc was finalized (<code>output/osbs/smoke_tests/lc_physical_validation/</code>). These are plausibility checks, not comparisons against observations. At the production value Lc = 356 m:</p>
 <ul>
-<li><strong>P95 DTND / Lc = 1.17.</strong> Swenson's criterion: the largest values of DTND should be "of similar magnitude" to Lc. P95 is the appropriate comparison statistic at 1m (see below). <strong>PASS.</strong></li>
-<li><strong>Mean catchment area / Lc^2 = 0.876.</strong> Swenson's calibration: 0.94 for low-relief terrain. Close agreement. <strong>PASS.</strong></li>
+<li><strong>P95 DTND / Lc = 1.09.</strong> Swenson's criterion: the largest values of DTND should be "of similar magnitude" to Lc. P95 is the appropriate comparison statistic at 1m (see below). <strong>PASS.</strong> (1.17 at the 300 m working value.)</li>
+<li><strong>Mean catchment area / Lc^2 = 0.877.</strong> Swenson's calibration: 0.94 for low-relief terrain. Close agreement. <strong>PASS.</strong> (0.876 at 300 m, 0.851 at 285 m.)</li>
 </ul>
-<p>Note on <code>max(DTND)</code>: the raw maximum DTND/Lc ratio is 3.1, but <code>max()</code> is not comparable between 90m MERIT (~12K pixels per gridcell) and 1m OSBS (25M pixels). At 90m, each pixel averages a 90x90 m area, blunting ridge extremes; at 1m, individual ridgeline pixels are preserved. The 2000x sample size difference shifts the extreme value distribution rightward. P95 is the resolution-fair comparison.</p>
+<p>Note on <code>max(DTND)</code>: the raw maximum DTND/Lc ratio is 2.6 at Lc = 356 m (3.1 at 300 m; the same 931 m ridge pixel sets the maximum at every Lc), but <code>max()</code> is not comparable between 90m MERIT (~12K pixels per gridcell) and 1m OSBS (25M pixels). At 90m, each pixel averages a 90x90 m area, blunting ridge extremes; at 1m, individual ridgeline pixels are preserved. The 2000x sample size difference shifts the extreme value distribution rightward. P95 is the resolution-fair comparison.</p>
 <h3 id="sensitivity">Sensitivity<a class="headerlink" href="#sensitivity" title="Permanent link">&para;</a></h3>
-<p>Lc is insensitive to all FFT parameters. A sweep of 20 configurations (blend_edges, zero_edges, NLAMBDA, MAX_HILLSLOPE_LENGTH, detrend) produced Lc variation of only 1.7 m. The spectral peak is strong enough (psharp 9-12) that preprocessing choices do not affect the result.</p>
+<p>The Phase C parameter sweep (20 configurations: blend_edges, zero_edges, NLAMBDA, MAX_HILLSLOPE_LENGTH, detrend) was run on the full-spectrum Laplacian before the restricted-wavelength method was introduced, so it characterizes the 8 m micro-topographic peak, not the production value: that peak moved by at most 1.7 m across all 20 runs (psharp 9-12), which established that the artifact is a property of the data rather than of the preprocessing. The drainage-scale peak was not swept over the same parameters. Its robustness evidence is the cutoff sweep above — 356 m at both the 20 m and 50 m cutoffs, 285 m with the Gaussian model at 100 m, psharp 3-4 — together with the two plausibility checks; the 285-356 m spread is the uncertainty on Lc.</p>
 <hr />
 <h2 id="stream-network-delineation">Stream Network Delineation<a class="headerlink" href="#stream-network-delineation" title="Permanent link">&para;</a></h2>
 <h3 id="accumulation-threshold">Accumulation threshold<a class="headerlink" href="#accumulation-threshold" title="Permanent link">&para;</a></h3>
 <p>A_thresh = int(0.5 * Lc_px^2) = 63,362 pixels at 1m resolution (Lc = 355.98 m; at 1 m pixels this is 63,362 m^2). For comparison, the MERIT reproduction used 34 cells (0.5 * 8.25^2 px at ~90 m), roughly 0.25 km^2.</p>
 <h3 id="dem-conditioning">DEM conditioning<a class="headerlink" href="#dem-conditioning" title="Permanent link">&para;</a></h3>
-<p>The DEM is conditioned through pysheds' standard sequence: fill_pits, fill_depressions, resolve_flats (with fallback to conditioned DEM if resolve_flats fails on the full domain), D8 flow direction, and flow accumulation. Pixels exceeding A_thresh are classified as stream.</p>
-<h3 id="connected-component-extraction-and-edge-trimming">Connected-component extraction and edge trimming<a class="headerlink" href="#connected-component-extraction-and-edge-trimming" title="Permanent link">&para;</a></h3>
-<p>Two preprocessing steps are required for mosaicked NEON data that are not needed for continuous MERIT tiles. First, <code>scipy.ndimage.label</code> isolates the largest contiguous data region from the mosaic. Second, all-nodata rows and columns are trimmed from the bounding box. Both steps address a fundamental constraint of D8 flow routing: pysheds requires flow to exit the domain at boundary cells. When all boundary cells are nodata, no cell can accumulate flow from others — max_accumulation silently equals 1 with no error raised.</p>
+<p>The DEM is conditioned through pysheds' standard sequence: fill_pits, fill_depressions, a 0.1 m lowering of the NWI open-water pixels in the depression-filled DEM (so that D8 flow is forced through lakes rather than around them), resolve_flats (with fallback to the depression-filled DEM if resolve_flats fails on the full domain), D8 flow direction, and flow accumulation. Pixels exceeding A_thresh are classified as stream.</p>
+<h3 id="domain-contiguity-requirement">Domain contiguity requirement<a class="headerlink" href="#domain-contiguity-requirement" title="Permanent link">&para;</a></h3>
+<p>D8 flow routing requires flow to exit the domain at valid boundary cells. When the boundary cells are nodata, no cell can accumulate flow from others — max_accumulation silently equals 1, zero stream cells are found, and no error is raised. This was discovered in January 2026 when the first pipeline attempted to process the full tile canvas (233 tiles with roughly 40% nodata gaps): the extracted region had all four edges entirely nodata and produced an empty stream network.</p>
+<p>The production pipeline does not handle gaps at run time. Instead, the input must be gap-free: Step 3a checks the DTM mosaic for nodata pixels and aborts with "Pipeline requires a contiguous mosaic with no nodata" if any are present. The requirement is satisfied by construction through domain selection — the production domain R4C5-R12C14 is the largest rectangle of tiles with 0% nodata (see <a href="#production-domain">Production Domain</a>), so every boundary cell is valid and the whole 9000 x 10000 pixel mosaic is routed as-is. The same holds for the single-tile smoke test (R6C10, 0% nodata). An interim approach used from January to March 2026 — extracting the largest connected component with <code>scipy.ndimage.label</code> and trimming nodata-only edge rows and columns — was removed on 2026-03-23 once the fixed, gap-free domain made it unnecessary; the PI confirmed the domain as final on 2026-03-30.</p>
 <h3 id="stream-network-results">Stream network results<a class="headerlink" href="#stream-network-results" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2530,12 +2532,12 @@
 <p>The split exists because D8 flow routing requires a depression-free DEM (otherwise the algorithm cannot define unambiguous downstream paths), but the physically meaningful elevation for the flood zone is the value before depression filling. Raw HAND drives bin assignment; conditioned HAND drives flow topology. The flood-zone columns in the production NetCDF (chain indices 2 through 13) come from the negative raw-HAND range and would not exist if binning used conditioned HAND. See <a href="../hand-binning-and-lake-column/">HAND Binning and Lake Column</a> for the binning consequences.</p>
 <p>DTND is unaffected by the conditioned-vs-raw distinction: it is the straight-line horizontal distance to the D8-linked drainage cell, which does not depend on elevations. Each bin's <code>hillslope_distance</code> is the area-midpoint distance on the fitted trapezoidal plan form (see below), not a pixel mean. Production <code>hillslope_distance</code> range: 1.30 m (lake column, half of Bin 1's 2.59 m) to 352.6 m (Bin 24, the ridge bin).</p>
 <h3 id="slope-and-aspect">Slope and aspect<a class="headerlink" href="#slope-and-aspect" title="Permanent link">&para;</a></h3>
-<p>Computed from the original DEM (not the pysheds-conditioned DEM) using pgrid's Horn (1981) 8-neighbor stencil. The conditioned DEM replaces nodata values with max_elevation + 1 to prevent flow through gaps, creating massive false gradients at every nodata boundary. The original DEM preserves nodata as NaN, which propagates correctly through the gradient computation, preventing false gradients at boundaries.</p>
-<p>The Horn stencil uses the UTM-aware code path (Phase A) with uniform pixel spacing from the affine transform rather than haversine-based variable spacing. This produces correct slope and aspect values on projected coordinates.</p>
+<p>The pipeline does not compute slope or aspect. The production file takes both from NEON's slope and aspect product (DP3.30025.001, the companion to the DTM, same 2023-05 collection), mosaicked over the production domain alongside the DTM and loaded in Step 1. NEON derives both with the Horn (1981) 8-neighbor stencil, but applies it to a 3×3-averaged DTM, which suppresses TIN-interpolation noise on flat terrain, and computes with a 20 m buffer beyond each tile edge, so there are no seam artifacts (NEON ATBD NEON.DOC.003791vB). The pipeline converts NEON slope from degrees to m/m (<code>tan(deg2rad(slope))</code>) and uses NEON aspect (degrees clockwise from north) directly; catchment-level aspect averaging (next section) is then applied to the NEON aspect before binning.</p>
+<p>This replaced the pipeline's earlier in-house computation — pgrid's UTM-aware Horn stencil (Phase A) run on the original DEM — on 2026-03-23, with PI approval, after a per-tile comparison across the 90 production tiles: slope Pearson r = 0.91 (0.78–0.98 per tile), with NEON slopes ~0.008 m/m lower on average because of the pre-smoothing; aspect circular r = 0.84, mean angular difference ~22°. Height, distance, width and area were bit-identical between the two runs, since slope and aspect do not enter flow routing or HAND; only the per-bin <code>hillslope_slope</code> and <code>hillslope_aspect</code> values changed. The fork's Horn stencil remains the slope/aspect method for the MERIT regression (see <a href="../pysheds-porting/">pysheds Fork</a>) but is not used for the OSBS production file.</p>
 <h3 id="catchment-level-aspect-averaging">Catchment-level aspect averaging<a class="headerlink" href="#catchment-level-aspect-averaging" title="Permanent link">&para;</a></h3>
 <p>Before aspect binning, per-pixel aspects are replaced with the circular mean aspect of each catchment side (left bank, right bank, headwater). Swenson's code performs this step (<code>set_aspect_to_hillslope_mean_serial</code>, <code>Representative_Hillslopes/terrain_utils.py</code>) before the binning loop. This stabilizes bin assignments for pixels near aspect boundaries, where small HAND differences can push the per-aspect Q25 statistic across the mandatory 2 m bin threshold. This was the single largest improvement found during the MERIT validation audit (+0.08 to area fraction correlation, from 0.83 to 0.90).</p>
 <h3 id="aspect-binning">Aspect binning<a class="headerlink" href="#aspect-binning" title="Permanent link">&para;</a></h3>
-<p>The production configuration uses a single aspect (omnidirectional). At OSBS slopes (median ~0.05 m/m, all bins below 0.06 m/m), the aspect-dependent insolation correction is at most ~6% of incident solar — small enough that aspect partitioning carries no physical signal worth resolving, and the same 24 HAND bins serve every direction. The four-aspect Swenson default (Table 1 of the paper) is preserved as an implementation option but is not used for OSBS production.</p>
+<p>The production configuration uses a single aspect (omnidirectional). At OSBS, with NEON-derived bin slopes (median ~0.05 m/m, max ~0.07 m/m), the aspect-dependent insolation correction is a few percent of incident solar at midday sun angles — small enough that aspect partitioning carries no physical signal worth resolving, and the same 24 HAND bins serve every direction. The four-aspect Swenson default (Table 1 of the paper) is preserved as an implementation option but is not used for OSBS production.</p>
 <h3 id="hand-binning-24-bin-tai-focused-scheme">HAND binning (24-bin TAI-focused scheme)<a class="headerlink" href="#hand-binning-24-bin-tai-focused-scheme" title="Permanent link">&para;</a></h3>
 <p>Equal-area binning on flat terrain crushes the lowest bin to near-zero height (Q25 = 0.00027 m in earlier 4-bin OSBS output), erasing the saturation gradient that defines the terrestrial-aquatic interface. The production OSBS file uses a 24-bin scheme tilted toward the TAI:</p>
 <ul>
@@ -2545,20 +2547,20 @@
 </ul>
 <p>The bin edges, per-bin area allocation, motivation for the asymmetric flood-zone tilt, and the LIDAR error-budget derivation are documented in detail on the <a href="../hand-binning-and-lake-column/">HAND Binning and Lake Column</a> page.</p>
 <h3 id="dtnd-tail-removal">DTND tail removal<a class="headerlink" href="#dtnd-tail-removal" title="Permanent link">&para;</a></h3>
-<p>An exponential fit to the DTND distribution identifies and removes long-distance outliers before parameter computation. Applied per-catchment-side. This prevents a few pixels with anomalously long flow paths (e.g., single ridgeline pixels) from distorting the trapezoidal width fit.</p>
+<p>An exponential fit to the DTND distribution identifies and removes long-distance outliers before parameter computation. It is applied once to the whole land-pixel population (NWI water pixels are excluded first so their zero DTND does not skew the fit), as in Swenson's code. This prevents a few pixels with anomalously long flow paths (e.g., single ridgeline pixels) from distorting the trapezoidal width fit.</p>
 <h3 id="trapezoidal-width-fitting-swenson-eq-9-16">Trapezoidal width fitting (Swenson Eq. 9-16)<a class="headerlink" href="#trapezoidal-width-fitting-swenson-eq-9-16" title="Permanent link">&para;</a></h3>
 <p>For each aspect bin, area is accumulated as a function of distance from stream: A_sum(d). The paper models hillslope plan form as a trapezoid: w(d) = w_base + 2<em>alpha</em>d, where w_base is the width at the stream channel and alpha is the plan form divergence parameter. The cumulative area curve A_sum(d) is fit with a degree-2 polynomial whose coefficients yield the trapezoidal parameters (Eq. 12, 14): alpha = -a_2, w_base = -a_1.</p>
 <p>Width for each HAND bin is computed from the quadratic solver on fitted trapezoidal areas (not raw pixel counts): the accumulated fitted area at each bin's lower distance boundary is solved via Eq. 16 (A = alpha * d^2 + w_base * d), and the width evaluated from the trapezoidal model at that distance (Eq. 9). This two-pass approach (first collect raw areas, then compute widths from fitted areas) ensures width varies monotonically from outlet to ridge and matches Swenson's implementation.</p>
 <p>Each bin's distance comes from the same fitted model: it is the root of alpha * d^2 + w_base * d = A_below + A_bin / 2, i.e. the distance at which the fitted plan form encloses half the bin's area. The bin's median pixel DTND is used only as a fallback if the fit fails, which did not occur for any of the 24 production bins. Swenson's code computes distance the same way (its comments call the result "median distances").</p>
 <hr />
 <h2 id="processing-resolution">Processing Resolution<a class="headerlink" href="#processing-resolution" title="Permanent link">&para;</a></h2>
-<p>Full 1m resolution, no subsampling. The production run that built <code>hillslopes_osbs_production_c260505.nc</code> completed in ~13 minutes (<code>production_summary.txt</code>, 803 s) on a single HPC node with a 64 GB allocation. Phase B benchmarking put the full-domain peak memory at ~29 GB — comfortably under the 64 GB ceiling — so full-resolution processing is feasible on a standard node and does not require subsampling.</p>
+<p>Full 1m resolution, no subsampling. The production run that built <code>hillslopes_osbs_production_c260505.nc</code> completed in ~13 minutes (<code>production_summary.txt</code>, 803 s; SLURM job 31931926, 13 min 57 s wall) on a single HPC node with a 64 GB allocation and peaked at 24 GiB resident memory (SLURM MaxRSS). The 64 GB request comes from Phase B, whose full-pipeline benchmark on the same 90-tile domain peaked at 58 GB (that script also computed slope/aspect with pgrid and kept more intermediate arrays); Phase B's conditioning-and-routing-only scalability test peaked at 29 GB. Full-resolution processing is therefore feasible on a standard node and does not require subsampling.</p>
 <p>Earlier work subsampled to 4m after an OOM failure at 64 GB. Phase B testing demonstrated this was unnecessary: the OOM occurred on a nodata-contaminated mosaic (189M pixels, 37.5% nodata) where tile gap fill created artificial flat regions that inflated <code>resolve_flats</code> memory. The contiguous production domain (90M pixels, 0% nodata) processes within the 64 GB allocation without incident.</p>
 <p>Resolution comparison across 1m, 2m, and 4m on both a 5x5 tile block (25M pixels) and the full 90-tile domain:</p>
 <ul>
 <li><strong>Height and distance:</strong> &gt;0.999 correlation across all resolutions (resolution-insensitive). These are the parameters that drive lateral flow in CTSM.</li>
 <li><strong>Slope:</strong> Systematically underestimated at coarser resolution (~50% lower at 4m in the lowest HAND bin). This is a smoothing artifact — coarser pixels average away local gradients.</li>
-<li><strong>Area and aspect:</strong> 0.64-0.99 correlations. More catchments (larger domain) produce more stable statistics.</li>
+<li><strong>Area and aspect:</strong> the least stable parameters. On the 5x5 block, 1 m vs 4 m correlations fall to 0.59 (area) and 0.35 (aspect); on the full domain they range 0.66-0.9999. More catchments (larger domain) produce more stable statistics.</li>
 </ul>
 <p>No parameter improves with coarser resolution, so full 1m resolution is retained for production.</p>
 <hr />
@@ -2573,7 +2575,7 @@
 <h3 id="crs-adaptation">CRS adaptation<a class="headerlink" href="#crs-adaptation" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Euclidean DTND in <code>compute_hand()</code> (vs haversine)</li>
-<li>Horn 1981 stencil with uniform pixel spacing in <code>_gradient_horn_1981()</code> (vs haversine + cos(lat) spacing)</li>
+<li>Horn 1981 stencil with uniform pixel spacing in <code>_gradient_horn_1981()</code> (vs haversine + cos(lat) spacing) — a fork capability exercised by the MERIT regression and the fork tests; the OSBS production file takes slope and aspect from the NEON product instead (see <a href="#slope-and-aspect">Slope and aspect</a>)</li>
 <li>Planar arctan2 for AZND (vs spherical bearing)</li>
 <li>Euclidean segment length in <code>river_network_length_and_slope()</code></li>
 </ul>
@@ -2587,6 +2589,7 @@
 <p>1m data contains micro-topographic noise invisible at 90m. The Laplacian k² weighting creates an artifact peak at 8 m. Excluding wavelengths &lt;20 m exposes the drainage-scale peak at 285-356 m. Larger edge blending windows compensate for the different geographic footprint per pixel.</p>
 <h3 id="osbs-specific-refinements">OSBS-specific refinements<a class="headerlink" href="#osbs-specific-refinements" title="Permanent link">&para;</a></h3>
 <ul>
+<li>NEON DP3.30025.001 slope and aspect products in place of the Horn-stencil computation from the DEM (Swenson computes both from the DEM gradient)</li>
 <li>24-bin TAI-focused HAND scheme (12 FZ + 12 upland, 0.25 m floor) replacing Swenson's 4-bin equal-area <code>SpecifyHandBounds()</code></li>
 <li>Single aspect replacing the 4-aspect partition</li>
 <li>Raw-HAND binning with Q01/Q99 outlier discard</li>

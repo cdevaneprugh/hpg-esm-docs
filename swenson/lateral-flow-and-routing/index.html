@@ -1831,11 +1831,11 @@
 <td>Compute <code>nhill_per_landunit</code>, <code>stream_channel_length</code>, <code>stream_channel_number</code></td>
 </tr>
 <tr>
-<td><code>HillslopeHydrologyMod.F90:1078+</code> (<code>HillslopeUpdateStreamWater</code>, called only from <code>HydrologyDrainageMod.F90:150-158</code>)</td>
+<td><code>HillslopeHydrologyMod.F90:1053+</code> (<code>HillslopeUpdateStreamWater</code>, called only from <code>HydrologyDrainageMod.F90:150-158</code>)</td>
 <td>Advance <code>stream_water_volume</code></td>
 </tr>
 <tr>
-<td><code>HillslopeHydrologyMod.F90:977+</code> (<code>HillslopeStreamOutflow</code>, called only from <code>HydrologyDrainageMod.F90:151-153</code>)</td>
+<td><code>HillslopeHydrologyMod.F90:939+</code> (<code>HillslopeStreamOutflow</code>, called only from <code>HydrologyDrainageMod.F90:151-153</code>)</td>
 <td>Manning's-equation streamflow velocity</td>
 </tr>
 <tr>
@@ -1902,7 +1902,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">use_hillslope</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">use_hillslope_routing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
 </code></pre></div>
-<p>with the 2026-05-05 production hillslope file (25 columns: 1 lake + 24 land bins on a single aspect). In this configuration, inter-column lateral subsurface flow is active between all 25 columns of the chain: Darcy gradients redistribute water from upland bins through the flood-zone bins to the lake column, and the terminal-column boundary condition at the lake is supplied by MOSART's <code>tdepth_grc</code> (which under the current DATM + MOSART setup defaults to 0, in effect treating the chain-bottom boundary as an empty stream channel).</p>
+<p>with the 2026-05-05 production hillslope file (25 columns: 1 lake + 24 land bins on a single aspect). In this configuration, inter-column lateral subsurface flow is active between all 25 columns of the chain: Darcy gradients redistribute water from upland bins through the flood-zone bins to the lake column, and the terminal-column boundary condition at the lake is supplied by MOSART's <code>tdepth_grc</code>. In this case that value is zero by configuration, not by assumption: the driver flag <code>flds_r2l_stream_channel_depths</code> is <code>.false.</code> in <code>nuopc.runconfig</code>, so MOSART never exports the channel-depth fields and CTSM takes the <code>tdepth_grc = 0</code> fallback (<code>lnd_import_export.F90:623</code>); MOSART itself runs in NULL mode (<code>MOSART_MODE = NULL</code>) in this single-point case and performs no routing. The chain-bottom boundary is therefore an empty stream channel.</p>
 <p>A 600-yr accelerated AD spinup using this configuration completed 2026-05-14 and was analyzed 2026-05-19. Three verdicts: convergence PASS (<code>drift_50yr = −0.48%</code>), TAI signal absent (<code>O_SCALAR ≈ 1.0</code>), lake column stable.</p>
 <p>Phase H Tracks B and C would enable <code>use_hillslope_routing = .true.</code> and switch the terminal-column boundary to the internal <code>stream_water_volume</code> ledger. They were retired 2026-08-19 — the PI has the routing/drainage situation handled. The routing-on machinery is built and validated (Track A, below) but is not deployed.</p>
 <hr />
@@ -1912,7 +1912,7 @@
 <p>The mesh-mode workaround described below is complete and verified but is <strong>not active</strong> in the operative <code>osbs.swenson.spinup</code> configuration. Issue #1432 only bites when <code>use_hillslope_routing = .true.</code>; the operative case runs with routing off, so <code>grc%area = spval</code> never reaches a live computation. Phase H Track A built and validated the workaround so it is ready if Tracks B/C later enable routing.</p>
 </div>
 <h3 id="the-bug">The bug<a class="headerlink" href="#the-bug" title="Permanent link">&para;</a></h3>
-<p>In single-point NUOPC mode, <code>grc%area</code> is initialized to <code>spval</code> (~1×10³⁶) at <code>lnd_set_decomp_and_domain.F90:342</code>:</p>
+<p>In single-point NUOPC mode, <code>grc%area</code> is initialized to <code>spval</code> (~1×10³⁶) at <code>src/cpl/share_esmf/lnd_set_decomp_and_domain.F90:342</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">ldomain</span><span class="p">%</span><span class="n">area</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spval</span>
 </code></pre></div>
 <p>and propagated to <code>grc%area(g)</code> via <code>initGridCellsMod.F90:179</code>. The value is never repopulated. Under <code>use_hillslope_routing = .false.</code>, the routing gate at <code>HillslopeHydrologyMod.F90:475</code> protects every downstream use of <code>grc%area</code>, so the <code>spval</code> does not corrupt any computation.</p>

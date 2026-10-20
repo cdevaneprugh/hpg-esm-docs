@@ -1909,7 +1909,7 @@
 <li>The spliced values <strong>bit-match</strong> the raw tipping-bucket record at each UTC timestamp.</li>
 <li>The heaviest September-2017 rainfall (163 mm on the UTC day) lands on <strong>2017-09-10</strong>, the date of <strong>Hurricane Irma</strong>'s Florida landfall, which serves as a temporal-alignment check.</li>
 </ul>
-<p>The likely reason the pre-built v4 set begins in 2018 is this same 2017 gauge outage; recovering it is one of the ways the custom record extends v4.</p>
+<p>The likely reason the pre-built v4 set begins in 2018 is this same 2017 gauge outage; recovering it is one of the ways the custom record extends v4. It is the only gap repaired from a second gauge: the whole-record QC also flags three other precipitation months as mostly or entirely gap-filled by REddyProc (2018-01 100%, 2019-12 91%, 2022-12 100%), which were left as generated.</p>
 <hr />
 <h2 id="output-dataset">Output dataset<a class="headerlink" href="#output-dataset" title="Permanent link">&para;</a></h2>
 <p><strong>101 monthly NetCDF files, <code>OSBS_atm_2017-02.nc</code> … <code>OSBS_atm_2025-06.nc</code></strong> — generated on HiPerGator; the <code>*.nc</code> are gitignored and not distributed in the repository (regenerate from the fork and environment specification below).</p>

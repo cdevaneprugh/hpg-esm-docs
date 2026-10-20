@@ -1276,6 +1276,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Lake column construction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#design-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design history
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1290,22 +1307,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#spillheight-and-the-sourcemod-retirement" class="md-nav__link">
+  <a href="#spillheight-the-retired-runtime-offset" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SPILLHEIGHT and the SourceMod retirement
+        SPILLHEIGHT: the retired runtime offset
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="SPILLHEIGHT and the SourceMod retirement">
+    <nav class="md-nav" aria-label="SPILLHEIGHT: the retired runtime offset">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#why-raw-hand-binning-superseded-this" class="md-nav__link">
+  <a href="#first-approach-a-runtime-elevation-offset-november-2025-to-april-2026" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why raw-HAND binning superseded this
+        First approach: a runtime elevation offset (November 2025 to April 2026)
       
     </span>
   </a>
@@ -1313,10 +1330,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pi-decision-2026-04-30" class="md-nav__link">
+  <a href="#why-raw-hand-binning-superseded-it-pi-decision-2026-04-30" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PI decision (2026-04-30)
+        Why raw-HAND binning superseded it (PI decision, 2026-04-30)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-the-parameter-is-dead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status: the parameter is dead
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-runtime-reads-from-the-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the runtime reads from the file
       
     </span>
   </a>
@@ -1680,6 +1719,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Lake column construction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#design-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design history
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1694,22 +1750,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#spillheight-and-the-sourcemod-retirement" class="md-nav__link">
+  <a href="#spillheight-the-retired-runtime-offset" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SPILLHEIGHT and the SourceMod retirement
+        SPILLHEIGHT: the retired runtime offset
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="SPILLHEIGHT and the SourceMod retirement">
+    <nav class="md-nav" aria-label="SPILLHEIGHT: the retired runtime offset">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#why-raw-hand-binning-superseded-this" class="md-nav__link">
+  <a href="#first-approach-a-runtime-elevation-offset-november-2025-to-april-2026" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why raw-HAND binning superseded this
+        First approach: a runtime elevation offset (November 2025 to April 2026)
       
     </span>
   </a>
@@ -1717,10 +1773,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pi-decision-2026-04-30" class="md-nav__link">
+  <a href="#why-raw-hand-binning-superseded-it-pi-decision-2026-04-30" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PI decision (2026-04-30)
+        Why raw-HAND binning superseded it (PI decision, 2026-04-30)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-the-parameter-is-dead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status: the parameter is dead
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-runtime-reads-from-the-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the runtime reads from the file
       
     </span>
   </a>
@@ -1861,7 +1939,7 @@
 <h2 id="outlier-handling">Outlier handling<a class="headerlink" href="#outlier-handling" title="Permanent link">&para;</a></h2>
 <p>Q01 (raw HAND) = −6.35 m and Q99 = +17.02 m define the binning envelope for the production domain. Pixels outside this envelope are <strong>discarded</strong>, not clipped into sentinel bins, for two reasons:</p>
 <ol>
-<li>Both tails are real terrain. Outlier diagnostic on the production domain (2026-05-01) shows the sharpest density breaks at Q01 (33.5× density step) and Q99 (34.8×), with negligible singleton mass beyond. The tails are not isolated noise pixels; they are continuous topography that would inflate sentinel-bin weights if retained.</li>
+<li>Both tails are real terrain. The outlier diagnostic (2026-05-01, run on the 2026-04-24 diagnostic arrays, i.e. before the E.6 hole-fill, when the cutoffs were −6.34 / +17.46 m) shows the sharpest density breaks at Q01 (33.5× density step) and Q99 (34.8×), with negligible singleton mass beyond; the ratios were not recomputed after E.6 moved Q99 to 17.02 m. The tails are not isolated noise pixels; they are continuous topography that would inflate sentinel-bin weights if retained.</li>
 <li>Clipping into sentinel bins would force the deepest pit and ridge extrema to share a bin with a much larger area of moderately deep / high terrain, distorting both the mean HAND and the gridcell-aggregated mass-and-energy balance for those bins.</li>
 </ol>
 <p>The discard removes ~1.5 M pixels (~2% of the production-domain land area).</p>
@@ -1892,7 +1970,7 @@
 </table>
 <p>The wide mask ensures that lake-surface pixels do not contaminate land-bin HAND statistics: an NWI-identified lake has water-surface elevation that, in HAND terms, is whatever the depression-fill algorithm filled the lake to (usually a uniform fill level). Counting those pixels into land bins would skew the lowest land bins toward zero HAND, undoing the TAI signal the 24-bin scheme is designed to resolve.</p>
 <h3 id="nwi-mask-hole-fill">NWI mask hole-fill<a class="headerlink" href="#nwi-mask-hole-fill" title="Permanent link">&para;</a></h3>
-<p>Raw NWI polygons (downloaded from the NWI v3.2 OSBS subset) miss interior holes that the 1 m LIDAR confirms are contiguous open water: small islands inside larger features, sub-polygon gaps where the digitizer missed thin shore strips, and mis-aligned edges. A <code>scipy.ndimage.binary_fill_holes</code> pass over the rasterized NWI mask closes approximately 400,000 pixels of these holes. The hole-fill is applied before the mask is used downstream (wide-mask construction, lake-area aggregation, perimeter computation).</p>
+<p>Raw NWI polygons (from the USFWS NWI HUC8 03080103 "Lower St. John" watershed extract, October 2024 database version, 2017 true-colour imagery) miss interior holes that the 1 m LIDAR confirms are contiguous open water: small islands inside larger features, sub-polygon gaps where the digitizer missed thin shore strips, and mis-aligned edges. A <code>scipy.ndimage.binary_fill_holes</code> pass over the rasterized NWI mask closes approximately 400,000 pixels of these holes. The hole-fill is applied before the mask is used downstream (wide-mask construction, lake-area aggregation, perimeter computation).</p>
 <hr />
 <h2 id="lake-column-construction">Lake column construction<a class="headerlink" href="#lake-column-construction" title="Permanent link">&para;</a></h2>
 <p>The OSBS production file places a dedicated lake column at chain index 1, shifting land columns to indices 2-25. The lake column represents the aggregate of all NWI open water in the production domain as a single submerged element.</p>
@@ -1964,6 +2042,16 @@
 <br />
 <figcaption>Four hillslope parameters across the 25 columns of the production NetCDF: mean raw HAND (top-left), mean DTND (top-right), per-rep hillslope element area (bottom-left), and lower-edge width (bottom-right). The chain is ordered lake → deepest flood-zone bin (1) → ridge bin (24). Color-coded: lake (light blue), flood zone with raw HAND &lt; 0 (dark red), upland with raw HAND ≥ 0 (green). The HAND chain rises monotonically from −6.0 m at the lake to +12.5 m at the ridge bin. DTND grows smoothly from ~1.3 m at the lake to ~353 m at the ridge. Area is small in the flood zone (narrow bins resolve the TAI core) and largest in mid-upland (where bin widths broaden). Width is set by the trapezoidal plan-form fit and is largest near the stream-margin bins.</figcaption>
 </figure>
+<h3 id="design-history">Design history<a class="headerlink" href="#design-history" title="Permanent link">&para;</a></h3>
+<p>The lake column reached its production form through five revisions in four weeks, recorded in <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/phases/G-ctsm-lake-representation.md"><code>phases/G-ctsm-lake-representation.md</code></a> and <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/phases/E.5-bin-redesign.md"><code>phases/E.5-bin-redesign.md</code></a>:</p>
+<ul>
+<li><strong>2026-04-09 — weir overflow abandoned.</strong> The first production NetCDF was generated the same day the PI reviewed a plan to represent lakes by repurposing CTSM's stream-channel fields as lake geometry with weir overflow; the plan was dropped.</li>
+<li><strong>2026-04-10 — submerged column.</strong> Phase G pivoted to a lake column inside the hillslope chain, at first framed around the runtime spillheight offset. A CTSM source audit (2026-04-21 to 04-24) established how <code>hill_distance</code> enters the Darcy gradient, that the column belongs at chain index 1, and that <code>hill_bedrock_depth</code> is inert under the Uniform soil-profile method.</li>
+<li><strong>2026-04-25 — scope narrowed to NWI open water.</strong> Earlier framing had absorbed every depression-filled pixel into the lake; the PI limited the column to mapped open water, set <code>hill_width</code> to half the NWI perimeter and <code>hill_slope</code> to 0, and declined to force permanent submersion. The unmapped depressions became the flood-zone bins of Phase E.5.</li>
+<li><strong>2026-04-30 — spillheight retired</strong> (see <a href="#spillheight-the-retired-runtime-offset">SPILLHEIGHT: the retired runtime offset</a>).</li>
+<li><strong>2026-05-04 — elevation locked, distance bug fixed.</strong> <code>hill_elev</code> was set to −6.0 m as a chain-bookkeeping value (see Lake <code>hill_elev</code> above). The first production run under raw-HAND binning (<code>c260504</code>) carried a static 5 m <code>hill_distance</code>, which made the Bin 1 → lake Darcy denominator negative (2.59 − 5 = −2.41 m): the deepest bin's fitted distance is far smaller under raw HAND than the ~30 m the audit had assumed. The dynamic 0.5 × Bin 1 rule replaced it the same day.</li>
+<li><strong>2026-05-05 — per-rep rescale.</strong> Inspection of that file showed the lake area in total-NWI units (11.08 km²) against land bins in Swenson's per-representative-hillslope units (0.148 km² in all), which would have given the lake 98.7% of the landunit weight. Rescaling the lake by the implicit hillslope count (≈534) brought it to 12.3%, the NWI fraction of the domain, and produced the production file <code>c260505</code> (next section).</li>
+</ul>
 <hr />
 <h2 id="per-rep-rescaling">Per-rep rescaling<a class="headerlink" href="#per-rep-rescaling" title="Permanent link">&para;</a></h2>
 <p>The lake-column area (11.08 km²) is far larger than any single representative hillslope's footprint, because OSBS open water is the aggregate of 103 NWI features distributed across the 90 km² production domain. To fit the column inside a representative-hillslope shape, the pipeline computes:</p>
@@ -1974,28 +2062,26 @@
 </ul>
 <p>Within the representative hillslope, the lake column ends up with <code>wtlunit ≈ 12.3%</code>, calibrated to the NWI water footprint as a fraction of the production domain (~12% open water). The land bins partition the remaining 87.7% according to their NWI-masked, water-excluded pixel areas.</p>
 <hr />
-<h2 id="spillheight-and-the-sourcemod-retirement">SPILLHEIGHT and the SourceMod retirement<a class="headerlink" href="#spillheight-and-the-sourcemod-retirement" title="Permanent link">&para;</a></h2>
+<h2 id="spillheight-the-retired-runtime-offset">SPILLHEIGHT: the retired runtime offset<a class="headerlink" href="#spillheight-the-retired-runtime-offset" title="Permanent link">&para;</a></h2>
+<h3 id="first-approach-a-runtime-elevation-offset-november-2025-to-april-2026">First approach: a runtime elevation offset (November 2025 to April 2026)<a class="headerlink" href="#first-approach-a-runtime-elevation-offset-november-2025-to-april-2026" title="Permanent link">&para;</a></h3>
 <p>Before Phase E.5, the pipeline binned on <strong>conditioned HAND</strong> — the depression-filled DEM's elevation above stream. Conditioned HAND is zero or positive by construction: pixels inside filled depressions sit <em>at</em> the depression's fill level, not below it. Equal-area binning on this signal produced no flood-zone columns; the lowest land bin's mean HAND landed at LIDAR noise (Q25 = 0.00027 m on earlier 4-bin runs), as documented in the <a href="#motivation">Motivation</a> section.</p>
-<p>To represent the wet, low-lying terrain visible in the NEON LIDAR, the PI installed two SourceMods:</p>
-<ul>
-<li><strong><code>HillslopeHydrologyMod.F90</code></strong> — modified <code>InitHillslope</code> to subtract a uniform <code>SPILLHEIGHT</code> constant (originally 0.2 m, hard-coded) from every column's <code>hill_elev</code> after reading the NetCDF. This effectively lowered the whole chain at runtime.</li>
-<li><strong><code>SurfaceWaterMod.F90</code></strong> — added runoff suppression for any column satisfying <code>hill_elev + h2osfc &lt; 0</code>. Columns lowered below the stream by the SPILLHEIGHT subtraction would pond instead of drain, producing a stratified submergence regime.</li>
-</ul>
-<p>Combined, the two SourceMods turned the lowest land bins into "usually wet, sometimes dry" columns and the lake column (sitting at <code>hill_elev = −SPILLHEIGHT</code> in the input file) into the permanently submerged anchor of the chain.</p>
-<h3 id="why-raw-hand-binning-superseded-this">Why raw-HAND binning superseded this<a class="headerlink" href="#why-raw-hand-binning-superseded-this" title="Permanent link">&para;</a></h3>
+<p>To represent the wet, low-lying terrain visible in the NEON LIDAR, the PI's CTSM SourceMods instead created wetland columns at run time. A <code>spillheight</code> parameter in the <code>HillslopeHydrologyMod.F90</code> SourceMod (default 0.2 m; <code>osbs2.branch.spillheight</code> used 0.5 m) was subtracted from every column's <code>hill_elev</code> as the hillslope file was read, lowering the whole chain so that the lowest land bins fell below the stream reference, and a companion rule in the <code>SurfaceWaterMod.F90</code> SourceMod let columns with a negative elevation pond rather than drain. The lake column was placed in the file at <code>hill_elev = −spillheight</code> so that it became the permanently submerged anchor of the chain. The CTSM fork added <code>spillheight</code> to the hillslope namelist group (<code>namelist_definition_ctsm.xml</code>, 2026-01-12) so that the offset could be set from <code>user_nl_clm</code> instead of by editing the SourceMod.</p>
+<h3 id="why-raw-hand-binning-superseded-it-pi-decision-2026-04-30">Why raw-HAND binning superseded it (PI decision, 2026-04-30)<a class="headerlink" href="#why-raw-hand-binning-superseded-it-pi-decision-2026-04-30" title="Permanent link">&para;</a></h3>
 <p>Phase E.5 switched the pipeline's binning input from conditioned HAND to <strong>raw HAND</strong> (conditioned HAND minus the depression-fill depth, signed; see <a href="#outlier-handling">Outlier handling</a>). Raw HAND preserves the depression-fill depth as a negative HAND value, so flood-zone columns emerge from the data:</p>
 <ul>
 <li>The deepest land bin (chain index 2 in the production NetCDF) has a mean HAND of −5.13 m.</li>
 <li>Eleven additional flood-zone bins (chain indices 3 through 13) resolve the saturation gradient up to HAND = 0.</li>
-<li>The bin areas, per-meter density, and Darcy-relevant geometry all derive from the original LIDAR rather than from a runtime offset to the deposited input file.</li>
+<li>The lake column carries its own chain-bookkeeping elevation, <code>hill_elev = −6.0 m</code> (locked 2026-05-04; see Lake column construction above), in place of the earlier <code>−spillheight</code> convention.</li>
+<li>The bin areas, per-meter density, and Darcy-relevant geometry all derive from the original LIDAR rather than from a runtime offset applied to the file.</li>
 </ul>
-<p>The runtime elevation shift is no longer needed because the flood zone is in the file. The SourceMod's purpose — creating submerged columns to represent low-lying terrain — is solved at file-construction time rather than at runtime.</p>
-<h3 id="pi-decision-2026-04-30">PI decision (2026-04-30)<a class="headerlink" href="#pi-decision-2026-04-30" title="Permanent link">&para;</a></h3>
-<p>The SourceMod's runtime mechanism was retired. <code>SPILLHEIGHT = 0.0</code> set via namelist override (rather than editing the SourceMod constant) keeps the SourceMod files retained but inert:</p>
+<p>A uniform offset cannot do this: it lowers every column by the same amount, whereas raw-HAND binning gives each column the depth the LIDAR actually shows below its drainage reference. The 2026-04-30 PI meeting therefore retired the offset; the depths it was meant to impose at run time are now in the file.</p>
+<h3 id="status-the-parameter-is-dead">Status: the parameter is dead<a class="headerlink" href="#status-the-parameter-is-dead" title="Permanent link">&para;</a></h3>
+<p>The offset is disabled in every production case through the namelist:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">spillheight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
 </code></pre></div>
-<p>This lowers the maintenance burden across cases — no Fortran rewrite, no case-by-case SourceMod synchronization — while disabling the runtime elevation shift. The lake column's <code>hill_elev = −6.0 m</code> (chain-bookkeeping value, locked 2026-05-04; see Lake column construction above) replaces the earlier <code>−SPILLHEIGHT</code> framing as the chain anchor.</p>
-<p>Both approaches produce a stratified submergence regime; the data-derived approach is more faithful to the underlying NEON LIDAR (basin depths read from the input file rather than imposed as a domain-wide uniform offset) and removes the need to keep the SourceMod's <code>SPILLHEIGHT</code> constant in sync with the pipeline.</p>
+<p>This line is present in <code>osbs5.swenson.spinup</code>, <code>osbs.swenson.spinup</code>, <code>osbs.swenson.post-ad</code>, and <code>osbs.swenson.neon.spinup</code>, and at zero the subtraction is an identity. The PI subsequently removed the <code>spillheight</code> parameter from his own SourceMods altogether (first in <code>osbs5-1</code>, 2026-05-19); his CTSM tree never carried the fork's namelist entry. The parameter therefore no longer exists outside the fork's namelist definition and the <code>user_nl_clm</code> override that keeps it at zero.</p>
+<h3 id="what-the-runtime-reads-from-the-file">What the runtime reads from the file<a class="headerlink" href="#what-the-runtime-reads-from-the-file" title="Permanent link">&para;</a></h3>
+<p>The SourceMods are run-time modifications to CTSM; they never touch the pipeline, the bin edges, or the NetCDF, and the pipeline reads nothing from CTSM. The one interface between the two is the sign of <code>hill_elev</code>: the hillslope physics identifies wetland columns as those with <code>hill_elev &lt; 0</code>, so the twelve negative-HAND flood-zone bins and the −6.0 m lake column are what the model treats as wetland. The binning determines which columns are wetland; the runtime does not alter the binning.</p>
 <hr />
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
 <ul>

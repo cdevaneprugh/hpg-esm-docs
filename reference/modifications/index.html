@@ -1440,6 +1440,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#6-namelist_definition_ctsmxml-spillheight-research-parameter-retired" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. namelist_definition_ctsm.xml - spillheight (research parameter, retired)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1676,6 +1687,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#6-namelist_definition_ctsmxml-spillheight-research-parameter-retired" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. namelist_definition_ctsm.xml - spillheight (research parameter, retired)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1773,7 +1795,7 @@
 <h1 id="fork-modifications">Fork Modifications<a class="headerlink" href="#fork-modifications" title="Permanent link">&para;</a></h1>
 <p>This page documents modifications made in our forks and their rationale.</p>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Our forks include HiPerGator-specific changes and bug fixes for building tools:</p>
+<p>Our forks include HiPerGator-specific changes, bug fixes for building tools, and one research namelist parameter:</p>
 <table>
 <thead>
 <tr>
@@ -1786,7 +1808,7 @@
 <tr>
 <td><a href="https://github.com/cdevaneprugh/CTSM">cdevaneprugh/CTSM</a></td>
 <td><code>uf-ctsm5.3.085</code></td>
-<td>Tool fixes, paths</td>
+<td>Tool fixes, paths, <code>spillheight</code> namelist parameter (retired)</td>
 </tr>
 <tr>
 <td><a href="https://github.com/cdevaneprugh/ccs_config_cesm">cdevaneprugh/ccs_config_cesm</a></td>
@@ -1884,6 +1906,18 @@
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="na">clmforcingindir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/blue/&lt;group&gt;/earth_models/inputdata</span>
 </code></pre></div></p>
 <p><strong>Contribution candidate:</strong> No - site-specific.</p>
+<h3 id="6-namelist_definition_ctsmxml-spillheight-research-parameter-retired">6. namelist_definition_ctsm.xml - spillheight (research parameter, retired)<a class="headerlink" href="#6-namelist_definition_ctsmxml-spillheight-research-parameter-retired" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>bld/namelist_files/namelist_definition_ctsm.xml</code></p>
+<p><strong>Change:</strong> A new namelist entry <code>spillheight</code> (type <code>real</code>, group <code>hillslope_properties_inparm</code>, no default in the definition), added 2026-01-12 (commit <code>4a0319fee</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">&lt;entry</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;spillheight&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;real&quot;</span><span class="w"> </span><span class="na">category=</span><span class="s">&quot;physics&quot;</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">        </span><span class="na">group=</span><span class="s">&quot;hillslope_properties_inparm&quot;</span><span class="nt">&gt;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Height<span class="w"> </span>threshold<span class="w"> </span>(m)<span class="w"> </span>for<span class="w"> </span>water<span class="w"> </span>to<span class="w"> </span>accumulate<span class="w"> </span>before<span class="w"> </span>draining<span class="w"> </span>to<span class="w"> </span>stream.
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Subtracts<span class="w"> </span>from<span class="w"> </span>hillslope_elevation<span class="w"> </span>to<span class="w"> </span>create<span class="w"> </span>a<span class="w"> </span>bank<span class="w"> </span>effect.
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nt">&lt;/entry&gt;</span>
+</code></pre></div>
+<p><strong>Reason:</strong> Stock CTSM has no such parameter. It exists only in the PI's <code>HillslopeHydrologyMod.F90</code> SourceMod, which reads it from the <code>hillslope_properties_inparm</code> group and subtracts it from every hillslope column's <code>hill_elev</code> at initialization (default 0.2 m in the SourceMod). The fork entry lets the value be set from <code>user_nl_clm</code> instead of by editing the SourceMod; without it, CTSM's namelist validation rejects the variable. It is only meaningful in a case that also carries that SourceMod.</p>
+<p><strong>Status:</strong> Retired. The offset was superseded by raw-HAND binning on 2026-04-30 and every production case sets <code>spillheight = 0.0</code>; the PI later removed the parameter from his SourceMods (2026-05-19). The entry is kept so that existing cases' <code>user_nl_clm</code> files remain valid. See <a href="../../swenson/hand-binning-and-lake-column/#spillheight-the-retired-runtime-offset">SPILLHEIGHT: the retired runtime offset</a>.</p>
+<p><strong>Contribution candidate:</strong> No - research-specific and retired.</p>
 <h2 id="ccs_config-modifications">ccs_config Modifications<a class="headerlink" href="#ccs_config-modifications" title="Permanent link">&para;</a></h2>
 <h3 id="machine-configuration">Machine Configuration<a class="headerlink" href="#machine-configuration" title="Permanent link">&para;</a></h3>
 <p><strong>Files in <code>machines/hipergator/</code>:</strong>
@@ -1899,17 +1933,17 @@
 </ul>
 <h3 id="shared-pio-library-support">Shared PIO Library Support<a class="headerlink" href="#shared-pio-library-support" title="Permanent link">&para;</a></h3>
 <p>The fork configures CTSM to use a pre-built PIO library instead of rebuilding it for every case. This is controlled by environment variables in <code>config_machines.xml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;PIO_VERSION_MAJOR&quot;</span><span class="nt">&gt;</span>2<span class="nt">&lt;/env&gt;</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;PIO_TYPENAME_VALID_VALUES&quot;</span><span class="nt">&gt;</span>netcdf<span class="nt">&lt;/env&gt;</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;LD_LIBRARY_PATH&quot;</span><span class="nt">&gt;</span>/blue/<span class="nt">&lt;group&gt;</span>/earth_models/shared/parallelio/bld/lib:$ENV{LD_LIBRARY_PATH}<span class="nt">&lt;/env&gt;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;PIO_VERSION_MAJOR&quot;</span><span class="nt">&gt;</span>2<span class="nt">&lt;/env&gt;</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;PIO_TYPENAME_VALID_VALUES&quot;</span><span class="nt">&gt;</span>netcdf<span class="nt">&lt;/env&gt;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nt">&lt;env</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;LD_LIBRARY_PATH&quot;</span><span class="nt">&gt;</span>/blue/<span class="nt">&lt;group&gt;</span>/earth_models/shared/parallelio/bld/lib:$ENV{LD_LIBRARY_PATH}<span class="nt">&lt;/env&gt;</span>
 </code></pre></div>
 <p><strong>How CIME decides whether to use external PIO:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>if PIO_VERSION_MAJOR is set AND matches case PIO_VERSION:
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    → use external PIO from PIO_LIBDIR
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    → build log shows &quot;Using installed PIO library&quot;
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>else:
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    → build PIO from source into EXEROOT/shared/pio2
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    → adds several minutes to each case.build
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>if PIO_VERSION_MAJOR is set AND matches case PIO_VERSION:
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    → use external PIO from PIO_LIBDIR
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    → build log shows &quot;Using installed PIO library&quot;
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>else:
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    → build PIO from source into EXEROOT/shared/pio2
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    → adds several minutes to each case.build
 </code></pre></div>
 <p><strong>Variable purposes:</strong></p>
 <table>
@@ -1970,6 +2004,11 @@
 <td>HiPerGator paths</td>
 <td>Not applicable</td>
 <td>Site-specific</td>
+</tr>
+<tr>
+<td><code>spillheight</code> namelist entry</td>
+<td>Not applicable</td>
+<td>Research-specific; retired, set to 0.0 in all production cases</td>
 </tr>
 <tr>
 <td>ccs_config</td>

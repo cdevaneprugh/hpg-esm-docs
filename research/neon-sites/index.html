@@ -1863,7 +1863,7 @@
 <tbody>
 <tr>
 <td><strong>Mean Precipitation</strong></td>
-<td>~1450 mm/yr (DOE proposal); our NEON tower forcing averages ~1385 mm/yr over 2018-2024 (range 955-1810)</td>
+<td>~1450 mm/yr (DOE proposal); our custom NEON tower forcing (Phase I) averages ~1385 mm/yr over 2018-2024 (range 955-1810); the pre-built NCAR-NEON v4 product averages ~1407 mm/yr (range 1102-1759)</td>
 </tr>
 <tr>
 <td><strong>PET</strong></td>
@@ -1957,8 +1957,8 @@
 </tr>
 <tr>
 <td>Meteorological</td>
-<td>DP1.00002/3</td>
-<td>Forcing data</td>
+<td>DP1.00003.001 (air temperature), DP1.00044.001 / DP1.00045.001 (precipitation), DP1.00023.001 (radiation), DP1.00004.001 (pressure), DP1.00001.001 (wind), DP1.00098.001 (humidity)</td>
+<td>Forcing data (see <a href="../../swenson/neon-forcing/">NEON Atmospheric Forcing</a>)</td>
 </tr>
 <tr>
 <td>Soil profiles</td>
@@ -1979,18 +1979,21 @@
 <p><code>run_tower</code> replaced the older <code>run_neon</code> script, which is not present in ctsm5.3.085.</p>
 <hr />
 <h2 id="subset-data">Subset Data<a class="headerlink" href="#subset-data" title="Permanent link">&para;</a></h2>
-<p>Pre-generated subset data structure:</p>
+<p>Pre-generated subset data (<code>subset_data</code> output; one directory per configuration):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/blue/&lt;group&gt;/earth_models/shared.subset.data/
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── OSBS/
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│   ├── surfdata_*.nc           # Surface dataset
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│   ├── datmdata/               # Atmospheric forcing
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│   │   └── atm_forcing.datm.CRUNCEP.*/
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│   └── user_mods/              # Namelist modifications
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│       ├── shell_commands
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│       ├── user_nl_clm
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│       └── user_nl_datm_streams
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>└── .../
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── osbs-cfg.78pfts.hist.no-dompft.1901-1921/
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│   ├── surfdata_OSBS_hist_1850_78pfts_c250925.nc   # Surface dataset (78 PFTs)
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│   ├── datmdata/                                  # CRUNCEPv7 single-point forcing, 1901-1921
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│   │   ├── clmforc.cruncep.V7.c2016.0.5d.{Prec,Solr,TPQWL}.OSBS.YYYY-MM.nc
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│   │   └── domain.lnd.360x720_cruncep_OSBS_c250925.nc
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│   └── user_mods/                                 # Namelist modifications
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│       ├── shell_commands
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│       ├── user_nl_clm
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│       └── user_nl_datm_streams
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>├── osbs-cfg.16pfts.PtVeg.no-dompft.1901-1921/     # Same layout; 16-PFT potential-vegetation surface dataset
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>└── subset_data_test/                              # Same layout; surfdata c251002
 </code></pre></div>
+<p>The operative Swenson cases do not read this directory: their <code>CLM_USRDAT_DIR</code> points at the PI's <code>subset_input/</code> directory, which holds the <code>c251002</code> surface dataset, the same CRUNCEPv7 <code>datmdata/</code>, and the global Swenson hillslope file (<code>hillslopes_osbs_c240416.nc</code>); the production hillslope file is referenced by absolute path.</p>
 <h3 id="current-data-strategy">Current Data Strategy<a class="headerlink" href="#current-data-strategy" title="Permanent link">&para;</a></h3>
 <p>The original OSBS hillslope spinup (<code>osbs.swenson.spinup</code>) uses globally-subset <strong>CRUNCEPv7</strong> atmospheric forcing and surface data extracted via CTSM's <code>subset_data</code> script (in <code>tools/site_and_regional/</code>). A <strong>site-native NEON forcing dataset</strong> has since been produced (Phase I): a fork of the NCAR-NEON pipeline, run fully offline on HiPerGator, generates the OSBS tower record as 101 monthly DATM files spanning 2017-02 → 2025-06. It reproduces the pre-built NCAR-NEON v4 product where both carry measured data, has driven a converged AD spinup (<code>osbs.swenson.neon.spinup</code>), and has been handed to the PI for adoption. See <a href="../../swenson/neon-forcing/">NEON Atmospheric Forcing</a> for the full methodology and the <code>dtlimit = -1</code> requirement for cycled runs.</p>
 <p>An earlier report that the pre-built <code>run_tower</code> NEON forcing was "insufficient" was traced to a namelist year-cap, not a data limit — the pre-built product reaches 2024-12. <code>run_tower</code> remains useful for basic NEON site tests, but for OSBS production forcing it is superseded by the offline pipeline above.</p>
@@ -2032,7 +2035,7 @@
 </tr>
 </tbody>
 </table>
-<p>The earlier <code>osbs2.branch.spillheight</code>, <code>.v2</code>, and <code>.v3</code> cases exercised the runtime <code>SPILLHEIGHT</code> SourceMod retired 2026-04-30 (superseded by raw-HAND binning at file-construction time) and are no longer active.</p>
+<p>The earlier branch cases are no longer active: <code>osbs2.branch.v2</code> to <code>.v4</code> (stock CTSM builds that tested the history-output configuration and the first production hillslope files) and the spillheight test cases <code>osbs2.branch.spillheight</code> (0.5 m offset), <code>osbs4.branch.v1</code>, and <code>osbs4.branch.v2</code> (0.2 m default). The runtime <code>spillheight</code> elevation offset the latter exercised was retired 2026-04-30 in favor of raw-HAND binning at file-construction time; see <a href="../../swenson/hand-binning-and-lake-column/#spillheight-the-retired-runtime-offset">SPILLHEIGHT: the retired runtime offset</a>.</p>
 <hr />
 <p><em>See <a href="../../running-ctsm/single-point/">Single-Point Runs</a> for creating site simulations.</em></p>
 

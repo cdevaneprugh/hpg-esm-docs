@@ -45,7 +45,7 @@ See [Single-Point Runs](../running-ctsm/single-point.md) for creating site simul
 
 | Attribute | Value |
 |-----------|-------|
-| **Mean Precipitation** | ~1450 mm/yr (DOE proposal); our NEON tower forcing averages ~1385 mm/yr over 2018-2024 (range 955-1810) |
+| **Mean Precipitation** | ~1450 mm/yr (DOE proposal); our custom NEON tower forcing (Phase I) averages ~1385 mm/yr over 2018-2024 (range 955-1810); the pre-built NCAR-NEON v4 product averages ~1407 mm/yr (range 1102-1759) |
 | **PET** | ~1300 mm/yr (DOE proposal) |
 | **Wetland Coverage** | ~19% (DOE proposal; all wetland types). NWI open water alone is 12.3% of the 90 km² hillslope domain |
 | **Connectivity** | Primarily groundwater |
@@ -95,7 +95,7 @@ Key data products for CTSM:
 | Product | Code | Use |
 |---------|------|-----|
 | Eddy covariance | DP4.00200.001 | Flux validation |
-| Meteorological | DP1.00002/3 | Forcing data |
+| Meteorological | DP1.00003.001 (air temperature), DP1.00044.001 / DP1.00045.001 (precipitation), DP1.00023.001 (radiation), DP1.00004.001 (pressure), DP1.00001.001 (wind), DP1.00098.001 (humidity) | Forcing data (see [NEON Atmospheric Forcing](../swenson/neon-forcing.md)) |
 | Soil profiles | DP1.10047.001 | Parameter validation |
 | LIDAR DEM | DP3.30024.001 | Custom hillslope data |
 

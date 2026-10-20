@@ -33,7 +33,7 @@ Gridcell (Swenson default)
 └── West-facing hillslope (4 columns)
 ```
 
-The OSBS production file departs from this default, using 1 aspect × 24 elevation bins + 1 dedicated lake column = 25 columns. The aspect partition is collapsed because OSBS slopes are too shallow (median ~0.05 m/m, max ~0.06 m/m) for aspect-dependent insolation to carry a meaningful signal; the 24 elevation bins resolve the wet-to-dry gradient at the LIDAR vertical noise floor. See [HAND Binning and Lake Column](../swenson/hand-binning-and-lake-column.md) for the OSBS rationale.
+The OSBS production file departs from this default, using 1 aspect × 24 elevation bins + 1 dedicated lake column = 25 columns. The aspect partition is collapsed because OSBS slopes are too shallow (bin means: median ~0.05 m/m, max ~0.07 m/m) for aspect-dependent insolation to carry a meaningful signal; the 24 elevation bins resolve the wet-to-dry gradient at the LIDAR vertical noise floor. See [HAND Binning and Lake Column](../swenson/hand-binning-and-lake-column.md) for the OSBS rationale.
 
 Stream channel properties (depth, width, slope) are stored at the hillslope landunit level in either configuration, not as a separate column.
 

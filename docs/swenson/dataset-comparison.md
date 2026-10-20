@@ -65,7 +65,7 @@ The OSBS file's negative HAND values are real terrain — pixels in filled depre
 
 ## Key Observations
 
-**1. Distance scales differ by ~1.5-2×.** Swenson distances range 67-541 m; OSBS land-bin distances range 2.6-353 m. This is much closer than previous (pre-fix) runs showed (5-25× difference) because the current pipeline uses hydrological DTND (distance to the drainage-linked stream pixel) rather than EDT (distance to the geographically nearest stream pixel). The remaining difference is consistent with the denser stream network resolved at 1 m (Lc = 356 m), which produces more stream pixels per unit area. Swenson's file does not record the Lc used for this gridcell, so the two Lc values cannot be compared directly.
+**1. Distance scales differ most at the stream end.** Swenson distances range 67-541 m; OSBS land-bin distances range 2.6-353 m. The ridge-end values differ by ~1.5× (541 vs 353 m); the stream-end values differ by ~26× (67 vs 2.6 m) because the OSBS chain begins inside filled depressions adjacent to the wide water mask. This is much closer than previous (pre-fix) runs showed (5-25× difference) because the current pipeline uses hydrological DTND (distance to the drainage-linked stream pixel) rather than EDT (distance to the geographically nearest stream pixel). The remaining difference is consistent with the denser stream network resolved at 1 m (Lc = 356 m), which produces more stream pixels per unit area. Swenson's file does not record the Lc used for this gridcell, so the two Lc values cannot be compared directly.
 
 **2. Land-bin slopes are systematically higher at 1 m than 90 m.** Full 1 m resolution captures local topographic variability that 90 m MERIT averages away. This is expected — slope is the most resolution-sensitive of the six parameters (Phase B confirmed systematic underestimation at coarser resolution, ~50% reduction at 4 m vs 1 m in the lowest HAND bin).
 
@@ -73,7 +73,7 @@ The OSBS file's negative HAND values are real terrain — pixels in filled depre
 
 **4. The OSBS file has a dedicated lake column.** The Swenson global file has no lake representation; lake area is implicit in the gridcell-aggregated parameters. The OSBS file places all NWI open water (≈ 11.08 km², ~12% of the production domain) in a separate column at chain index 1, so that two-way water exchange between the lake and adjacent land bins is explicit in the CTSM column chain.
 
-**5. The aspect partition is collapsed at OSBS.** Swenson's 4-aspect default expresses the difference between sun-facing and shaded hillslopes. At OSBS, with slopes universally below 0.06 m/m, aspect-dependent insolation has negligible physical impact (<6% correction to solar incidence angle), so the same 24 HAND bins serve every direction and the aspect dimension is collapsed to 1.
+**5. The aspect partition is collapsed at OSBS.** Swenson's 4-aspect default expresses the difference between sun-facing and shaded hillslopes. At OSBS, with bin slopes of 0.04-0.07 m/m, aspect-dependent insolation has little physical impact (a few percent of incident solar at midday sun angles), so the same 24 HAND bins serve every direction and the aspect dimension is collapsed to 1.
 
 ---
 

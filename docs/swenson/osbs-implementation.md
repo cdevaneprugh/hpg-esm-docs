@@ -26,7 +26,7 @@ Slope and aspect are taken from NEON's companion product DP3.30025.001 (same 202
 
 ### Production Domain
 
-The production domain is R4C5-R12C14: a 9x10 km (90 km^2) rectangle of 90 tiles with 0% nodata — the largest contiguous rectangle within the NEON tile coverage. This domain was selected to avoid the nodata gaps present in the full tile mosaic (233 tiles, 323 km^2, 58.5% valid data), which cause silent failures in pysheds flow routing when all domain boundary cells are nodata.
+The production domain is R4C5-R12C14: a 9x10 km (90 km^2) rectangle of 90 tiles with 0% nodata — the largest contiguous rectangle within the NEON tile coverage. This domain was selected to avoid the nodata gaps present in the full tile canvas (17 x 19 = 323 tile positions, 233 of them with data; the largest contiguous valid region covered only 58.5% of the canvas), which cause silent failures in pysheds flow routing when all domain boundary cells are nodata.
 
 Production-domain DTM elevation ranges from 23.5 to 55.5 m (~32 m total relief; 1st-99th percentile 25.0-51.1 m). The low total relief confirms this is a low-relief wetlandscape where meter-scale elevation differences control wetland-upland transitions.
 
@@ -63,7 +63,7 @@ Restricted-wavelength sweep on the contiguous production mosaic (9000 x 10000 pi
 
 | Min wavelength | Lc (m) | Model | Interpretation |
 |----------------|--------|-------|----------------|
-| None (full) | 8.1 | lognormal | Micro-topographic artifact |
+| None (full) | 7.7 | lognormal | Micro-topographic artifact (8.1 m on the earlier nodata-filled interior mosaic) |
 | 10 m | 11.7 | lognormal | Still dominated by micro-topography |
 | 20 m | 356 | lognormal | Drainage-scale peak emerges |
 | 50 m | 356 | lognormal | Stable |
@@ -104,7 +104,7 @@ A_thresh = int(0.5 * Lc_px^2) = 63,362 pixels at 1m resolution (Lc = 355.98 m; a
 
 ### DEM conditioning
 
-The DEM is conditioned through pysheds' standard sequence: fill_pits, fill_depressions, resolve_flats (with fallback to conditioned DEM if resolve_flats fails on the full domain), D8 flow direction, and flow accumulation. Pixels exceeding A_thresh are classified as stream.
+The DEM is conditioned through pysheds' standard sequence: fill_pits, fill_depressions, a 0.1 m lowering of the NWI open-water pixels in the depression-filled DEM (so that D8 flow is forced through lakes rather than around them), resolve_flats (with fallback to the depression-filled DEM if resolve_flats fails on the full domain), D8 flow direction, and flow accumulation. Pixels exceeding A_thresh are classified as stream.
 
 ### Domain contiguity requirement
 
@@ -162,7 +162,7 @@ Before aspect binning, per-pixel aspects are replaced with the circular mean asp
 
 ### Aspect binning
 
-The production configuration uses a single aspect (omnidirectional). At OSBS, with NEON-derived bin slopes (median ~0.05 m/m, all bins below 0.06 m/m), the aspect-dependent insolation correction is at most ~6% of incident solar — small enough that aspect partitioning carries no physical signal worth resolving, and the same 24 HAND bins serve every direction. The four-aspect Swenson default (Table 1 of the paper) is preserved as an implementation option but is not used for OSBS production.
+The production configuration uses a single aspect (omnidirectional). At OSBS, with NEON-derived bin slopes (median ~0.05 m/m, max ~0.07 m/m), the aspect-dependent insolation correction is a few percent of incident solar at midday sun angles — small enough that aspect partitioning carries no physical signal worth resolving, and the same 24 HAND bins serve every direction. The four-aspect Swenson default (Table 1 of the paper) is preserved as an implementation option but is not used for OSBS production.
 
 ### HAND binning (24-bin TAI-focused scheme)
 
@@ -198,7 +198,7 @@ Resolution comparison across 1m, 2m, and 4m on both a 5x5 tile block (25M pixels
 
 - **Height and distance:** >0.999 correlation across all resolutions (resolution-insensitive). These are the parameters that drive lateral flow in CTSM.
 - **Slope:** Systematically underestimated at coarser resolution (~50% lower at 4m in the lowest HAND bin). This is a smoothing artifact — coarser pixels average away local gradients.
-- **Area and aspect:** 0.64-0.99 correlations. More catchments (larger domain) produce more stable statistics.
+- **Area and aspect:** the least stable parameters. On the 5x5 block, 1 m vs 4 m correlations fall to 0.59 (area) and 0.35 (aspect); on the full domain they range 0.66-0.9999. More catchments (larger domain) produce more stable statistics.
 
 No parameter improves with coarser resolution, so full 1m resolution is retained for production.
 

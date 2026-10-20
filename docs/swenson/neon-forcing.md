@@ -114,7 +114,7 @@ The substitution was checked three ways:
 - The spliced values **bit-match** the raw tipping-bucket record at each UTC timestamp.
 - The heaviest September-2017 rainfall (163 mm on the UTC day) lands on **2017-09-10**, the date of **Hurricane Irma**'s Florida landfall, which serves as a temporal-alignment check.
 
-The likely reason the pre-built v4 set begins in 2018 is this same 2017 gauge outage; recovering it is one of the ways the custom record extends v4.
+The likely reason the pre-built v4 set begins in 2018 is this same 2017 gauge outage; recovering it is one of the ways the custom record extends v4. It is the only gap repaired from a second gauge: the whole-record QC also flags three other precipitation months as mostly or entirely gap-filled by REddyProc (2018-01 100%, 2019-12 91%, 2022-12 100%), which were left as generated.
 
 ---
 

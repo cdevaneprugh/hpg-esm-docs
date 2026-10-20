@@ -88,8 +88,8 @@ Twelve source-code sites are gated by `use_hillslope_routing` in CTSM 5.3.085 (e
 |---|---|
 | `HillslopeHydrologyMod.F90:378-411` | Read `hillslope_stream_depth/width/slope` from the NetCDF |
 | `HillslopeHydrologyMod.F90:475-507` | Compute `nhill_per_landunit`, `stream_channel_length`, `stream_channel_number` |
-| `HillslopeHydrologyMod.F90:1078+` (`HillslopeUpdateStreamWater`, called only from `HydrologyDrainageMod.F90:150-158`) | Advance `stream_water_volume` |
-| `HillslopeHydrologyMod.F90:977+` (`HillslopeStreamOutflow`, called only from `HydrologyDrainageMod.F90:151-153`) | Manning's-equation streamflow velocity |
+| `HillslopeHydrologyMod.F90:1053+` (`HillslopeUpdateStreamWater`, called only from `HydrologyDrainageMod.F90:150-158`) | Advance `stream_water_volume` |
+| `HillslopeHydrologyMod.F90:939+` (`HillslopeStreamOutflow`, called only from `HydrologyDrainageMod.F90:151-153`) | Manning's-equation streamflow velocity |
 | `SoilHydrologyMod.F90:1822-1829` | Perched-LF stream-depth source switch (internal ledger vs MOSART) |
 | `SoilHydrologyMod.F90:2265-2272` | Subsurface-LF stream-depth source switch (internal ledger vs MOSART) |
 | `SoilHydrologyMod.F90:2362-2367` | Losing-stream outflow cap |
@@ -153,7 +153,7 @@ Phase H Tracks B and C would enable `use_hillslope_routing = .true.` and switch 
 
 ### The bug
 
-In single-point NUOPC mode, `grc%area` is initialized to `spval` (~1×10³⁶) at `lnd_set_decomp_and_domain.F90:342`:
+In single-point NUOPC mode, `grc%area` is initialized to `spval` (~1×10³⁶) at `src/cpl/share_esmf/lnd_set_decomp_and_domain.F90:342`:
 
 ```fortran
 ldomain%area(1) = spval

@@ -91,7 +91,7 @@ Detailed summaries are available in `hpg-esm-tools/docs/papers/`:
 | Ecosystem | Sandhills with wetland depressions |
 | Connectivity | Primarily groundwater, rarely surface connected |
 | Topography | 1m resolution LIDAR available |
-| Climate | R ~1450 mm/yr, PET ~1300 mm/yr (DOE proposal); NEON tower forcing averages ~1385 mm/yr (2018-2024) |
+| Climate | R ~1450 mm/yr, PET ~1300 mm/yr (DOE proposal); the custom NEON tower forcing (Phase I) averages ~1385 mm/yr over 2018-2024 (the pre-built NCAR-NEON v4 product: ~1407 mm/yr) |
 | Wetland Coverage | ~19% (DOE proposal); NWI open water is 12.3% of the 90 km² hillslope domain |
 
 OSBS represents a **low-relief wetlandscape** where lateral drainage improves soil aeration on slightly elevated mounds (position 3 in Fan 2019 Figure 6a).

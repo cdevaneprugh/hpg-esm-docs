@@ -41,7 +41,7 @@ python -c "from pysheds.pgrid import Grid; print('OK')"
 
 | Method | Purpose |
 |--------|---------|
-| `_2d_geographic_coordinates()` | Generate 2D lon/lat arrays from affine transform |
+| `_2d_geographic_coordinates()` | Generate 2D lon/lat arrays from affine transform (renamed `_2d_crs_coordinates()` in our fork; see CRS-Neutral Naming below) |
 | `_gradient_horn_1981()` | Horn (1981) gradient calculation for slope and aspect |
 | `_translate_dict()` | Map flow direction values to array indices |
 
@@ -63,7 +63,7 @@ Upstream provides flow direction, flow accumulation, catchment delineation, rive
 
 ## Implementation Strategy
 
-The approach was to copy the entire `pgrid.py` from Swenson's fork (commit `7b20e8e`, 2026-01-22) rather than surgically porting individual methods. With the UTM additions it is now 4,365 lines. This preserved internal dependencies and ensured API compatibility with Swenson's `Representative_Hillslopes` processing pipeline.
+The approach was to copy the entire `pgrid.py` from Swenson's repository into our fork (our commit `7b20e8e`, 2026-01-22; 4,220 lines as committed, 11 more than Swenson's 4,209) rather than surgically porting individual methods. With the UTM additions it is now 4,365 lines. This preserved internal dependencies and ensured API compatibility with Swenson's `Representative_Hillslopes` processing pipeline.
 
 Key decisions:
 

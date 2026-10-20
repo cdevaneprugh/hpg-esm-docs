@@ -57,7 +57,7 @@ Swenson's bin algorithm targets approximately equal per-bin areas; CTSM imposes 
 
 Q01 (raw HAND) = −6.35 m and Q99 = +17.02 m define the binning envelope for the production domain. Pixels outside this envelope are **discarded**, not clipped into sentinel bins, for two reasons:
 
-1. Both tails are real terrain. Outlier diagnostic on the production domain (2026-05-01) shows the sharpest density breaks at Q01 (33.5× density step) and Q99 (34.8×), with negligible singleton mass beyond. The tails are not isolated noise pixels; they are continuous topography that would inflate sentinel-bin weights if retained.
+1. Both tails are real terrain. The outlier diagnostic (2026-05-01, run on the 2026-04-24 diagnostic arrays, i.e. before the E.6 hole-fill, when the cutoffs were −6.34 / +17.46 m) shows the sharpest density breaks at Q01 (33.5× density step) and Q99 (34.8×), with negligible singleton mass beyond; the ratios were not recomputed after E.6 moved Q99 to 17.02 m. The tails are not isolated noise pixels; they are continuous topography that would inflate sentinel-bin weights if retained.
 2. Clipping into sentinel bins would force the deepest pit and ridge extrema to share a bin with a much larger area of moderately deep / high terrain, distorting both the mean HAND and the gridcell-aggregated mass-and-energy balance for those bins.
 
 The discard removes ~1.5 M pixels (~2% of the production-domain land area).
@@ -79,7 +79,7 @@ The wide mask ensures that lake-surface pixels do not contaminate land-bin HAND 
 
 ### NWI mask hole-fill
 
-Raw NWI polygons (downloaded from the NWI v3.2 OSBS subset) miss interior holes that the 1 m LIDAR confirms are contiguous open water: small islands inside larger features, sub-polygon gaps where the digitizer missed thin shore strips, and mis-aligned edges. A `scipy.ndimage.binary_fill_holes` pass over the rasterized NWI mask closes approximately 400,000 pixels of these holes. The hole-fill is applied before the mask is used downstream (wide-mask construction, lake-area aggregation, perimeter computation).
+Raw NWI polygons (from the USFWS NWI HUC8 03080103 "Lower St. John" watershed extract, October 2024 database version, 2017 true-colour imagery) miss interior holes that the 1 m LIDAR confirms are contiguous open water: small islands inside larger features, sub-polygon gaps where the digitizer missed thin shore strips, and mis-aligned edges. A `scipy.ndimage.binary_fill_holes` pass over the rasterized NWI mask closes approximately 400,000 pixels of these holes. The hole-fill is applied before the mask is used downstream (wide-mask construction, lake-area aggregation, perimeter computation).
 
 ---
 

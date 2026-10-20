@@ -109,6 +109,17 @@ The OSBS production file places a dedicated lake column at chain index 1, shifti
   <figcaption>Four hillslope parameters across the 25 columns of the production NetCDF: mean raw HAND (top-left), mean DTND (top-right), per-rep hillslope element area (bottom-left), and lower-edge width (bottom-right). The chain is ordered lake → deepest flood-zone bin (1) → ridge bin (24). Color-coded: lake (light blue), flood zone with raw HAND < 0 (dark red), upland with raw HAND ≥ 0 (green). The HAND chain rises monotonically from −6.0 m at the lake to +12.5 m at the ridge bin. DTND grows smoothly from ~1.3 m at the lake to ~353 m at the ridge. Area is small in the flood zone (narrow bins resolve the TAI core) and largest in mid-upland (where bin widths broaden). Width is set by the trapezoidal plan-form fit and is largest near the stream-margin bins.</figcaption>
 </figure>
 
+### Design history
+
+The lake column reached its production form through five revisions in four weeks, recorded in [`phases/G-ctsm-lake-representation.md`](https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/phases/G-ctsm-lake-representation.md) and [`phases/E.5-bin-redesign.md`](https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/phases/E.5-bin-redesign.md):
+
+- **2026-04-09 — weir overflow abandoned.** The first production NetCDF was generated the same day the PI reviewed a plan to represent lakes by repurposing CTSM's stream-channel fields as lake geometry with weir overflow; the plan was dropped.
+- **2026-04-10 — submerged column.** Phase G pivoted to a lake column inside the hillslope chain, at first framed around the runtime spillheight offset. A CTSM source audit (2026-04-21 to 04-24) established how `hill_distance` enters the Darcy gradient, that the column belongs at chain index 1, and that `hill_bedrock_depth` is inert under the Uniform soil-profile method.
+- **2026-04-25 — scope narrowed to NWI open water.** Earlier framing had absorbed every depression-filled pixel into the lake; the PI limited the column to mapped open water, set `hill_width` to half the NWI perimeter and `hill_slope` to 0, and declined to force permanent submersion. The unmapped depressions became the flood-zone bins of Phase E.5.
+- **2026-04-30 — spillheight retired** (see [SPILLHEIGHT: the retired runtime offset](#spillheight-the-retired-runtime-offset)).
+- **2026-05-04 — elevation locked, distance bug fixed.** `hill_elev` was set to −6.0 m as a chain-bookkeeping value (see Lake `hill_elev` above). The first production run under raw-HAND binning (`c260504`) carried a static 5 m `hill_distance`, which made the Bin 1 → lake Darcy denominator negative (2.59 − 5 = −2.41 m): the deepest bin's fitted distance is far smaller under raw HAND than the ~30 m the audit had assumed. The dynamic 0.5 × Bin 1 rule replaced it the same day.
+- **2026-05-05 — per-rep rescale.** Inspection of that file showed the lake area in total-NWI units (11.08 km²) against land bins in Swenson's per-representative-hillslope units (0.148 km² in all), which would have given the lake 98.7% of the landunit weight. Rescaling the lake by the implicit hillslope count (≈534) brought it to 12.3%, the NWI fraction of the domain, and produced the production file `c260505` (next section).
+
 ---
 
 ## Per-rep rescaling

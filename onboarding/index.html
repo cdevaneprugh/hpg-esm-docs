@@ -195,6 +195,18 @@
       
     
     
+      <div class="md-header__source">
+        <a href="https://github.com/cdevaneprugh/hpg-esm-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cdevaneprugh/hpg-esm-docs
+  </div>
+</a>
+      </div>
+    
   </nav>
   
 </header>
@@ -228,6 +240,18 @@
     </a>
     CTSM on HiPerGator
   </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cdevaneprugh/hpg-esm-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cdevaneprugh/hpg-esm-docs
+  </div>
+</a>
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -1271,7 +1295,7 @@
   <span class="md-ellipsis">
     
   
-    Methodology
+    OSBS Hillslope Methodology
   
 
     
@@ -1521,33 +1545,6 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../archive/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Archive
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -1785,12 +1782,12 @@
 <tr>
 <td><code>/home/$USER/</code></td>
 <td>Config files, small files</td>
-<td>40GB quota, backed up</td>
+<td>40GB quota, not backed up; daily and weekly snapshots in <code>~/.snapshot</code></td>
 </tr>
 <tr>
 <td><code>/blue/&lt;group&gt;/$USER/</code></td>
 <td>Active projects, code, data</td>
-<td>Group allocation, fast NVME</td>
+<td>Group allocation, Lustre parallel filesystem, not backed up</td>
 </tr>
 <tr>
 <td><code>/orange/&lt;group&gt;/</code></td>
@@ -1821,6 +1818,14 @@
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># Your group&#39;s input data location</span>
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="nb">export</span><span class="w"> </span><span class="nv">INPUT_DATA</span><span class="o">=</span><span class="s2">&quot;/blue/&lt;group&gt;/earth_models/inputdata&quot;</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1"># Shared single-point subset data (used on the Running CTSM pages)</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="nb">export</span><span class="w"> </span><span class="nv">SUBSET_DATA</span><span class="o">=</span><span class="s2">&quot;/blue/&lt;group&gt;/earth_models/shared.subset.data&quot;</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="c1"># Analysis scripts and the pysheds fork (used on the hillslope pages)</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="nb">export</span><span class="w"> </span><span class="nv">TOOLS</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$BLUE</span><span class="s2">/hpg-esm-tools&quot;</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PYSHEDS_FORK</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$BLUE</span><span class="s2">/pysheds_fork&quot;</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="nb">alias</span><span class="w"> </span>pysheds-env<span class="o">=</span><span class="s1">&#39;export PYTHONPATH=&quot;$PYSHEDS_FORK:$PYTHONPATH&quot;&#39;</span>
 </code></pre></div>
 <p>After editing, reload: <code>source ~/.bashrc</code></p>
 <div class="admonition tip">
@@ -1843,7 +1848,7 @@
 </code></pre></div>
 <h3 id="group-qos-limits">Group QOS Limits<a class="headerlink" href="#group-qos-limits" title="Permanent link">&para;</a></h3>
 <p>Each group has its own resource limits. Check your group's QoS:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>showQos<span class="w"> </span>-A<span class="w"> </span>&lt;group&gt;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>showQos<span class="w"> </span>&lt;group&gt;
 </code></pre></div>
 <p>This shows your group's CPU, memory, and GPU limits. CTSM cases will fail if they request more resources than your QoS allows.</p>
 <h2 id="useful-commands">Useful Commands<a class="headerlink" href="#useful-commands" title="Permanent link">&para;</a></h2>
@@ -1859,10 +1864,11 @@
 <h2 id="learning-resources">Learning Resources<a class="headerlink" href="#learning-resources" title="Permanent link">&para;</a></h2>
 <h3 id="hipergator-documentation">HiPerGator Documentation<a class="headerlink" href="#hipergator-documentation" title="Permanent link">&para;</a></h3>
 <ul>
-<li><a href="https://help.rc.ufl.edu/doc/Getting_Started">Getting Started</a></li>
-<li><a href="https://help.rc.ufl.edu/doc/Training_Videos">Training Videos</a></li>
-<li><a href="https://help.rc.ufl.edu/doc/HPG_Scheduling">SLURM Scheduling</a></li>
-<li><a href="https://help.rc.ufl.edu/doc/Modules">Module System</a></li>
+<li><a href="https://docs.rc.ufl.edu/quickstart/">Getting Started</a></li>
+<li><a href="https://docs.rc.ufl.edu/training/">Training</a></li>
+<li><a href="https://docs.rc.ufl.edu/scheduler/">SLURM Scheduling</a></li>
+<li><a href="https://docs.rc.ufl.edu/software/modules_basics/">Module System</a></li>
+<li><a href="https://docs.rc.ufl.edu/quickstart/practical_storage/">Storage</a></li>
 </ul>
 <h3 id="linux-command-line">Linux Command Line<a class="headerlink" href="#linux-command-line" title="Permanent link">&para;</a></h3>
 <ul>
@@ -1950,6 +1956,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Maintained by Cooper DeVane-Prugh · Content licensed CC BY 4.0
+    </div>
   
   
     Made with

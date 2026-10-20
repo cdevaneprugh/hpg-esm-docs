@@ -195,6 +195,18 @@
       
     
     
+      <div class="md-header__source">
+        <a href="https://github.com/cdevaneprugh/hpg-esm-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cdevaneprugh/hpg-esm-docs
+  </div>
+</a>
+      </div>
+    
   </nav>
   
 </header>
@@ -228,6 +240,18 @@
     </a>
     CTSM on HiPerGator
   </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cdevaneprugh/hpg-esm-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cdevaneprugh/hpg-esm-docs
+  </div>
+</a>
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -1074,7 +1098,7 @@
   <span class="md-ellipsis">
     
   
-    Methodology
+    OSBS Hillslope Methodology
   
 
     
@@ -1532,33 +1556,6 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../archive/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Archive
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -1771,7 +1768,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">use_hillslope</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="w">    </span><span class="c">! activates hillslope-mode column structure</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">use_hillslope_routing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="w">    </span><span class="c">! activates stream-side machinery (optional)</span>
 </code></pre></div>
-<p>A 2026-05-19 audit of CTSM 5.3.085 (<code>git rev dc3aa5ddc</code>) traced every source-code site gated by <code>use_hillslope_routing</code> and cross-checked the conclusions against empirical output from two cases: a 5-yr paired test/control smoke test (mesh-mode workaround validation, Phase H Track A) and the 600-yr accelerated AD spinup of the operative case. The audit established that <strong>inter-column lateral subsurface flow runs under <code>use_hillslope = .true.</code> and does not require routing to be on</strong>. Routing-on activates only the stream-side coupling at the chain terminus.</p>
+<p>A 2026-05-19 audit of CTSM 5.3.085 (tag <code>ctsm5.3.085</code>, <code>fde1fc622</code>; <code>src/</code> is identical in our fork revision <code>dc3aa5ddc</code>) traced every source-code site gated by <code>use_hillslope_routing</code> and cross-checked the conclusions against empirical output from two cases: a 5-yr paired test/control smoke test (mesh-mode workaround validation, Phase H Track A) and the 600-yr accelerated AD spinup of the operative case. The audit established that <strong>inter-column lateral subsurface flow runs under <code>use_hillslope = .true.</code> and does not require routing to be on</strong>. Routing-on activates only the stream-side coupling at the chain terminus.</p>
 <hr />
 <h2 id="what-use_hillslope-true-activates">What <code>use_hillslope = .true.</code> activates<a class="headerlink" href="#what-use_hillslope-true-activates" title="Permanent link">&para;</a></h2>
 <h3 id="inter-column-lateral-subsurface-flow">Inter-column lateral subsurface flow<a class="headerlink" href="#inter-column-lateral-subsurface-flow" title="Permanent link">&para;</a></h3>
@@ -1794,11 +1791,12 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c">! Darcy head gradient at :2261-2263</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">head_gradient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">col</span><span class="p">%</span><span class="n">hill_elev</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">zwt</span><span class="p">(</span><span class="n">c</span><span class="p">))</span><span class="w"> </span><span class="p">&amp;</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">              </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">col</span><span class="p">%</span><span class="n">hill_elev</span><span class="p">(</span><span class="n">col</span><span class="p">%</span><span class="n">cold</span><span class="p">(</span><span class="n">c</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">zwt</span><span class="p">(</span><span class="n">col</span><span class="p">%</span><span class="n">cold</span><span class="p">(</span><span class="n">c</span><span class="p">)))</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">head_gradient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">head_gradient</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">col</span><span class="p">%</span><span class="n">hill_distance</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">head_gradient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">head_gradient</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">col</span><span class="p">%</span><span class="n">hill_distance</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">col</span><span class="p">%</span><span class="n">hill_distance</span><span class="p">(</span><span class="n">col</span><span class="p">%</span><span class="n">cold</span><span class="p">(</span><span class="n">c</span><span class="p">)))</span>
 </code></pre></div>
+<p>The denominator is the distance between the column and its downhill neighbor, so <code>hill_distance</code> must increase monotonically up the chain.</p>
 <p>The outflow volume at <code>:2358</code> is <code>qflx_latflow_out_vol = transmissivity × col%hill_width(c) × head_gradient</code>. The downhill column accumulates the inflow at <code>:2386-2388</code>. No routing gate anywhere in this path.</p>
-<p><strong>Terminal column</strong> (the chain bottom, <code>col%cold(c) == ispval</code>): the same Darcy machinery, but the "downhill neighbor" is the stream channel. Routing matters here for the stream-depth source — see the next section.</p>
-<p><code>PerchedLateralFlow</code> (<code>:1703+</code>) is structurally identical for the perched water table; the same column-to-column Darcy gradient runs at <code>:1817-1820</code>.</p>
+<p><strong>Terminal column</strong> (the chain bottom, <code>col%cold(c) == ispval</code>): the same Darcy machinery, but the "downhill neighbor" is the stream channel, and the head difference is divided by the column's own distance, <code>col%hill_distance(c)</code> (<code>:2280</code>). Routing matters here for the stream-depth source — see the next section.</p>
+<p><code>PerchedLateralFlow</code> (<code>:1703+</code>) is structurally identical for the perched water table, using <code>zwt_perched</code>: the interior gradient at <code>:1817-1820</code> divides by the same distance difference, and the terminal branch at <code>:1838</code> divides by <code>col%hill_distance(c)</code>.</p>
 <h3 id="where-the-flow-is-applied-to-soil-water">Where the flow is applied to soil water<a class="headerlink" href="#where-the-flow-is-applied-to-soil-water" title="Permanent link">&para;</a></h3>
 <p><code>SubsurfaceLateralFlow</code> at <code>:2433-2509</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">qflx_net_latflow</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qflx_latflow_out</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">qflx_latflow_in</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
@@ -1889,13 +1887,13 @@
 <p>Routing-on uses an internal stream-water ledger updated each step by <code>HillslopeUpdateStreamWater</code>; routing-off uses MOSART's <code>tdepth_grc</code>, supplied via the coupler. The Darcy gradient at the terminal column is computed against some stream depth in both branches; only the source differs.</p>
 <hr />
 <h2 id="empirical-confirmation">Empirical confirmation<a class="headerlink" href="#empirical-confirmation" title="Permanent link">&para;</a></h2>
-<p>Two independent observations confirm inter-column flow is active under <code>use_hillslope_routing = .false.</code>:</p>
+<p>Two observations from our own runs are consistent with active inter-column flow under <code>use_hillslope_routing = .false.</code>. Negative column drainage (QDRAI) is the direct signature: in CTSM 5.3 hillslope columns, drainage equals net lateral outflow (<code>qflx_latflow_out − qflx_latflow_in</code>), so a negative value means net lateral inflow.</p>
 <ol>
 <li>
 <p><strong>Routing.test vs routing.control 5-yr smoke test (2026-05-12).</strong> QDRAI has negative values at hillslope columns in both the routing-on (<code>osbs.routing.test</code>) and routing-off (<code>osbs.routing.control</code>) cases. Min/max range is essentially identical: test = −4.32×10⁻⁵ / 1.47×10⁻⁵ mm/s; control = −4.15×10⁻⁵ / 1.43×10⁻⁵ mm/s. The lateral-flow signature is present whether routing is on or off; the values differ only at the ~10⁻⁶ scale (the boundary-condition delta).</p>
 </li>
 <li>
-<p><strong><code>osbs.swenson.spinup</code> h1a (600-yr AD, routing-off).</strong> Column-level QRUNOFF min/max = −1.156×10⁻⁴ / 1.992×10⁻⁴ mm/s. ZWT spans 0.011 → 8.6 m across the column chain. If hillslope columns were hydrologically isolated 1-D soil columns receiving the same atmospheric forcing, there would be no negative column-level QRUNOFF and far less ZWT variation. Negative column QRUNOFF is the unambiguous fingerprint of inter-column lateral redistribution exceeding outflow at the receiving column.</p>
+<p><strong><code>osbs.swenson.spinup</code> h1a (600-yr AD, routing-off).</strong> Column-level QRUNOFF min/max = −1.156×10⁻⁴ / 1.992×10⁻⁴ mm/s. ZWT spans 0.011 → 8.6 m across the column chain. If hillslope columns were hydrologically isolated 1-D soil columns receiving the same atmospheric forcing, there would be no negative column-level QRUNOFF and far less ZWT variation. Negative column QRUNOFF is consistent with lateral inflow exceeding outflow at the receiving column, though QRUNOFF also includes other terms, so QDRAI (item 1) is the cleaner signal. The ZWT spread is suggestive only, since columns also differ in elevation-downscaled forcing.</p>
 </li>
 </ol>
 <hr />
@@ -1905,7 +1903,7 @@
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">use_hillslope_routing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
 </code></pre></div>
 <p>with the 2026-05-05 production hillslope file (25 columns: 1 lake + 24 land bins on a single aspect). In this configuration, inter-column lateral subsurface flow is active between all 25 columns of the chain: Darcy gradients redistribute water from upland bins through the flood-zone bins to the lake column, and the terminal-column boundary condition at the lake is supplied by MOSART's <code>tdepth_grc</code> (which under the current DATM + MOSART setup defaults to 0, in effect treating the chain-bottom boundary as an empty stream channel).</p>
-<p>A 600-yr accelerated AD spinup using this configuration completed 2026-05-14 and was analyzed 2026-05-19. Three verdicts: convergence PASS (<code>drift_50yr = 0.48 %</code>), TAI signal absent (<code>O_SCALAR ≈ 1.0</code>), lake column stable.</p>
+<p>A 600-yr accelerated AD spinup using this configuration completed 2026-05-14 and was analyzed 2026-05-19. Three verdicts: convergence PASS (<code>drift_50yr = −0.48%</code>), TAI signal absent (<code>O_SCALAR ≈ 1.0</code>), lake column stable.</p>
 <p>Phase H Tracks B and C would enable <code>use_hillslope_routing = .true.</code> and switch the terminal-column boundary to the internal <code>stream_water_volume</code> ledger. They were retired 2026-08-19 — the PI has the routing/drainage situation handled. The routing-on machinery is built and validated (Track A, below) but is not deployed.</p>
 <hr />
 <h2 id="ctsm-issue-1432-and-the-mesh-mode-workaround">CTSM Issue #1432 and the mesh-mode workaround<a class="headerlink" href="#ctsm-issue-1432-and-the-mesh-mode-workaround" title="Permanent link">&para;</a></h2>
@@ -1926,7 +1924,7 @@
 <p>This is canonical <a href="https://github.com/ESCOMP/CTSM/issues/1432">CTSM Issue #1432</a> (open since 2021-07-20). The community has not encountered it in practice because Swenson's published hillslope users run gridded (the validated mode), and single-point users have run with routing off.</p>
 <h3 id="the-mesh-mode-workaround">The mesh-mode workaround<a class="headerlink" href="#the-mesh-mode-workaround" title="Permanent link">&para;</a></h3>
 <p>Replace the <code>PTS_LAT</code> / <code>PTS_LON</code> single-column shortcut with an explicit single-cell ESMF mesh (<code>LND_DOMAIN_MESH</code>). CTSM's mode-decision logic then routes through <code>lnd_set_decomp_and_domain_from_readmesh</code> instead of <code>lnd_set_decomp_and_domain_for_single_column</code>, and <code>ldomain%area</code> is populated from the mesh via <code>ESMF_FieldRegridGetArea()</code> — a real number, not <code>spval</code>.</p>
-<p>Swenson recommends this workaround to single-point users. CTSM's shipped <code>tools/site_and_regional/mesh_maker.py</code> aborts on 1×1 input (<code>mesh_maker.py:214</code>), so Phase H Track A wrote <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/scripts/osbs/make_osbs_scrip.py"><code>make_osbs_scrip.py</code></a> (<code>swenson/scripts/osbs/</code>) to produce a single-cell SCRIP-format NetCDF; the prebuilt <code>ESMF_Scrip2Unstruct</code> binary then converts it to the ESMF mesh CTSM reads.</p>
+<p>Swenson recommends this workaround to single-point users. CTSM's shipped <code>mesh_maker</code> tool (<code>python/ctsm/mesh_maker.py</code>, wrapped by <code>tools/site_and_regional/mesh_maker</code>) aborts on 1×1 input (<code>mesh_maker.py:214-216</code>), so Phase H Track A wrote <a href="https://github.com/cdevaneprugh/hpg-esm-tools/blob/main/swenson/scripts/osbs/make_osbs_scrip.py"><code>make_osbs_scrip.py</code></a> (<code>swenson/scripts/osbs/</code>) to produce a single-cell SCRIP-format NetCDF; the prebuilt <code>ESMF_Scrip2Unstruct</code> binary then converts it to the ESMF mesh CTSM reads.</p>
 <p>Phase H Track A (2026-05-11 to 2026-05-12) built the single-cell ESMF mesh for the production domain, the supporting input file conversions (surface dataset reformat, domain mesh), and a paired test/control case configuration. The 2026-05-12 smoke test confirmed <code>grc%area = 90.006 km²</code> (matching the production domain area, not <code>spval</code>) under mesh mode; gridcell aggregates are bit-identical between the mesh-mode test and the production-mode control. The workaround is OSBS-side; no upstream CTSM PR is planned.</p>
 <hr />
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
@@ -1935,7 +1933,7 @@
 <li>CTSM Issue #1432: <a href="https://github.com/ESCOMP/CTSM/issues/1432">Area is not set for NUOPC single point cases</a> (open since 2021-07-20)</li>
 <li>Swenson, S. C., &amp; Lawrence, D. M. (2025), <a href="https://doi.org/10.1029/2024MS004410">Development of a Global Representative Hillslope Data Set for Use in Earth System Models</a>, <em>Journal of Advances in Modeling Earth Systems</em>, 17 — hillslope-mode methodology (gridded-only validation; no single-point routing case)</li>
 <li>DiscussCESM thread, Johanna Teresa, Feb 2025: <a href="https://bb.cgd.ucar.edu/cesm/threads/point-scale-simulation-with-ctsm5-3.11125/">Point-scale simulation with CTSM 5.3.11</a> — only public reference to Swenson's mesh-mode recommendation</li>
-<li>CTSM source: <code>git rev dc3aa5ddc</code> (audit target, CTSM 5.3.085)</li>
+<li>CTSM source: tag <code>ctsm5.3.085</code> (<code>fde1fc622</code>); audit performed on fork revision <code>dc3aa5ddc</code>, whose <code>src/</code> is identical to the tag</li>
 </ul>
 
 
@@ -2010,6 +2008,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Maintained by Cooper DeVane-Prugh · Content licensed CC BY 4.0
+    </div>
   
   
     Made with

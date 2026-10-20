@@ -195,6 +195,18 @@
       
     
     
+      <div class="md-header__source">
+        <a href="https://github.com/cdevaneprugh/hpg-esm-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cdevaneprugh/hpg-esm-docs
+  </div>
+</a>
+      </div>
+    
   </nav>
   
 </header>
@@ -228,6 +240,18 @@
     </a>
     CTSM on HiPerGator
   </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cdevaneprugh/hpg-esm-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cdevaneprugh/hpg-esm-docs
+  </div>
+</a>
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -1287,7 +1311,7 @@
   <span class="md-ellipsis">
     
   
-    Methodology
+    OSBS Hillslope Methodology
   
 
     
@@ -1537,33 +1561,6 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../archive/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Archive
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -1783,7 +1780,7 @@
 <p>Artificially accelerates soil carbon turnover to reach approximate equilibrium faster.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>./xmlchange<span class="w"> </span><span class="nv">CLM_ACCELERATED_SPINUP</span><span class="o">=</span>on
 </code></pre></div>
-<p><strong>Duration:</strong> ~200 years (can vary by site)</p>
+<p><strong>Duration:</strong> ~200 years is the NCAR guideline (can vary by site). Our OSBS single-point AD spinups ran 600 years (CRUNCEP forcing) and ~195 years (NEON forcing, converged by ~year 180).</p>
 <h3 id="phase-2-post-ad-spinup">Phase 2: Post-AD Spinup<a class="headerlink" href="#phase-2-post-ad-spinup" title="Permanent link">&para;</a></h3>
 <p>Returns to normal decomposition rates and runs to final equilibrium.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>./xmlchange<span class="w"> </span><span class="nv">CLM_ACCELERATED_SPINUP</span><span class="o">=</span>off
@@ -1818,8 +1815,11 @@
 <h3 id="2-monitor-ad-spinup">2. Monitor AD Spinup<a class="headerlink" href="#2-monitor-ad-spinup" title="Permanent link">&para;</a></h3>
 <p>Check that carbon pools are trending toward equilibrium:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Look at TOTSOMC (soil organic carbon) over time</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ncdump<span class="w"> </span>-v<span class="w"> </span>TOTSOMC<span class="w"> </span><span class="nv">$RUNDIR</span>/*.clm2.h0.*.nc<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># (run from the case directory; history files are archived to DOUT_S_ROOT/lnd/hist)</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nv">HIST</span><span class="o">=</span><span class="k">$(</span>./xmlquery<span class="w"> </span>--value<span class="w"> </span>DOUT_S_ROOT<span class="k">)</span>/lnd/hist
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>ncdump<span class="w"> </span>-v<span class="w"> </span>TOTSOMC<span class="w"> </span><span class="k">$(</span>ls<span class="w"> </span><span class="nv">$HIST</span>/*.clm2.h0a.*.nc<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-1<span class="k">)</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail
 </code></pre></div>
+<p>Since ctsm5.3.062, history files are split into averaged (<code>h0a</code>, <code>h1a</code>, ...) and instantaneous (<code>h0i</code>, ...) streams, so look for <code>*.clm2.h0a.*.nc</code> rather than <code>*.clm2.h0.*.nc</code>.</p>
 <h3 id="3-create-post-ad-case">3. Create Post-AD Case<a class="headerlink" href="#3-create-post-ad-case" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$CIME_SCRIPTS</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
@@ -1833,32 +1833,34 @@
 <a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
 <a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$CASES</span>/my_site.postAD_spinup
 <a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="c1"># Hybrid start from AD spinup</span>
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_TYPE</span><span class="o">=</span>hybrid
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_REFCASE</span><span class="o">=</span>my_site.AD_spinup
-<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_REFDATE</span><span class="o">=</span><span class="m">0201</span>-01-01<span class="w">  </span><span class="c1"># End of AD spinup</span>
-<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>./xmlchange<span class="w"> </span><span class="nv">GET_REFCASE</span><span class="o">=</span>FALSE
-<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>
-<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="c1"># Copy restart files</span>
-<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>cp<span class="w"> </span><span class="nv">$AD_RUNDIR</span>/*.rpointer*<span class="w"> </span><span class="nv">$RUNDIR</span>/
-<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>cp<span class="w"> </span><span class="nv">$AD_RUNDIR</span>/*.r.*.nc<span class="w"> </span><span class="nv">$RUNDIR</span>/
-<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
-<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="c1"># Normal decomposition</span>
-<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>./xmlchange<span class="w"> </span><span class="nv">CLM_ACCELERATED_SPINUP</span><span class="o">=</span>off
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="c1"># Startup run initialized from the final AD restart</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>./xmlchange<span class="w"> </span><span class="nv">RUN_TYPE</span><span class="o">=</span>startup
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>./xmlchange<span class="w"> </span><span class="nv">CLM_ACCELERATED_SPINUP</span><span class="o">=</span>off
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="c1"># Point finidat at the AD case&#39;s last land restart</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="nv">AD_REST</span><span class="o">=</span><span class="k">$(</span><span class="nb">cd</span><span class="w"> </span><span class="nv">$CASES</span>/my_site.AD_spinup<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>./xmlquery<span class="w"> </span>--value<span class="w"> </span>DOUT_S_ROOT<span class="k">)</span>/rest/0201-01-01-00000
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;finidat = &#39;</span><span class="nv">$AD_REST</span><span class="s2">/my_site.AD_spinup.clm2.r.0201-01-01-00000.nc&#39;&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>user_nl_clm
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="c1"># Run several hundred years</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>./xmlchange<span class="w"> </span><span class="nv">STOP_OPTION</span><span class="o">=</span>nyears
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>./xmlchange<span class="w"> </span><span class="nv">STOP_N</span><span class="o">=</span><span class="m">100</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>./xmlchange<span class="w"> </span><span class="nv">RESUBMIT</span><span class="o">=</span><span class="m">4</span><span class="w">  </span><span class="c1"># 500 years total</span>
 <a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>
-<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="c1"># Run several hundred years</span>
-<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>./xmlchange<span class="w"> </span><span class="nv">STOP_OPTION</span><span class="o">=</span>nyears
-<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>./xmlchange<span class="w"> </span><span class="nv">STOP_N</span><span class="o">=</span><span class="m">100</span>
-<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>./xmlchange<span class="w"> </span><span class="nv">RESUBMIT</span><span class="o">=</span><span class="m">4</span><span class="w">  </span><span class="c1"># 500 years total</span>
-<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>
-<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>./case.setup
-<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>./case.build
-<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>./case.submit
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>./case.setup
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>./case.build
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>./case.submit
 </code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Why startup + finidat, not branch</p>
+<p>The AD to post-AD transition rescales the soil carbon and nitrogen pools, and that code path only runs when <code>nstep &lt; 2</code> (<code>SoilBiogeochemCarbonStateType.F90</code>, <code>SoilBiogeochemNitrogenStateType.F90</code>). A branch run keeps the prior case's <code>nstep</code> and fails with "Error in entering/exiting spinup - should occur only when nstep = 1". A startup run with <code>finidat</code> set starts at <code>nstep</code> 1. Our <code>osbs.swenson.post-ad</code> case uses this setup.</p>
+</div>
 <h3 id="4-check-equilibrium">4. Check Equilibrium<a class="headerlink" href="#4-check-equilibrium" title="Permanent link">&para;</a></h3>
-<p>Spinup is complete when:
-- Less than ~3% of land surface shows carbon disequilibrium
-- TOTSOMC, TOTVEGC, TOTECOSYSC are stable year-to-year</p>
+<p>Spinup is complete when:</p>
+<ul>
+<li>TOTSOMC, TOTVEGC, TOTECOSYSC are stable year-to-year</li>
+<li>For global grids, NCAR's criterion is that less than ~3% of the land surface shows carbon disequilibrium. This does not apply to a single-point run.</li>
+<li>For our single-point site runs we use a block-mean drift test: the change between consecutive 20-year means of TOTECOSYSC, TOTSOMC, and TOTVEGC is below 1%</li>
+</ul>
 <h2 id="variables-to-monitor">Variables to Monitor<a class="headerlink" href="#variables-to-monitor" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1899,7 +1901,7 @@
 <p>The model reaches equilibrium when carbon fluxes balance:</p>
 <ul>
 <li>NEE ≈ 0 (net ecosystem exchange)</li>
-<li>Year-to-year changes in carbon pools &lt; 0.1%</li>
+<li>Carbon pool drift below the thresholds in <a href="#4-check-equilibrium">Check Equilibrium</a></li>
 </ul>
 <p>Arctic and boreal regions take longest (~1000 years).</p>
 <h2 id="tips">Tips<a class="headerlink" href="#tips" title="Permanent link">&para;</a></h2>
@@ -2015,6 +2017,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Maintained by Cooper DeVane-Prugh · Content licensed CC BY 4.0
+    </div>
   
   
     Made with

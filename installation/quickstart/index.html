@@ -195,6 +195,18 @@
       
     
     
+      <div class="md-header__source">
+        <a href="https://github.com/cdevaneprugh/hpg-esm-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cdevaneprugh/hpg-esm-docs
+  </div>
+</a>
+      </div>
+    
   </nav>
   
 </header>
@@ -228,6 +240,18 @@
     </a>
     CTSM on HiPerGator
   </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cdevaneprugh/hpg-esm-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cdevaneprugh/hpg-esm-docs
+  </div>
+</a>
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -1242,7 +1266,7 @@
   <span class="md-ellipsis">
     
   
-    Methodology
+    OSBS Hillslope Methodology
   
 
     
@@ -1492,33 +1516,6 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../archive/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Archive
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -1740,13 +1737,14 @@
 </code></pre></div>
 <p>You should see: <code>config_machines.xml</code>, <code>config_batch.xml</code>, <code>gnu_hipergator.cmake</code></p>
 <h2 id="step-5-customize-for-your-group">Step 5: Customize for Your Group<a class="headerlink" href="#step-5-customize-for-your-group" title="Permanent link">&para;</a></h2>
-<p>The HiPerGator config includes QoS limits that need to match your group's allocation. Check your group's limits:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>showQos<span class="w"> </span>-A<span class="w"> </span>&lt;group&gt;
+<p>The HiPerGator batch config names the SLURM QoS queues jobs are submitted to. These must match your group's QoS. Check your group's QoS names and limits:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>showQos<span class="w"> </span>&lt;group&gt;
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>showQos<span class="w"> </span>&lt;group&gt;-b
 </code></pre></div>
-<p>Then edit the config file to match (see <a href="../cime-config/">CIME Configuration</a> for details):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>vim<span class="w"> </span>ccs_config/machines/hipergator/config_machines.xml
+<p>Then edit the <code>&lt;queues&gt;</code> block of the batch config to use your QoS names (see <a href="../cime-config/">CIME Configuration</a> for details):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>vim<span class="w"> </span>ccs_config/machines/hipergator/config_batch.xml
 </code></pre></div>
-<p>Look for the <code>MAX_TASKS_PER_NODE</code> and <code>MAX_MPITASKS_PER_NODE</code> settings.</p>
+<p>The <code>jobmax</code> value on each queue is the task count CIME uses to choose a queue. It is not enforced by SLURM, so keep it at or below the QoS <code>cpu</code> limit reported by <code>showQos</code>. The <code>MAX_TASKS_PER_NODE</code> and <code>MAX_MPITASKS_PER_NODE</code> settings in <code>config_machines.xml</code> describe node hardware (128 cores), not QoS, and normally should not be changed.</p>
 <h2 id="step-6-create-a-test-case">Step 6: Create a Test Case<a class="headerlink" href="#step-6-create-a-test-case" title="Permanent link">&para;</a></h2>
 <p>Test your installation with a simple case:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">cd</span><span class="w"> </span>cime/scripts
@@ -1793,7 +1791,7 @@
 <p><strong>Build fails immediately</strong>
 : Check that modules are loaded: <code>module list</code></p>
 <p><strong>Job stays pending</strong>
-: Check QoS limits match your config: <code>showQos -A &lt;group&gt;</code></p>
+: Check QoS limits match your config: <code>showQos &lt;group&gt;</code></p>
 <p><strong>Missing machine config</strong>
 : Verify submodules initialized: <code>./bin/git-fleximod status</code></p>
 <p>See <a href="../../running-ctsm/troubleshooting/">Troubleshooting</a> for more help.</p>
@@ -1870,6 +1868,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Maintained by Cooper DeVane-Prugh · Content licensed CC BY 4.0
+    </div>
   
   
     Made with

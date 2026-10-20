@@ -195,6 +195,18 @@
       
     
     
+      <div class="md-header__source">
+        <a href="https://github.com/cdevaneprugh/hpg-esm-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cdevaneprugh/hpg-esm-docs
+  </div>
+</a>
+      </div>
+    
   </nav>
   
 </header>
@@ -228,6 +240,18 @@
     </a>
     CTSM on HiPerGator
   </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cdevaneprugh/hpg-esm-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cdevaneprugh/hpg-esm-docs
+  </div>
+</a>
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -1370,7 +1394,7 @@
   <span class="md-ellipsis">
     
   
-    Methodology
+    OSBS Hillslope Methodology
   
 
     
@@ -1616,33 +1640,6 @@
           </ul>
         </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../archive/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Archive
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1940,10 +1937,10 @@
 
 
 <h1 id="merit-dem-validation">MERIT DEM Validation<a class="headerlink" href="#merit-dem-validation" title="Permanent link">&para;</a></h1>
-<p><em>Validating the ported pysheds implementation against Swenson's published hillslope dataset using MERIT DEM data.</em></p>
+<p><em>Verifying the ported pysheds implementation by reproducing Swenson's published hillslope dataset from MERIT DEM data.</em></p>
 <hr />
 <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
-<p>Before applying the pipeline to OSBS LIDAR data, it was validated against Swenson's published global hillslope dataset (<code>hillslopes_0.9x1.25_c240416.nc</code>). The validation used a MERIT DEM tile (<code>n30w095_dem.tif</code>, 6000x6000 pixels, ~90m resolution) covering the same region as a published gridcell, allowing direct comparison of all six geomorphic parameters.</p>
+<p>Before applying the pipeline to OSBS LIDAR data, it was checked by reproducing Swenson's published global hillslope dataset (<code>hillslopes_0.9x1.25_c240416.nc</code>). This is a code-verification exercise: the reference is Swenson's published product, not independent field observations. The comparison used a MERIT DEM tile (<code>n30w095_dem.tif</code>, 6000x6000 pixels, ~90m resolution) covering a published gridcell in northern Louisiana (centered near 32.5° N, 92.5° W), allowing direct comparison of all six geomorphic parameters. Each comparison is over the 16 hillslope elements (4 aspects × 4 HAND bins) of that gridcell, so correlations are computed from n ≤ 16 values (non-finite values, and non-positive values for height, distance, slope and width, are dropped).</p>
 <p>The validation proceeded through nine stages, each building on the previous and addressing specific problems as they were discovered.</p>
 <hr />
 <h2 id="stage-1-pgrid-validation">Stage 1: pgrid Validation<a class="headerlink" href="#stage-1-pgrid-validation" title="Permanent link">&para;</a></h2>
@@ -1971,21 +1968,21 @@
 <tr>
 <td>Stream coverage</td>
 <td>2.17%</td>
-<td>1-5%</td>
+<td>0.5-10%</td>
 </tr>
 <tr>
 <td>HAND range</td>
-<td>-54 to 619 m</td>
-<td>0-500 m</td>
+<td>-54.05 to 619.06 m</td>
+<td>max &lt; 1000 m</td>
 </tr>
 <tr>
 <td>DTND range</td>
 <td>0 to 22.9 km</td>
-<td>0-50 km</td>
+<td>max &lt; 100 km</td>
 </tr>
 </tbody>
 </table>
-<p>All validation criteria passed. Processing completed in 3.4 minutes.</p>
+<p>The criteria column shows what the Stage 1 script actually tested. These are loose plausibility checks (no lower bound on HAND was tested), and all three passed. The negative HAND values came from computing flow directions on the conditioned (inflated) DEM while computing HAND on the raw DEM, so pixels inside filled depressions sat below their drainage cell. Later stages and the regression test compute HAND on the inflated DEM, as Swenson's code does. Processing took 3.4 minutes.</p>
 <hr />
 <h2 id="stage-2-fft-spatial-scale-analysis">Stage 2: FFT Spatial Scale Analysis<a class="headerlink" href="#stage-2-fft-spatial-scale-analysis" title="Permanent link">&para;</a></h2>
 <p><strong>Goal:</strong> Determine the characteristic length scale (Lc) for the MERIT tile.</p>
@@ -2016,7 +2013,7 @@
 </tr>
 </tbody>
 </table>
-<p>The characteristic length scale was consistent across region sizes: <strong>Lc = 8.2 pixels (763 m)</strong>. The best-fit spectral model was lognormal in all cases. The derived accumulation threshold was <strong>34 cells</strong> (via Swenson's formula: A_thresh = 0.5 * Lc^2).</p>
+<p>The characteristic length scale was consistent across region sizes: <strong>Lc = 8.2 pixels (763 m)</strong>. (The current regression test uses 500, 1000 and 3000 pixel regions plus the full tile, Lc = 766, 760, 754 and 2,679 m; the median is still 763 m.) The best-fit spectral model was lognormal in all cases. The derived accumulation threshold was <strong>34 cells</strong> (via Swenson's formula: A_thresh = 0.5 * Lc^2).</p>
 <hr />
 <h2 id="stage-3-hillslope-parameter-computation">Stage 3: Hillslope Parameter Computation<a class="headerlink" href="#stage-3-hillslope-parameter-computation" title="Permanent link">&para;</a></h2>
 <p><strong>Goal:</strong> Compute the six geomorphic parameters for all 16 hillslope elements (4 aspects x 4 elevation bins).</p>
@@ -2098,13 +2095,13 @@
 <td>Area</td>
 <td>0.730</td>
 <td>Large</td>
-<td>Unit mismatch</td>
+<td>Large relative error from units/normalization; low correlation not explained by units</td>
 </tr>
 <tr>
 <td>Aspect</td>
 <td>0.650</td>
 <td>Large</td>
-<td>Degrees vs radians</td>
+<td>Degrees vs radians (relative error); linear correlation used on circular data</td>
 </tr>
 <tr>
 <td>Width</td>
@@ -2114,13 +2111,13 @@
 </tr>
 </tbody>
 </table>
-<p>Height and slope showed excellent agreement, confirming that the HAND and flow routing implementation was correct. Three problems were identified: a degrees-vs-radians mismatch for aspect, an area unit discrepancy, and a systematic width calculation bug.</p>
+<p>Height and slope showed excellent agreement, confirming that the HAND and flow routing implementation was correct. Note that Stage 4 compared against published values averaged over every gridcell in the processed region, not a single gridcell. Three problems were identified: aspect was compared in different units and with a linear correlation, area was compared in different units, and the width calculation had a systematic bug.</p>
 <hr />
 <h2 id="stage-5-unit-conversion-fix">Stage 5: Unit Conversion Fix<a class="headerlink" href="#stage-5-unit-conversion-fix" title="Permanent link">&para;</a></h2>
-<p><strong>Goal:</strong> Fix aspect and area unit mismatches.</p>
+<p><strong>Goal:</strong> Fix aspect and area comparison problems.</p>
 <ul>
-<li><strong>Aspect:</strong> Converting from degrees to radians improved circular correlation from 0.65 to <strong>0.9996</strong>.</li>
-<li><strong>Area:</strong> The relative distribution (fraction per bin) correlated at 0.73 despite an absolute scale difference of ~26,000x between m^2 and published units.</li>
+<li><strong>Aspect:</strong> Aspect is a circular variable (0° and 360° are the same direction), so a linear Pearson correlation is the wrong statistic, and converting degrees to radians alone cannot change Pearson r. Converting to radians and switching to a circular (sin/cos) correlation raised the aspect correlation from 0.65 to <strong>0.9996</strong>.</li>
+<li><strong>Area:</strong> Normalizing to fractions per bin left the correlation unchanged, because Pearson r ignores linear scale. The ~26,000x absolute scale difference (units/normalization) only affected the relative error. The low area correlation was resolved later by region alignment, the mandatory 2 m bin, and the N/S aspect fix (Stages 7-8).</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Width bug identified</p>
@@ -2278,7 +2275,7 @@
 </tr>
 </tbody>
 </table>
-<p>The best correlation (0.83 at threshold=20) was only marginally better than the baseline. Higher thresholds degraded rapidly. The remaining ~17% unexplained variance was attributed to differences in DEM preprocessing, edge effects from spatial extent differences, and undocumented methodology differences in the published data.</p>
+<p>The best correlation (0.83 at threshold=20) was only marginally better than the baseline. Higher thresholds degraded rapidly. (The 34-cell baseline here, 0.80, differs from Stage 8's 0.82; both are the values the logs report.) At r = 0.83, r² ≈ 0.69, so ~31% of the area-fraction variance remained unexplained. It was attributed to differences in DEM preprocessing, edge effects from spatial extent differences, and undocumented methodology differences in the published data.</p>
 <hr />
 <h2 id="final-results">Final Results<a class="headerlink" href="#final-results" title="Permanent link">&para;</a></h2>
 <p>After the nine validation stages and subsequent post-audit improvements (see below), the consolidated regression test establishes these baseline correlations:</p>
@@ -2294,32 +2291,32 @@
 <tr>
 <td>Height</td>
 <td>0.9979</td>
-<td>Excellent</td>
+<td>Excellent (r ≥ 0.98)</td>
 </tr>
 <tr>
 <td>Distance</td>
 <td>0.9992</td>
-<td>Excellent</td>
+<td>Excellent (r ≥ 0.98)</td>
 </tr>
 <tr>
 <td>Slope</td>
 <td>0.9839</td>
-<td>Excellent</td>
+<td>Excellent (r ≥ 0.98)</td>
 </tr>
 <tr>
-<td>Aspect</td>
+<td>Aspect (circular)</td>
 <td>1.0000</td>
-<td>Excellent</td>
+<td>Excellent (r ≥ 0.98)</td>
 </tr>
 <tr>
 <td>Width</td>
 <td>0.9919</td>
-<td>Excellent</td>
+<td>Excellent (r ≥ 0.98)</td>
 </tr>
 <tr>
-<td>Area</td>
+<td>Area fraction</td>
 <td>0.9244</td>
-<td>Excellent</td>
+<td>Good</td>
 </tr>
 </tbody>
 </table>
@@ -2357,7 +2354,7 @@
 </tr>
 </tbody>
 </table>
-<p>The 0.92 correlation represents the practical ceiling for this validation approach. Height, distance, slope, aspect, and width are all <em>means within bins</em> and are insensitive to small changes in bin boundaries. Area fraction is the <em>total per bin</em>, making it inherently more sensitive to bin boundary choices and stream network differences.</p>
+<p>The 0.92 correlation is the best achieved so far with this approach; no test established it as a hard ceiling. Height, distance, slope, aspect, and width are all <em>means within bins</em> and are insensitive to small changes in bin boundaries. Area fraction is the <em>total per bin</em>, making it inherently more sensitive to bin boundary choices and stream network differences.</p>
 <hr />
 <h2 id="summary-of-bugs-found-and-fixed">Summary of Bugs Found and Fixed<a class="headerlink" href="#summary-of-bugs-found-and-fixed" title="Permanent link">&para;</a></h2>
 <h3 id="validation-stages-january-2026">Validation Stages (January 2026)<a class="headerlink" href="#validation-stages-january-2026" title="Permanent link">&para;</a></h3>
@@ -2374,8 +2371,8 @@
 <tr>
 <td>5</td>
 <td>Aspect correlation 0.65</td>
-<td>Degrees vs radians</td>
-<td>Convert to radians for comparison</td>
+<td>Linear correlation used on circular data (plus degrees vs radians)</td>
+<td>Convert to radians and use a circular (sin/cos) correlation</td>
 </tr>
 <tr>
 <td>6</td>
@@ -2502,10 +2499,10 @@
 <hr />
 <h2 id="consolidated-regression-test">Consolidated Regression Test<a class="headerlink" href="#consolidated-regression-test" title="Permanent link">&para;</a></h2>
 <p>The nine stage scripts were consolidated into a single regression script (<code>merit_regression.py</code>) that serves as an automated regression test for the pysheds fork. Run after any changes to <code>pgrid.py</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$TOOLS</span>/swenson
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">cd</span><span class="w"> </span>/path/to/hpg-esm-tools/swenson
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>sbatch<span class="w"> </span>scripts/merit_validation/merit_regression.sh
 </code></pre></div>
-<p>The script computes Lc via multi-region FFT and all six hillslope parameters for the published MERIT gridcell, then asserts:</p>
+<p>The script computes Lc via multi-region FFT and all six hillslope parameters for the published MERIT gridcell, then asserts the following. The tolerance compares the code against its own earlier baseline, not against new data:</p>
 <ul>
 <li><strong>Lc</strong>: Within 5% of 763m</li>
 <li><strong>All 6 parameter correlations</strong>: Within 0.01 of expected baselines</li>
@@ -2564,13 +2561,13 @@
         
         
           
-          <a href="../osbs-implementation/" class="md-footer__link md-footer__link--next" aria-label="Next: Methodology">
+          <a href="../osbs-implementation/" class="md-footer__link md-footer__link--next" aria-label="Next: OSBS Hillslope Methodology">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Methodology
+                OSBS Hillslope Methodology
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -2585,6 +2582,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Maintained by Cooper DeVane-Prugh · Content licensed CC BY 4.0
+    </div>
   
   
     Made with

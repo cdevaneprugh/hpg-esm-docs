@@ -59,6 +59,8 @@ Physical implausibility confirms the artifact interpretation: A_thresh = 0.5 * 8
 
 Excluding wavelengths below 20 m before peak fitting reveals the drainage-scale peak. The 20 m cutoff separates micro-topography from organized drainage structure, analogous to what 90m resolution does implicitly by averaging away sub-180 m features.
 
+**Implementation.** The chain is Swenson's, run by `spatial_scale.py` (`identify_spatial_scale_laplacian_dem`) in this order. The mosaic's outer 50 pixels are edge-blended, the Laplacian is formed as the sum of the second derivatives in x and y (two passes of the gradient operator at 1 m spacing), and the outer 50 pixels of the Laplacian are zeroed to suppress boundary ringing (`blend_edges_n = zero_edges_n = 50`; Swenson's defaults are 4 and 5 for 90 m data). The 2-D amplitude spectrum (`|rfft2|`, orthonormal) is binned into 30 bins equally spaced in log wavelength, taking the mean amplitude and mean wavelength per bin. The cutoff acts only here: `_locate_peak` fits the binned spectrum over the bins between the 20 m cutoff and an upper bound of 2 × 10,000 m (`max_hillslope_length`), so nothing is filtered from the DEM or the spectrum — the short-wavelength bins are excluded from the fit. Gaussian and lognormal models are fit over that window; if either has peak sharpness ≥ 1.5 the one with the better goodness of fit is taken and Lc is its peak wavelength, otherwise a linear model is accepted if its slope t-score exceeds 2, otherwise the spectrum is declared flat (the 180 m row below is the linear fallback). Lc in pixels then gives A_thresh = int(0.5 × Lc²). The 20 m value is an empirical choice from the sweep below, not a derived constant; the pipeline fixes it as `MIN_WAVELENGTH = 20` in `run_pipeline.py` and computes everything downstream at run time.
+
 Restricted-wavelength sweep on the contiguous production mosaic (9000 x 10000 pixels, 0% nodata):
 
 | Min wavelength | Lc (m) | Model | Interpretation |
@@ -74,7 +76,7 @@ The transition at 20 m is sharp — the drainage-scale peak jumps from invisible
 
 ### Result
 
-**Lc = 356 m** (355.98 m; lognormal fit at 20 m cutoff), **A_thresh = 63,362 pixels** at 1m resolution.
+**Lc = 355.98 m** (lognormal fit at the 20 m cutoff), **A_thresh = int(0.5 × Lc²) = 63,362 pixels** at 1 m resolution. Lc is computed by the pipeline at run time on the production mosaic; the 20 m cutoff is the only prescribed quantity. During Phase C the PI accepted ~300 m (range 285–356 m) as the working value, and the plausibility checks below were run at the three candidates; the rebuilt pipeline's first full-domain run (2026-02-26) returned 356 m, which has been the production value since (355.98 m in every production and diagnostic run on this domain). Lc is domain-dependent: the same method gives 541 m on the single tile R6C10 and 479 m on the 5 × 5 block R6C7–R10C11 used for the plausibility checks.
 
 <figure markdown="span">
   ![Laplacian spectrum and Lc fit for OSBS](images/production_lc_spectrum.png)

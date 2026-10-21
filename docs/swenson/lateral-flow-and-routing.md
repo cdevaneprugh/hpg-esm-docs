@@ -13,7 +13,7 @@ use_hillslope         = .true.    ! activates hillslope-mode column structure
 use_hillslope_routing = .true.    ! activates stream-side machinery (optional)
 ```
 
-A 2026-05-19 audit of CTSM 5.3.085 (tag `ctsm5.3.085`, `fde1fc622`; `src/` is identical in our fork revision `dc3aa5ddc`) traced every source-code site gated by `use_hillslope_routing` and cross-checked the conclusions against empirical output from two cases: a 5-yr paired test/control smoke test (mesh-mode workaround validation, Phase H Track A) and the 600-yr accelerated AD spinup of the operative case. The audit established that **inter-column lateral subsurface flow runs under `use_hillslope = .true.` and does not require routing to be on**. Routing-on activates only the stream-side coupling at the chain terminus.
+A 2026-05-19 audit of CTSM 5.3.085 (tag `ctsm5.3.085`, `fde1fc622`; the Fortran under `src/` is identical in our fork revision `dc3aa5ddc`) traced every source-code site gated by `use_hillslope_routing` and cross-checked the conclusions against empirical output from two cases: a 5-yr paired test/control smoke test (mesh-mode workaround validation, Phase H Track A) and the 600-yr accelerated AD spinup of the operative case. The audit established that **inter-column lateral subsurface flow runs under `use_hillslope = .true.` and does not require routing to be on**. Routing-on activates only the stream-side coupling at the chain terminus.
 
 ---
 
@@ -188,4 +188,4 @@ Phase H Track A (2026-05-11 to 2026-05-12) built the single-cell ESMF mesh for t
 - CTSM Issue #1432: [Area is not set for NUOPC single point cases](https://github.com/ESCOMP/CTSM/issues/1432) (open since 2021-07-20)
 - Swenson, S. C., & Lawrence, D. M. (2025), [Development of a Global Representative Hillslope Data Set for Use in Earth System Models](https://doi.org/10.1029/2024MS004410), *Journal of Advances in Modeling Earth Systems*, 17 — hillslope-mode methodology (gridded-only validation; no single-point routing case)
 - DiscussCESM thread, Johanna Teresa, Feb 2025: [Point-scale simulation with CTSM 5.3.11](https://bb.cgd.ucar.edu/cesm/threads/point-scale-simulation-with-ctsm5-3.11125/) — only public reference to Swenson's mesh-mode recommendation
-- CTSM source: tag `ctsm5.3.085` (`fde1fc622`); audit performed on fork revision `dc3aa5ddc`, whose `src/` is identical to the tag
+- CTSM source: tag `ctsm5.3.085` (`fde1fc622`); audit performed on fork revision `dc3aa5ddc`, whose Fortran under `src/` is identical to the tag (the fork adds only `CLAUDE.md` documentation files there)
